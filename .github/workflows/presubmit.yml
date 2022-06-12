@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Presubmit
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Gradle Wrapper Validation
+        uses: gradle/wrapper-validation-action@v1.0.4
+        with:
+          min-wrapper-count: 1
+          allow-snapshots: false
+          allow-checksums: false
+          
+      - name: Gradle Build Action
+        uses: gradle/gradle-build-action@v2.2.0
+        with:
+          cache-read-only: true
+          arguments: -d # Debug mode
+          generate-job-summary: true
