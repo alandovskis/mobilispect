@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Presubmit
 
 on:
@@ -27,5 +25,5 @@ jobs:
         uses: gradle/gradle-build-action@v2.2.0
         with:
           cache-read-only: true
-          arguments: -d # Debug mode
           generate-job-summary: true
+          arguments: build
