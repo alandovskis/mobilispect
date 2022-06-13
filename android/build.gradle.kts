@@ -17,6 +17,12 @@ android {
             isMinifyEnabled = false
         }
     }
+    packagingOptions {
+        resources {
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
+        }
+    }
 }
 
 dependencies {
