@@ -1,0 +1,11 @@
+<resources>
+    <string name="minutes_or_less">MINUTES OR LESS</string>
+    <string name="on_days">ON</string>
+    <string name="weekdays">Weekdays</string>
+    <string name="from">FROM</string>
+    <string name="to">TO</string>
+    <string name="inbound">INBOUND</string>
+    <string name="outbound">OUTBOUND</string>
+    <string name="every">EVERY</string>
+    <string name="on_routes">ON ROUTES</string>
+</resources>

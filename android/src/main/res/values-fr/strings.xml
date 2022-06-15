@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="minutes_or_less">MINUTES OU MOINS</string>
+    <string name="on_days">LES</string>
+    <string name="weekdays">jours de la semaine</string>
+    <string name="from">DE</string>
+    <string name="to">À</string>
+    <string name="inbound">ENTRANT</string>
+    <string name="outbound">SORTANT</string>
+    <string name="every">CHAQUE</string>
+    <string name="on_routes">SUR LES ROUTES</string>
+</resources>
