@@ -43,7 +43,6 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.1.1")
     // Material Design
     implementation("androidx.compose.material:material:1.1.1")
-    implementation("androidx.compose.material:material:1.1.1")
     // Material design icons
     implementation("androidx.compose.material:material-icons-core:1.1.1")
     implementation("androidx.compose.material:material-icons-extended:1.1.1")
@@ -56,8 +55,14 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
 
+    //region Architecture Components
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    //endregion
+
     // UI Tests
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.1.1")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["compose_version"]}")
     //endregion
+}
+dependencies {
 }

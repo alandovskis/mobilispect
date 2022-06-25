@@ -1,27 +1,21 @@
-package com.mobilispect.android.ui.theme
+package com.mobilispect.android.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material.Scaffold
 import com.mobilispect.android.ui.frequency.FrequencyCommitmentCard
+import com.mobilispect.android.ui.theme.MobilispectTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MobilispectTheme {
-                FrequencyCommitmentCard()
+                Scaffold {
+                    FrequencyCommitmentCard()
+                }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MobilispectTheme {
-        FrequencyCommitmentCard()
     }
 }
