@@ -11,7 +11,7 @@ enum class Direction {
 }
 
 data class DirectionTime(
-    val direction: Direction,
+    val direction: Direction?,
     val start: LocalTime,
     val end: LocalTime) {
 
@@ -19,12 +19,7 @@ data class DirectionTime(
         fun both(start: LocalTime, end: LocalTime): Collection<DirectionTime> {
             return listOf(
                 DirectionTime(
-                    direction = Direction.Inbound,
-                    start = start,
-                    end = end
-                ),
-                DirectionTime(
-                    direction = Direction.Outbound,
+                    direction = null,
                     start = start,
                     end = end
                 ),
