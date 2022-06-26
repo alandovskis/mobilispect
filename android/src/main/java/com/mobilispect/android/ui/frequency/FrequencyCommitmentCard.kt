@@ -113,7 +113,7 @@ private fun Direction(directions: Collection<FrequencyCommitmentDirectionUIState
 
 @Composable
 private fun DaysOfTheWeek(daysOfWeek: Int) {
-    Row {
+    Row(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(R.string.on_days), modifier = Modifier.align(CenterVertically)
         )
