@@ -26,4 +26,4 @@ jobs:
         with:
           cache-read-only: false
           generate-job-summary: true
-          arguments: build
+          arguments: android:assemble
