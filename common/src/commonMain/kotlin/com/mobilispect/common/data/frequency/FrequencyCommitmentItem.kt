@@ -1,5 +1,6 @@
 package com.mobilispect.common.data.frequency
 
+import com.mobilispect.common.data.routes.RouteRef
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime
@@ -31,6 +32,6 @@ data class DirectionTime(
 data class FrequencyCommitmentItem(
     val daysOfWeek: Collection<DayOfWeek>,
     val frequency: Duration,
-    val routes: Collection<String>,
+    val routes: List<RouteRef>,
     val directions: Collection<DirectionTime>,
 )

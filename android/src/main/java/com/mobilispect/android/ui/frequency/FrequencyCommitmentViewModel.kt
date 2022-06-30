@@ -6,17 +6,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilispect.android.R
+import com.mobilispect.android.data.routes.RouteRepository
 import com.mobilispect.common.data.frequency.DirectionTime
 import com.mobilispect.common.data.frequency.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.common.data.time.WEEKDAYS
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import javax.inject.Inject
 
 
-class FrequencyCommitmentViewModel: ViewModel() {
+@HiltViewModel
+class FrequencyCommitmentViewModel @Inject constructor(private val routeRepository: RouteRepository): ViewModel() {
     private var _details = MutableLiveData<FrequencyCommitmentUIState>()
     val details: LiveData<FrequencyCommitmentUIState> = _details
 
@@ -41,7 +45,11 @@ class FrequencyCommitmentViewModel: ViewModel() {
                     ),
                     routes = RoutesUIState(
                         onRoutes = R.string.on_routes,
-                        routes = item.routes,
+                        routes = item.routes.map { routeRef ->
+                            routeRepository.fromRef(routeRef)?.let {
+                                "${it.shortName}: ${it.longName}"
+                            } ?: ""
+                        },
                     )
                 )
             }
