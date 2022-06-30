@@ -2,6 +2,8 @@ plugins {
     id("org.jetbrains.compose") version "1.0.1"
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 group = "com.mobilispect"
@@ -14,6 +16,13 @@ repositories {
 dependencies {
     implementation(project(":common"))
     implementation("androidx.activity:activity-compose:1.4.0")
+
+    implementation("com.google.dagger:hilt-android:2.42")
+    kapt("com.google.dagger:hilt-compiler:2.42")
+    testImplementation("com.google.dagger:hilt-android-testing:2.42")
+    kaptTest("com.google.dagger:hilt-compiler:2.42")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.42")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.42")
 }
 
 android {

@@ -1,9 +1,12 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.compose.compose
 
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version "1.0.1"
     id("com.android.library")
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 group = "com.mobilispect"
@@ -17,11 +20,20 @@ kotlin {
         }
     }
     sourceSets {
+        all {
+            languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
+        }
+
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                api("javax.inject:javax.inject:1")
+                api("com.squareup.retrofit2:retrofit:2.9.0")
+                api("com.squareup.retrofit2:converter-gson:2.9.0")
+                implementation("com.google.dagger:dagger:2.42")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
             }
         }
         val commonTest by getting
