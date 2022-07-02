@@ -8,4 +8,5 @@
     <string name="outbound">OUTBOUND</string>
     <string name="every">EVERY</string>
     <string name="on_routes">ON ROUTES</string>
+    <string name="frequency_commitment">Frequency Commitment</string>
 </resources>

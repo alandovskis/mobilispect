@@ -20,29 +20,48 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilispect.android.R
-import com.mobilispect.android.ui.theme.md_theme_dark_onPrimary
-import com.mobilispect.android.ui.theme.md_theme_dark_primary
 
 @Composable
 fun FrequencyCommitmentCard(frequencyCommitmentViewModel: FrequencyCommitmentViewModel = viewModel()) {
     frequencyCommitmentViewModel.details()
     val uiState: FrequencyCommitmentUIState? by frequencyCommitmentViewModel.details.observeAsState()
     val items = uiState?.items ?: return
-    Card {
-        LazyColumn(content = {
-            for (item in items) {
-                item {
-                    FrequencyCommitmentItemEntry(item)
+    Card(
+        backgroundColor = MaterialTheme.colors.primary, modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+    )
+    {
+        Column {
+            val subtitle1 = MaterialTheme.typography.subtitle1
+            Text(
+                color = MaterialTheme.colors.onPrimary,
+                text = stringResource(R.string.frequency_commitment),
+                fontSize = subtitle1.fontSize,
+                fontWeight = subtitle1.fontWeight,
+                fontStyle = subtitle1.fontStyle,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+
+            LazyColumn(modifier = Modifier.padding(4.dp), content = {
+                for (item in items) {
+                    item {
+                        FrequencyCommitmentItemEntry(item)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 }
 
 @Composable
 fun FrequencyCommitmentItemEntry(item: FrequencyCommitmentItemUIState) {
-    Surface(color = md_theme_dark_primary, contentColor = md_theme_dark_onPrimary, shape = MaterialTheme.shapes.small,
-        modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)) {
+    Surface(
+        color = MaterialTheme.colors.secondary,
+        contentColor = MaterialTheme.colors.onSecondary,
+        shape = MaterialTheme.shapes.small,
+        modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
+    ) {
         Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
             DaysOfTheWeek(item.daysOfTheWeek)
             Direction(item.directions)
@@ -73,7 +92,10 @@ private fun Frequency(uiState: FrequencyCommitmentFrequencyUIState) {
             text = uiState.frequency.toString(),
             fontWeight = FontWeight.Bold
         )
-        Text(text = stringResource(uiState.minutesOrLess), modifier = Modifier.align(CenterVertically))
+        Text(
+            text = stringResource(uiState.minutesOrLess),
+            modifier = Modifier.align(CenterVertically)
+        )
     }
 }
 
@@ -87,7 +109,8 @@ private fun Direction(directions: Collection<FrequencyCommitmentDirectionUIState
 
             val direction = if (directionTime.direction != null) {
                 "${stringResource(id = directionTime.direction)} ${
-                    stringResource(id = directionTime.from)}"
+                    stringResource(id = directionTime.from)
+                }"
             } else {
                 stringResource(id = directionTime.from)
             }
@@ -101,7 +124,8 @@ private fun Direction(directions: Collection<FrequencyCommitmentDirectionUIState
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = stringResource(id = directionTime.to), modifier = Modifier.align(CenterVertically)
+                text = stringResource(id = directionTime.to),
+                modifier = Modifier.align(CenterVertically)
             )
             Emphasized(
                 text = directionTime.endTime.format(timeFormatter),
@@ -123,8 +147,14 @@ private fun DaysOfTheWeek(daysOfWeek: Int) {
 
 @Composable
 private fun Emphasized(
-    text: String, fontWeight: FontWeight = FontWeight.Bold, fontSize: TextUnit = 24.sp) {
-    Text(text = text, fontWeight = fontWeight, fontSize = fontSize, modifier = Modifier.padding(4.dp, 4.dp))
+    text: String, fontWeight: FontWeight = FontWeight.Bold, fontSize: TextUnit = 24.sp
+) {
+    Text(
+        text = text,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
+        modifier = Modifier.padding(4.dp, 4.dp)
+    )
 }
 
 @Preview(locale = "en", showBackground = true)
