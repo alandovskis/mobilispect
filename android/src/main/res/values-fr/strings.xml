@@ -9,4 +9,5 @@
     <string name="outbound">SORTANT</string>
     <string name="every">CHAQUE</string>
     <string name="on_routes">SUR LES ROUTES</string>
+    <string name="frequency_commitment">Engagement de fréquence</string>
 </resources>
