@@ -67,10 +67,10 @@ class FrequencyCommitmentViewModel @Inject constructor(private val routeReposito
                 if (value != null) {
                     "${value.shortName}: ${value.longName}"
                 } else {
-                    routeRef.id
+                    routeRef.routeNumber
                 }
             } else {
-                routeRef.id
+                routeRef.routeNumber
             }
         }
 

@@ -5,10 +5,10 @@ package com.mobilispect.common.data.routes
  *
  * Reference: https://www.transit.land/documentation/onestop-id-scheme/
  *
- * Ex:
  */
 data class RouteRef(
-    private val idSuffix: String,
+    private val geohash: String,
+    val routeNumber: String,
 ) {
-    val id: String = "r-$idSuffix"
+    val id: String = "r-$geohash-$routeNumber"
 }
