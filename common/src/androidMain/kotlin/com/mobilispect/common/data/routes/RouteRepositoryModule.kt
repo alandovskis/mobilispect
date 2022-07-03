@@ -1,4 +1,4 @@
-package com.mobilispect.android.data.routes
+package com.mobilispect.common.data.routes
 
 import dagger.Binds
 import dagger.Module

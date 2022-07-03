@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilispect.android.R
-import com.mobilispect.android.data.routes.RouteRepository
+import com.mobilispect.common.data.routes.RouteRepository
 import com.mobilispect.common.data.frequency.DirectionTime
 import com.mobilispect.common.data.frequency.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency.STM_FREQUENCY_COMMITMENT
