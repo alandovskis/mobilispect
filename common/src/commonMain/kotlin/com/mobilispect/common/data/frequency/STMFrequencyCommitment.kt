@@ -12,9 +12,10 @@ val STM_ID = AgencyRef("o-f25d-socitdetransportdemontral")
 private val bothDirections = FrequencyCommitmentItem(
     daysOfWeek = WEEKDAYS,
     routes = listOf(
-        RouteRef("f25ej-18"),
-        RouteRef("f25dv-24"),
-        RouteRef("f25em-141")),
+        RouteRef(geohash = "f25ej", routeNumber = "18"),
+        RouteRef(geohash = "f25dv", routeNumber = "24"),
+        RouteRef(geohash = "f25em", routeNumber = "141")
+    ),
     directions = DirectionTime.both(
         start = LocalTime.of(6, 0),
         end = LocalTime.of(21, 0),
@@ -24,11 +25,13 @@ private val bothDirections = FrequencyCommitmentItem(
 
 private val tidalFlow = FrequencyCommitmentItem(
     daysOfWeek = WEEKDAYS,
-    routes = listOf(RouteRef("f25e-33"),
-        RouteRef("f25df-64"),
-        RouteRef("f25ds-103"),
-        RouteRef("f25dk-106"),
-        RouteRef("f25dk-406")),
+    routes = listOf(
+        RouteRef(geohash = "f25e", routeNumber = "33"),
+        RouteRef(geohash = "f25df", routeNumber = "64"),
+        RouteRef(geohash = "f25ds", routeNumber = "103"),
+        RouteRef(geohash = "f25dk", routeNumber = "106"),
+        RouteRef(geohash = "f25dk", routeNumber = "406")
+    ),
     directions = listOf(
         DirectionTime(
             direction = Direction.Inbound,
@@ -44,7 +47,7 @@ private val tidalFlow = FrequencyCommitmentItem(
     frequency = Duration.ofMinutes(10)
 )
 
-val STM_FREQUENCY_COMMITMENT = FrequencyCommitment (
+val STM_FREQUENCY_COMMITMENT = FrequencyCommitment(
     spans = listOf(
         bothDirections,
         tidalFlow,
@@ -58,12 +61,19 @@ val STM_FREQUENCY_COMMITMENT = FrequencyCommitment (
 
 private val bothDirectionsPast = FrequencyCommitmentItem(
     daysOfWeek = WEEKDAYS,
-    routes = listOf(RouteRef("f25ej-18"), RouteRef("f25dv-24"),
-        RouteRef("f25du-51"), RouteRef("f25ej-67"),
-        RouteRef("f25e-69"), RouteRef("f25dv-80"),
-        RouteRef("f25ds-105"), RouteRef("f25e5-121"),
-        RouteRef("f25ej-139"), RouteRef("f25em-141"),
-        RouteRef("f25du-165")),
+    routes = listOf(
+        RouteRef(geohash = "f25ej", routeNumber = "18"),
+        RouteRef(geohash = "f25dv", routeNumber = "24"),
+        RouteRef(geohash = "f25du", routeNumber = "51"),
+        RouteRef(geohash = "f25ej", routeNumber = "67"),
+        RouteRef(geohash = "f25e", routeNumber = "69"),
+        RouteRef(geohash = "f25dv", routeNumber = "80"),
+        RouteRef(geohash = "f25ds", routeNumber = "105"),
+        RouteRef(geohash = "f25e5", routeNumber = "121"),
+        RouteRef(geohash = "f25ej", routeNumber = "139"),
+        RouteRef(geohash = "f25em", routeNumber = "141"),
+        RouteRef(geohash = "f25du", routeNumber = "165")
+    ),
     directions = DirectionTime.both(
         start = LocalTime.of(6, 0),
         end = LocalTime.of(21, 0),
@@ -74,13 +84,27 @@ private val bothDirectionsPast = FrequencyCommitmentItem(
 private val tidalFlowPast = FrequencyCommitmentItem(
     daysOfWeek = WEEKDAYS,
     routes = listOf(
-        RouteRef("f25em-32"), RouteRef("f25e-33"), RouteRef("f25em-44"),
-        RouteRef("f25e-45"), RouteRef("f25e-48"), RouteRef("f25e-49"),
-        RouteRef("f25e-55"), RouteRef("f25df-64"), RouteRef("f25ds-90"),
-        RouteRef("f25ej-97"), RouteRef("f25ds-103"), RouteRef("f25dk-106"),
-        RouteRef("f25em-136"), RouteRef("f25du-161"), RouteRef("f25dg-171"),
-        RouteRef("f25ex-187"), RouteRef("f25ej-193"), RouteRef("f25ej-197"),
-        RouteRef("f25dk-406"), RouteRef("f256-470")),
+        RouteRef(geohash = "f25em", routeNumber = "32"),
+        RouteRef(geohash = "f25e", routeNumber = "33"),
+        RouteRef(geohash = "f25em", routeNumber = "44"),
+        RouteRef(geohash = "f25e", routeNumber = "45"),
+        RouteRef(geohash = "f25e", routeNumber = "48"),
+        RouteRef(geohash = "f25e", routeNumber = "49"),
+        RouteRef(geohash = "f25e", routeNumber = "55"),
+        RouteRef(geohash = "f25df", routeNumber = "64"),
+        RouteRef(geohash = "f25ds", routeNumber = "90"),
+        RouteRef(geohash = "f25ej", routeNumber = "97"),
+        RouteRef(geohash = "f25ds", routeNumber = "103"),
+        RouteRef(geohash = "f25dk", routeNumber = "106"),
+        RouteRef(geohash = "f25em", routeNumber = "136"),
+        RouteRef(geohash = "f25du", routeNumber = "161"),
+        RouteRef(geohash = "f25dg", routeNumber = "171"),
+        RouteRef(geohash = "f25ex", routeNumber = "187"),
+        RouteRef(geohash = "f25ej", routeNumber = "193"),
+        RouteRef(geohash = "f25ej", routeNumber = "197"),
+        RouteRef(geohash = "f25dk", routeNumber = "406"),
+        RouteRef(geohash = "f256", routeNumber = "470")
+    ),
     directions = listOf(
         DirectionTime(
             direction = Direction.Inbound,
@@ -96,7 +120,7 @@ private val tidalFlowPast = FrequencyCommitmentItem(
     frequency = Duration.ofMinutes(10)
 )
 
-val STM_FREQUENCY_COMMITMENT_PRE_COVID = FrequencyCommitment (
+val STM_FREQUENCY_COMMITMENT_PRE_COVID = FrequencyCommitment(
     spans = listOf(
         bothDirectionsPast,
         tidalFlowPast,
