@@ -5,6 +5,6 @@ package com.mobilispect.common.data.agency
  *
  * Ex: o-f25d-socitdetransportdemontral
  */
-data class AgencyRef (
-    val id: String
-)
+data class AgencyRef(private val geohash: String, private val agencyName: String) {
+    val id: String = "o-$geohash-$agencyName"
+}
