@@ -1,32 +1,26 @@
 package com.mobilispect.common.data.routes
 
-import com.mobilispect.common.data.core.transitland.TransitLandConfigRepository
+import com.mobilispect.common.data.core.transitland.TransitLandClient
 import javax.inject.Inject
 
 /**
  * A data source that uses transit.land as its source.
  */
 class TransitLandRouteDataSource @Inject constructor(
-    private val transitLandAPI: TransitLandAPI,
-    private val configRepository: TransitLandConfigRepository
+    private val transitLandAPI: TransitLandClient,
 ) {
-    suspend fun fromRef(routeRef: RouteRef): Route? {
-        val config = configRepository.config() ?: return null
-        val response = transitLandAPI.fromRef(routeRef.id, config.apiKey)
-        if (response.isSuccessful) {
-            val cloudRoute = response.body() ?: return null
-            if (cloudRoute.routes.isEmpty()) {
-                return null
+    suspend operator fun invoke(routeRef: RouteRef): Result<Route?> =
+        transitLandAPI.fromRef(routeRef.id)
+            .map { cloudRoute ->
+                if (cloudRoute.routes.isEmpty()) {
+                    return@map null
+                }
+
+                val route = cloudRoute.routes.first()
+                return@map Route(
+                    id = routeRef,
+                    shortName = route.shortName,
+                    longName = route.longName
+                )
             }
-
-            val route = cloudRoute.routes.first()
-            return Route(
-                id = routeRef,
-                shortName = route.shortName,
-                longName = route.longName
-            )
-        }
-
-        return null
-    }
 }

@@ -139,7 +139,10 @@ private fun Direction(directions: Collection<FrequencyCommitmentDirectionUIState
 private fun DaysOfTheWeek(daysOfWeek: Int) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.on_days), modifier = Modifier.align(CenterVertically)
+            text = stringResource(R.string.on_days), modifier = Modifier.align(CenterVertically),
+            fontSize = MaterialTheme.typography.body1.fontSize,
+            fontWeight = MaterialTheme.typography.body1.fontWeight,
+            fontStyle = MaterialTheme.typography.body1.fontStyle
         )
         Emphasized(stringResource(daysOfWeek))
     }

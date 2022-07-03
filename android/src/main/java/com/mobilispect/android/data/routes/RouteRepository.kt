@@ -7,23 +7,23 @@ import com.mobilispect.common.data.routes.TransitLandRouteDataSource
 import javax.inject.Inject
 
 interface RouteRepository {
-    suspend fun fromRef(routeRef: RouteRef): Route?
+    suspend fun fromRef(routeRef: RouteRef): Result<Route?>
 }
 
 class DefaultRouteRepository @Inject constructor(private val transitLandDataSource: TransitLandRouteDataSource) : RouteRepository {
     private val routesCache: LruCache<RouteRef, Route> = LruCache(20)
 
-    override suspend fun fromRef(routeRef: RouteRef): Route? {
+    override suspend fun fromRef(routeRef: RouteRef): Result<Route?> {
         val cachedRoute = routesCache[routeRef]
         if (cachedRoute != null) {
-            return cachedRoute
+            return Result.success(cachedRoute)
         }
 
-        val route = transitLandDataSource.fromRef(routeRef)
-        if (route != null) {
-            routesCache.put(routeRef, route)
-        }
-
-        return route
+        return transitLandDataSource.invoke(routeRef)
+            .onSuccess { route ->
+                if (route != null) {
+                    routesCache.put(routeRef, route)
+                }
+            }
     }
 }
