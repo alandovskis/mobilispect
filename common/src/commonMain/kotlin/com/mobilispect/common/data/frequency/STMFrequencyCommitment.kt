@@ -6,7 +6,7 @@ import com.mobilispect.common.data.time.WEEKDAYS
 import java.time.Duration
 import java.time.LocalTime
 
-val STM_ID = AgencyRef("o-f25d-socitdetransportdemontral")
+val STM_ID = AgencyRef("f25d", agencyName = "socitdetransportdemontral")
 
 // Source: https://www.stm.info/en/info/networks/bus/local/10-minutes-max
 private val bothDirections = FrequencyCommitmentItem(
