@@ -1,13 +1,6 @@
-package com.mobilispect.common.data.routes
+package com.mobilispect.common.data.core.transitland
 
 import com.google.gson.annotations.SerializedName
-
-/**
- * A route returned by the transit.land API.
- */
-data class TransitLandRouteResponse(
-    val routes: Collection<TransitLandRoute>,
-)
 
 data class TransitLandRoute(
     @SerializedName("route_long_name")

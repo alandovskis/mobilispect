@@ -10,6 +10,7 @@ import com.mobilispect.android.data.routes.RouteRepository
 import com.mobilispect.common.data.frequency.DirectionTime
 import com.mobilispect.common.data.frequency.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency.STM_FREQUENCY_COMMITMENT
+import com.mobilispect.common.data.routes.RouteRef
 import com.mobilispect.common.data.time.WEEKDAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -45,11 +46,7 @@ class FrequencyCommitmentViewModel @Inject constructor(private val routeReposito
                     ),
                     routes = RoutesUIState(
                         onRoutes = R.string.on_routes,
-                        routes = item.routes.map { routeRef ->
-                            routeRepository.fromRef(routeRef)?.let {
-                                "${it.shortName}: ${it.longName}"
-                            } ?: ""
-                        },
+                        routes = routes(item.routes),
                     )
                 )
             }
@@ -61,6 +58,21 @@ class FrequencyCommitmentViewModel @Inject constructor(private val routeReposito
             _details.postValue(uiState)
         }
     }
+
+    private suspend fun routes(routes: List<RouteRef>) =
+        routes.map { routeRef ->
+            val route = routeRepository.fromRef(routeRef)
+            if (route.isSuccess) {
+                val value = route.getOrNull()
+                if (value != null) {
+                    "${value.shortName}: ${value.longName}"
+                } else {
+                    routeRef.id
+                }
+            } else {
+                routeRef.id
+            }
+        }
 
     private fun directions(item: FrequencyCommitmentItem): List<FrequencyCommitmentDirectionUIState> {
         val from = R.string.from

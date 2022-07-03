@@ -1,7 +1,7 @@
 package com.mobilispect.android.data.routes
 
 import com.google.gson.Gson
-import com.mobilispect.common.data.routes.TransitLandAPI
+import com.mobilispect.common.data.core.transitland.TransitLandAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
