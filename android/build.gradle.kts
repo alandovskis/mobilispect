@@ -13,18 +13,6 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(project(":common"))
-    implementation("androidx.activity:activity-compose:1.4.0")
-
-    implementation("com.google.dagger:hilt-android:2.42")
-    kapt("com.google.dagger:hilt-compiler:2.42")
-    testImplementation("com.google.dagger:hilt-android-testing:2.42")
-    kaptTest("com.google.dagger:hilt-compiler:2.42")
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.42")
-    kaptAndroidTest("com.google.dagger:hilt-compiler:2.42")
-}
-
 android {
     compileSdk = 32
     defaultConfig {
@@ -64,7 +52,19 @@ android {
 }
 
 dependencies {
-    //region Jetpack Compose
+    implementation(project(":common"))
+
+    //region Dependency Injection
+    implementation("com.google.dagger:hilt-android:2.42")
+    kapt("com.google.dagger:hilt-compiler:2.42")
+    testImplementation("com.google.dagger:hilt-android-testing:2.42")
+    kaptTest("com.google.dagger:hilt-compiler:2.42")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.42")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.42")
+    //endregion
+
+    //region UI
+    implementation("androidx.activity:activity-compose:1.5.0")
     implementation("androidx.compose.ui:ui:1.1.1")
     // Tooling support (Previews, etc.)
     implementation("androidx.compose.ui:ui-tooling:1.1.1")
@@ -76,16 +76,16 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core:1.1.1")
     implementation("androidx.compose.material:material-icons-extended:1.1.1")
     // Integration with activities
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.activity:activity-compose:1.5.0")
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0")
     // Integration with observables
     implementation("androidx.compose.runtime:runtime-livedata:1.1.1")
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
 
     //region Architecture Components
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
     //endregion
 
     // UI Tests
@@ -93,5 +93,4 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["compose_version"]}")
     //endregion
 }
-dependencies {
-}
+
