@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilispect.android.R
+import com.mobilispect.common.data.frequency.item
 
 @Composable
 fun FrequencyCommitmentCard(frequencyCommitmentViewModel: FrequencyCommitmentViewModel = viewModel()) {
@@ -27,23 +28,14 @@ fun FrequencyCommitmentCard(frequencyCommitmentViewModel: FrequencyCommitmentVie
     val uiState: FrequencyCommitmentUIState? by frequencyCommitmentViewModel.details.observeAsState()
     val items = uiState?.items ?: return
     Card(
-        backgroundColor = MaterialTheme.colors.primary, modifier = Modifier
+        backgroundColor = MaterialTheme.colors.secondaryVariant,
+        contentColor = MaterialTheme.colors.onSecondary,
+        modifier = Modifier
             .fillMaxWidth()
-            .padding(4.dp)
     )
     {
         Column {
-            val subtitle1 = MaterialTheme.typography.subtitle1
-            Text(
-                color = MaterialTheme.colors.onPrimary,
-                text = stringResource(R.string.frequency_commitment),
-                fontSize = subtitle1.fontSize,
-                fontWeight = subtitle1.fontWeight,
-                fontStyle = subtitle1.fontStyle,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-
-            LazyColumn(modifier = Modifier.padding(4.dp), content = {
+            LazyColumn(modifier = Modifier.padding(12.dp), content = {
                 for (item in items) {
                     item {
                         FrequencyCommitmentItemEntry(item)
