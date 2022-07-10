@@ -1,4 +1,5 @@
 plugins {
+    id("org.jetbrains.compose") version "1.0.1"
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
@@ -67,10 +68,10 @@ dependencies {
     // Integration with observables
     implementation("androidx.compose.runtime:runtime-livedata:1.1.1")
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
 
     //region Architecture Components
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
     //endregion
 
     // UI Tests

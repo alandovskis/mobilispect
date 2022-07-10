@@ -6,14 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilispect.android.R
+import com.mobilispect.common.data.frequency.Direction
 import com.mobilispect.common.data.routes.RouteRepository
 import com.mobilispect.common.data.frequency.DirectionTime
 import com.mobilispect.common.data.frequency.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.common.data.routes.RouteRef
+import com.mobilispect.common.data.schedule.CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase
+import com.mobilispect.common.data.schedule.StartEndDuration
+import com.mobilispect.common.data.stop.StopRef
 import com.mobilispect.common.data.time.WEEKDAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -21,9 +26,12 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class FrequencyCommitmentViewModel @Inject constructor(private val routeRepository: RouteRepository): ViewModel() {
+class FrequencyCommitmentViewModel @Inject constructor(
+    private val routeRepository: RouteRepository,
+) : ViewModel() {
     private var _details = MutableLiveData<FrequencyCommitmentUIState>()
     val details: LiveData<FrequencyCommitmentUIState> = _details
+
 
     fun details() {
         viewModelScope.launch {
@@ -94,8 +102,8 @@ class FrequencyCommitmentViewModel @Inject constructor(private val routeReposito
     private fun direction(directionTime: DirectionTime): Int? {
         val direction = directionTime.direction ?: return null
         return when (direction) {
-            com.mobilispect.common.data.frequency.Direction.Inbound -> R.string.inbound
-            com.mobilispect.common.data.frequency.Direction.Outbound -> R.string.outbound
+            Direction.Inbound -> R.string.inbound
+            Direction.Outbound -> R.string.outbound
         }
     }
 }

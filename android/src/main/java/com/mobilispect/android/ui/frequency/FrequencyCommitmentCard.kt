@@ -2,9 +2,7 @@ package com.mobilispect.android.ui.frequency
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,22 +18,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mobilispect.android.R
-import com.mobilispect.common.data.frequency.item
+import com.mobilispect.android.ui.Card
+import com.mobilispect.android.ui.Item
 
 @Composable
 fun FrequencyCommitmentCard(frequencyCommitmentViewModel: FrequencyCommitmentViewModel = viewModel()) {
     frequencyCommitmentViewModel.details()
     val uiState: FrequencyCommitmentUIState? by frequencyCommitmentViewModel.details.observeAsState()
     val items = uiState?.items ?: return
-    Card(
-        backgroundColor = MaterialTheme.colors.secondaryVariant,
-        contentColor = MaterialTheme.colors.onSecondary,
-        modifier = Modifier
-            .fillMaxWidth()
-    )
-    {
+    Card() {
         Column {
-            LazyColumn(modifier = Modifier.padding(12.dp), content = {
+            LazyColumn(content = {
                 for (item in items) {
                     item {
                         FrequencyCommitmentItemEntry(item)
@@ -48,12 +41,7 @@ fun FrequencyCommitmentCard(frequencyCommitmentViewModel: FrequencyCommitmentVie
 
 @Composable
 fun FrequencyCommitmentItemEntry(item: FrequencyCommitmentItemUIState) {
-    Surface(
-        color = MaterialTheme.colors.secondary,
-        contentColor = MaterialTheme.colors.onSecondary,
-        shape = MaterialTheme.shapes.small,
-        modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
-    ) {
+    Item {
         Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
             DaysOfTheWeek(item.daysOfTheWeek)
             Direction(item.directions)

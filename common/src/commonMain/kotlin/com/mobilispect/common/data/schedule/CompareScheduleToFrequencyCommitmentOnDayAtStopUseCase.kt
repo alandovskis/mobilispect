@@ -24,10 +24,10 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
 
         val directionTimes =
             relevantCommitment.directions.filter { directionTime -> directionTime.direction == direction || directionTime.direction == null }
-         .filter { directionTime ->
+         /*.filter { directionTime ->
              start.dayOfWeek == start.toLocalDate().dayOfWeek
                      && !directionTime.start.isAfter(start.toLocalTime())
-         }
+         }*/
         check(directionTimes.size == 1)
         val directionTime = directionTimes.first()
 
@@ -37,7 +37,6 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
         val sentinel = Duration.ZERO
         val departures = scheduleRepo.forDayAtStopOnRouteInDirection(adjustedStart, adjustedEnd, routeRef, stopRef, direction)
             .windowed(2, 1, true) { dateTimes ->
-                println(dateTimes)
                 if (dateTimes.size >= 2) {
                     return@windowed StartEndDuration(
                         start = dateTimes[0],
