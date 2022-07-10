@@ -86,6 +86,7 @@ dependencies {
     //region Architecture Components
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     //endregion
 
     // UI Tests
