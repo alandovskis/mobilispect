@@ -41,7 +41,11 @@ kotlin {
                 implementation("com.google.dagger:hilt-android:2.42")
             }
         }
-        val commonTest by getting
+        val commonTest by getting {
+            dependencies {
+                implementation("junit:junit:4.13.2")
+            }
+        }
         val androidMain by getting {
             dependencies {
                 api("androidx.appcompat:appcompat:1.4.2")
