@@ -18,21 +18,24 @@ import com.mobilispect.common.data.frequency.Direction
 import com.mobilispect.common.data.routes.RouteRef
 
 @Composable
-fun FrequencyViolationScreen(frequencyViolationViewModel: FrequencyViolationViewModel = hiltViewModel()) {
-    val routeRef = RouteRef(
-        geohash = "f25em",
-        routeNumber = "141"
-    )
+fun FrequencyViolationRoute(routeRef: String?) {
+    RouteRef.fromString(routeRef)?.let {
+        FrequencyViolationScreen(it)
+    }
+}
+
+@Composable
+fun FrequencyViolationScreen(routeRef: RouteRef, frequencyViolationViewModel: FrequencyViolationViewModel = hiltViewModel()) {
     frequencyViolationViewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef)
     val violations by frequencyViolationViewModel.violations.observeAsState()
 
     ScreenFrame(stringResource(id = R.string.frequency_violations, routeRef.routeNumber)) {
         if (violations != null) {
-            FrequencyCommitmentRouteCard(
+            FrequencyViolationCard(
                 direction = Direction.Inbound,
                 violations!!.directions[Direction.Inbound]
             )
-            FrequencyCommitmentRouteCard(
+            FrequencyViolationCard(
                 direction = Direction.Outbound,
                 violations!!.directions[Direction.Outbound]
             )
@@ -41,7 +44,7 @@ fun FrequencyViolationScreen(frequencyViolationViewModel: FrequencyViolationView
 }
 
 @Composable
-private fun FrequencyCommitmentRouteCard(
+private fun FrequencyViolationCard(
     direction: Direction,
     violations: Result<List<FrequencyViolationInstanceUIState>>?
 ) {

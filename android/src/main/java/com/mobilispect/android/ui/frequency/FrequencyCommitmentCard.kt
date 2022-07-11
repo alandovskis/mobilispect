@@ -1,5 +1,6 @@
 package com.mobilispect.android.ui.frequency
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
@@ -16,22 +17,40 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.Item
+import com.mobilispect.android.ui.ScreenFrame
+import com.mobilispect.common.data.routes.RouteRef
 
 @Composable
-fun FrequencyCommitmentCard(frequencyCommitmentViewModel: FrequencyCommitmentViewModel = viewModel()) {
+fun FrequencyCommitmentRoute(
+    frequencyCommitmentViewModel: FrequencyCommitmentViewModel = hiltViewModel(),
+    navigateToViolation: (RouteRef) -> Unit
+) {
     frequencyCommitmentViewModel.details()
     val uiState: FrequencyCommitmentUIState? by frequencyCommitmentViewModel.details.observeAsState()
+
+    FrequencyCommitmentScreen(uiState, navigateToViolation)
+}
+
+@Composable
+fun FrequencyCommitmentScreen(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
+    ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) {
+        FrequencyCommitmentCard(uiState = uiState, navigateToViolation = navigateToViolation)
+    }
+}
+
+@Composable
+fun FrequencyCommitmentCard(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
     val items = uiState?.items ?: return
     Card() {
         Column {
             LazyColumn(content = {
                 for (item in items) {
                     item {
-                        FrequencyCommitmentItemEntry(item)
+                        FrequencyCommitmentItemEntry(item, navigateToViolation)
                     }
                 }
             })
@@ -40,26 +59,29 @@ fun FrequencyCommitmentCard(frequencyCommitmentViewModel: FrequencyCommitmentVie
 }
 
 @Composable
-fun FrequencyCommitmentItemEntry(item: FrequencyCommitmentItemUIState) {
+fun FrequencyCommitmentItemEntry(
+    item: FrequencyCommitmentItemUIState,
+    navigateToViolation: (RouteRef) -> Unit
+) {
     Item {
         Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
             DaysOfTheWeek(item.daysOfTheWeek)
             Direction(item.directions)
             Frequency(item.frequency)
-            Routes(item.routes)
+            Routes(item.routes, navigateToViolation)
         }
     }
 }
 
 @Composable
-private fun Routes(uiState: RoutesUIState) {
+private fun Routes(uiState: RoutesUIState, onClick: (RouteRef) -> Unit) {
     Row {
         Text(text = stringResource(uiState.onRoutes), modifier = Modifier.align(CenterVertically))
     }
 
     for (route in uiState.routes) {
-        Row {
-            Emphasized(text = route)
+        Row(modifier = Modifier.clickable { onClick(route.routeRef) }) {
+            Emphasized(text = route.route)
         }
     }
 }
@@ -136,7 +158,7 @@ private fun Emphasized(
         text = text,
         fontWeight = fontWeight,
         fontSize = fontSize,
-        modifier = Modifier.padding(4.dp, 4.dp)
+        modifier = Modifier.padding(4.dp, 4.dp),
     )
 }
 
@@ -144,5 +166,5 @@ private fun Emphasized(
 @Preview(locale = "fr", showBackground = true)
 @Composable
 fun PreviewFrequencyCommitmentCard() {
-    FrequencyCommitmentCard()
+    //FrequencyCommitmentCard(uiState)
 }
