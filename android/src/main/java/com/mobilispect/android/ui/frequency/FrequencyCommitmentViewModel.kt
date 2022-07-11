@@ -12,9 +12,6 @@ import com.mobilispect.common.data.frequency.DirectionTime
 import com.mobilispect.common.data.frequency.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.common.data.routes.RouteRef
-import com.mobilispect.common.data.schedule.CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase
-import com.mobilispect.common.data.schedule.StartEndDuration
-import com.mobilispect.common.data.stop.StopRef
 import com.mobilispect.common.data.time.WEEKDAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -67,18 +64,26 @@ class FrequencyCommitmentViewModel @Inject constructor(
         }
     }
 
-    private suspend fun routes(routes: List<RouteRef>) =
+    private suspend fun routes(routes: List<RouteRef>): Collection<RouteUIState> =
         routes.map { routeRef ->
             val route = routeRepository.fromRef(routeRef)
             if (route.isSuccess) {
                 val value = route.getOrNull()
                 if (value != null) {
-                    "${value.shortName}: ${value.longName}"
+                    RouteUIState(
+                        route = "${value.shortName}: ${value.longName}",
+                        routeRef = routeRef)
                 } else {
-                    routeRef.routeNumber
+                    RouteUIState(
+                        route = routeRef.routeNumber,
+                        routeRef = routeRef
+                    )
                 }
             } else {
-                routeRef.routeNumber
+                RouteUIState(
+                    route = routeRef.routeNumber,
+                    routeRef = routeRef
+                )
             }
         }
 
@@ -145,5 +150,10 @@ data class FrequencyCommitmentFrequencyUIState(
 
 data class RoutesUIState(
     val onRoutes: Int,
-    val routes: Collection<String>,
+    val routes: Collection<RouteUIState>,
+)
+
+data class RouteUIState(
+    val route: String,
+    val routeRef: RouteRef,
 )

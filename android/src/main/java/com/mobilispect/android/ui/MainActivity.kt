@@ -3,8 +3,14 @@ package com.mobilispect.android.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.mobilispect.android.ui.frequency.FrequencyCommitmentRoute
+import com.mobilispect.android.ui.frequency.FrequencyViolationRoute
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import com.mobilispect.android.ui.frequency.FrequencyViolationScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -13,8 +19,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MobilispectTheme {
-                //FrequencyCommitmentCard()
-                FrequencyViolationScreen()
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = FrequencyCommitmentNavDestination.route,
+                ) {
+                    frequencyGraph(
+                        navigateToViolation = { navController.navigate("${FrequencyViolationDestination.route}/${it.id}")},
+                        nestedGraphs = {
+                            violationGraph()
+                        }
+                    )
+                }
             }
         }
     }
