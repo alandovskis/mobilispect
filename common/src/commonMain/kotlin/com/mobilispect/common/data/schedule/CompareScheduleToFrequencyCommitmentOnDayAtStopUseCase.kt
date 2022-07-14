@@ -15,7 +15,7 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
         stopRef: StopRef,
         direction: Direction,
         commitment: FrequencyCommitment
-    ): Result<List<StartEndDuration>> {
+    ): Result<List<FrequencyViolation>> {
         val relevantCommitments =
             commitment.spans.filter { span -> span.routes.contains(routeRef) }
                 .filter { span -> span.daysOfWeek.contains(start.dayOfWeek) }
@@ -38,12 +38,12 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
         val departures = scheduleRepo.forDayAtStopOnRouteInDirection(adjustedStart, adjustedEnd, routeRef, stopRef, direction)
             .windowed(2, 1, true) { dateTimes ->
                 if (dateTimes.size >= 2) {
-                    return@windowed StartEndDuration(
+                    return@windowed FrequencyViolation(
                         start = dateTimes[0],
                         end = dateTimes[1], duration = Duration.between(dateTimes[0], dateTimes[1])
                     )
                 } else {
-                    return@windowed StartEndDuration(
+                    return@windowed FrequencyViolation(
                         start = LocalDateTime.MIN,
                         end = LocalDateTime.MAX, duration = sentinel
                     )
@@ -59,7 +59,7 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
     }
 }
 
-data class StartEndDuration(
+data class FrequencyViolation(
     val start: LocalDateTime,
     val end: LocalDateTime,
     val duration: Duration

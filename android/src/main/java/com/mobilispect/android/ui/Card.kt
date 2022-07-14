@@ -10,12 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Card(title: String? = null, modifier: Modifier = Modifier.padding(12.dp), content: @Composable () -> Unit) {
+fun Card(modifier: Modifier = Modifier, title: String? = null, content: @Composable () -> Unit) {
     androidx.compose.material.Card(
         backgroundColor = MaterialTheme.colors.secondaryVariant,
         contentColor = MaterialTheme.colors.onSecondary,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
+            .padding(8.dp)
     )
     {
         Column(modifier = modifier) {

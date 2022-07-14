@@ -1,11 +1,13 @@
 package com.mobilispect.android.ui.frequency
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobilispect.common.data.frequency.Direction
 import com.mobilispect.common.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.common.data.routes.RouteRef
 import com.mobilispect.common.data.schedule.CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase
+import com.mobilispect.common.data.schedule.FrequencyViolation
 import com.mobilispect.common.data.stop.StopRef
 import com.mobilispect.common.domain.time.FormatTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,13 +19,20 @@ class FrequencyViolationViewModel @Inject constructor(
     private val compareUseCase: CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase,
     private val formatTimeUseCase: FormatTimeUseCase,
 ) : ViewModel() {
-    var violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
-        private set
-
+    var _violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
+    val violations: LiveData<FrequencyViolationUIState> = _violations
 
     fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: RouteRef) {
         val start = LocalDateTime.of(2022, 7, 7, 0, 0)
         val stopRef = StopRef(geohash = "abcd", name = "test")
+        val inbound = compareUseCase.invoke(
+            start = start,
+            routeRef = routeRef,
+            stopRef = stopRef,
+            direction = Direction.Inbound,
+            commitment = STM_FREQUENCY_COMMITMENT
+        )
+            .map(::violationUIState)
         val outbound = compareUseCase.invoke(
             start = start,
             routeRef = routeRef,
@@ -31,37 +40,29 @@ class FrequencyViolationViewModel @Inject constructor(
             direction = Direction.Outbound,
             commitment = STM_FREQUENCY_COMMITMENT
         )
-        .map { durations ->
-            durations.map {
-                FrequencyViolationInstanceUIState(
-                    start = formatTimeUseCase.invoke(it.start),
-                    end = formatTimeUseCase.invoke(it.end),
-                    violatedBy_m = it.duration.toMinutes()
-                )
-            }
-
-        }
+            .map(::violationUIState)
 
         val uiState = FrequencyViolationUIState(
-            directions = mapOf(
-/*                Direction.Inbound to compareUseCase.invoke(
-                    start = start,
-                    routeRef = routeRef,
-                    stopRef = stopRef,
-                    direction = Direction.Inbound,
-                    commitment = STM_FREQUENCY_COMMITMENT
-                ),*/
-                Direction.Outbound to outbound,
-            )
+            inbound = inbound,
+            outbound = outbound,
         )
 
-        violations.postValue(uiState)
+        _violations.postValue(uiState)
     }
 
+    private fun violationUIState(violations: List<FrequencyViolation>) =
+        violations.map {
+            FrequencyViolationInstanceUIState(
+                start = formatTimeUseCase.invoke(it.start),
+                end = formatTimeUseCase.invoke(it.end),
+                violatedBy_m = it.duration.toMinutes()
+            )
+        }
 }
 
 data class FrequencyViolationUIState(
-    val directions: Map<Direction, Result<List<FrequencyViolationInstanceUIState>>>,
+    val inbound: Result<List<FrequencyViolationInstanceUIState>>,
+    val outbound: Result<List<FrequencyViolationInstanceUIState>>,
 )
 
 data class FrequencyViolationInstanceUIState(
