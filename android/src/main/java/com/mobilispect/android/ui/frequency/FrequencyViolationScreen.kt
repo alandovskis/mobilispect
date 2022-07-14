@@ -30,15 +30,17 @@ fun FrequencyViolationScreen(routeRef: RouteRef, frequencyViolationViewModel: Fr
     val violations by frequencyViolationViewModel.violations.observeAsState()
 
     ScreenFrame(stringResource(id = R.string.frequency_violations, routeRef.routeNumber)) {
-        if (violations != null) {
-            FrequencyViolationCard(
-                direction = Direction.Inbound,
-                violations!!.directions[Direction.Inbound]
-            )
-            FrequencyViolationCard(
-                direction = Direction.Outbound,
-                violations!!.directions[Direction.Outbound]
-            )
+        Column {
+            if (violations != null) {
+                FrequencyViolationCard(
+                    direction = Direction.Inbound,
+                    violations!!.inbound
+                )
+                FrequencyViolationCard(
+                    direction = Direction.Outbound,
+                    violations!!.outbound
+                )
+            }
         }
     }
 }

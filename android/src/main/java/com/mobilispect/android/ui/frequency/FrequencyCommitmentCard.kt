@@ -45,7 +45,7 @@ fun FrequencyCommitmentScreen(uiState: FrequencyCommitmentUIState?, navigateToVi
 @Composable
 fun FrequencyCommitmentCard(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
     val items = uiState?.items ?: return
-    Card() {
+    Card {
         Column {
             LazyColumn(content = {
                 for (item in items) {
