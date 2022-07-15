@@ -2,7 +2,10 @@ package com.mobilispect.android.ui.frequency
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
-import com.mobilispect.android.ui.Item
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.common.data.frequency.Direction
 import com.mobilispect.common.data.routes.RouteRef
@@ -66,9 +68,7 @@ private fun FrequencyViolationCard(
                 LazyColumn {
                     for (violation in data) {
                         item {
-                            Item {
-                                Text("Between ${violation.start} and ${violation.end}")
-                            }
+                            Text("Between ${violation.start} and ${violation.end}")
                         }
                     }
                 }
