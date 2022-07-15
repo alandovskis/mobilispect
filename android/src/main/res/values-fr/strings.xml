@@ -11,4 +11,5 @@
     <string name="on_routes">SUR LES ROUTES</string>
     <string name="frequency_commitment">Engagement de fréquence</string>
     <string name="frequency_violations">Violations de fréquence: %s</string>
+    <string name="no_departures_found">Aucun départ n\'a été trouvé</string>
 </resources>
