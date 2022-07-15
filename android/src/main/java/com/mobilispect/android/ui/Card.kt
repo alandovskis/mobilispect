@@ -19,7 +19,7 @@ fun Card(modifier: Modifier = Modifier, title: String? = null, content: @Composa
             .padding(8.dp)
     )
     {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.padding(start = 8.dp, end = 8.dp)) {
             if (title != null) {
                 Text(text = title, style = MaterialTheme.typography.h6)
             }
