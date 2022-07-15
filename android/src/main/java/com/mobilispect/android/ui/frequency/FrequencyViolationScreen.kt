@@ -16,6 +16,7 @@ import com.mobilispect.android.ui.Item
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.common.data.frequency.Direction
 import com.mobilispect.common.data.routes.RouteRef
+import com.mobilispect.common.data.schedule.NoDeparturesFound
 
 @Composable
 fun FrequencyViolationRoute(routeRef: String?) {
@@ -48,18 +49,26 @@ fun FrequencyViolationScreen(routeRef: RouteRef, frequencyViolationViewModel: Fr
 @Composable
 private fun FrequencyViolationCard(
     direction: Direction,
-    violations: Result<List<FrequencyViolationInstanceUIState>>?
+    violations: Result<List<FrequencyViolationInstanceUIState>>
 ) {
-    val data = violations?.getOrNull().orEmpty()
     Card(title = "Direction $direction") {
         Column(modifier = Modifier
                 .fillMaxWidth()
         ) {
-            LazyColumn {
-                for (violation in data) {
-                    item {
-                        Item {
-                            Text("Between ${violation.start} and ${violation.end}")
+            if (violations.isFailure) {
+                val message = when (violations.exceptionOrNull()!!) {
+                    NoDeparturesFound -> stringResource(id = R.string.no_departures_found)
+                    else -> ""
+                }
+                Text(text = message)
+            } else {
+                val data = violations.getOrNull()!!
+                LazyColumn {
+                    for (violation in data) {
+                        item {
+                            Item {
+                                Text("Between ${violation.start} and ${violation.end}")
+                            }
                         }
                     }
                 }

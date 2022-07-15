@@ -24,10 +24,10 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
 
         val directionTimes =
             relevantCommitment.directions.filter { directionTime -> directionTime.direction == direction || directionTime.direction == null }
-         /*.filter { directionTime ->
-             start.dayOfWeek == start.toLocalDate().dayOfWeek
-                     && !directionTime.start.isAfter(start.toLocalTime())
-         }*/
+        /*.filter { directionTime ->
+            start.dayOfWeek == start.toLocalDate().dayOfWeek
+                    && !directionTime.start.isAfter(start.toLocalTime())
+        }*/
         check(directionTimes.size == 1)
         val directionTime = directionTimes.first()
 
@@ -35,27 +35,37 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
         val adjustedEnd = LocalDateTime.of(start.toLocalDate(), directionTime.end)
 
         val sentinel = Duration.ZERO
-        val departures = scheduleRepo.forDayAtStopOnRouteInDirection(adjustedStart, adjustedEnd, routeRef, stopRef, direction)
-            .windowed(2, 1, true) { dateTimes ->
-                if (dateTimes.size >= 2) {
-                    return@windowed FrequencyViolation(
-                        start = dateTimes[0],
-                        end = dateTimes[1], duration = Duration.between(dateTimes[0], dateTimes[1])
-                    )
-                } else {
-                    return@windowed FrequencyViolation(
-                        start = LocalDateTime.MIN,
-                        end = LocalDateTime.MAX, duration = sentinel
-                    )
-                }
+        val departures = scheduleRepo.forDayAtStopOnRouteInDirection(
+            adjustedStart,
+            adjustedEnd,
+            routeRef,
+            stopRef,
+            direction
+        )
+        if (departures.isEmpty()) {
+            return Result.failure(NoDeparturesFound)
+        }
+
+        val violations = departures.windowed(2, 1, true) { dateTimes ->
+            if (dateTimes.size >= 2) {
+                return@windowed FrequencyViolation(
+                    start = dateTimes[0],
+                    end = dateTimes[1], duration = Duration.between(dateTimes[0], dateTimes[1])
+                )
+            } else {
+                return@windowed FrequencyViolation(
+                    start = LocalDateTime.MIN,
+                    end = LocalDateTime.MAX, duration = sentinel
+                )
             }
+        }
             .filter { it.duration != sentinel }
             .filter {
                 it.duration > relevantCommitment.frequency
             }
 
         println(departures)
-        return Result.success(departures)
+        return Result.success(violations)
     }
 }
 
@@ -64,3 +74,5 @@ data class FrequencyViolation(
     val end: LocalDateTime,
     val duration: Duration
 )
+
+object NoDeparturesFound : Exception()
