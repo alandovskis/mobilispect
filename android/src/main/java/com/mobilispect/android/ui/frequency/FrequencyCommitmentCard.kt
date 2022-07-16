@@ -2,7 +2,6 @@ package com.mobilispect.android.ui.frequency
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
-import com.mobilispect.android.ui.Item
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.common.data.routes.RouteRef
 
@@ -38,38 +36,30 @@ fun FrequencyCommitmentRoute(
 @Composable
 fun FrequencyCommitmentScreen(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
     ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) {
-        FrequencyCommitmentCard(uiState = uiState, navigateToViolation = navigateToViolation)
+        FrequencyCommitmentEntryCards(uiState = uiState, navigateToViolation = navigateToViolation)
     }
 }
 
 @Composable
-fun FrequencyCommitmentCard(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
+fun FrequencyCommitmentEntryCards(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
     val items = uiState?.items ?: return
-    Card {
-        Column {
-            LazyColumn(content = {
-                for (item in items) {
-                    item {
-                        FrequencyCommitmentItemEntry(item, navigateToViolation)
-                    }
-                }
-            })
+    Column {
+        for (item in items) {
+            FrequencyCommitmentCard(item, navigateToViolation)
         }
     }
 }
 
 @Composable
-fun FrequencyCommitmentItemEntry(
+fun FrequencyCommitmentCard(
     item: FrequencyCommitmentItemUIState,
     navigateToViolation: (RouteRef) -> Unit
 ) {
-    Item {
-        Column(modifier = Modifier.padding(start = 2.dp, end = 2.dp)) {
-            DaysOfTheWeek(item.daysOfTheWeek)
-            Direction(item.directions)
-            Frequency(item.frequency)
-            Routes(item.routes, navigateToViolation)
-        }
+    Card {
+        DaysOfTheWeek(item.daysOfTheWeek)
+        Direction(item.directions)
+        Frequency(item.frequency)
+        Routes(item.routes, navigateToViolation)
     }
 }
 
