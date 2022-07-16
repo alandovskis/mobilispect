@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,11 +24,12 @@ import com.mobilispect.common.data.routes.RouteRef
 
 @Composable
 fun FrequencyCommitmentRoute(
-    frequencyCommitmentViewModel: FrequencyCommitmentViewModel = hiltViewModel(),
+    viewModel: FrequencyCommitmentViewModel = hiltViewModel(),
     navigateToViolation: (RouteRef) -> Unit
 ) {
-    frequencyCommitmentViewModel.details()
-    val uiState: FrequencyCommitmentUIState? by frequencyCommitmentViewModel.details.observeAsState()
+    val uiState: FrequencyCommitmentUIState? by viewModel.details.collectAsState(
+        initial = null
+    )
 
     FrequencyCommitmentScreen(uiState, navigateToViolation)
 }
