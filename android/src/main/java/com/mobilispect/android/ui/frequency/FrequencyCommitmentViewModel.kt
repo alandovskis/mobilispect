@@ -1,10 +1,7 @@
 package com.mobilispect.android.ui.frequency
 
 import androidx.annotation.StringRes
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mobilispect.android.R
 import com.mobilispect.common.data.frequency.Direction
 import com.mobilispect.common.data.routes.RouteRepository
@@ -14,8 +11,8 @@ import com.mobilispect.common.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.common.data.routes.RouteRef
 import com.mobilispect.common.data.time.WEEKDAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -26,42 +23,36 @@ import javax.inject.Inject
 class FrequencyCommitmentViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
 ) : ViewModel() {
-    private var _details = MutableLiveData<FrequencyCommitmentUIState>()
-    val details: LiveData<FrequencyCommitmentUIState> = _details
+    val details: Flow<FrequencyCommitmentUIState> = flow {
+        val frequencyCommitment = STM_FREQUENCY_COMMITMENT
+        val items = frequencyCommitment.items().map { item ->
+            @StringRes
+            var daysOfTheWeek = 0
 
-
-    fun details() {
-        viewModelScope.launch {
-            val frequencyCommitment = STM_FREQUENCY_COMMITMENT
-            val items = frequencyCommitment.items().map { item ->
-                @StringRes
-                var daysOfTheWeek = 0
-
-                if (item.daysOfWeek == WEEKDAYS) {
-                    daysOfTheWeek = R.string.weekdays
-                }
-
-                FrequencyCommitmentItemUIState(
-                    daysOfTheWeek = daysOfTheWeek,
-                    directions = directions(item),
-                    frequency = FrequencyCommitmentFrequencyUIState(
-                        every = R.string.every,
-                        frequency = item.frequency.toMinutes(),
-                        minutesOrLess = R.string.minutes_or_less
-                    ),
-                    routes = RoutesUIState(
-                        onRoutes = R.string.on_routes,
-                        routes = routes(item.routes),
-                    )
-                )
+            if (item.daysOfWeek == WEEKDAYS) {
+                daysOfTheWeek = R.string.weekdays
             }
 
-            val uiState = FrequencyCommitmentUIState(
-                items = items
+            FrequencyCommitmentItemUIState(
+                daysOfTheWeek = daysOfTheWeek,
+                directions = directions(item),
+                frequency = FrequencyCommitmentFrequencyUIState(
+                    every = R.string.every,
+                    frequency = item.frequency.toMinutes(),
+                    minutesOrLess = R.string.minutes_or_less
+                ),
+                routes = RoutesUIState(
+                    onRoutes = R.string.on_routes,
+                    routes = routes(item.routes),
+                )
             )
-
-            _details.postValue(uiState)
         }
+
+        val uiState = FrequencyCommitmentUIState(
+            items = items
+        )
+
+        emit(uiState)
     }
 
     private suspend fun routes(routes: List<RouteRef>): Collection<RouteUIState> =
