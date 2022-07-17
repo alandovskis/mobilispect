@@ -121,22 +121,21 @@ data class FrequencyCommitmentDirectionUIState(
     val direction: Int?,
 
     @StringRes
-    val from: Int,
-
+    val from: Int = R.string.from,
     val startTime: LocalTime,
 
     @StringRes
-    val to: Int,
+    val to: Int = R.string.to,
     val endTime: LocalTime,
 
-    val timeFormatter: DateTimeFormatter,
+    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT),
 )
 
 data class FrequencyCommitmentFrequencyUIState(
     @StringRes
-    val every: Int,
+    val every: Int = R.string.every,
     val frequency: Long,
-    val minutesOrLess: Int,
+    val minutesOrLess: Int = R.string.minutes_or_less,
 )
 
 data class RoutesUIState(

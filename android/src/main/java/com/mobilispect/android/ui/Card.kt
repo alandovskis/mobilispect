@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Card(modifier: Modifier = Modifier, title: String? = null, content: @Composable () -> Unit) {
     androidx.compose.material.Card(
-        backgroundColor = MaterialTheme.colors.secondaryVariant,
+        backgroundColor = MaterialTheme.colors.secondary,
         contentColor = MaterialTheme.colors.onSecondary,
         modifier = modifier
             .fillMaxWidth()
