@@ -1,9 +1,8 @@
 package com.mobilispect.android.ui.frequency
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,7 +19,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
+import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.common.data.routes.RouteRef
+import java.time.LocalTime
 
 @Composable
 fun FrequencyCommitmentRoute(
@@ -65,14 +66,22 @@ fun FrequencyCommitmentCard(
 }
 
 @Composable
-private fun Routes(uiState: RoutesUIState, onClick: (RouteRef) -> Unit) {
+private fun Routes(uiState: RoutesUIState, onRoutePressed: (RouteRef) -> Unit) {
     Row {
         Text(text = stringResource(uiState.onRoutes), modifier = Modifier.align(CenterVertically))
     }
 
     for (route in uiState.routes) {
-        Row(modifier = Modifier.clickable { onClick(route.routeRef) }) {
-            Emphasized(text = route.route)
+        OutlinedButton(colors = ButtonDefaults.outlinedButtonColors(
+            backgroundColor = MaterialTheme.colors.secondary,
+            contentColor = MaterialTheme.colors.onSecondary
+        ),
+            border = BorderStroke(1.dp, MaterialTheme.colors.onSecondary),
+            onClick = { onRoutePressed(route.routeRef) }) {
+            Text(
+                text = route.route,
+                style = MaterialTheme.typography.button
+            )
         }
     }
 }
@@ -153,9 +162,38 @@ private fun Emphasized(
     )
 }
 
-@Preview(locale = "en", showBackground = true)
-@Preview(locale = "fr", showBackground = true)
+@Preview(name = "English", locale = "en", showBackground = true)
+@Preview(name = "French", locale = "fr", showBackground = true)
 @Composable
 fun PreviewFrequencyCommitmentCard() {
-    //FrequencyCommitmentCard(uiState)
+    MobilispectTheme {
+        val uiState = FrequencyCommitmentItemUIState(
+            daysOfTheWeek = R.string.weekdays,
+            directions = listOf(
+                FrequencyCommitmentDirectionUIState(
+                    direction = R.string.inbound,
+                    startTime = LocalTime.of(6, 0),
+                    endTime = LocalTime.of(21, 0),
+                )
+            ),
+            frequency = FrequencyCommitmentFrequencyUIState(
+                frequency = 10,
+            ),
+            routes = RoutesUIState(
+                onRoutes = R.string.on_routes,
+                routes = listOf(
+                    RouteUIState(
+                        route = "18: Beaubien",
+                        routeRef = RouteRef(geohash = "f25ej", routeNumber = "18"),
+                    ),
+                    RouteUIState(
+                        route = "24: Sherbrooke",
+                        routeRef = RouteRef(geohash = "f25dv", routeNumber = "24")
+                    )
+                )
+            )
+        )
+
+        FrequencyCommitmentCard(uiState, navigateToViolation = {})
+    }
 }
