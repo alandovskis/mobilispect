@@ -1,5 +1,6 @@
 package com.mobilispect.android.ui.frequency
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -162,8 +163,8 @@ private fun Emphasized(
     )
 }
 
-@Preview(name = "English", locale = "en", showBackground = true)
-@Preview(name = "French", locale = "fr", showBackground = true)
+@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun PreviewFrequencyCommitmentCard() {
     MobilispectTheme {
