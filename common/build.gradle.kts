@@ -62,6 +62,11 @@ kotlin {
                         "2.42"
                     )
                 )
+                kapt {
+                    arguments {
+                        arg("room.schemaLocation", "$projectDir/schemas")
+                    }
+                }
             }
         }
         val androidTest by getting {
