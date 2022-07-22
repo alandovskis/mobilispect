@@ -41,6 +41,9 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+
+                // Improved Test Assertions
+                implementation("com.google.truth:truth:1.1.3")
             }
         }
         val androidMain by getting {
