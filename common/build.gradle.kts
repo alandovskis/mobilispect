@@ -43,7 +43,11 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                // Test Runner
                 implementation("junit:junit:4.13.2")
+
+                // Improved Test Assertions
+                implementation("com.google.truth:truth:1.1.3")
             }
         }
         val androidMain by getting {
