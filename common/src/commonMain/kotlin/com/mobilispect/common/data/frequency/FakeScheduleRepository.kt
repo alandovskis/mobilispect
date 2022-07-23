@@ -163,10 +163,10 @@ class FakeScheduleRepository @Inject constructor() : ScheduleRepository {
             LocalDateTime.of(today, LocalTime.of(23, 33)),
             LocalDateTime.of(today, LocalTime.of(23, 59)),
 
-            LocalDateTime.of(today, LocalTime.of(0, 27)),
-            LocalDateTime.of(today, LocalTime.of(0, 55)),
+            LocalDateTime.of(tomorrow, LocalTime.of(0, 27)),
+            LocalDateTime.of(tomorrow, LocalTime.of(0, 55)),
 
-            LocalDateTime.of(today, LocalTime.of(1, 22)),
+            LocalDateTime.of(tomorrow, LocalTime.of(1, 22)),
         )
     }
 
