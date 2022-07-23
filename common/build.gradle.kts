@@ -24,7 +24,7 @@ kotlin {
 
     sourceSets {
         all {
-            languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
+            languageSettings.optIn("kotlin.RequiresOptIn")
         }
 
         val commonMain by getting {
