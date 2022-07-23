@@ -27,7 +27,3 @@ jobs:
           cache-disabled: true
           generate-job-summary: true
           arguments: android:assemble
-
-      - name: Run local tests
-        run: ./gradlew test --stacktrace
-
