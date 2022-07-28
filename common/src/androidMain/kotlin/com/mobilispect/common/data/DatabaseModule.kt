@@ -13,5 +13,5 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Singleton
     @Provides
-    fun db(@ApplicationContext context: Context) = AppDatabase.getInstance(context)
+    internal fun db(@ApplicationContext context: Context) = AppDatabase.getInstance(context)
 }

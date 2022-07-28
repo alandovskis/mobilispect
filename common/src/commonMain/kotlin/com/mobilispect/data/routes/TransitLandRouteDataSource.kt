@@ -6,7 +6,7 @@ import javax.inject.Inject
 /**
  * A data source that uses transit.land as its source.
  */
-class TransitLandRouteDataSource @Inject constructor(
+internal class TransitLandRouteDataSource @Inject constructor(
     private val transitLandAPI: TransitLandClient,
 ) {
     suspend operator fun invoke(routeRef: RouteRef): Result<Route?> =

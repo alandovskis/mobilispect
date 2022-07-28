@@ -8,7 +8,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface ScheduleRepositoryModule {
+internal interface ScheduleRepositoryModule {
     @Binds
     fun repo(repo: FakeScheduleRepository): ScheduleRepository
 }

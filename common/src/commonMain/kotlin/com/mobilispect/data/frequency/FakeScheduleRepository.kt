@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 
-class FakeScheduleRepository @Inject constructor() : ScheduleRepository {
+internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository {
     override fun forDayAtStopOnRouteInDirection(
         start: LocalDateTime,
         end: LocalDateTime,
