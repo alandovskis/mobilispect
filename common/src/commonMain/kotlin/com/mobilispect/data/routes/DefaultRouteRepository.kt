@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class DefaultRouteRepository @Inject constructor(
+internal class DefaultRouteRepository @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
     private val transitLandDataSource: TransitLandRouteDataSource,
     private val routeDAO: RouteDAO

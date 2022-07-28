@@ -10,5 +10,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object RouteDAOModule {
     @Provides
-    fun dao(db: AppDatabase) = db.routeDAO()
+    internal fun dao(db: AppDatabase) = db.routeDAO()
 }
