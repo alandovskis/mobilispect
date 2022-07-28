@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.mobilispect.common.data.routes.RoomTypeConverters
-import com.mobilispect.common.data.routes.Route
-import com.mobilispect.common.data.routes.RouteDAO
+import com.mobilispect.data.routes.Route
+import com.mobilispect.data.routes.RouteDAO
 
 @Database(version = 1, exportSchema = true, entities = [
     Route::class,
