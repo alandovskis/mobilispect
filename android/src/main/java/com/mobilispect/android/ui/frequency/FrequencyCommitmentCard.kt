@@ -21,7 +21,7 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import com.mobilispect.common.data.routes.RouteRef
+import com.mobilispect.data.routes.RouteRef
 import java.time.LocalTime
 
 @Composable

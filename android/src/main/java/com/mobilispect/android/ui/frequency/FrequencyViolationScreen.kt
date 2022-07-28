@@ -2,10 +2,7 @@ package com.mobilispect.android.ui.frequency
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,9 +13,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
-import com.mobilispect.common.data.frequency.Direction
-import com.mobilispect.common.data.routes.RouteRef
-import com.mobilispect.common.data.schedule.NoDeparturesFound
+import com.mobilispect.data.frequency.Direction
+import com.mobilispect.data.routes.RouteRef
+import com.mobilispect.data.schedule.NoDeparturesFound
 
 @Composable
 fun FrequencyViolationRoute(routeRef: String?) {
