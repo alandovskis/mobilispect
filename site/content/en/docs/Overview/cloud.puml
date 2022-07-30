@@ -56,8 +56,4 @@ sprite $cloud [48x48/16] {
 !define FA5_CLOUD(_alias, _label, _shape) ENTITY(_shape,black,cloud,_label, _alias,FA5 CLOUD)
 !define FA5_CLOUD(_alias, _label, _shape, _color) ENTITY(_shape,_color,cloud,_label, _alias,FA5 CLOUD)
 skinparam folderBackgroundColor<<FA5 CLOUD>> White
-
-!procedure Cloud()
-    System(cloud, "Cloud", "https://api.mobilispect.com", $sprite = cloud)
-!end procedure
 @enduml
