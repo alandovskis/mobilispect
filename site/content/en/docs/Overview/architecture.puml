@@ -1,0 +1,31 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include cloud.puml
+
+Container_Boundary(ui, "UI Layer") {
+    Component(layout, "Layout", "XML")
+    Component(view, "View", "AndroidX Fragment", "UI Logic like using Resources, Navigation, Showing a Toast/Snackbar, Permission Request")
+    Component(viewModel, "ViewModel", "AndroidX ViewModel", "Transform application data into UI state")
+}
+
+Container_Boundary(data, "Data Layer") {
+    Component(repo, "Repository")
+    Component(local, "Local Data Source", "AndroidX Room DAO")
+    Component(remote, "Remote Data Source", "Retrofit + WorkManager")
+}
+
+Cloud()
+ContainerDb(db, "Database", "SQLite")
+
+Rel_U(db, local, "Application Data")
+Rel_U(local, repo, "Application Data")
+Rel_U(repo, viewModel, "Application Data")
+Rel_U(viewModel, view, "UI state [LiveData]")
+Rel_U(view, layout, "View Binding")
+
+Rel_U(cloud, remote, "Cloud Data")
+Rel_U(remote, repo, "Cloud Data")
+Rel(repo, local, "Cloud Data")
+
+SHOW_LEGEND()
+@enduml
