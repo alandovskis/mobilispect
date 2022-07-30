@@ -1,10 +1,6 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
-!include cloud.puml
-
-!unquoted procedure Layer($alias, $label, $tags="", $link="")
-Boundary($alias, $label, "Layer", $tags, $link)
-!endprocedure
+!include common.puml
 
 Layer(ui, "UI") {
     Component(layout, "Layout", "XML")
