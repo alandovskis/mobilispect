@@ -2,13 +2,17 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 !include cloud.puml
 
-Container_Boundary(ui, "UI Layer") {
+!unquoted procedure Layer($alias, $label, $tags="", $link="")
+Boundary($alias, $label, "Layer", $tags, $link)
+!endprocedure
+
+Layer(ui, "UI") {
     Component(layout, "Layout", "XML")
     Component(view, "View", "AndroidX Fragment", "UI Logic like using Resources, Navigation, Showing a Toast/Snackbar, Permission Request")
     Component(viewModel, "ViewModel", "AndroidX ViewModel", "Transform application data into UI state")
 }
 
-Container_Boundary(data, "Data Layer") {
+Layer(data, "Data") {
     Component(repo, "Repository")
     Component(local, "Local Data Source", "AndroidX Room DAO")
     Component(remote, "Remote Data Source", "Retrofit + WorkManager")
