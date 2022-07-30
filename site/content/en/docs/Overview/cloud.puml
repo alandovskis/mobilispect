@@ -58,6 +58,6 @@ sprite $cloud [48x48/16] {
 skinparam folderBackgroundColor<<FA5 CLOUD>> White
 
 !procedure Cloud()
-System(cloud, "Cloud", $sprite = cloud)
+    System(cloud, "Cloud", "https://api.mobilispect.com", $sprite = cloud)
 !end procedure
 @enduml
