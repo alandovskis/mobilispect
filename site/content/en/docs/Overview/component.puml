@@ -4,6 +4,8 @@
 
 title Mobilispect Mobile Component Diagram
 
+skinparam linetype ortho
+
 Layer(ui, "UI") {
     Component(layout, "Layout", "XML")
     Component(view, "View", "AndroidX Fragment", "UI Logic like using Resources, Navigation, Showing a Toast/Snackbar, Permission Request")
@@ -11,9 +13,10 @@ Layer(ui, "UI") {
 }
 
 Layer(data, "Data") {
-    Component(repo, "Repository")
+    Component(repo, "Repository", "")
     Component(local, "Local Data Source", "AndroidX Room DAO")
-    Component(remote, "Remote Data Source", "Retrofit + WorkManager")
+    Component(remote, "Remote Data Source", "WorkManager")
+    Component(apiClient, "Cloud API Client", "Retrofit")
 }
 
 Cloud()
@@ -25,9 +28,10 @@ Rel_U(repo, viewModel, "Application Data")
 Rel_U(viewModel, view, "UI state [LiveData]")
 Rel_U(view, layout, "View Binding")
 
-Rel_U(cloud, remote, "Cloud Data")
-Rel_U(remote, repo, "Cloud Data")
-Rel(repo, local, "Cloud Data")
+CloudRel_U(cloud, apiClient, "Cloud Data")
+CloudRel_U(apiClient, remote, "Cloud Data")
+CloudRel_U(remote, repo, "Cloud Data")
+CloudRel_D(repo, local, "Cloud Data")
 
 SHOW_LEGEND()
 @enduml
