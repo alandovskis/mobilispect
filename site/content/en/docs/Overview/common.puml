@@ -11,3 +11,11 @@
 !unquoted procedure Layer($alias, $label, $tags="", $link="")
 Boundary($alias, $label, "Layer", $tags, $link)
 !endprocedure
+
+!unquoted procedure CloudRel_U($from, $to, $label, $techn="", $descr="", $sprite="", $tags="", $link="")
+$getRel($up("-",".>"), $from, $to, $label, $techn, $descr, $sprite, $tags, $link)
+!endprocedure
+
+!unquoted procedure CloudRel_D($from, $to, $label, $techn="", $descr="", $sprite="", $tags="", $link="")
+$getRel($down("-",".>"), $from, $to, $label, $techn, $descr, $sprite, $tags, $link)
+!endprocedure
