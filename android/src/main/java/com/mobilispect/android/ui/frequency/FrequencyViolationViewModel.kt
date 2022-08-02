@@ -11,7 +11,9 @@ import com.mobilispect.data.frequency.FrequencyViolation
 import com.mobilispect.data.stop.StopRef
 import com.mobilispect.domain.time.FormatTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +25,10 @@ class FrequencyViolationViewModel @Inject constructor(
     val violations: LiveData<FrequencyViolationUIState> = _violations
 
     fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: RouteRef) {
-        val start = LocalDateTime.of(2022, 7, 7, 0, 0)
+        val start = LocalDateTime.of(
+            LocalDate.of(2022, 7, 7),
+            LocalTime.MIDNIGHT
+        )
         val stopRef = StopRef(geohash = "abcd", name = "test")
         val inbound = frequencyViolationUseCase.invoke(
             start = start,
