@@ -8,7 +8,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import javax.inject.Inject
 
-class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor(private val scheduleRepo: ScheduleRepository) {
+class FindFrequencyViolationsOnDayAtStopUseCase @Inject constructor(private val scheduleRepo: ScheduleRepository) {
     operator fun invoke(
         start: LocalDateTime,
         routeRef: RouteRef,

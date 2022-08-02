@@ -5,10 +5,10 @@ import com.mobilispect.data.stop.StopRef
 import org.junit.Test
 import java.time.LocalDateTime
 
-internal class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCaseTest {
+internal class FindFrequencyViolationsOnDayAtStopUseCaseTest {
     @Test
-    fun invoke() {
-        CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase(FakeScheduleRepository())
+    fun violationsFromScheduledStops() {
+        FindFrequencyViolationsOnDayAtStopUseCase(FakeScheduleRepository())
             .invoke(
                 start = LocalDateTime.of(2022, 7, 7, 6, 0, 0),
                 routeRef = RouteRef(geohash = "f25em", routeNumber = "141"),

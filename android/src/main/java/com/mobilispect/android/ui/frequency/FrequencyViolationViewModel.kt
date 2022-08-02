@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.mobilispect.data.frequency.Direction
 import com.mobilispect.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.frequency.CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase
+import com.mobilispect.data.frequency.FindFrequencyViolationsOnDayAtStopUseCase
 import com.mobilispect.data.frequency.FrequencyViolation
 import com.mobilispect.data.stop.StopRef
 import com.mobilispect.domain.time.FormatTimeUseCase
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FrequencyViolationViewModel @Inject constructor(
-    private val compareUseCase: CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase,
+    private val frequencyViolationUseCase: FindFrequencyViolationsOnDayAtStopUseCase,
     private val formatTimeUseCase: FormatTimeUseCase,
 ) : ViewModel() {
     private var _violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
@@ -25,7 +25,7 @@ class FrequencyViolationViewModel @Inject constructor(
     fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: RouteRef) {
         val start = LocalDateTime.of(2022, 7, 7, 0, 0)
         val stopRef = StopRef(geohash = "abcd", name = "test")
-        val inbound = compareUseCase.invoke(
+        val inbound = frequencyViolationUseCase.invoke(
             start = start,
             routeRef = routeRef,
             stopRef = stopRef,
@@ -33,7 +33,7 @@ class FrequencyViolationViewModel @Inject constructor(
             commitment = STM_FREQUENCY_COMMITMENT
         )
             .map(::violationUIState)
-        val outbound = compareUseCase.invoke(
+        val outbound = frequencyViolationUseCase.invoke(
             start = start,
             routeRef = routeRef,
             stopRef = stopRef,
