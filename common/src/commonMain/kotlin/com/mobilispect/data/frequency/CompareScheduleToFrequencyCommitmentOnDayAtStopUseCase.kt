@@ -1,8 +1,8 @@
-package com.mobilispect.data.schedule
+package com.mobilispect.data.frequency
 
-import com.mobilispect.data.frequency.Direction
-import com.mobilispect.data.frequency.FrequencyCommitment
 import com.mobilispect.data.routes.RouteRef
+import com.mobilispect.data.schedule.ScheduleRepository
+import com.mobilispect.data.schedule.ScheduledStop
 import com.mobilispect.data.stop.StopRef
 import java.time.Duration
 import java.time.LocalDateTime
@@ -46,19 +46,32 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
             return Result.failure(NoDeparturesFound)
         }
 
-        val violations = departures.windowed(2, 1, true) { dateTimes ->
-            if (dateTimes.size >= 2) {
-                return@windowed FrequencyViolation(
-                    start = dateTimes[0],
-                    end = dateTimes[1], duration = Duration.between(dateTimes[0], dateTimes[1])
-                )
-            } else {
-                return@windowed FrequencyViolation(
-                    start = LocalDateTime.MIN,
-                    end = LocalDateTime.MAX, duration = sentinel
-                )
+        //TODO: Determine what to do for frequency, especially for scheduled -> frequency and vice
+        // versa
+        val violations = departures.filter { stop -> stop.time is ScheduledStop.Time.Scheduled }
+            .windowed(2, 1, true) { dateTimes ->
+                return@windowed if (dateTimes.size >= 2) {
+                    val intervalStart = localDateTime(dateTimes[0])
+                    val intervalEnd = localDateTime(dateTimes[1])
+
+                    if ((intervalStart != null) && (intervalEnd != null)) {
+                        val duration = Duration.between(
+                            intervalStart,
+                            intervalEnd
+                        )
+
+                        return@windowed FrequencyViolation(
+                            start = intervalStart,
+                            end = intervalEnd, duration = duration
+                        )
+                    } else {
+                        null
+                    }
+                } else {
+                    null
+                }
             }
-        }
+            .filterNotNull()
             .filter { it.duration != sentinel }
             .filter {
                 it.duration > relevantCommitment.frequency
@@ -67,6 +80,9 @@ class CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase @Inject constructor
         println(departures)
         return Result.success(violations)
     }
+
+    private fun localDateTime(dateTime: ScheduledStop) =
+        (dateTime.time as ScheduledStop.Time.Scheduled).dateTime
 }
 
 data class FrequencyViolation(

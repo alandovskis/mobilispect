@@ -10,7 +10,7 @@ interface ScheduleRepository {
         start: LocalDateTime,
         end: LocalDateTime,
         routeRef: RouteRef,
-        stop: StopRef,
+        stopRef: StopRef,
         direction: Direction
-    ): Collection<LocalDateTime>
+    ): Collection<ScheduledStop>
 }

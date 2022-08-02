@@ -1,7 +1,6 @@
 package com.mobilispect.data.frequency
 
 import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.schedule.CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase
 import com.mobilispect.data.stop.StopRef
 import org.junit.Test
 import java.time.LocalDateTime

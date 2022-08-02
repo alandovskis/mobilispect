@@ -2,6 +2,7 @@ package com.mobilispect.data.frequency
 
 import com.mobilispect.data.routes.RouteRef
 import com.mobilispect.data.schedule.ScheduleRepository
+import com.mobilispect.data.schedule.ScheduledStop
 import com.mobilispect.data.stop.StopRef
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -13,23 +14,35 @@ internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository
         start: LocalDateTime,
         end: LocalDateTime,
         routeRef: RouteRef,
-        stop: StopRef,
+        stopRef: StopRef,
         direction: Direction
-    ): Collection<LocalDateTime> {
+    ): Collection<ScheduledStop> {
         val today = start.toLocalDate()
         val departures = when (direction) {
-            Direction.Inbound -> inboundDepartures(today)
-            Direction.Outbound -> outboundDepartures(today)
+            Direction.Inbound -> inboundDepartures(
+                routeRef = routeRef,
+                stopRef = stopRef,
+                today = today
+            )
+            Direction.Outbound -> outboundDepartures(
+                routeRef = routeRef,
+                stopRef = stopRef,
+                today = today
+            )
         }
 
-        return departures.filter { time -> !time.isBefore(start) && !time.isAfter(end) }
+        return departures.filter { stop ->
+            val time = (stop.time as ScheduledStop.Time.Scheduled).dateTime ?: return@filter false
+            return@filter !time.isBefore(start) && !time.isAfter(end)
+        }
     }
 
     private fun inboundDepartures(
+        routeRef: RouteRef,
+        stopRef: StopRef,
         today: LocalDate
-    ): List<LocalDateTime> {
+    ): List<ScheduledStop> {
         val tomorrow = today.plusDays(1)
-
         return listOf(
             LocalDateTime.of(today, LocalTime.of(4, 45)),
             LocalDateTime.of(today, LocalTime.of(4, 57)),
@@ -41,13 +54,13 @@ internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository
             LocalDateTime.of(today, LocalTime.of(5, 57)),
 
             LocalDateTime.of(today, LocalTime.of(6, 9)),
-            LocalDateTime.of(today, LocalTime.of(6,19)),
-            LocalDateTime.of(today, LocalTime.of(6,29)),
-            LocalDateTime.of(today, LocalTime.of(6,38)),
-            LocalDateTime.of(today, LocalTime.of(6,48)),
-            LocalDateTime.of(today, LocalTime.of(6,58)),
+            LocalDateTime.of(today, LocalTime.of(6, 19)),
+            LocalDateTime.of(today, LocalTime.of(6, 29)),
+            LocalDateTime.of(today, LocalTime.of(6, 38)),
+            LocalDateTime.of(today, LocalTime.of(6, 48)),
+            LocalDateTime.of(today, LocalTime.of(6, 58)),
 
-            LocalDateTime.of(today, LocalTime.of(7,8)),
+            LocalDateTime.of(today, LocalTime.of(7, 8)),
             LocalDateTime.of(today, LocalTime.of(7, 18)),
             LocalDateTime.of(today, LocalTime.of(7, 28)),
             LocalDateTime.of(today, LocalTime.of(7, 39)),
@@ -168,11 +181,23 @@ internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository
 
             LocalDateTime.of(tomorrow, LocalTime.of(1, 22)),
         )
+            .map { time ->
+                ScheduledStop(
+                    routeRef = routeRef,
+                    stopRef = stopRef,
+                    time = ScheduledStop.Time.Scheduled(
+                        departsAt = time,
+                        arrivesAt = time,
+                    )
+                )
+            }
     }
 
     private fun outboundDepartures(
+        routeRef: RouteRef,
+        stopRef: StopRef,
         today: LocalDate
-    ): List<LocalDateTime> {
+    ): List<ScheduledStop> {
         val tomorrow = today.plusDays(1)
         return listOf(
             LocalDateTime.of(today, LocalTime.of(4, 48)),
@@ -314,6 +339,15 @@ internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository
 
             LocalDateTime.of(tomorrow, LocalTime.of(0, 10)),
             LocalDateTime.of(tomorrow, LocalTime.of(0, 37)),
-        )
+        ).map { time ->
+            ScheduledStop(
+                routeRef = routeRef,
+                stopRef = stopRef,
+                time = ScheduledStop.Time.Scheduled(
+                    departsAt = time,
+                    arrivesAt = time,
+                )
+            )
+        }
     }
 }

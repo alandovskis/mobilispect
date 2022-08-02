@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.mobilispect.data.frequency.Direction
 import com.mobilispect.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.schedule.CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase
-import com.mobilispect.data.schedule.FrequencyViolation
+import com.mobilispect.data.frequency.CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase
+import com.mobilispect.data.frequency.FrequencyViolation
 import com.mobilispect.data.stop.StopRef
 import com.mobilispect.domain.time.FormatTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,7 @@ class FrequencyViolationViewModel @Inject constructor(
     private val compareUseCase: CompareScheduleToFrequencyCommitmentOnDayAtStopUseCase,
     private val formatTimeUseCase: FormatTimeUseCase,
 ) : ViewModel() {
-    var _violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
+    private var _violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
     val violations: LiveData<FrequencyViolationUIState> = _violations
 
     fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: RouteRef) {

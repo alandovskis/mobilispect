@@ -14,8 +14,8 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.data.frequency.Direction
+import com.mobilispect.data.frequency.NoDeparturesFound
 import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.schedule.NoDeparturesFound
 
 @Composable
 fun FrequencyViolationRoute(routeRef: String?) {
