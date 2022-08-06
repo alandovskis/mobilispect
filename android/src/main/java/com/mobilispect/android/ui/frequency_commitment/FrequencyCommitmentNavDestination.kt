@@ -1,9 +1,9 @@
-package com.mobilispect.android.ui
+package com.mobilispect.android.ui.frequency_commitment
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.mobilispect.android.ui.frequency.FrequencyCommitmentRoute
+import com.mobilispect.android.navigation.NavDestination
 import com.mobilispect.data.routes.RouteRef
 
 object FrequencyCommitmentNavDestination : NavDestination {

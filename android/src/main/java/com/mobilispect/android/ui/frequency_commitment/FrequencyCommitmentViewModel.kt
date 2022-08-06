@@ -1,4 +1,4 @@
-package com.mobilispect.android.ui.frequency
+package com.mobilispect.android.ui.frequency_violation
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel

@@ -3,10 +3,10 @@ package com.mobilispect.android.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.mobilispect.android.ui.FrequencyCommitmentNavDestination
-import com.mobilispect.android.ui.FrequencyViolationDestination
-import com.mobilispect.android.ui.frequencyGraph
-import com.mobilispect.android.ui.violationGraph
+import com.mobilispect.android.ui.frequency_commitment.FrequencyCommitmentNavDestination
+import com.mobilispect.android.ui.frequency_commitment.frequencyGraph
+import com.mobilispect.android.ui.frequency_violation.FrequencyViolationDestination
+import com.mobilispect.android.ui.frequency_violation.violationGraph
 
 @Composable
 fun MobilispectNavHost(

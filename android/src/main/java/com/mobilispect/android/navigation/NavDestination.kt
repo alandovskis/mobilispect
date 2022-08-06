@@ -1,4 +1,4 @@
-package com.mobilispect.android.ui
+package com.mobilispect.android.navigation
 
 interface NavDestination {
     val route: String
