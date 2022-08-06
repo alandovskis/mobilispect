@@ -20,7 +20,10 @@ jobs:
           min-wrapper-count: 1
           allow-snapshots: false
           allow-checksums: false
-          
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
       - name: Gradle Build Action
         uses: gradle/gradle-build-action@v2.2.0
         with:
