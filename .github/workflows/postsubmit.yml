@@ -42,3 +42,7 @@ jobs:
       - name: Run local tests
         run: ./gradlew test --stacktrace
 
+
+
+      - name: Run local tests
+        run: ./gradlew testDemoDebug testProdDebug --stacktrace
