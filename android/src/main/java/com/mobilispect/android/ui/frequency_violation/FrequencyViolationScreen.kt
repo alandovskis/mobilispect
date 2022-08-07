@@ -29,8 +29,8 @@ fun FrequencyViolationScreen(routeRef: RouteRef, frequencyViolationViewModel: Fr
     frequencyViolationViewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef)
     val violations by frequencyViolationViewModel.violations.observeAsState()
 
-    ScreenFrame(stringResource(id = R.string.frequency_violations, routeRef.routeNumber)) {
-        Column {
+    ScreenFrame(stringResource(id = R.string.frequency_violations, routeRef.routeNumber)) { modifier ->
+        Column(modifier = modifier) {
             if (violations != null) {
                 FrequencyViolationCard(
                     direction = Direction.Inbound,

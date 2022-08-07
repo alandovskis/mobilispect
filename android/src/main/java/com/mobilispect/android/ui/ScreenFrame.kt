@@ -1,18 +1,20 @@
 package com.mobilispect.android.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
-fun ScreenFrame(screenTitle: String, function: @Composable () -> Unit) {
-    Scaffold(topBar = { TopBar(screenTitle) }) {
-        function()
+fun ScreenFrame(screenTitle: String, function: @Composable (Modifier) -> Unit) {
+    Scaffold(topBar = { TopBar(screenTitle) }) { padding ->
+        function(Modifier.padding(padding))
     }
 }
 

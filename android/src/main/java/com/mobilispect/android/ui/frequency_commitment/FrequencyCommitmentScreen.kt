@@ -43,18 +43,20 @@ fun FrequencyCommitmentScreen(
     uiState: FrequencyCommitmentUIState?,
     navigateToViolation: (RouteRef) -> Unit
 ) {
-    ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) {
-        FrequencyCommitmentEntryCards(uiState = uiState, navigateToViolation = navigateToViolation)
+    ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) { modifier ->
+        FrequencyCommitmentEntryCards(uiState = uiState, navigateToViolation = navigateToViolation,
+            modifier = modifier)
     }
 }
 
 @Composable
 fun FrequencyCommitmentEntryCards(
     uiState: FrequencyCommitmentUIState?,
-    navigateToViolation: (RouteRef) -> Unit
+    navigateToViolation: (RouteRef) -> Unit,
+    modifier: Modifier
 ) {
     val items = uiState?.items ?: return
-    Column {
+    Column(modifier = modifier) {
         for (item in items) {
             FrequencyCommitmentCard(item, navigateToViolation)
         }
