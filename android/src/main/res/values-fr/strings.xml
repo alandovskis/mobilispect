@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="minutes_or_less">MINUTES OU MOINS</string>
-    <string name="on_days">LES</string>
-    <string name="weekdays">jours de la semaine</string>
-    <string name="from">DE</string>
-    <string name="to">À</string>
-    <string name="inbound">ENTRANT</string>
-    <string name="outbound">SORTANT</string>
-    <string name="every">CHAQUE</string>
+    <string name="on_weekdays">LES jours de la semaine</string>
+    <string name="from_start_to_end">DE %s À %s</string>
+    <string name="inbound_from_start_to_end">ENTRANT DE %s À %s</string>
+    <string name="outbound_from_start_to_end">SORTANT DE %s À %s</string>
+    <string name="every_n_minutes_or_less">CHAQUE %d MINUTES OU MOINS</string>
     <string name="on_routes">SUR LES ROUTES</string>
     <string name="frequency_commitment">Engagement de fréquence</string>
     <string name="frequency_violations">Violations de fréquence: %s</string>

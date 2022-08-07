@@ -1,21 +1,17 @@
-package com.mobilispect.android.ui.frequency_violation
+package com.mobilispect.android.ui.frequency_commitment
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
-import com.mobilispect.android.R
 import com.mobilispect.data.frequency.Direction
 import com.mobilispect.data.routes.RouteRepository
 import com.mobilispect.data.frequency.DirectionTime
 import com.mobilispect.data.frequency.FrequencyCommitmentItem
 import com.mobilispect.data.frequency.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.time.WEEKDAYS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.time.DayOfWeek
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import javax.inject.Inject
 
 
@@ -26,25 +22,13 @@ class FrequencyCommitmentViewModel @Inject constructor(
     val details: Flow<FrequencyCommitmentUIState> = flow {
         val frequencyCommitment = STM_FREQUENCY_COMMITMENT
         val items = frequencyCommitment.items().map { item ->
-            @StringRes
-            var daysOfTheWeek = 0
-
-            if (item.daysOfWeek == WEEKDAYS) {
-                daysOfTheWeek = R.string.weekdays
-            }
-
             FrequencyCommitmentItemUIState(
-                daysOfTheWeek = daysOfTheWeek,
+                daysOfTheWeek = item.daysOfWeek,
                 directions = directions(item),
                 frequency = FrequencyCommitmentFrequencyUIState(
-                    every = R.string.every,
                     frequency = item.frequency.toMinutes(),
-                    minutesOrLess = R.string.minutes_or_less
                 ),
-                routes = RoutesUIState(
-                    onRoutes = R.string.on_routes,
-                    routes = routes(item.routes),
-                )
+                routes = routes(item.routes),
             )
         }
 
@@ -79,27 +63,12 @@ class FrequencyCommitmentViewModel @Inject constructor(
         }
 
     private fun directions(item: FrequencyCommitmentItem): List<FrequencyCommitmentDirectionUIState> {
-        val from = R.string.from
-        val to = R.string.to
-        val localizedTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-
         return item.directions.map { directionTime ->
             FrequencyCommitmentDirectionUIState(
-                direction = direction(directionTime),
-                from = from,
+                direction = directionTime.direction,
                 startTime = directionTime.start,
-                to = to,
                 endTime = directionTime.end,
-                timeFormatter = localizedTime
             )
-        }
-    }
-
-    private fun direction(directionTime: DirectionTime): Int? {
-        val direction = directionTime.direction ?: return null
-        return when (direction) {
-            Direction.Inbound -> R.string.inbound
-            Direction.Outbound -> R.string.outbound
         }
     }
 }
@@ -109,38 +78,23 @@ data class FrequencyCommitmentUIState(
 )
 
 data class FrequencyCommitmentItemUIState(
-    @StringRes
-    val daysOfTheWeek: Int,
+    val daysOfTheWeek: Collection<DayOfWeek>,
     val directions: Collection<FrequencyCommitmentDirectionUIState>,
     val frequency: FrequencyCommitmentFrequencyUIState,
-    val routes: RoutesUIState,
+    val routes: Collection<RouteUIState>,
 )
 
 data class FrequencyCommitmentDirectionUIState(
-    @StringRes
-    val direction: Int?,
-
-    @StringRes
-    val from: Int = R.string.from,
+    val direction: Direction?,
     val startTime: LocalTime,
-
-    @StringRes
-    val to: Int = R.string.to,
     val endTime: LocalTime,
-
-    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT),
-)
+) {
+    val isBothDirections: Boolean
+        get() = DirectionTime.isBothDirections(direction = direction)
+}
 
 data class FrequencyCommitmentFrequencyUIState(
-    @StringRes
-    val every: Int = R.string.every,
     val frequency: Long,
-    val minutesOrLess: Int = R.string.minutes_or_less,
-)
-
-data class RoutesUIState(
-    val onRoutes: Int,
-    val routes: Collection<RouteUIState>,
 )
 
 data class RouteUIState(

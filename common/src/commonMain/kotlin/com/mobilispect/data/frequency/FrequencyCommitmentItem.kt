@@ -26,6 +26,8 @@ data class DirectionTime(
                 ),
             )
         }
+
+        fun isBothDirections(direction: Direction?): Boolean = direction == null
     }
 }
 

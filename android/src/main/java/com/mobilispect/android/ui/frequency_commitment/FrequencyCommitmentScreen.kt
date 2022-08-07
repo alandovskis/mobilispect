@@ -1,29 +1,30 @@
 package com.mobilispect.android.ui.frequency_commitment
 
 import android.content.res.Configuration
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
-import com.mobilispect.android.ui.frequency_violation.*
 import com.mobilispect.android.ui.theme.MobilispectTheme
+import com.mobilispect.data.frequency.Direction
 import com.mobilispect.data.routes.RouteRef
+import com.mobilispect.data.time.WEEKDAYS
+import java.time.DayOfWeek
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @Composable
 fun FrequencyCommitmentRoute(
@@ -38,14 +39,20 @@ fun FrequencyCommitmentRoute(
 }
 
 @Composable
-fun FrequencyCommitmentScreen(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
+fun FrequencyCommitmentScreen(
+    uiState: FrequencyCommitmentUIState?,
+    navigateToViolation: (RouteRef) -> Unit
+) {
     ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) {
         FrequencyCommitmentEntryCards(uiState = uiState, navigateToViolation = navigateToViolation)
     }
 }
 
 @Composable
-fun FrequencyCommitmentEntryCards(uiState: FrequencyCommitmentUIState?, navigateToViolation: (RouteRef) -> Unit) {
+fun FrequencyCommitmentEntryCards(
+    uiState: FrequencyCommitmentUIState?,
+    navigateToViolation: (RouteRef) -> Unit
+) {
     val items = uiState?.items ?: return
     Column {
         for (item in items) {
@@ -68,12 +75,10 @@ fun FrequencyCommitmentCard(
 }
 
 @Composable
-private fun Routes(uiState: RoutesUIState, onRoutePressed: (RouteRef) -> Unit) {
-    Row {
-        Text(text = stringResource(uiState.onRoutes), modifier = Modifier.align(CenterVertically))
-    }
+private fun Routes(routes: Collection<RouteUIState>, onRoutePressed: (RouteRef) -> Unit) {
+    Text(text = stringResource(R.string.on_routes))
 
-    for (route in uiState.routes) {
+    for (route in routes) {
         OutlinedButton(colors = ButtonDefaults.outlinedButtonColors(
             backgroundColor = MaterialTheme.colors.secondary,
             contentColor = MaterialTheme.colors.onSecondary
@@ -90,77 +95,58 @@ private fun Routes(uiState: RoutesUIState, onRoutePressed: (RouteRef) -> Unit) {
 
 @Composable
 private fun Frequency(uiState: FrequencyCommitmentFrequencyUIState) {
-    Row {
-        Text(text = stringResource(uiState.every), modifier = Modifier.align(CenterVertically))
-        Emphasized(
-            text = uiState.frequency.toString(),
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = stringResource(uiState.minutesOrLess),
-            modifier = Modifier.align(CenterVertically)
-        )
-    }
+    val frequency = stringResource(id = R.string.every_n_minutes_or_less, uiState.frequency)
+    Text(
+        text = frequency,
+        modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
 private fun Direction(directions: Collection<FrequencyCommitmentDirectionUIState>) {
-    for (directionTime in directions) {
-        Row {
-            val timeFormatter = directionTime.timeFormatter.withLocale(
-                LocalContext.current.resources.configuration.locales[0]
-            )
+    val timeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+        .withLocale(LocalContext.current.resources.configuration.locales[0])
 
-            val direction = if (directionTime.direction != null) {
-                "${stringResource(id = directionTime.direction)} ${
-                    stringResource(id = directionTime.from)
-                }"
-            } else {
-                stringResource(id = directionTime.from)
+    if (directions.isNotEmpty() && directions.first().isBothDirections) {
+        val direction = directions.first()
+        DirectionTime(direction, timeFormatter, R.string.from_start_to_end)
+    } else {
+        for (directionTime in directions) {
+            val direction = directionTime.direction ?: continue
+            val directionText = when (direction) {
+                Direction.Inbound -> R.string.inbound_from_start_to_end
+                Direction.Outbound -> R.string.outbound_from_start_to_end
             }
-
-            Text(
-                text = direction,
-                modifier = Modifier.align(CenterVertically)
-            )
-            Emphasized(
-                text = directionTime.startTime.format(timeFormatter),
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = stringResource(id = directionTime.to),
-                modifier = Modifier.align(CenterVertically)
-            )
-            Emphasized(
-                text = directionTime.endTime.format(timeFormatter),
-                fontWeight = FontWeight.Bold
-            )
+            DirectionTime(directionTime, timeFormatter, directionText)
         }
     }
 }
 
 @Composable
-private fun DaysOfTheWeek(daysOfWeek: Int) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = stringResource(R.string.on_days), modifier = Modifier.align(CenterVertically),
-            fontSize = MaterialTheme.typography.body1.fontSize,
-            fontWeight = MaterialTheme.typography.body1.fontWeight,
-            fontStyle = MaterialTheme.typography.body1.fontStyle
-        )
-        Emphasized(stringResource(daysOfWeek))
-    }
+private fun DirectionTime(
+    direction: FrequencyCommitmentDirectionUIState,
+    timeFormatter: DateTimeFormatter?,
+    @StringRes stringResource: Int
+) {
+    val directionText = stringResource(
+        id = stringResource,
+        direction.startTime.format(timeFormatter),
+        direction.endTime.format(timeFormatter),
+    )
+    Text(text = directionText, modifier = Modifier.fillMaxWidth())
 }
 
 @Composable
-private fun Emphasized(
-    text: String, fontWeight: FontWeight = FontWeight.Bold, fontSize: TextUnit = 24.sp
-) {
+private fun DaysOfTheWeek(daysOfWeek: Collection<DayOfWeek>) {
+    val days = if (daysOfWeek == WEEKDAYS) {
+        stringResource(id = R.string.on_weekdays)
+    } else {
+        ""
+    }
+
     Text(
-        text = text,
-        fontWeight = fontWeight,
-        fontSize = fontSize,
-        modifier = Modifier.padding(4.dp, 4.dp),
+        text = days,
+        modifier = Modifier.fillMaxWidth()
     )
 }
 
@@ -170,10 +156,10 @@ private fun Emphasized(
 fun PreviewFrequencyCommitmentCard() {
     MobilispectTheme {
         val uiState = FrequencyCommitmentItemUIState(
-            daysOfTheWeek = R.string.weekdays,
+            daysOfTheWeek = WEEKDAYS,
             directions = listOf(
                 FrequencyCommitmentDirectionUIState(
-                    direction = R.string.inbound,
+                    direction = Direction.Inbound,
                     startTime = LocalTime.of(6, 0),
                     endTime = LocalTime.of(21, 0),
                 )
@@ -181,17 +167,14 @@ fun PreviewFrequencyCommitmentCard() {
             frequency = FrequencyCommitmentFrequencyUIState(
                 frequency = 10,
             ),
-            routes = RoutesUIState(
-                onRoutes = R.string.on_routes,
-                routes = listOf(
-                    RouteUIState(
-                        route = "18: Beaubien",
-                        routeRef = RouteRef(geohash = "f25ej", routeNumber = "18"),
-                    ),
-                    RouteUIState(
-                        route = "24: Sherbrooke",
-                        routeRef = RouteRef(geohash = "f25dv", routeNumber = "24")
-                    )
+            routes = listOf(
+                RouteUIState(
+                    route = "18: Beaubien",
+                    routeRef = RouteRef(geohash = "f25ej", routeNumber = "18"),
+                ),
+                RouteUIState(
+                    route = "24: Sherbrooke",
+                    routeRef = RouteRef(geohash = "f25dv", routeNumber = "24")
                 )
             )
         )
