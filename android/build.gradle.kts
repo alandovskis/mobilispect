@@ -51,6 +51,7 @@ dependencies {
 
     //region Dependency Injection
     implementation("com.google.dagger:hilt-android:2.42")
+    testImplementation("junit:junit:4.13.2")
     kapt("com.google.dagger:hilt-compiler:2.42")
     testImplementation("com.google.dagger:hilt-android-testing:2.42")
     kaptTest("com.google.dagger:hilt-compiler:2.42")
