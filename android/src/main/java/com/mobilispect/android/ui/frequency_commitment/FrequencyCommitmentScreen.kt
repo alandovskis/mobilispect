@@ -18,9 +18,10 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import com.mobilispect.data.frequency.Direction
-import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.time.WEEKDAYS
+import com.mobilispect.common.data.route.RouteRef
+import com.mobilispect.common.data.schedule.Direction
+import com.mobilispect.common.data.schedule.Direction.*
+import com.mobilispect.common.data.time.WEEKDAYS
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -116,8 +117,8 @@ private fun Direction(directions: Collection<FrequencyCommitmentDirectionUIState
         for (directionTime in directions) {
             val direction = directionTime.direction ?: continue
             val directionText = when (direction) {
-                Direction.Inbound -> R.string.inbound_from_start_to_end
-                Direction.Outbound -> R.string.outbound_from_start_to_end
+                Inbound -> R.string.inbound_from_start_to_end
+                Outbound -> R.string.outbound_from_start_to_end
             }
             DirectionTime(directionTime, timeFormatter, directionText)
         }
@@ -161,7 +162,7 @@ fun PreviewFrequencyCommitmentCard() {
             daysOfTheWeek = WEEKDAYS,
             directions = listOf(
                 FrequencyCommitmentDirectionUIState(
-                    direction = Direction.Inbound,
+                    direction = Inbound,
                     startTime = LocalTime.of(6, 0),
                     endTime = LocalTime.of(21, 0),
                 )

@@ -1,6 +1,6 @@
 package com.mobilispect.common.data.frequency_commitment
 
-import com.mobilispect.data.agency.AgencyRef
+import com.mobilispect.common.data.agency.AgencyRef
 
 data class FrequencyCommitment (
     val spans: Collection<FrequencyCommitmentItem> = listOf(),

@@ -1,15 +1,11 @@
 package com.mobilispect.common.data.frequency_commitment
 
-import com.mobilispect.data.routes.RouteRef
+import com.mobilispect.common.data.route.RouteRef
+import com.mobilispect.common.data.schedule.Direction
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime
 
-
-enum class Direction {
-    Inbound,
-    Outbound;
-}
 
 data class DirectionTime(
     val direction: Direction?,

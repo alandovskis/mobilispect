@@ -1,7 +1,10 @@
 package com.mobilispect.data.frequency
 
-import com.mobilispect.data.agency.AgencyRef
-import com.mobilispect.data.routes.RouteRef
+import com.mobilispect.common.data.agency.AgencyRef
+import com.mobilispect.common.data.frequency_commitment.DirectionTime
+import com.mobilispect.common.data.frequency_commitment.FrequencyCommitment
+import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
+import com.mobilispect.common.data.route.RouteRef
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime

@@ -1,7 +1,9 @@
 package com.mobilispect.data.frequency
 
-import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.stop.StopRef
+import com.mobilispect.common.data.route.RouteRef
+import com.mobilispect.common.data.schedule.FakeScheduleRepository
+import com.mobilispect.common.data.stop.StopRef
+import com.mobilispect.common.domain.frequency_violation.FindFrequencyViolationsOnDayAtStopUseCase
 import org.junit.Test
 import java.time.LocalDateTime
 

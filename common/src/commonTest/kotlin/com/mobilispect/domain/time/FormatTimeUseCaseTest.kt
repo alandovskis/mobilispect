@@ -1,6 +1,7 @@
 package com.mobilispect.domain.time
 
 import com.google.common.truth.Truth.assertThat
+import com.mobilispect.common.domain.time.FormatTimeUseCase
 import org.junit.Test
 import java.time.LocalDateTime
 

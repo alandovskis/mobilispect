@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mobilispect.android.navigation.NavDestination
-import com.mobilispect.data.routes.RouteRef
+import com.mobilispect.common.data.route.RouteRef
 
 object FrequencyCommitmentNavDestination : NavDestination {
     override val route: String = "frequency_commitment_route"

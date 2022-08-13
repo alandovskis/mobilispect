@@ -1,12 +1,11 @@
 package com.mobilispect.android.ui.frequency_commitment
 
 import androidx.lifecycle.ViewModel
-import com.mobilispect.data.frequency.Direction
-import com.mobilispect.data.routes.RouteRepository
-import com.mobilispect.data.frequency.DirectionTime
-import com.mobilispect.data.frequency.FrequencyCommitmentItem
-import com.mobilispect.data.frequency.STM_FREQUENCY_COMMITMENT
-import com.mobilispect.data.routes.RouteRef
+import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
+import com.mobilispect.common.data.frequency_commitment.STM_FREQUENCY_COMMITMENT
+import com.mobilispect.common.data.route.RouteRepository
+import com.mobilispect.common.data.route.RouteRef
+import com.mobilispect.common.data.schedule.Direction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -90,7 +89,7 @@ data class FrequencyCommitmentDirectionUIState(
     val endTime: LocalTime,
 ) {
     val isBothDirections: Boolean
-        get() = DirectionTime.isBothDirections(direction = direction)
+        get() = com.mobilispect.common.data.frequency_commitment.DirectionTime.isBothDirections(direction = direction)
 }
 
 data class FrequencyCommitmentFrequencyUIState(

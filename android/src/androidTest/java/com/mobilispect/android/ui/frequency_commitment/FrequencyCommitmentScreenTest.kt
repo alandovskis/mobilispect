@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import com.mobilispect.data.routes.RouteRef
-import com.mobilispect.data.time.WEEKDAYS
+import com.mobilispect.common.data.route.RouteRef
+import com.mobilispect.common.data.time.WEEKDAYS
 import org.junit.Rule
 import org.junit.Test
 import java.time.LocalTime
