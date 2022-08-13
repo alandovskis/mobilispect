@@ -1,4 +1,4 @@
-package com.mobilispect.data.frequency
+package com.mobilispect.common.data.frequency_commitment
 
 import com.mobilispect.data.agency.AgencyRef
 
