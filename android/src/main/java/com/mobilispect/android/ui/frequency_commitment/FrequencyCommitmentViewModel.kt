@@ -1,14 +1,15 @@
 package com.mobilispect.android.ui.frequency_commitment
 
 import androidx.lifecycle.ViewModel
+import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
-import com.mobilispect.common.data.frequency_commitment.STM_FREQUENCY_COMMITMENT
+import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentRepository
 import com.mobilispect.common.data.route.RouteRepository
 import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
 import java.time.LocalTime
 import javax.inject.Inject
@@ -17,29 +18,28 @@ import javax.inject.Inject
 @HiltViewModel
 class FrequencyCommitmentViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
+    private val frequencyCommitmentRepository: FrequencyCommitmentRepository,
 ) : ViewModel() {
-    val details: Flow<FrequencyCommitmentUIState> = flow {
-        val frequencyCommitment = STM_FREQUENCY_COMMITMENT
-        val items = frequencyCommitment.items().map { item ->
-            FrequencyCommitmentItemUIState(
-                daysOfTheWeek = item.daysOfWeek,
-                directions = directions(item),
-                frequency = FrequencyCommitmentFrequencyUIState(
-                    frequency = item.frequency.toMinutes(),
-                ),
-                routes = routes(item.routes),
+    fun uiState(agency: AgencyRef) =
+        frequencyCommitmentRepository.forAgency(agency).map { frequencyCommitment ->
+            if (frequencyCommitment == null) {
+                return@map NoCommitmentFound
+            }
+
+            CommitmentFound(
+                items = frequencyCommitment.items().map { item ->
+                    FrequencyCommitmentItemUIState(
+                        daysOfTheWeek = item.daysOfWeek,
+                        directions = directions(item),
+                        frequency = item.frequency.toMinutes(),
+                        routes = routes(item.routes),
+                    )
+                }
             )
         }
 
-        val uiState = FrequencyCommitmentUIState(
-            items = items
-        )
-
-        emit(uiState)
-    }
-
     private suspend fun routes(routes: List<RouteRef>): Collection<RouteUIState> =
-        routes.map { routeRef ->
+        routes.mapNotNull { routeRef ->
             val route = routeRepository.fromRef(routeRef)
             if (route.isSuccess) {
                 val value = route.getOrNull()
@@ -48,16 +48,10 @@ class FrequencyCommitmentViewModel @Inject constructor(
                         route = "${value.shortName}: ${value.longName}",
                         routeRef = routeRef)
                 } else {
-                    RouteUIState(
-                        route = routeRef.routeNumber,
-                        routeRef = routeRef
-                    )
+                    null
                 }
             } else {
-                RouteUIState(
-                    route = routeRef.routeNumber,
-                    routeRef = routeRef
-                )
+                null
             }
         }
 
@@ -72,14 +66,17 @@ class FrequencyCommitmentViewModel @Inject constructor(
     }
 }
 
-data class FrequencyCommitmentUIState(
+sealed interface FrequencyCommitmentUIState
+object Loading : FrequencyCommitmentUIState
+object NoCommitmentFound : FrequencyCommitmentUIState
+data class CommitmentFound(
     val items: Collection<FrequencyCommitmentItemUIState>,
-)
+): FrequencyCommitmentUIState
 
 data class FrequencyCommitmentItemUIState(
     val daysOfTheWeek: Collection<DayOfWeek>,
     val directions: Collection<FrequencyCommitmentDirectionUIState>,
-    val frequency: FrequencyCommitmentFrequencyUIState,
+    val frequency: Long,
     val routes: Collection<RouteUIState>,
 )
 
@@ -91,10 +88,6 @@ data class FrequencyCommitmentDirectionUIState(
     val isBothDirections: Boolean
         get() = com.mobilispect.common.data.frequency_commitment.DirectionTime.isBothDirections(direction = direction)
 }
-
-data class FrequencyCommitmentFrequencyUIState(
-    val frequency: Long,
-)
 
 data class RouteUIState(
     val route: String,

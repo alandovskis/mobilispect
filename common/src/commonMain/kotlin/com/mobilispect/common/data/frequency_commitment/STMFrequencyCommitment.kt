@@ -1,13 +1,11 @@
 package com.mobilispect.common.data.frequency_commitment
 
-import com.mobilispect.common.data.agency.AgencyRef
+import com.mobilispect.common.data.agency.STM_ID
 import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
 import com.mobilispect.common.data.time.WEEKDAYS
 import java.time.Duration
 import java.time.LocalTime
-
-val STM_ID = AgencyRef("f25d", agencyName = "socitdetransportdemontral")
 
 // Source: https://www.stm.info/en/info/networks/bus/local/10-minutes-max
 private val bothDirections = FrequencyCommitmentItem(

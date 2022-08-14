@@ -18,8 +18,8 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
+import com.mobilispect.common.data.agency.STM_ID
 import com.mobilispect.common.data.route.RouteRef
-import com.mobilispect.common.data.schedule.Direction
 import com.mobilispect.common.data.schedule.Direction.*
 import com.mobilispect.common.data.time.WEEKDAYS
 import java.time.DayOfWeek
@@ -32,8 +32,8 @@ fun FrequencyCommitmentRoute(
     viewModel: FrequencyCommitmentViewModel = hiltViewModel(),
     navigateToViolation: (RouteRef) -> Unit
 ) {
-    val uiState: FrequencyCommitmentUIState? by viewModel.details.collectAsState(
-        initial = null
+    val uiState by viewModel.uiState(STM_ID).collectAsState(
+        initial = Loading
     )
 
     FrequencyCommitmentScreen(uiState, navigateToViolation)
@@ -41,7 +41,7 @@ fun FrequencyCommitmentRoute(
 
 @Composable
 fun FrequencyCommitmentScreen(
-    uiState: FrequencyCommitmentUIState?,
+    uiState: FrequencyCommitmentUIState,
     navigateToViolation: (RouteRef) -> Unit
 ) {
     ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) { modifier ->
@@ -52,20 +52,38 @@ fun FrequencyCommitmentScreen(
 
 @Composable
 fun FrequencyCommitmentEntryCards(
-    uiState: FrequencyCommitmentUIState?,
+    uiState: FrequencyCommitmentUIState,
     navigateToViolation: (RouteRef) -> Unit,
     modifier: Modifier
 ) {
-    val items = uiState?.items ?: return
-    Column(modifier = modifier) {
-        for (item in items) {
-            FrequencyCommitmentCard(item, navigateToViolation)
+    when (uiState) {
+        Loading -> LoadingCard()
+        NoCommitmentFound -> NotFoundCard()
+        is CommitmentFound -> {
+            val items = uiState.items
+            Column(modifier = modifier) {
+                for (item in items) {
+                    FrequencyCommitmentCard(item, navigateToViolation)
+                }
+            }
         }
     }
 }
 
 @Composable
-fun FrequencyCommitmentCard(
+private fun LoadingCard() {
+    CircularProgressIndicator(modifier = Modifier.size(100.dp), color = MaterialTheme.colors.primary)
+}
+
+@Composable
+private fun NotFoundCard() {
+    Card {
+        Text(stringResource(id = R.string.no_frequency_commitment_was_found))
+    }
+}
+
+@Composable
+private fun FrequencyCommitmentCard(
     item: FrequencyCommitmentItemUIState,
     navigateToViolation: (RouteRef) -> Unit
 ) {
@@ -97,10 +115,9 @@ private fun Routes(routes: Collection<RouteUIState>, onRoutePressed: (RouteRef) 
 }
 
 @Composable
-private fun Frequency(uiState: FrequencyCommitmentFrequencyUIState) {
-    val frequency = stringResource(id = R.string.every_n_minutes_or_less, uiState.frequency)
+private fun Frequency(frequency: Long) {
     Text(
-        text = frequency,
+        text = stringResource(id = R.string.every_n_minutes_or_less, frequency),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -153,6 +170,15 @@ private fun DaysOfTheWeek(daysOfWeek: Collection<DayOfWeek>) {
     )
 }
 
+@Preview(name = "Loading [Light]", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "Loading [Dark]", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun PreviewLoadingCard() {
+    MobilispectTheme {
+        LoadingCard()
+    }
+}
+
 @Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
@@ -167,9 +193,7 @@ fun PreviewFrequencyCommitmentCard() {
                     endTime = LocalTime.of(21, 0),
                 )
             ),
-            frequency = FrequencyCommitmentFrequencyUIState(
-                frequency = 10,
-            ),
+            frequency = 10,
             routes = listOf(
                 RouteUIState(
                     route = "18: Beaubien",

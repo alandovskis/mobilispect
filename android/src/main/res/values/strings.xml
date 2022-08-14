@@ -8,4 +8,5 @@
     <string name="frequency_commitment">Frequency Commitment</string>
     <string name="frequency_violations">Frequency Violations: %s</string>
     <string name="no_departures_found">No departures were found</string>
+    <string name="no_frequency_commitment_was_found">No frequency commitment was found</string>
 </resources>

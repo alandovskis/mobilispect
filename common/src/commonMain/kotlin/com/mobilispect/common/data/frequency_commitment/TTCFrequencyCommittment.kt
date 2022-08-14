@@ -1,6 +1,6 @@
 package com.mobilispect.data.frequency
 
-import com.mobilispect.common.data.agency.AgencyRef
+import com.mobilispect.common.data.agency.TTC_ID
 import com.mobilispect.common.data.frequency_commitment.DirectionTime
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitment
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
@@ -8,8 +8,6 @@ import com.mobilispect.common.data.route.RouteRef
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime
-
-private val TTC_ID = AgencyRef(geohash = "dpz8", agencyName = "ttc")
 
 // Source: https://ttc-cdn.azureedge.net/-/media/Project/TTC/DevProto/Images/Home/Routes-and-Schedules/Landing-page-pdfs/TTC_SystemMap_2021-11.pdf?rev=58232b2f280d4314b6435c79199af773
 val item = FrequencyCommitmentItem(
@@ -78,4 +76,5 @@ val item = FrequencyCommitmentItem(
 
 val TTC_FREQUENCY_COMMITMENT = FrequencyCommitment(
     spans = listOf(item),
-    agency = TTC_ID)
+    agency = TTC_ID
+)
