@@ -1,5 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     kotlin("multiplatform")
     kotlin("kapt")
@@ -34,7 +36,7 @@ kotlin {
                 api("com.squareup.retrofit2:converter-gson:2.9.0")
                 implementation("com.google.dagger:dagger:2.42")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-                implementation("androidx.room:room-ktx:2.4.2")
+                implementation("androidx.room:room-ktx:2.4.3")
                 implementation("com.google.dagger:hilt-android:2.42")
             }
         }
@@ -44,11 +46,14 @@ kotlin {
 
                 // Improved Test Assertions
                 implementation("com.google.truth:truth:1.1.3")
+
+                // Kotlin Coroutines Testing
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
             }
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.4.2")
+                api("androidx.appcompat:appcompat:1.5.0")
                 api("androidx.core:core-ktx:1.8.0")
                 implementation("com.google.dagger:hilt-android:2.42")
                 configurations.getByName("kapt").dependencies.add(
@@ -75,34 +80,35 @@ kotlin {
         val androidTest by getting {
             dependencies {
                 implementation("junit:junit:4.13.2")
-                implementation("androidx.room:room-testing:2.4.2")
+                implementation("androidx.room:room-testing:2.4.3")
             }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-        }
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
+            val iosX64Main by getting
+            val iosArm64Main by getting
+            val iosSimulatorArm64Main by getting
+            val iosMain by creating {
+                dependsOn(commonMain)
+                iosX64Main.dependsOn(this)
+                iosArm64Main.dependsOn(this)
+                iosSimulatorArm64Main.dependsOn(this)
+            }
+            val iosX64Test by getting
+            val iosArm64Test by getting
+            val iosSimulatorArm64Test by getting
+            val iosTest by creating {
+                dependsOn(commonTest)
+                iosX64Test.dependsOn(this)
+                iosArm64Test.dependsOn(this)
+                iosSimulatorArm64Test.dependsOn(this)
+            }
         }
     }
-}
 
-android {
-    compileSdk = 32
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = 25
-        targetSdk = 32
+    android {
+        compileSdk = 32
+        sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+        defaultConfig {
+            minSdk = 25
+            targetSdk = 32
+        }
     }
 }
