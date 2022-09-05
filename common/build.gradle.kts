@@ -1,11 +1,8 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     kotlin("multiplatform")
     kotlin("kapt")
-    id("org.jetbrains.compose") version "1.0.1"
     id("com.android.library")
     kotlin("plugin.serialization") version "1.6.10"
     id("dagger.hilt.android.plugin")
@@ -29,30 +26,21 @@ kotlin {
             languageSettings.optIn("kotlin.RequiresOptIn")
         }
 
-        val commonMain by getting {
-            dependencies {
-                api("javax.inject:javax.inject:1")
-                api("com.squareup.retrofit2:retrofit:2.9.0")
-                api("com.squareup.retrofit2:converter-gson:2.9.0")
-                implementation("com.google.dagger:dagger:2.42")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-                implementation("androidx.room:room-ktx:2.4.3")
-                implementation("com.google.dagger:hilt-android:2.42")
-            }
-        }
+        val commonMain by getting
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-
-                // Improved Test Assertions
-                implementation("com.google.truth:truth:1.1.3")
-
-                // Kotlin Coroutines Testing
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
             }
         }
         val androidMain by getting {
             dependencies {
+                api("javax.inject:javax.inject:1")
+                implementation("com.google.dagger:dagger:2.42")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+                implementation("com.google.dagger:hilt-android:2.42")
+                api("com.squareup.retrofit2:retrofit:2.9.0")
+                api("com.squareup.retrofit2:converter-gson:2.9.0")
+                implementation("androidx.room:room-ktx:2.4.3")
                 api("androidx.appcompat:appcompat:1.5.0")
                 api("androidx.core:core-ktx:1.8.0")
                 implementation("com.google.dagger:hilt-android:2.42")
@@ -81,6 +69,12 @@ kotlin {
             dependencies {
                 implementation("junit:junit:4.13.2")
                 implementation("androidx.room:room-testing:2.4.3")
+
+                // Improved Test Assertions
+                implementation("com.google.truth:truth:1.1.3")
+
+                // Kotlin Coroutines Testing
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
             }
             val iosX64Main by getting
             val iosArm64Main by getting
@@ -102,13 +96,13 @@ kotlin {
             }
         }
     }
+}
 
-    android {
-        compileSdk = 32
-        sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-        defaultConfig {
-            minSdk = 25
-            targetSdk = 32
-        }
+android {
+    compileSdk = 32
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdk = 25
+        targetSdk = 32
     }
 }

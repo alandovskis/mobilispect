@@ -1,9 +1,6 @@
-package com.mobilispect.data.frequency
+package com.mobilispect.common.data.frequency_commitment
 
 import com.mobilispect.common.data.agency.TTC_ID
-import com.mobilispect.common.data.frequency_commitment.DirectionTime
-import com.mobilispect.common.data.frequency_commitment.FrequencyCommitment
-import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
 import com.mobilispect.common.data.route.RouteRef
 import java.time.DayOfWeek
 import java.time.Duration

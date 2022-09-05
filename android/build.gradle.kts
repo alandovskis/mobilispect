@@ -1,5 +1,4 @@
 plugins {
-    id("org.jetbrains.compose") version "1.0.1"
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
@@ -43,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+        kotlinCompilerExtensionVersion = "1.3.0"
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {

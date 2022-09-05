@@ -13,6 +13,7 @@ data class ScheduledStop(val routeRef: RouteRef, val stopRef: StopRef, val time:
                 get() = departsAt ?: arrivesAt
         }
 
-        data class Frequency(val start: LocalTime, val end: LocalTime, val duration: Duration) : Time
+        data class Frequency(val start: LocalTime, val end: LocalTime, val duration: Duration) :
+            Time
     }
 }

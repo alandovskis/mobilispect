@@ -3,7 +3,6 @@ package com.mobilispect.common.data.frequency_commitment
 import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.agency.STM_ID
 import com.mobilispect.common.data.agency.TTC_ID
-import com.mobilispect.data.frequency.TTC_FREQUENCY_COMMITMENT
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject

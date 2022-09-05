@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "routes")
 data class Route(
     @PrimaryKey
-   val id: RouteRef,
+    val id: RouteRef,
 
     @ColumnInfo(name = "short_name")
-   val shortName: String,
+    val shortName: String,
 
     @ColumnInfo(name = "long_name")
-   val longName: String,
+    val longName: String,
 )
