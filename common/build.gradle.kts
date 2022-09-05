@@ -1,11 +1,14 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+// TODO: Remove once https://youtrack.jetbrains.com/issue/KTIJ-19369 is fixed - for alias call
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
     kotlin("kapt")
     id("com.android.library")
     kotlin("plugin.serialization") version "1.6.10"
     id("dagger.hilt.android.plugin")
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -34,17 +37,15 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("javax.inject:javax.inject:1")
-                implementation("com.google.dagger:dagger:2.42")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-                implementation("com.google.dagger:hilt-android:2.42")
-                api("com.squareup.retrofit2:retrofit:2.9.0")
-                api("com.squareup.retrofit2:converter-gson:2.9.0")
-                implementation("androidx.room:room-ktx:2.4.3")
-                api("androidx.appcompat:appcompat:1.5.0")
-                api("androidx.core:core-ktx:1.8.0")
-                implementation("com.google.dagger:hilt-android:2.42")
-                configurations.getByName("kapt").dependencies.add(
+                api(libs.javax.inject)
+                implementation(libs.dagger)
+                implementation(libs.kotlinx.serialization)
+                implementation(libs.hilt.android)
+                api(libs.bundles.retrofit)
+                implementation(libs.room.ktx)
+                api(libs.appcompat)
+                api(libs.core.ktx)
+                configurations.getByName("ksp").dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "androidx.room",
                         "room-compiler",
@@ -58,23 +59,14 @@ kotlin {
                         "2.42"
                     )
                 )
-                kapt {
-                    arguments {
-                        arg("room.schemaLocation", "$projectDir/schemas")
-                    }
-                }
             }
         }
         val androidTest by getting {
             dependencies {
-                implementation("junit:junit:4.13.2")
-                implementation("androidx.room:room-testing:2.4.3")
-
-                // Improved Test Assertions
-                implementation("com.google.truth:truth:1.1.3")
-
-                // Kotlin Coroutines Testing
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+                implementation(libs.junit)
+                implementation(libs.room.testing)
+                implementation(libs.truth)
+                implementation(libs.kotlinx.coroutines.test)
             }
             val iosX64Main by getting
             val iosArm64Main by getting
@@ -104,5 +96,9 @@ android {
     defaultConfig {
         minSdk = 25
         targetSdk = 32
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 }

@@ -54,50 +54,34 @@ dependencies {
     implementation(project(":common"))
 
     //region Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.42")
-    testImplementation("junit:junit:4.13.2")
-    kapt("com.google.dagger:hilt-compiler:2.42")
-    testImplementation("com.google.dagger:hilt-android-testing:2.42")
-    kaptTest("com.google.dagger:hilt-compiler:2.42")
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.42")
-    kaptAndroidTest("com.google.dagger:hilt-compiler:2.42")
+    implementation(libs.hilt.android)
+    testImplementation(libs.junit)
+    kapt(libs.hilt.compiler)
+    testImplementation(libs.hilt.android.testing)
+    kaptTest(libs.hilt.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
     //endregion
 
     //region UI
-    implementation("androidx.activity:activity-compose:1.5.1")
-    implementation("androidx.compose.ui:ui:1.2.1")
-    // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.2.1")
-    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation("androidx.compose.foundation:foundation:1.2.1")
-    // Material Design
-    implementation("androidx.compose.material:material:1.2.1")
-    // Material design icons
-    implementation("androidx.compose.material:material-icons-core:1.2.1")
-    implementation("androidx.compose.material:material-icons-extended:1.2.1")
-    // Integration with activities
-    implementation("androidx.activity:activity-compose:1.5.1")
+    implementation(libs.bundles.compose)
     // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
-    // Integration with observables
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.1")
+    implementation(libs.lifecycle.viewmodel.compose)
 
     //region Architecture Components
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation(libs.bundles.lifecycle)
+    implementation(libs.hilt.navigation.compose)
     //endregion
 
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
+    androidTestImplementation(libs.compose.ui.test.junit)
+    debugImplementation(libs.compose.ui.test.manifest)
     //endregion
 
     //region Test Assertions
-    androidTestImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    androidTestImplementation(libs.truth)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
     //endregion
 }
 
