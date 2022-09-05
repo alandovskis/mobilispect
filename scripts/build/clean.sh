@@ -7,7 +7,7 @@
 set -euo pipefail
 
 ROOT="$(dirname "$0")/../.."
-DIRECTORIES=(android common desktop)
+DIRECTORIES=(android common ios)
 
 rm -rf "${ROOT}/build"
 
