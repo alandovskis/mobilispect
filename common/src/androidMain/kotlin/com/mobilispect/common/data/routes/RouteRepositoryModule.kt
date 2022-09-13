@@ -1,6 +1,6 @@
 package com.mobilispect.common.data.routes
 
-import com.mobilispect.common.data.route.DefaultRouteRepository
+import com.mobilispect.common.data.route.OfflineFirstRouteRepository
 import com.mobilispect.common.data.route.RouteRepository
 import dagger.Binds
 import dagger.Module
@@ -11,5 +11,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal interface RouteRepositoryModule {
     @Binds
-    fun repository(repository: DefaultRouteRepository): RouteRepository
+    fun repository(repository: OfflineFirstRouteRepository): RouteRepository
 }
