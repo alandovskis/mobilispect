@@ -48,6 +48,11 @@ android {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions
     }
+
+    lint {
+        // SARIF is the format supported by GitHub Pull Requests.
+        sarifReport = true
+    }
 }
 
 dependencies {
