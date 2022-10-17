@@ -2,6 +2,7 @@
 activity = "1.5.1"
 appcompat = "1.5.0"
 coreKtx = "1.8.0"
+detekt = "1.21.0"
 hilt = "2.42"
 javaxInject = "1"
 jetpackCompose = "1.2.1"
@@ -81,6 +82,9 @@ room-testing = { group = "androidx.room", name = "room-testing", version.ref = "
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 
 [plugins]
+# A static code analyzer for Kotlin
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
