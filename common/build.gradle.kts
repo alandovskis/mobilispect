@@ -59,6 +59,7 @@ kotlin {
                         "2.42"
                     )
                 )
+                implementation(libs.okhttp.profiler)
             }
         }
         val androidTest by getting {
