@@ -28,6 +28,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Run detekt
+        run: ./gradlew android:detekt
+
       - name: Check lint
         run: ./gradlew android:lintDebug --stacktrace
 
@@ -49,7 +52,11 @@ jobs:
       - name: Run local tests
         run: ./gradlew test --stacktrace
 
-
-
       - name: Run local tests
         run: ./gradlew testDemoDebug testProdDebug --stacktrace
+
+      - name: Upload detekt report
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: android/build/reports/detekt/detekt.sarif

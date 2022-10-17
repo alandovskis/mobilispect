@@ -1,3 +1,5 @@
+// TODO: Remove once https://youtrack.jetbrains.com/issue/KTIJ-19369 is fixed - for alias call
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -61,6 +63,12 @@ android {
         // Merge reports of dependencies together.
         checkDependencies = true
     }
+
+    detekt {
+        // Specify the base path for file paths in the formatted reports.
+        // If not set, all file paths reported will be absolute file path.
+        basePath = projectDir.path
+    }
 }
 
 dependencies {
@@ -99,4 +107,3 @@ dependencies {
 
     coreLibraryDesugaring(libs.android.desugar.libs)
 }
-
