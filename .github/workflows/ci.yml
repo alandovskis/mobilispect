@@ -1,7 +1,9 @@
-name: Post-submit
+name: CI
 
 on:
   push:
+    branches: [ "main", "mobile" ]
+  pull_request:
     branches: [ "main", "mobile" ]
 
   # Allows you to run this workflow manually from the Actions tab
