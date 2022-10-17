@@ -28,7 +28,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Check lint
-        run: ./gradlew lintDebug --stacktrace
+        run: ./gradlew android:lintDebug --stacktrace
 
       - name: Build all build type and flavor permutations
         run: ./gradlew assemble --stacktrace
