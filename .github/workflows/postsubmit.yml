@@ -30,6 +30,12 @@ jobs:
       - name: Check lint
         run: ./gradlew android:lintDebug --stacktrace
 
+      - name: Upload lint report
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: android/build/reports/lint-results-debug.sarif
+
       - name: Build all build type and flavor permutations
         run: ./gradlew assemble --stacktrace
       - name: Gradle Build Action
