@@ -52,6 +52,9 @@ android {
     lint {
         // SARIF is the format supported by GitHub Pull Requests.
         sarifReport = true
+
+        // Merge reports of dependencies together.
+        checkDependencies = true
     }
 }
 
