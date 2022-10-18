@@ -13,7 +13,6 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import javax.inject.Inject
 
-
 @HiltViewModel
 class FrequencyCommitmentViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
