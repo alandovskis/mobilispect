@@ -1,3 +1,5 @@
+@file:Suppress("FunctionNames")
+
 package com.mobilispect.android.ui.frequency_violation
 
 import androidx.compose.foundation.layout.Column
@@ -13,9 +15,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
-import com.mobilispect.common.domain.frequency_violation.NoDeparturesFound
 import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
+import com.mobilispect.common.domain.frequency_violation.NoDeparturesFound
 
 @Composable
 fun FrequencyViolationRoute(routeRef: String?) {
@@ -25,11 +27,19 @@ fun FrequencyViolationRoute(routeRef: String?) {
 }
 
 @Composable
-fun FrequencyViolationScreen(routeRef: RouteRef, frequencyViolationViewModel: FrequencyViolationViewModel = hiltViewModel()) {
+fun FrequencyViolationScreen(
+    routeRef: RouteRef,
+    frequencyViolationViewModel: FrequencyViolationViewModel = hiltViewModel()
+) {
     frequencyViolationViewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef)
     val violations by frequencyViolationViewModel.violations.observeAsState()
 
-    ScreenFrame(stringResource(id = R.string.frequency_violations, routeRef.routeNumber)) { modifier ->
+    ScreenFrame(
+        stringResource(
+            id = R.string.frequency_violations,
+            routeRef.routeNumber
+        )
+    ) { modifier ->
         Column(modifier = modifier) {
             if (violations != null) {
                 FrequencyViolationCard(
@@ -51,7 +61,8 @@ private fun FrequencyViolationCard(
     violations: Result<List<FrequencyViolationInstanceUIState>>
 ) {
     Card(title = "Direction $direction") {
-        Column(modifier = Modifier
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
         ) {
             if (violations.isFailure) {
