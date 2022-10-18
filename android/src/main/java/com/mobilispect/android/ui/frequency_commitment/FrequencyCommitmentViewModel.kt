@@ -55,15 +55,14 @@ class FrequencyCommitmentViewModel @Inject constructor(
             }
         }
 
-    private fun directions(item: FrequencyCommitmentItem): List<FrequencyCommitmentDirectionUIState> {
-        return item.directions.map { directionTime ->
+    private fun directions(item: FrequencyCommitmentItem): List<FrequencyCommitmentDirectionUIState> =
+        item.directions.map { directionTime ->
             FrequencyCommitmentDirectionUIState(
                 direction = directionTime.direction,
                 startTime = directionTime.start,
                 endTime = directionTime.end,
             )
         }
-    }
 }
 
 sealed interface FrequencyCommitmentUIState
