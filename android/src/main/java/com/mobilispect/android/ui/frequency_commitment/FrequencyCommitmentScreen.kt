@@ -1,4 +1,10 @@
-@file:Suppress("TooManyFunctions", "FunctionNaming", "WildcardImport")
+@file:Suppress(
+    "TooManyFunctions",
+    "FunctionNaming",
+    "WildcardImport",
+    "PackageNaming",
+    "MagicNumber"
+)
 
 package com.mobilispect.android.ui.frequency_commitment
 
@@ -194,13 +200,15 @@ fun PreviewLoadingCard() {
 @Composable
 fun PreviewFrequencyCommitmentCard() {
     MobilispectTheme {
+        val startTime = LocalTime.of(6, 0)
+        val endTime = LocalTime.of(21, 0)
         val uiState = FrequencyCommitmentItemUIState(
             daysOfTheWeek = WEEKDAYS,
             directions = listOf(
                 FrequencyCommitmentDirectionUIState(
                     direction = Inbound,
-                    startTime = LocalTime.of(6, 0),
-                    endTime = LocalTime.of(21, 0),
+                    startTime = startTime,
+                    endTime = endTime,
                 )
             ),
             frequency = 10,

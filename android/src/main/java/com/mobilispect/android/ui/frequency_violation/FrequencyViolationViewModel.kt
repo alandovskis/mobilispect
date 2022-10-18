@@ -1,3 +1,5 @@
+@file:Suppress("PackageNaming", "MagicNumber")
+
 package com.mobilispect.android.ui.frequency_violation
 
 import androidx.lifecycle.LiveData
@@ -73,5 +75,6 @@ data class FrequencyViolationUIState(
 data class FrequencyViolationInstanceUIState(
     val start: String,
     val end: String,
+    @Suppress("ConstructorParameterNaming")
     val violatedBy_m: Long
 )

@@ -1,3 +1,5 @@
+@file:Suppress("PackageNaming")
+
 package com.mobilispect.android.ui.frequency_commitment
 
 import androidx.lifecycle.ViewModel

@@ -1,3 +1,5 @@
+@file:Suppress("FunctionNaming")
+
 package com.mobilispect.android.navigation
 
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-@file:Suppress("FunctionNames")
+@file:Suppress("FunctionNaming")
 
 package com.mobilispect.android.ui.theme
 

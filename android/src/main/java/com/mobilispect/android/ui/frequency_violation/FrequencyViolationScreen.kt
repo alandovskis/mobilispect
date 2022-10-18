@@ -1,4 +1,4 @@
-@file:Suppress("FunctionNames")
+@file:Suppress("FunctionNaming", "PackageNaming")
 
 package com.mobilispect.android.ui.frequency_violation
 
