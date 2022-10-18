@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.mobilispect.android.ui.theme
 
 import androidx.compose.ui.graphics.Color
