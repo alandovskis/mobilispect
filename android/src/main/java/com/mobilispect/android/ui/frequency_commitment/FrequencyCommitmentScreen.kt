@@ -1,4 +1,4 @@
-@file:Suppress("TooManyFunctions", "FunctionNaming")
+@file:Suppress("TooManyFunctions", "FunctionNaming", "WildcardImport")
 
 package com.mobilispect.android.ui.frequency_commitment
 
