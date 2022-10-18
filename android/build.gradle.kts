@@ -67,7 +67,7 @@ android {
     detekt {
         // Specify the base path for file paths in the formatted reports.
         // If not set, all file paths reported will be absolute file path.
-        basePath = projectDir.path
+        basePath = projectDir.parent
     }
 }
 
