@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentRepository
-import com.mobilispect.common.data.route.RouteRepository
 import com.mobilispect.common.data.route.RouteRef
+import com.mobilispect.common.data.route.RouteRepository
 import com.mobilispect.common.data.schedule.Direction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
@@ -45,7 +45,8 @@ class FrequencyCommitmentViewModel @Inject constructor(
                 if (value != null) {
                     RouteUIState(
                         route = "${value.shortName}: ${value.longName}",
-                        routeRef = routeRef)
+                        routeRef = routeRef
+                    )
                 } else {
                     null
                 }
@@ -70,7 +71,7 @@ object Loading : FrequencyCommitmentUIState
 object NoCommitmentFound : FrequencyCommitmentUIState
 data class CommitmentFound(
     val items: Collection<FrequencyCommitmentItemUIState>,
-): FrequencyCommitmentUIState
+) : FrequencyCommitmentUIState
 
 data class FrequencyCommitmentItemUIState(
     val daysOfTheWeek: Collection<DayOfWeek>,
@@ -85,7 +86,9 @@ data class FrequencyCommitmentDirectionUIState(
     val endTime: LocalTime,
 ) {
     val isBothDirections: Boolean
-        get() = com.mobilispect.common.data.frequency_commitment.DirectionTime.isBothDirections(direction = direction)
+        get() = com.mobilispect.common.data.frequency_commitment.DirectionTime.isBothDirections(
+            direction = direction
+        )
 }
 
 data class RouteUIState(
