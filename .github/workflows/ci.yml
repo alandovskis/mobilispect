@@ -42,7 +42,8 @@ jobs:
         if: always()
 
       - name: Build all build type and flavor permutations
-        run: ./gradlew assemble --stacktrace
+        run: ./gradlew android:assemble
+
       - name: Gradle Build Action
         uses: gradle/gradle-build-action@v2.2.0
         with:
