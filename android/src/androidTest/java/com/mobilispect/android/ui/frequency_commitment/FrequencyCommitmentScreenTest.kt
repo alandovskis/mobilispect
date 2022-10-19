@@ -2,8 +2,10 @@ package com.mobilispect.android.ui.frequency_commitment
 
 import android.os.SystemClock
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.time.WEEKDAYS
@@ -20,7 +22,7 @@ class FrequencyCommitmentScreenTest {
         composeTestRule.setContent {
             MobilispectTheme {
                 FrequencyCommitmentScreen(
-                    uiState = FrequencyCommitmentUIState(
+                    uiState = CommitmentFound(
                         items = listOf(
                             FrequencyCommitmentItemUIState(
                                 directions = listOf(
@@ -31,7 +33,7 @@ class FrequencyCommitmentScreenTest {
                                     )
                                 ),
                                 daysOfTheWeek = WEEKDAYS,
-                                frequency = FrequencyCommitmentFrequencyUIState(frequency = 10),
+                                frequency = 10,
                                 routes = listOf(
                                     RouteUIState(
                                         route = "141",
@@ -65,23 +67,23 @@ class FrequencyCommitmentScreenTest {
         composeTestRule.setContent {
             MobilispectTheme {
                 FrequencyCommitmentScreen(
-                    uiState = FrequencyCommitmentUIState(
+                    uiState = CommitmentFound(
                         items = listOf(
                             FrequencyCommitmentItemUIState(
                                 directions = listOf(
                                     FrequencyCommitmentDirectionUIState(
-                                        direction = com.mobilispect.data.frequency.Direction.Inbound,
+                                        direction = com.mobilispect.common.data.schedule.Direction.Inbound,
                                         startTime = LocalTime.of(6, 0),
                                         endTime = LocalTime.of(14, 0)
                                     ),
                                     FrequencyCommitmentDirectionUIState(
-                                        direction = com.mobilispect.data.frequency.Direction.Outbound,
+                                        direction = com.mobilispect.common.data.schedule.Direction.Outbound,
                                         startTime = LocalTime.of(14, 0),
                                         endTime = LocalTime.of(21, 0)
                                     )
                                 ),
                                 daysOfTheWeek = WEEKDAYS,
-                                frequency = FrequencyCommitmentFrequencyUIState(frequency = 10),
+                                frequency = 10,
                                 routes = listOf(
                                     RouteUIState(
                                         route = "141",
