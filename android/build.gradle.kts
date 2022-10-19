@@ -62,6 +62,17 @@ android {
 
         // Merge reports of dependencies together.
         checkDependencies = true
+
+        // Normally most lint checks are not run on test sources (except the checks
+        // dedicated to looking for mistakes in unit or instrumentation tests, unless
+        // ignoreTestSources is true). You can turn on normal lint checking in all
+        // sources with the following flag, false by default:
+        checkTestSources = false
+
+        // Like checkTestSources, but always skips analyzing tests -- meaning that it
+        // also ignores checks that have explicitly asked to look at test sources, such
+        // as the unused resource check.
+        ignoreTestSources = true
     }
 
     detekt {
