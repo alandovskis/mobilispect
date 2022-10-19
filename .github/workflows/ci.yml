@@ -41,21 +41,11 @@ jobs:
         run: ./gradlew android:lintDebug
         if: always()
 
-      - name: Build all build type and flavor permutations
+      - name: Build Android APKs
         run: ./gradlew android:assemble
 
-      - name: Gradle Build Action
-        uses: gradle/gradle-build-action@v2.2.0
-        with:
-          cache-disabled: true
-          generate-job-summary: true
-          arguments: android:assemble
-
-      - name: Run local tests
-        run: ./gradlew test --stacktrace
-
-      - name: Run local tests
-        run: ./gradlew testDemoDebug testProdDebug --stacktrace
+      - name: Run Android local tests
+        run: ./gradlew android:test
 
       - name: Upload detekt report
         uses: github/codeql-action/upload-sarif@v2
