@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.mobilispect.android.testing
 
 import android.annotation.SuppressLint
 import kotlinx.coroutines.Dispatchers
