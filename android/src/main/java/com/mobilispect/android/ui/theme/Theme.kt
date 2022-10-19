@@ -1,3 +1,5 @@
+@file:Suppress("FunctionNaming")
+
 package com.mobilispect.android.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -36,18 +38,18 @@ private val DarkColors = darkColors(
 
 @Composable
 fun MobilispectTheme(
-  useDarkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable() () -> Unit
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable() () -> Unit
 ) {
-  val colors = if (!useDarkTheme) {
-    LightColors
-  } else {
-    DarkColors
-  }
+    val colors = if (!useDarkTheme) {
+        LightColors
+    } else {
+        DarkColors
+    }
 
-  MaterialTheme(
-    colors = colors,
-    typography = Typography,
-    content = content
-  )
+    MaterialTheme(
+        colors = colors,
+        typography = Typography,
+        content = content
+    )
 }

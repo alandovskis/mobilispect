@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.mobilispect.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,7 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:label="Mobilispect"
-        android:dataExtractionRules="@xml/data_extraction_rules">
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/auto_backup_rules"
+        tools:targetApi="s">
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

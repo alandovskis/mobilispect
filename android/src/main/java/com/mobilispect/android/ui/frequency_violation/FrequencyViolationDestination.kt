@@ -1,3 +1,5 @@
+@file:Suppress("PackageNaming")
+
 package com.mobilispect.android.ui.frequency_violation
 
 import androidx.navigation.NavGraphBuilder
@@ -13,7 +15,8 @@ object FrequencyViolationDestination : NavDestination {
 
 fun NavGraphBuilder.violationGraph() {
     composable(route = "${FrequencyViolationDestination.route}/{routeRef}",
-        arguments = listOf(navArgument("routeRef") { type = NavType.StringType })) { backStackEntry ->
+        arguments = listOf(navArgument("routeRef") { type = NavType.StringType })
+    ) { backStackEntry ->
         FrequencyViolationRoute(backStackEntry.arguments?.getString("routeRef"))
     }
 }

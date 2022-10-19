@@ -1,3 +1,5 @@
+@file:Suppress("FunctionNaming")
+
 package com.mobilispect.android.ui
 
 import androidx.compose.foundation.layout.Column

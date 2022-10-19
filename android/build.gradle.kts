@@ -1,8 +1,11 @@
+// TODO: Remove once https://youtrack.jetbrains.com/issue/KTIJ-19369 is fixed - for alias call
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -19,7 +22,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     compileOptions {
+        // Enable de-sugaring of Java 8 APIs
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -56,6 +63,12 @@ android {
         // Merge reports of dependencies together.
         checkDependencies = true
     }
+
+    detekt {
+        // Specify the base path for file paths in the formatted reports.
+        // If not set, all file paths reported will be absolute file path.
+        basePath = projectDir.parent
+    }
 }
 
 dependencies {
@@ -91,5 +104,6 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
     //endregion
-}
 
+    coreLibraryDesugaring(libs.android.desugar.libs)
+}

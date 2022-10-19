@@ -1,3 +1,5 @@
+@file:Suppress("PackageNaming")
+
 package com.mobilispect.android.ui.frequency_commitment
 
 import MainDispatcherRule
@@ -50,10 +52,11 @@ class FrequencyCommitmentViewModelTest {
     @Test
     fun commitmentFound_bothDirections_routeNotFound() = runTest {
         val agency = agencyRef
-        val expectedDirections = com.mobilispect.common.data.frequency_commitment.DirectionTime.both(
-            start = LocalTime.of(6, 0),
-            end = LocalTime.of(21, 0)
-        )
+        val expectedDirections =
+            com.mobilispect.common.data.frequency_commitment.DirectionTime.both(
+                start = LocalTime.of(6, 0),
+                end = LocalTime.of(21, 0)
+            )
         val commitmentItem = FrequencyCommitmentItem(
             daysOfWeek = WEEKDAYS, frequency = Duration.ofMinutes(10),
             directions = expectedDirections,
@@ -100,10 +103,11 @@ class FrequencyCommitmentViewModelTest {
         routeRepository.insert(route)
 
         val agency = agencyRef
-        val expectedDirections = com.mobilispect.common.data.frequency_commitment.DirectionTime.both(
-            start = LocalTime.of(6, 0),
-            end = LocalTime.of(21, 0)
-        )
+        val expectedDirections =
+            com.mobilispect.common.data.frequency_commitment.DirectionTime.both(
+                start = LocalTime.of(6, 0),
+                end = LocalTime.of(21, 0)
+            )
         val commitmentItem = FrequencyCommitmentItem(
             daysOfWeek = WEEKDAYS, frequency = Duration.ofMinutes(10),
             directions = expectedDirections,

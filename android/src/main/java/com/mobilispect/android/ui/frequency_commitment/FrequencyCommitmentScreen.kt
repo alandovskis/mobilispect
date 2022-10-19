@@ -1,9 +1,19 @@
+@file:Suppress(
+    "TooManyFunctions",
+    "FunctionNaming",
+    "WildcardImport",
+    "PackageNaming",
+    "MagicNumber"
+)
+
 package com.mobilispect.android.ui.frequency_commitment
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,7 +30,8 @@ import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.common.data.agency.STM_ID
 import com.mobilispect.common.data.route.RouteRef
-import com.mobilispect.common.data.schedule.Direction.*
+import com.mobilispect.common.data.schedule.Direction.Inbound
+import com.mobilispect.common.data.schedule.Direction.Outbound
 import com.mobilispect.common.data.time.WEEKDAYS
 import java.time.DayOfWeek
 import java.time.LocalTime
@@ -45,8 +56,10 @@ fun FrequencyCommitmentScreen(
     navigateToViolation: (RouteRef) -> Unit
 ) {
     ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) { modifier ->
-        FrequencyCommitmentEntryCards(uiState = uiState, navigateToViolation = navigateToViolation,
-            modifier = modifier)
+        FrequencyCommitmentEntryCards(
+            uiState = uiState, navigateToViolation = navigateToViolation,
+            modifier = modifier
+        )
     }
 }
 
@@ -72,7 +85,10 @@ fun FrequencyCommitmentEntryCards(
 
 @Composable
 private fun LoadingCard() {
-    CircularProgressIndicator(modifier = Modifier.size(100.dp), color = MaterialTheme.colors.primary)
+    CircularProgressIndicator(
+        modifier = Modifier.size(100.dp),
+        color = MaterialTheme.colors.primary
+    )
 }
 
 @Composable
@@ -184,13 +200,15 @@ fun PreviewLoadingCard() {
 @Composable
 fun PreviewFrequencyCommitmentCard() {
     MobilispectTheme {
+        val startTime = LocalTime.of(6, 0)
+        val endTime = LocalTime.of(21, 0)
         val uiState = FrequencyCommitmentItemUIState(
             daysOfTheWeek = WEEKDAYS,
             directions = listOf(
                 FrequencyCommitmentDirectionUIState(
                     direction = Inbound,
-                    startTime = LocalTime.of(6, 0),
-                    endTime = LocalTime.of(21, 0),
+                    startTime = startTime,
+                    endTime = endTime,
                 )
             ),
             frequency = 10,

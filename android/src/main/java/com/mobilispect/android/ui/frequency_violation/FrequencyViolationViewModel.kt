@@ -1,3 +1,5 @@
+@file:Suppress("PackageNaming", "MagicNumber")
+
 package com.mobilispect.android.ui.frequency_violation
 
 import androidx.lifecycle.LiveData
@@ -6,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.mobilispect.common.data.frequency_commitment.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
+import com.mobilispect.common.data.stop.StopRef
 import com.mobilispect.common.domain.frequency_violation.FindFrequencyViolationsOnDayAtStopUseCase
 import com.mobilispect.common.domain.frequency_violation.FrequencyViolation
-import com.mobilispect.common.data.stop.StopRef
 import com.mobilispect.common.domain.time.FormatTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -73,5 +75,6 @@ data class FrequencyViolationUIState(
 data class FrequencyViolationInstanceUIState(
     val start: String,
     val end: String,
+    @Suppress("ConstructorParameterNaming")
     val violatedBy_m: Long
 )
