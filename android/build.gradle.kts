@@ -34,6 +34,11 @@ android {
         getByName("release") {
             isMinifyEnabled = false
         }
+        create("benchmark") {
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+        }
     }
     packagingOptions {
         resources {

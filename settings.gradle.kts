@@ -9,3 +9,4 @@ pluginManagement {
 rootProject.name = "Mobilispect"
 include(":android")
 include(":common")
+include(":benchmark")
