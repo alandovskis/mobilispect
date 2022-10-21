@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 internal class OfflineFirstRouteRepository @Inject constructor(
     private val coroutineDispatcher: CoroutineDispatcher,
-    private val transitLandDataSource: TransitLandRouteDataSource,
+    private val routeNetworkDataSource: RouteNetworkDataSource,
     private val routeDAO: RouteDAO
 ) :
     RouteRepository {
@@ -17,7 +17,7 @@ internal class OfflineFirstRouteRepository @Inject constructor(
                 return@withContext Result.success(cachedRoute)
             }
 
-            return@withContext transitLandDataSource.invoke(routeRef)
+            return@withContext routeNetworkDataSource.invoke(routeRef)
                 .onSuccess { networkRoute ->
                     if (networkRoute != null) {
                         routeDAO.insert(networkRoute)

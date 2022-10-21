@@ -8,8 +8,8 @@ import javax.inject.Inject
  */
 internal class TransitLandRouteDataSource @Inject constructor(
     private val transitLandAPI: TransitLandClient,
-) {
-    suspend operator fun invoke(routeRef: RouteRef): Result<Route?> =
+) : RouteNetworkDataSource {
+    override suspend operator fun invoke(routeRef: RouteRef): Result<Route?> =
         transitLandAPI.fromRef(routeRef.id)
             .map { cloudRoute ->
                 if (cloudRoute.routes.isEmpty()) {
