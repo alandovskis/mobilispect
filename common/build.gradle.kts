@@ -9,6 +9,7 @@ plugins {
     kotlin("plugin.serialization") version "1.6.10"
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
 }
 
 kotlin {
