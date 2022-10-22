@@ -4,6 +4,9 @@ import com.google.common.truth.Truth.assertThat
 import com.mobilispect.common.domain.time.FormatTimeUseCase
 import org.junit.Test
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 
 internal class FormatTimeUseCaseTest {
@@ -12,6 +15,8 @@ internal class FormatTimeUseCaseTest {
     @Test
     fun givenValidDateInEvening() {
         val actual = subject(LocalDateTime.of(2022, 7, 20, 23, 59))
+
+        assertThat(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).locale).isEqualTo(Locale.CANADA)
         assertThat(actual).isEqualTo("11:59 p.m.")
     }
 
