@@ -59,6 +59,12 @@ jobs:
         with:
           sarif_file: android/build/reports/lint-results-debug.sarif
 
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          path: '*/build/reports/tests'
+
   androidTest:
     needs: build
     runs-on: macOS-latest # enables hardware acceleration in the virtual machine
