@@ -70,6 +70,7 @@ kotlin {
                 implementation(libs.room.testing)
                 implementation(libs.truth)
                 implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.mockWebServer)
             }
             val iosX64Main by getting
             val iosArm64Main by getting
