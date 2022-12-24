@@ -72,24 +72,31 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.mockWebServer)
             }
-            val iosX64Main by getting
-            val iosArm64Main by getting
-            val iosSimulatorArm64Main by getting
-            val iosMain by creating {
-                dependsOn(commonMain)
-                iosX64Main.dependsOn(this)
-                iosArm64Main.dependsOn(this)
-                iosSimulatorArm64Main.dependsOn(this)
+        }
+
+        val androidAndroidTest by getting {
+            dependencies {
+                implementation(libs.hilt.android.testing)
             }
-            val iosX64Test by getting
-            val iosArm64Test by getting
-            val iosSimulatorArm64Test by getting
-            val iosTest by creating {
-                dependsOn(commonTest)
-                iosX64Test.dependsOn(this)
-                iosArm64Test.dependsOn(this)
-                iosSimulatorArm64Test.dependsOn(this)
-            }
+        }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
+        val iosX64Test by getting
+        val iosArm64Test by getting
+        val iosSimulatorArm64Test by getting
+        val iosTest by creating {
+            dependsOn(commonTest)
+            iosX64Test.dependsOn(this)
+            iosArm64Test.dependsOn(this)
+            iosSimulatorArm64Test.dependsOn(this)
         }
     }
 }
@@ -107,7 +114,7 @@ android {
     }
 
     compileOptions {
-        // Enable de-sugaring of Java 8 APIs
+// Enable de-sugaring of Java 8 APIs
         isCoreLibraryDesugaringEnabled = true
 
         sourceCompatibility = JavaVersion.VERSION_1_8
