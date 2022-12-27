@@ -40,7 +40,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.test.ext:junit:1.1.3")
+    implementation(libs.androidx.test.ext.junit)
     implementation("androidx.test.espresso:espresso-core:3.4.0")
     implementation("androidx.test.uiautomator:uiautomator:2.2.0")
     implementation("androidx.benchmark:benchmark-macro-junit4:1.1.0")
