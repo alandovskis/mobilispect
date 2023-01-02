@@ -21,7 +21,8 @@ android {
             useSupportLibrary = true
         }
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Use HiltTestApplication in instrumented tests
+        testInstrumentationRunner = "com.mobilispect.android.CustomTestRunner"
     }
 
     compileOptions {
@@ -82,6 +83,7 @@ dependencies {
 
     //region Dependency Injection
     implementation(libs.hilt.android)
+    androidTestImplementation(libs.androidx.test.runner)
     testImplementation(libs.junit)
     kapt(libs.hilt.compiler)
     testImplementation(libs.hilt.android.testing)
