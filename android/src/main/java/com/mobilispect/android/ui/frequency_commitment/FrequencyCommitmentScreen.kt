@@ -13,8 +13,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
+import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.common.data.agency.STM_ID
@@ -84,15 +87,7 @@ fun FrequencyCommitmentEntryCards(
 }
 
 @Composable
-private fun LoadingCard() {
-    CircularProgressIndicator(
-        modifier = Modifier.size(100.dp),
-        color = MaterialTheme.colors.primary
-    )
-}
-
-@Composable
-private fun NotFoundCard() {
+fun NotFoundCard() {
     Card {
         Text(stringResource(id = R.string.no_frequency_commitment_was_found))
     }
@@ -184,15 +179,6 @@ private fun DaysOfTheWeek(daysOfWeek: Collection<DayOfWeek>) {
         text = days,
         modifier = Modifier.fillMaxWidth()
     )
-}
-
-@Preview(name = "Loading [Light]", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Loading [Dark]", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Composable
-fun PreviewLoadingCard() {
-    MobilispectTheme {
-        LoadingCard()
-    }
 }
 
 @Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
