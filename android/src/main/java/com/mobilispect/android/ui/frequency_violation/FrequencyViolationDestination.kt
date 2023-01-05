@@ -14,7 +14,8 @@ object FrequencyViolationDestination : NavDestination {
 }
 
 fun NavGraphBuilder.violationGraph() {
-    composable(route = "${FrequencyViolationDestination.route}/{routeRef}",
+    composable(
+        route = "${FrequencyViolationDestination.route}/{routeRef}",
         arguments = listOf(navArgument("routeRef") { type = NavType.StringType })
     ) { backStackEntry ->
         FrequencyViolationRoute(backStackEntry.arguments?.getString("routeRef"))
