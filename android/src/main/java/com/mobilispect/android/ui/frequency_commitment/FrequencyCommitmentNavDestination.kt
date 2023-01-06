@@ -3,8 +3,9 @@
 package com.mobilispect.android.ui.frequency_commitment
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import androidx.navigation.navArgument
 import com.mobilispect.android.navigation.NavDestination
 import com.mobilispect.common.data.route.RouteRef
 
@@ -17,15 +18,14 @@ fun NavGraphBuilder.frequencyGraph(
     navigateToViolation: (RouteRef) -> Unit,
     nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
-    navigation(
-        route = FrequencyCommitmentNavDestination.route,
-        startDestination = FrequencyCommitmentNavDestination.destination
-    ) {
-        composable(route = FrequencyCommitmentNavDestination.destination) {
-            FrequencyCommitmentRoute(
-                navigateToViolation = navigateToViolation
-            )
-        }
-        nestedGraphs()
+    composable(
+        route = "${FrequencyCommitmentNavDestination.route}/{agencyRef}",
+        arguments = listOf(navArgument("agencyRef") { type = NavType.StringType })
+    ) { backStackEntry ->
+        FrequencyCommitmentRoute(
+            agencyRef = backStackEntry.arguments?.getString("agencyRef"),
+            navigateToViolation = navigateToViolation
+        )
     }
+    nestedGraphs()
 }

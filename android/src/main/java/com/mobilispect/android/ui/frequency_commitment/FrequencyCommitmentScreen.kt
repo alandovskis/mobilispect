@@ -24,9 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
+import com.mobilispect.android.ui.OutlinedButton
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import com.mobilispect.common.data.agency.STM_ID
+import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction.Inbound
 import com.mobilispect.common.data.schedule.Direction.Outbound
@@ -39,13 +40,16 @@ import java.time.format.FormatStyle
 @Composable
 fun FrequencyCommitmentRoute(
     viewModel: FrequencyCommitmentViewModel = hiltViewModel(),
+    agencyRef: String?,
     navigateToViolation: (RouteRef) -> Unit
 ) {
-    val uiState by viewModel.uiState(STM_ID).collectAsState(
-        initial = Loading
-    )
+    AgencyRef.fromString(agencyRef)?.let {
+        val uiState by viewModel.uiState(it).collectAsState(
+            initial = Loading
+        )
 
-    FrequencyCommitmentScreen(uiState, navigateToViolation)
+        FrequencyCommitmentScreen(uiState, navigateToViolation)
+    }
 }
 
 @Composable
