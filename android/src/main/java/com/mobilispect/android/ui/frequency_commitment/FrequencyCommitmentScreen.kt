@@ -10,12 +10,8 @@ package com.mobilispect.android.ui.frequency_commitment
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
@@ -111,17 +106,7 @@ private fun Routes(routes: Collection<RouteUIState>, onRoutePressed: (RouteRef) 
     Text(text = stringResource(R.string.on_routes))
 
     for (route in routes) {
-        OutlinedButton(colors = ButtonDefaults.outlinedButtonColors(
-            backgroundColor = MaterialTheme.colors.secondary,
-            contentColor = MaterialTheme.colors.onSecondary
-        ),
-            border = BorderStroke(1.dp, MaterialTheme.colors.onSecondary),
-            onClick = { onRoutePressed(route.routeRef) }) {
-            Text(
-                text = route.route,
-                style = MaterialTheme.typography.button
-            )
-        }
+        OutlinedButton({ onRoutePressed(route.routeRef) }, route.route)
     }
 }
 
