@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
@@ -25,7 +26,8 @@ fun TopBar(screenTitle: String) {
     TopAppBar(backgroundColor = MaterialTheme.colors.primary, title = {
         Text(
             text = screenTitle,
-            style = MaterialTheme.typography.h5
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.testTag("title")
         )
     })
 }
