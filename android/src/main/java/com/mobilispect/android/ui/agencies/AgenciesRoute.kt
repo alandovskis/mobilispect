@@ -1,3 +1,7 @@
+@file:Suppress(
+    "FunctionNaming",
+)
+
 package com.mobilispect.android.ui.agencies
 
 import androidx.compose.foundation.lazy.LazyColumn

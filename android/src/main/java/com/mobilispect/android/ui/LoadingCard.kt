@@ -1,3 +1,7 @@
+@file:Suppress(
+    "FunctionNaming",
+)
+
 package com.mobilispect.android.ui
 
 import android.content.res.Configuration
