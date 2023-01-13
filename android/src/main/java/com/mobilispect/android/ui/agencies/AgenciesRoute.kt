@@ -5,6 +5,7 @@
 package com.mobilispect.android.ui.agencies
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,8 +46,12 @@ fun AgenciesScreen(uiState: AgenciesUIState, navigateToCommitment: (AgencyRef) -
                             item {
                                 OutlinedButton(
                                     onClick = { navigateToCommitment(agency.ref) },
-                                    text = agency.name
-                                )
+                                ) {
+                                    Text(
+                                        text = agency.name,
+                                        style = MaterialTheme.typography.button
+                                    )
+                                }
                             }
                         }
                     }
