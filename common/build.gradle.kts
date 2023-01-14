@@ -64,7 +64,7 @@ kotlin {
 
             }
         }
-        val androidUnitTest by getting {
+        val androidTest by getting {
             dependencies {
                 implementation(libs.junit)
                 implementation(libs.room.testing)
@@ -74,7 +74,7 @@ kotlin {
             }
         }
 
-        val androidInstrumentedTest by getting {
+        val androidAndroidTest by getting {
             dependencies {
                 implementation(libs.hilt.android.testing)
             }
