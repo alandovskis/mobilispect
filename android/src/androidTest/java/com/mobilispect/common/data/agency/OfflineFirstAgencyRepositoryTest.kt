@@ -1,6 +1,9 @@
 package com.mobilispect.common.data.agency
 
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
+import com.mobilispect.common.data.AppDatabase
 import com.mobilispect.common.data.cloud.NetworkDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +35,12 @@ class OfflineFirstAgencyRepositoryTest {
         networkDataSource = TestNetworkDataSource()
         subject = OfflineFirstAgencyRepository(
             agencyDAO = agencyDAO,
-            networkDataSource = networkDataSource
+            networkDataSource = networkDataSource,
+            appDatabase = Room.inMemoryDatabaseBuilder(
+                ApplicationProvider.getApplicationContext(),
+                AppDatabase::class.java
+            )
+                .build()
         )
     }
 

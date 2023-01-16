@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-internal class OfflineFirstAgencyRepository @Inject constructor(
+class OfflineFirstAgencyRepository @Inject constructor(
     private val agencyDAO: AgencyDAO,
     private val networkDataSource: NetworkDataSource,
     private val appDatabase: AppDatabase,

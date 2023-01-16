@@ -114,4 +114,6 @@ dependencies {
     //endregion
 
     coreLibraryDesugaring(libs.android.desugar.libs)
+
+    androidTestImplementation(libs.room.testing)
 }

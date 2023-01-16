@@ -19,7 +19,7 @@ import com.mobilispect.common.data.route.RouteDAO
     ]
 )
 @TypeConverters(RoomTypeConverters::class)
-internal abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun agencyDAO(): AgencyDAO
     abstract fun routeDAO(): RouteDAO
 
