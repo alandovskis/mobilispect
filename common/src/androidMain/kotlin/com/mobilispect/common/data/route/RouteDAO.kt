@@ -6,7 +6,7 @@ import androidx.room.Query
 
 
 @Dao
-internal interface RouteDAO {
+interface RouteDAO {
     @Insert
     suspend fun insert(route: Route)
 
