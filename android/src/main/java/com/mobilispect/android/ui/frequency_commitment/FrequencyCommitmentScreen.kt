@@ -12,6 +12,7 @@ import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -110,7 +111,12 @@ private fun Routes(routes: Collection<RouteUIState>, onRoutePressed: (RouteRef) 
     Text(text = stringResource(R.string.on_routes))
 
     for (route in routes) {
-        OutlinedButton({ onRoutePressed(route.routeRef) }, route.route)
+        OutlinedButton({ onRoutePressed(route.routeRef) }) {
+            Text(
+                text = route.route,
+                style = MaterialTheme.typography.button
+            )
+        }
     }
 }
 
