@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.mobilispect.benchmark"
-    compileSdk = 32
+    compileSdk = 33
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 32
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
