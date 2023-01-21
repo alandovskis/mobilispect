@@ -18,6 +18,6 @@ fun NavGraphBuilder.violationGraph() {
         route = "${FrequencyViolationDestination.route}/{routeRef}",
         arguments = listOf(navArgument("routeRef") { type = NavType.StringType })
     ) { backStackEntry ->
-        FrequencyViolationRoute(backStackEntry.arguments?.getString("routeRef"))
+        FrequencyViolationRoute(routeRef = backStackEntry.arguments?.getString("routeRef"))
     }
 }

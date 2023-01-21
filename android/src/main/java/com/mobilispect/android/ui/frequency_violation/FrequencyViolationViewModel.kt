@@ -2,8 +2,6 @@
 
 package com.mobilispect.android.ui.frequency_violation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mobilispect.common.data.frequency_commitment.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.common.data.route.RouteRef
@@ -13,6 +11,8 @@ import com.mobilispect.common.domain.frequency_violation.FindFrequencyViolations
 import com.mobilispect.common.domain.frequency_violation.FrequencyViolation
 import com.mobilispect.common.domain.time.FormatTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -23,8 +23,13 @@ class FrequencyViolationViewModel @Inject constructor(
     private val frequencyViolationUseCase: FindFrequencyViolationsOnDayAtStopUseCase,
     private val formatTimeUseCase: FormatTimeUseCase,
 ) : ViewModel() {
-    private val _violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
-    val violations: LiveData<FrequencyViolationUIState> = _violations
+    private val _violations: MutableStateFlow<FrequencyViolationUIState> = MutableStateFlow(
+        FrequencyViolationUIState(
+            inbound = Result.success(emptyList()),
+            outbound = Result.success(emptyList())
+        )
+    )
+    val violations: Flow<FrequencyViolationUIState> = _violations
 
     fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: RouteRef) {
         val start = LocalDateTime.of(
@@ -54,7 +59,7 @@ class FrequencyViolationViewModel @Inject constructor(
             outbound = outbound,
         )
 
-        _violations.postValue(uiState)
+        _violations.value = uiState
     }
 
     private fun violationUIState(violations: List<FrequencyViolation>) =

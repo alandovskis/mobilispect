@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,37 +20,44 @@ import com.mobilispect.common.data.schedule.Direction
 import com.mobilispect.common.domain.frequency_violation.NoDeparturesFound
 
 @Composable
-fun FrequencyViolationRoute(routeRef: String?) {
+fun FrequencyViolationRoute(
+    viewModel: FrequencyViolationViewModel = hiltViewModel(),
+    routeRef: String?
+) {
     RouteRef.fromString(routeRef)?.let {
-        FrequencyViolationScreen(it)
+        viewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(
+            it
+        )
+        val uiState by viewModel.violations.collectAsState(
+            initial = FrequencyViolationUIState(
+                inbound = Result.success(emptyList()),
+                outbound = Result.success(emptyList())
+            )
+        )
+        FrequencyViolationScreen(it.routeNumber, uiState)
     }
 }
 
 @Composable
 fun FrequencyViolationScreen(
-    routeRef: RouteRef,
-    frequencyViolationViewModel: FrequencyViolationViewModel = hiltViewModel()
+    routeNumber: String,
+    uiState: FrequencyViolationUIState,
 ) {
-    frequencyViolationViewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef)
-    val violations by frequencyViolationViewModel.violations.observeAsState()
-
     ScreenFrame(
         stringResource(
             id = R.string.frequency_violations,
-            routeRef.routeNumber
+            routeNumber
         )
     ) { modifier ->
         Column(modifier = modifier) {
-            if (violations != null) {
-                FrequencyViolationCard(
-                    direction = Direction.Inbound,
-                    violations!!.inbound
-                )
-                FrequencyViolationCard(
-                    direction = Direction.Outbound,
-                    violations!!.outbound
-                )
-            }
+            FrequencyViolationCard(
+                direction = Direction.Inbound,
+                uiState.inbound
+            )
+            FrequencyViolationCard(
+                direction = Direction.Outbound,
+                uiState.outbound
+            )
         }
     }
 }
@@ -74,9 +81,8 @@ private fun FrequencyViolationCard(
                     Text(text = message)
                 },
                 onSuccess = {
-                    val data = violations.getOrNull()!!
                     LazyColumn {
-                        for (violation in data) {
+                        for (violation in it) {
                             item {
                                 Text("Between ${violation.start} and ${violation.end}")
                             }
