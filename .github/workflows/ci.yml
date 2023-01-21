@@ -10,7 +10,7 @@ on:
 
 jobs:
   setup:
-    runs-on: ubuntu-jammy
+    runs-on: macOS-12
     name: Setup
     steps:
       - uses: actions/checkout@v3
@@ -35,7 +35,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
   analysis:
-    runs-on: ubuntu-jammy
+    runs-on: macOS-12
     name: "Static Analysis"
     needs: setup
     steps:
