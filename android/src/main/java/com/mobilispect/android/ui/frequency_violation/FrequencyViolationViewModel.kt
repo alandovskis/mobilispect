@@ -23,7 +23,7 @@ class FrequencyViolationViewModel @Inject constructor(
     private val frequencyViolationUseCase: FindFrequencyViolationsOnDayAtStopUseCase,
     private val formatTimeUseCase: FormatTimeUseCase,
 ) : ViewModel() {
-    private var _violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
+    private val _violations: MutableLiveData<FrequencyViolationUIState> = MutableLiveData()
     val violations: LiveData<FrequencyViolationUIState> = _violations
 
     fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: RouteRef) {
