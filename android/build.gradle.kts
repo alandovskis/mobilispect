@@ -70,6 +70,7 @@ android {
         // Merge reports of dependencies together.
         checkDependencies = true
     }
+    namespace = "com.mobilispect.android"
 
     detekt {
         // Specify the base path for file paths in the formatted reports.

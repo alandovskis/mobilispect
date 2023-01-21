@@ -120,6 +120,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    namespace = "com.mobilispect.common"
 
     dependencies {
         coreLibraryDesugaring(libs.android.desugar.libs)
