@@ -17,7 +17,7 @@ private val AGENCY_B = Agency(
  * A [NetworkDataSource] that can be driven by tests.
  */
 class FakeNetworkDataSource @Inject constructor() : NetworkDataSource {
-    private var agencies = mutableListOf(AGENCY_A, AGENCY_B)
+    private val agencies = listOf(AGENCY_A, AGENCY_B)
 
     override suspend fun agencies(): Collection<Agency> = agencies
 }
