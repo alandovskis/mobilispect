@@ -48,7 +48,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: android/build/reports/detekt/detekt.sarif
+          sarif_file: android/build/reports/detekt/debug.sarif
 
       - name: Check lint
         run: ./gradlew android:lintDebug
