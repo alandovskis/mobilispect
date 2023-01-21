@@ -79,10 +79,10 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build Android APKs
-        run: ./gradlew android:assemble
+        run: ./gradlew android:assembleDebug android:assembleDebugUnitTest
 
       - name: Run Android local tests
-        run: ./gradlew test
+        run: ./gradlew android:testDebugUnitTest
 
       - name: Upload test reports
         if: always()
