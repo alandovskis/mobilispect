@@ -65,22 +65,24 @@ private fun FrequencyViolationCard(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            if (violations.isFailure) {
-                val message = when (violations.exceptionOrNull()!!) {
-                    NoDeparturesFound -> stringResource(id = R.string.no_departures_found)
-                    else -> ""
-                }
-                Text(text = message)
-            } else {
-                val data = violations.getOrNull()!!
-                LazyColumn {
-                    for (violation in data) {
-                        item {
-                            Text("Between ${violation.start} and ${violation.end}")
+            violations.fold(
+                onFailure = {
+                    val message = when (it) {
+                        NoDeparturesFound -> stringResource(id = R.string.no_departures_found)
+                        else -> ""
+                    }
+                    Text(text = message)
+                },
+                onSuccess = {
+                    val data = violations.getOrNull()!!
+                    LazyColumn {
+                        for (violation in data) {
+                            item {
+                                Text("Between ${violation.start} and ${violation.end}")
+                            }
                         }
                     }
-                }
-            }
+                })
         }
     }
 }
