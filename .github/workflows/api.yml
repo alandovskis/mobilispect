@@ -46,7 +46,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: build/reports/detekt/detekt.sarif
+          sarif_file: api/build/reports/detekt/detekt.sarif
 
   build:
     runs-on: ubuntu-22.04
