@@ -5,6 +5,10 @@ on:
     branches: [ "mobile" ]
   pull_request:
 
+defaults:
+  run:
+    working-directory: api
+
 jobs:
   gradle-verify:
     runs-on: macOS-12
@@ -39,13 +43,13 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run detekt
-        run: ./gradlew android:detektDebug
+        run: ./gradlew detekt
 
       - name: Upload detekt report
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: android/build/reports/detekt/debug.sarif
+          sarif_file: build/reports/detekt/detekt.sarif
 
   build:
     runs-on: macOS-12
@@ -76,4 +80,4 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          path: 'api/build/reports/tests'
+          path: 'build/reports/tests'
