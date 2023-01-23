@@ -3,7 +3,12 @@ name: Android
 on:
   push:
     branches: [ "main", "mobile" ]
+    paths-ignore:
+      - 'api/**'
+
   pull_request:
+    paths-ignore:
+      - 'api/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
