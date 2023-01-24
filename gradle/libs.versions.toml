@@ -99,9 +99,26 @@ room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [bundles]
-compose = ["activity-compose", "compose-ui-core", "compose-ui-tooling", "compose-foundation", "compose-material-core", "compose-material-icons-core", "compose-material-icons-extened", "compose-runtime-livedata", "compose-ui-tooling-preview"]
-lifecycle = ["lifecycle-viewmodel-compose", "lifecycle-viewmodel-ktx", "lifecycle-runtime-ktx"]
-retrofit = ["retrofit-core", "retrofit-gson"]
+compose = [
+    "activity-compose",
+    "compose-foundation",
+    "compose-material-core",
+    "compose-material-icons-core",
+    "compose-material-icons-extened",
+    "compose-runtime-livedata",
+    "compose-ui-core",
+    "compose-ui-tooling",
+    "compose-ui-tooling-preview",
+]
+lifecycle = [
+    "lifecycle-runtime-ktx",
+    "lifecycle-viewmodel-compose",
+    "lifecycle-viewmodel-ktx",
+]
+retrofit = [
+    "retrofit-core",
+    "retrofit-gson",
+]
 
 [plugins]
 # A static code analyzer for Kotlin
