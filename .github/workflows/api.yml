@@ -3,7 +3,11 @@ name: API
 on:
   push:
     branches: [ "mobile" ]
+    paths:
+      - 'api/**'
   pull_request:
+    paths:
+      - 'api/**'
 
 defaults:
   run:
