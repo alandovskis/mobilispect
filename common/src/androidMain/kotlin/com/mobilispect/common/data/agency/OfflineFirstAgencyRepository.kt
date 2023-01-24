@@ -24,7 +24,7 @@ class OfflineFirstAgencyRepository @Inject constructor(
 
             val toAdd = remote.filterNot { agency -> localIDs.contains(agency.ref) }
             for (agency in toAdd) {
-                agencyDAO.insert(agency.asEntity())
+                agencyDAO.insert(agency)
             }
 
             val toRemove = local.filterNot { agency -> remoteIDs.contains(agency.ref) }
