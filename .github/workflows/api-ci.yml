@@ -4,9 +4,11 @@ on:
   push:
     branches: [ "mobile" ]
     paths:
+      - '.github/workflows/api-*.yml'
       - 'api/**'
   pull_request:
     paths:
+      - '.github/workflows/api-*.yml'
       - 'api/**'
 
 defaults:
