@@ -1,5 +1,5 @@
 [versions]
-activity = "1.5.1"
+activity = "1.6.1"
 androidDesugarLibs = "1.1.5"
 androidXJunit = "1.1.3"
 androidXTest = "1.5.1"
