@@ -4,6 +4,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import com.mobilispect.common.data.AppDatabase
+import com.mobilispect.common.data.cloud.NetworkAgency
 import com.mobilispect.common.data.cloud.NetworkDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -13,11 +14,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
-private val AGENCY_A = Agency(
+private val AGENCY_A = NetworkAgency(
     ref = AgencyRef("abcd", "a"),
     name = "Agency A"
 )
-private val AGENCY_B = Agency(
+private val AGENCY_B = NetworkAgency(
     ref = AgencyRef("abcd", "b"),
     name = "Agency B"
 )
@@ -59,7 +60,7 @@ class OfflineFirstAgencyRepositoryTest {
     fun syncAddsMissingAgencyWhenOneIsMissing() = runTest {
         networkDataSource.insert(AGENCY_A)
         networkDataSource.insert(AGENCY_B)
-        agencyDAO.insert(AGENCY_A)
+        agencyDAO.insert(AGENCY_A.asEntity())
 
         subject.sync()
 
@@ -71,8 +72,8 @@ class OfflineFirstAgencyRepositoryTest {
     fun syncChangesNothingWhenAllPresent() = runTest {
         networkDataSource.insert(AGENCY_A)
         networkDataSource.insert(AGENCY_B)
-        agencyDAO.insert(AGENCY_A)
-        agencyDAO.insert(AGENCY_B)
+        agencyDAO.insert(AGENCY_A.asEntity())
+        agencyDAO.insert(AGENCY_B.asEntity())
 
         subject.sync()
 
@@ -83,8 +84,8 @@ class OfflineFirstAgencyRepositoryTest {
     @Test
     fun syncDeletesIfNoLongerFoundInNetworkDataSource() = runTest {
         networkDataSource.insert(AGENCY_B)
-        agencyDAO.insert(AGENCY_A)
-        agencyDAO.insert(AGENCY_B)
+        agencyDAO.insert(AGENCY_A.asEntity())
+        agencyDAO.insert(AGENCY_B.asEntity())
 
         subject.sync()
 
@@ -108,11 +109,11 @@ class OfflineFirstAgencyRepositoryTest {
     }
 
     class TestNetworkDataSource : NetworkDataSource {
-        private val agencies = mutableListOf<Agency>()
+        private val agencies = mutableListOf<NetworkAgency>()
 
-        override suspend fun agencies(): Collection<Agency> = agencies
+        override suspend fun agencies(): Collection<NetworkAgency> = agencies
 
-        fun insert(agency: Agency) {
+        fun insert(agency: NetworkAgency) {
             agencies.add(agency)
         }
     }
