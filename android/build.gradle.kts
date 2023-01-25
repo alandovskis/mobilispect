@@ -82,6 +82,10 @@ android {
 dependencies {
     implementation(project(":common"))
 
+    val composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
     //region Dependency Injection
     implementation(libs.hilt.android)
     androidTestImplementation(libs.androidx.test.runner)
