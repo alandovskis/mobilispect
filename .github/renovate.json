@@ -1,7 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base", "group:all", ":dependencyDashboard", "schedule:daily"
+    "config:base",
+    "group:all",
+    ":dependencyDashboard",
+    "schedule:daily"
   ],
-  "packageRules": []
+  "packageRules": [],
+  "ignoreDeps": [
+    "com.google.devtools.ksp",
+    "org.jetbrains.kotlin:kotlin-gradle-plugin",
+    "org.jetbrains.kotlin.plugin.serialization"
+  ]
 }
