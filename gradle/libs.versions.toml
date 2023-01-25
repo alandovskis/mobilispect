@@ -7,6 +7,7 @@ appcompat = "1.6.0"
 coreKtx = "1.9.0"
 detekt = "1.22.0"
 hilt = "2.44.2"
+hiltNavigationCompose = "1.0.0"
 javaxInject = "1"
 jetpackComposeBom = "2023.01.00"
 junit = "4.13.2"
@@ -15,7 +16,7 @@ kotlinxSerialization = "1.4.1"
 ksp = "1.7.10-1.0.6"
 lifecycle = "2.5.1"
 mockWebServer = "4.10.0"
-navigationCompose = "1.0.0"
+navigation = "2.5.3"
 okhttpProfiler = "1.0.8"
 retrofit = "2.9.0"
 room = "2.5.0"
@@ -71,7 +72,7 @@ dagger = { module = "com.google.dagger:dagger", version.ref = "hilt" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "navigationCompose" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 
 # Testing
@@ -85,6 +86,10 @@ kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-
 
 # Mocking HTTP Responses
 mockWebServer = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockWebServer" }
+
+# Navigation
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
 
 okhttp-profiler = { module = "com.localebro:okhttpprofiler", version.ref = "okhttpProfiler" }
 
