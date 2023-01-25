@@ -50,14 +50,14 @@ kotlin {
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "androidx.room",
                         "room-compiler",
-                        "2.4.2"
+                        "2.5.0"
                     )
                 )
                 configurations.getByName("kapt").dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "com.google.dagger",
                         "hilt-compiler",
-                        "2.42"
+                        "2.44.2"
                     )
                 )
                 implementation(libs.okhttp.profiler)
