@@ -81,3 +81,11 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: 'api/build/reports/tests'
+
+      - name: Run mutation tests
+        uses: isamadrid90/gradle-pitest-comment-action@v1.0.0-beta
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          reports-retention: 1
+          reports-path: "api/build/reports/pitest"
+          working-directory: api
