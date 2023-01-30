@@ -14,13 +14,21 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 
-private val AGENCY_A = NetworkAgency(
+private val NETWORK_AGENCY_A = NetworkAgency(
     ref = AgencyRef("abcd", "a"),
     name = "Agency A"
 )
-private val AGENCY_B = NetworkAgency(
+private val NETWORK_AGENCY_B = NetworkAgency(
     ref = AgencyRef("abcd", "b"),
     name = "Agency B"
+)
+private val LOCAL_AGENCY_A = Agency(
+    ref = NETWORK_AGENCY_A.ref,
+    name = NETWORK_AGENCY_A.name
+)
+private val LOCAL_AGENCY_B = Agency(
+    ref = NETWORK_AGENCY_B.ref,
+    name = NETWORK_AGENCY_B.name
 )
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -47,50 +55,50 @@ class OfflineFirstAgencyRepositoryTest {
 
     @Test
     fun syncAddsAgenciesWhenNoneFound() = runTest {
-        networkDataSource.insert(AGENCY_A)
-        networkDataSource.insert(AGENCY_B)
+        networkDataSource.insert(NETWORK_AGENCY_A)
+        networkDataSource.insert(NETWORK_AGENCY_B)
 
         subject.sync()
 
         val actual = subject.all().first()
-        assertThat(actual).containsExactly(AGENCY_A, AGENCY_B)
+        assertThat(actual).containsExactly(LOCAL_AGENCY_A, LOCAL_AGENCY_B)
     }
 
     @Test
     fun syncAddsMissingAgencyWhenOneIsMissing() = runTest {
-        networkDataSource.insert(AGENCY_A)
-        networkDataSource.insert(AGENCY_B)
-        agencyDAO.insert(AGENCY_A.asEntity())
+        networkDataSource.insert(NETWORK_AGENCY_A)
+        networkDataSource.insert(NETWORK_AGENCY_B)
+        agencyDAO.insert(LOCAL_AGENCY_A)
 
         subject.sync()
 
         val actual = subject.all().first()
-        assertThat(actual).containsExactly(AGENCY_A, AGENCY_B)
+        assertThat(actual).containsExactly(LOCAL_AGENCY_A, LOCAL_AGENCY_B)
     }
 
     @Test
     fun syncChangesNothingWhenAllPresent() = runTest {
-        networkDataSource.insert(AGENCY_A)
-        networkDataSource.insert(AGENCY_B)
-        agencyDAO.insert(AGENCY_A.asEntity())
-        agencyDAO.insert(AGENCY_B.asEntity())
+        networkDataSource.insert(NETWORK_AGENCY_A)
+        networkDataSource.insert(NETWORK_AGENCY_B)
+        agencyDAO.insert(LOCAL_AGENCY_A)
+        agencyDAO.insert(LOCAL_AGENCY_B)
 
         subject.sync()
 
         val actual = subject.all().first()
-        assertThat(actual).containsExactly(AGENCY_A, AGENCY_B)
+        assertThat(actual).containsExactly(LOCAL_AGENCY_A, LOCAL_AGENCY_B)
     }
 
     @Test
     fun syncDeletesIfNoLongerFoundInNetworkDataSource() = runTest {
-        networkDataSource.insert(AGENCY_B)
-        agencyDAO.insert(AGENCY_A.asEntity())
-        agencyDAO.insert(AGENCY_B.asEntity())
+        networkDataSource.insert(NETWORK_AGENCY_B)
+        agencyDAO.insert(LOCAL_AGENCY_A)
+        agencyDAO.insert(LOCAL_AGENCY_B)
 
         subject.sync()
 
         val actual = subject.all().first()
-        assertThat(actual).containsExactly(AGENCY_B)
+        assertThat(actual).containsExactly(LOCAL_AGENCY_B)
     }
 
     class TestAgencyDAO : AgencyDAO {
