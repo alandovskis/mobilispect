@@ -42,6 +42,7 @@ tasks.withType<Test> {
 // Mutation Testing
 pitest {
     setProperty("junit5PluginVersion", "1.0.0")
+    setProperty("threads", 2)
     setProperty("outputFormats", listOf("HTML"))
     setProperty("avoidCallsTo", listOf("kotlin.jvm.internal"))
 }
