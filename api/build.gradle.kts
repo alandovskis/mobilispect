@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.spring") version "1.8.0"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
-    id("info.solidsoft.pitest") version "1.7.0"
+    id("info.solidsoft.pitest") version "1.9.11"
 }
 
 group = "com.mobilispect"
@@ -39,11 +39,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+// Mutation Testing
 pitest {
-    //setProperty("junit5PluginVersion", "0.12")
-    //setProperty("testPlugin", "junit5")
+    setProperty("junit5PluginVersion", "1.0.0")
     setProperty("outputFormats", listOf("HTML"))
-    //setProperty("threads", 2)
-    //setProperty("withHistory", true)
     setProperty("avoidCallsTo", listOf("kotlin.jvm.internal"))
 }
