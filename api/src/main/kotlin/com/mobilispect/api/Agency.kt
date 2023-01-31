@@ -1,3 +1,3 @@
 package com.mobilispect.api
 
-data class Agency(val id: NonBlankString, val name: NonBlankString)
+data class Agency(val id: String, val name: String)
