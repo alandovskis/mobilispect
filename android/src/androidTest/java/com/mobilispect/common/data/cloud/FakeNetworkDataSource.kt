@@ -1,15 +1,14 @@
 package com.mobilispect.common.data.cloud
 
-import com.mobilispect.common.data.agency.AgencyRef
 import javax.inject.Inject
 
 private val AGENCY_A = NetworkAgency(
-    ref = AgencyRef("abcd", "a"),
-    name = "Agency A"
+    name = "Agency A",
+    _links = Links(self = Link("o-abcd-a")),
 )
 private val AGENCY_B = NetworkAgency(
-    ref = AgencyRef("abcd", "b"),
-    name = "Agency B"
+    name = "Agency B",
+    _links = Links(self = Link("o-abcd-b")),
 )
 
 /**

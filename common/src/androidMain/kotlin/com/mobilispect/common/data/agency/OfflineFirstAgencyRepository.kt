@@ -17,14 +17,14 @@ class OfflineFirstAgencyRepository @Inject constructor(
     override suspend fun sync() {
         appDatabase.withTransaction {
             val local = agencyDAO.all().first()
-            val remote = networkDataSource.agencies()
+            val remote = networkDataSource.agencies().map { agency -> agency.asEntity() }
 
             val localIDs = local.map { agency -> agency.ref }
             val remoteIDs = remote.map { agency -> agency.ref }
 
             val toAdd = remote.filterNot { agency -> localIDs.contains(agency.ref) }
             for (agency in toAdd) {
-                agencyDAO.insert(agency.asEntity())
+                agencyDAO.insert(agency)
             }
 
             val toRemove = local.filterNot { agency -> remoteIDs.contains(agency.ref) }

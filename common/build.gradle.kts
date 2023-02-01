@@ -30,10 +30,19 @@ kotlin {
             languageSettings.optIn("kotlin.RequiresOptIn")
         }
 
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.ktor.core)
+                implementation(libs.ktor.contentNegociation)
+                implementation(libs.ktor.resources)
+                implementation(libs.ktor.serialization.json)
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.ktor.testing)
             }
         }
         val androidMain by getting {
@@ -61,7 +70,7 @@ kotlin {
                     )
                 )
                 implementation(libs.okhttp.profiler)
-
+                implementation(libs.ktor.okhttp)
             }
         }
         val androidTest by getting {

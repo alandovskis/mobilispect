@@ -5,6 +5,7 @@ package com.mobilispect.common.data.agency
  *
  * Ex: o-f25d-socitdetransportdemontral
  */
+@kotlinx.serialization.Serializable
 data class AgencyRef(private val geohash: String, private val agencyName: String) {
     val id: String = "o-$geohash-$agencyName"
 

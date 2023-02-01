@@ -4,6 +4,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import com.mobilispect.common.data.AppDatabase
+import com.mobilispect.common.data.cloud.Link
+import com.mobilispect.common.data.cloud.Links
 import com.mobilispect.common.data.cloud.NetworkAgency
 import com.mobilispect.common.data.cloud.NetworkDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,19 +17,20 @@ import org.junit.Before
 import org.junit.Test
 
 private val NETWORK_AGENCY_A = NetworkAgency(
-    ref = AgencyRef("abcd", "a"),
-    name = "Agency A"
+    name = "Agency A",
+    _links = Links(self = Link("o-abcd-a"))
+
 )
 private val NETWORK_AGENCY_B = NetworkAgency(
-    ref = AgencyRef("abcd", "b"),
-    name = "Agency B"
+    name = "Agency B",
+    _links = Links(self = Link("o-abcd-b"))
 )
 private val LOCAL_AGENCY_A = Agency(
-    ref = NETWORK_AGENCY_A.ref,
+    ref = AgencyRef("abcd", "a"),
     name = NETWORK_AGENCY_A.name
 )
 private val LOCAL_AGENCY_B = Agency(
-    ref = NETWORK_AGENCY_B.ref,
+    ref = AgencyRef("abcd", "b"),
     name = NETWORK_AGENCY_B.name
 )
 

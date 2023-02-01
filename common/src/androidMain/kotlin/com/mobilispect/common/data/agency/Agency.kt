@@ -12,6 +12,11 @@ data class Agency(
     val name: String
 )
 
-fun NetworkAgency.asEntity(): Agency =
-    Agency(ref = ref, name = name)
+fun NetworkAgency.asEntity(): Agency {
+    val id = _links.self.href.split("/").last()
+    val ref = AgencyRef.fromString(id)!!
+    return Agency(
+        ref = ref, name = name
+    )
+}
 
