@@ -54,6 +54,15 @@ jobs:
         with:
           sarif_file: api/build/reports/detekt/detekt.sarif
 
+      - name: Generate SBOM
+        run: ./gradlew cyclonedxBom
+
+      - name: Upload SBOM
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          path: 'api/build/reports/bom.json'
+
   build:
     runs-on: ubuntu-22.04
     name: "Build"
