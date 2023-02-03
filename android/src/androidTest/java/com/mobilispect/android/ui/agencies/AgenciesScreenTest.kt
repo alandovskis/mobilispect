@@ -5,15 +5,14 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import com.mobilispect.common.data.agency.AgencyRef
 import org.junit.Rule
 import org.junit.Test
 
 private val AGENCY_A = AgencyUIState(
-    ref = AgencyRef(geohash = "abcd", agencyName = "A"), name = "A"
+    ref = "o-abcd-A", name = "A"
 )
 private val AGENCY_B = AgencyUIState(
-    ref = AgencyRef(geohash = "abcd", agencyName = "B"), name = "B"
+    ref = "o-abcd-B", name = "B"
 )
 
 class AgenciesScreenTest {

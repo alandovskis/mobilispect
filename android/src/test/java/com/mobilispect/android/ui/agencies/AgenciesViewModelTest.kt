@@ -3,7 +3,6 @@ package com.mobilispect.android.ui.agencies
 import com.google.common.truth.Truth.assertThat
 import com.mobilispect.android.testing.MainDispatcherRule
 import com.mobilispect.common.data.agency.Agency
-import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.agency.AgencyRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -15,11 +14,11 @@ import org.junit.Rule
 import org.junit.Test
 
 private val AGENCY_A = Agency(
-    ref = AgencyRef("abcd", "a"),
+    ref = "o-abcd-a",
     name = "Agency A"
 )
 private val AGENCY_B = Agency(
-    ref = AgencyRef("abcd", "b"),
+    ref = "o-abcd-b",
     name = "Agency B"
 )
 

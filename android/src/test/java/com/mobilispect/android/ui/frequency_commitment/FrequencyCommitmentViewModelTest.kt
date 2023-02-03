@@ -4,7 +4,6 @@ package com.mobilispect.android.ui.frequency_commitment
 
 import com.google.common.truth.Truth.assertThat
 import com.mobilispect.android.testing.MainDispatcherRule
-import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitment
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency_commitment.TestFrequencyCommitmentRepository
@@ -27,7 +26,7 @@ class FrequencyCommitmentViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val agencyRef: AgencyRef = AgencyRef(geohash = "abcd", "ABCD")
+    private val agencyRef = "o-abcd-ABCD"
 
     private val routeRepository = TestRouteRepository()
     private val frequencyCommitmentRepository = TestFrequencyCommitmentRepository()

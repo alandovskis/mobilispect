@@ -26,11 +26,11 @@ private val NETWORK_AGENCY_B = NetworkAgency(
     _links = Links(self = Link("o-abcd-b"))
 )
 private val LOCAL_AGENCY_A = Agency(
-    ref = AgencyRef("abcd", "a"),
+    ref = "o-abcd-a",
     name = NETWORK_AGENCY_A.name
 )
 private val LOCAL_AGENCY_B = Agency(
-    ref = AgencyRef("abcd", "b"),
+    ref = "o-abcd-b",
     name = NETWORK_AGENCY_B.name
 )
 
