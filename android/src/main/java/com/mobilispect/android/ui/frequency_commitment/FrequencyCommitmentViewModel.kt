@@ -3,7 +3,6 @@
 package com.mobilispect.android.ui.frequency_commitment
 
 import androidx.lifecycle.ViewModel
-import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentRepository
 import com.mobilispect.common.data.route.RouteRef
@@ -20,7 +19,7 @@ class FrequencyCommitmentViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
     private val frequencyCommitmentRepository: FrequencyCommitmentRepository,
 ) : ViewModel() {
-    fun uiState(agency: AgencyRef) =
+    fun uiState(agency: String) =
         frequencyCommitmentRepository.forAgency(agency).map { frequencyCommitment ->
             if (frequencyCommitment == null) {
                 return@map NoCommitmentFound

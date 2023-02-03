@@ -22,7 +22,7 @@ fun MobilispectNavHost(
         startDestination = startDestination,
     ) {
         agenciesGraph(
-            navigateToCommitment = { navController.navigate("${FrequencyCommitmentNavDestination.route}/${it.id}") },
+            navigateToCommitment = { navController.navigate("${FrequencyCommitmentNavDestination.route}/${it}") },
             nestedGraphs = {
                 frequencyGraph(
                     navigateToViolation = { navController.navigate("${FrequencyViolationDestination.route}/${it.id}") },

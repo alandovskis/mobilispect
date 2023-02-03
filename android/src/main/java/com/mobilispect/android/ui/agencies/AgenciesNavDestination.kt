@@ -4,7 +4,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.mobilispect.android.navigation.NavDestination
-import com.mobilispect.common.data.agency.AgencyRef
 
 object AgenciesNavDestination : NavDestination {
     override val route: String = "agencies_route"
@@ -12,7 +11,7 @@ object AgenciesNavDestination : NavDestination {
 }
 
 fun NavGraphBuilder.agenciesGraph(
-    navigateToCommitment: (AgencyRef) -> Unit,
+    navigateToCommitment: (String) -> Unit,
     nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
     navigation(

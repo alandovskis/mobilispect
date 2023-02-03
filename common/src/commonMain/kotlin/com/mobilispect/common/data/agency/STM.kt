@@ -1,3 +1,3 @@
 package com.mobilispect.common.data.agency
 
-val STM_ID = AgencyRef("f25d", agencyName = "socitdetransportdemontral")
+const val STM_ID = "o-f25d-socitdetransportdemontral"

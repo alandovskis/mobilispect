@@ -17,12 +17,11 @@ import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
 import com.mobilispect.android.ui.ScreenFrame
-import com.mobilispect.common.data.agency.AgencyRef
 
 @Composable
 fun AgenciesRoute(
     viewModel: AgenciesViewModel = hiltViewModel(),
-    navigateToCommitment: (AgencyRef) -> Unit
+    navigateToCommitment: (String) -> Unit
 ) {
     viewModel.sync()
     val uiState by viewModel.uiState.collectAsState(initial = Loading)
@@ -30,7 +29,7 @@ fun AgenciesRoute(
 }
 
 @Composable
-fun AgenciesScreen(uiState: AgenciesUIState, navigateToCommitment: (AgencyRef) -> Unit) {
+fun AgenciesScreen(uiState: AgenciesUIState, navigateToCommitment: (String) -> Unit) {
     ScreenFrame(screenTitle = stringResource(id = R.string.agencies)) {
         when (uiState) {
             Loading -> LoadingCard()

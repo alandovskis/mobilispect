@@ -28,7 +28,6 @@ import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import com.mobilispect.common.data.agency.AgencyRef
 import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction.Inbound
 import com.mobilispect.common.data.schedule.Direction.Outbound
@@ -44,7 +43,7 @@ fun FrequencyCommitmentRoute(
     agencyRef: String?,
     navigateToViolation: (RouteRef) -> Unit
 ) {
-    AgencyRef.fromString(agencyRef)?.let {
+    agencyRef?.let {
         val uiState by viewModel.uiState(it).collectAsState(
             initial = Loading
         )

@@ -7,16 +7,15 @@ import com.mobilispect.common.data.cloud.NetworkAgency
 @Entity(tableName = "agencies")
 data class Agency(
     @PrimaryKey
-    val ref: AgencyRef,
+    val ref: String,
 
     val name: String
 )
 
 fun NetworkAgency.asEntity(): Agency {
     val id = _links.self.href.split("/").last()
-    val ref = AgencyRef.fromString(id)!!
     return Agency(
-        ref = ref, name = name
+        ref = id, name = name
     )
 }
 
