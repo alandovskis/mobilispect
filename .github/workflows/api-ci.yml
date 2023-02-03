@@ -61,6 +61,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
+          name: 'sbom'
           path: 'api/build/reports/bom.json'
 
   build:
