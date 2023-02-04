@@ -14,9 +14,9 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 /**
- * A [NetworkDataSource2] that access the Mobilispect API.
+ * A [NetworkDataSource] that access the Mobilispect API.
  */
-class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine) : NetworkDataSource2 {
+class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine) : NetworkDataSource {
     private val client: HttpClient
 
     init {
@@ -28,9 +28,9 @@ class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine) : NetworkDat
             }
             install(Resources)
             defaultRequest {
-                host = "localhost"
-                port = 8080
-                url { protocol = URLProtocol.HTTP }
+                host = "192.168.100.27"
+                port = 8443
+                url { protocol = URLProtocol.HTTPS }
             }
         }
     }

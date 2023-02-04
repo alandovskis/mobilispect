@@ -120,8 +120,11 @@ dependencies {
 
     coreLibraryDesugaring(libs.android.desugar.libs)
 
+    implementation(libs.room.ktx)
     androidTestImplementation(libs.room.testing)
 
     implementation(libs.navigation.compose)
     androidTestImplementation(libs.navigation.testing)
+
+    implementation(libs.ktor.okhttp)
 }

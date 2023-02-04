@@ -7,7 +7,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface CloudNetworkDataSourceModule {
+interface NetworkDataSourceBindsModule {
     @Binds
-    fun networkDataSource(source: CloudNetworkDataSource): NetworkDataSource
+    fun networkDataSource(source: MobilispectAPINetworkDataSource): NetworkDataSource
 }

@@ -7,7 +7,7 @@ import dagger.hilt.testing.TestInstallIn
 
 @Module
 @TestInstallIn(
-    components = [SingletonComponent::class], replaces = [CloudNetworkDataSourceModule::class]
+    components = [SingletonComponent::class], replaces = [NetworkDataSourceBindsModule::class]
 )
 interface FakeNetworkDataSourceModule {
     @Binds
