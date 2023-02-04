@@ -81,6 +81,8 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    testImplementation(project(":common-testing"))
+    androidTestImplementation(project(":common-testing"))
 
     val composeBom = platform(libs.compose.bom)
     implementation(composeBom)
@@ -127,4 +129,5 @@ dependencies {
     androidTestImplementation(libs.navigation.testing)
 
     implementation(libs.ktor.okhttp)
+    implementation(libs.ktor.testing)
 }

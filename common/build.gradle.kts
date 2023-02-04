@@ -40,6 +40,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(project(":common-testing"))
                 implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.ktor.testing)
