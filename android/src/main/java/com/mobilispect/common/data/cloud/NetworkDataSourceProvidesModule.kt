@@ -9,7 +9,6 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLSession
 import javax.net.ssl.X509TrustManager
 
 @Module
@@ -17,6 +16,7 @@ import javax.net.ssl.X509TrustManager
 object NetworkDataSourceProvidesModule {
     @Provides
     fun networkDataSource(): MobilispectAPINetworkDataSource {
+        @Suppress("EmptyFunctionBlock")
         val trustManager = object : X509TrustManager {
             override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
             }
@@ -31,9 +31,7 @@ object NetworkDataSourceProvidesModule {
         val sslContext = SSLContext.getInstance("SSL")
         sslContext.init(null, arrayOf(trustManager), SecureRandom())
 
-        val hostnameVerifier = object : HostnameVerifier {
-            override fun verify(hostname: String?, session: SSLSession?): Boolean = true
-        }
+        val hostnameVerifier = HostnameVerifier { _, _ -> true }
 
         val config = OkHttpConfig()
         config.config {
