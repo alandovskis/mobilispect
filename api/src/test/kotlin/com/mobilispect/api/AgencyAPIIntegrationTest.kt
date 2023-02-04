@@ -18,8 +18,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 
 
-private val AGENCY_A = Agency(id = "o-abcd-a", "A")
-private val AGENCY_B = Agency(id = "o-abcd-b", "B")
+private val AGENCY_A = Agency(_id = "o-abcd-a", "A")
+private val AGENCY_B = Agency(_id = "o-abcd-b", "B")
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,

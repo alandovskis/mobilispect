@@ -1,3 +1,7 @@
 package com.mobilispect.api
 
-data class Agency(val id: String, val name: String)
+import org.springframework.data.mongodb.core.mapping.Document
+
+@Suppress("PropertyName") // For _id
+@Document(value = "agencies")
+data class Agency(val _id: String, val name: String)
