@@ -4,7 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.engine.okhttp.*
+import io.ktor.client.engine.okhttp.OkHttpConfig
+import io.ktor.client.engine.okhttp.OkHttpEngine
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.HostnameVerifier
