@@ -1,5 +1,5 @@
 package com.mobilispect.common.data.cloud
 
 interface NetworkDataSource {
-    suspend fun agencies(): Collection<NetworkAgency>
+    suspend fun agencies(): Result<Collection<NetworkAgency>>
 }

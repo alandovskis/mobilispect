@@ -15,21 +15,24 @@ class OfflineFirstAgencyRepository @Inject constructor(
     override fun all(): Flow<List<Agency>> = agencyDAO.all()
 
     override suspend fun sync() {
-        appDatabase.withTransaction {
-            val local = agencyDAO.all().first()
-            val remote = networkDataSource.agencies().map { agency -> agency.asEntity() }
+        val remoteRes = networkDataSource.agencies()
+        remoteRes.onSuccess { remoteAgencies ->
+            appDatabase.withTransaction {
+                val local = agencyDAO.all().first()
+                val remote = remoteAgencies.map { agency -> agency.asEntity() }
 
-            val localIDs = local.map { agency -> agency.ref }
-            val remoteIDs = remote.map { agency -> agency.ref }
+                val localIDs = local.map { agency -> agency.ref }
+                val remoteIDs = remote.map { agency -> agency.ref }
 
-            val toAdd = remote.filterNot { agency -> localIDs.contains(agency.ref) }
-            for (agency in toAdd) {
-                agencyDAO.insert(agency)
-            }
+                val toAdd = remote.filterNot { agency -> localIDs.contains(agency.ref) }
+                for (agency in toAdd) {
+                    agencyDAO.insert(agency)
+                }
 
-            val toRemove = local.filterNot { agency -> remoteIDs.contains(agency.ref) }
-            for (agency in toRemove) {
-                agencyDAO.delete(agency)
+                val toRemove = local.filterNot { agency -> remoteIDs.contains(agency.ref) }
+                for (agency in toRemove) {
+                    agencyDAO.delete(agency)
+                }
             }
         }
     }

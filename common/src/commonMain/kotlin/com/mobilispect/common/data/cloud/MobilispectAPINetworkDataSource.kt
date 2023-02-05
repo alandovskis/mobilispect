@@ -11,6 +11,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.utils.io.errors.IOException
 import kotlinx.serialization.json.Json
 
 /**
@@ -35,10 +36,14 @@ class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine) : NetworkDat
         }
     }
 
-    override suspend fun agencies(): Collection<NetworkAgency> {
-        val response = client.get(Agencies())
-        val body = response.body<Body>()
-        return body._embedded.agencies
+    override suspend fun agencies(): Result<Collection<NetworkAgency>> {
+        return try {
+            val response = client.get(Agencies())
+            val body = response.body<Body>()
+            Result.success(body._embedded.agencies)
+        } catch (e: IOException) {
+            Result.failure(NetworkError)
+        }
     }
 }
 
