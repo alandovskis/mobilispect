@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.mobilispect.android"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = libs.versions.targetSDK.get().toInt()
         versionCode = 1
         versionName = "1.0"
         vectorDrawables {

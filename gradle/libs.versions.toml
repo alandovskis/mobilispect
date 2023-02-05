@@ -1,4 +1,6 @@
 [versions]
+targetSDK = "33"
+
 activity = "1.6.1"
 androidDesugarLibs = "2.0.0"
 androidXJunit = "1.1.5"
