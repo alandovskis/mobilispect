@@ -31,7 +31,7 @@ android {
     namespace = "com.mobilispect.common.testing"
     compileSdk = 33
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.minSDK.get().toInt()
         targetSdk = libs.versions.targetSDK.get().toInt()
     }
 }

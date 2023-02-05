@@ -1,4 +1,5 @@
 [versions]
+minSDK = "26"
 targetSDK = "33"
 
 activity = "1.6.1"

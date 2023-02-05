@@ -13,7 +13,7 @@ android {
     compileSdk = 33
     defaultConfig {
         applicationId = "com.mobilispect.android"
-        minSdk = 26
+        minSdk = libs.versions.minSDK.get().toInt()
         targetSdk = libs.versions.targetSDK.get().toInt()
         versionCode = 1
         versionName = "1.0"
