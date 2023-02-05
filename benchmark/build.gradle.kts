@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.mobilispect.benchmark"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSDK.get().toInt()
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

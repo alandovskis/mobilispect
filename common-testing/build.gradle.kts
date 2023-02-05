@@ -29,7 +29,7 @@ kotlin {
 
 android {
     namespace = "com.mobilispect.common.testing"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSDK.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSDK.get().toInt()
         targetSdk = libs.versions.targetSDK.get().toInt()
