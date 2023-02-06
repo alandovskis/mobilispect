@@ -52,8 +52,8 @@ class AgencyAPIIntegrationTest {
 
     @Test
     fun showsDataForAllAgencies() {
-        agencyRepository.insert(AGENCY_A)
-        agencyRepository.insert(AGENCY_B)
+        agencyRepository.save(AGENCY_A)
+        agencyRepository.save(AGENCY_B)
 
         val response: ResponseEntity<String> = template.getForEntity("/agencies", String::class.java)
 
