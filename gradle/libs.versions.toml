@@ -4,7 +4,7 @@ minSDK = "26"
 targetSDK = "33"
 
 activity = "1.6.1"
-androidDesugarLibs = "2.0.0"
+androidDesugarLibs = "2.0.2"
 androidXJunit = "1.1.5"
 androidXTest = "1.5.2"
 appcompat = "1.6.0"
