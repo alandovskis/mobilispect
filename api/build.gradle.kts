@@ -3,11 +3,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.0.2"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.8.0"
-    kotlin("plugin.spring") version "1.8.0"
+    kotlin("jvm") version "1.8.10"
+    kotlin("plugin.spring") version "1.8.10"
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("info.solidsoft.pitest") version "1.9.11"
-    id("org.cyclonedx.bom") version "1.7.2"
+    id("org.cyclonedx.bom") version "1.7.3"
 }
 
 group = "com.mobilispect"
