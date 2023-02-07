@@ -22,7 +22,7 @@ import org.testcontainers.utility.DockerImageName
 @Testcontainers
 class APIIntegrationTest {
     @Autowired
-    protected lateinit var template: TestRestTemplate
+    internal lateinit var template: TestRestTemplate
 
     companion object {
         @Container
