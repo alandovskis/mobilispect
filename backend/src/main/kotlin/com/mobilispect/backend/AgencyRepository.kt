@@ -1,4 +1,4 @@
-package com.mobilispect.api
+package com.mobilispect.backend
 
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository

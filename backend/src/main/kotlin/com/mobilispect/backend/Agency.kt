@@ -1,4 +1,4 @@
-package com.mobilispect.api
+package com.mobilispect.backend
 
 import org.springframework.data.mongodb.core.mapping.Document
 

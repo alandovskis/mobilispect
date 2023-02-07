@@ -4,16 +4,16 @@ on:
   push:
     branches: [ "mobile" ]
     paths:
-      - '.github/workflows/api-*.yml'
-      - 'api/**'
+      - '.github/workflows/backend-*.yml'
+      - 'backend/**'
   pull_request:
     paths:
-      - '.github/workflows/api-*.yml'
-      - 'api/**'
+      - '.github/workflows/backend-*.yml'
+      - 'backend/**'
 
 defaults:
   run:
-    working-directory: api
+    working-directory: backend
 
 jobs:
   gradle-verify:
@@ -52,7 +52,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: api/build/reports/detekt/detekt.sarif
+          sarif_file: backend/build/reports/detekt/detekt.sarif
 
       - name: Generate SBOM
         run: ./gradlew cyclonedxBom
@@ -62,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: 'sbom'
-          path: 'api/build/reports/bom.json'
+          path: 'backend/build/reports/bom.json'
 
   build:
     runs-on: ubuntu-22.04
@@ -91,13 +91,13 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: 'test-results'
-          path: 'api/build/reports/tests'
+          path: 'backend/build/reports/tests'
 
       - name: Run mutation tests
         uses: alandovskis/gradle-pitest-comment-action@e372e00fccf3117a423e8add38160b919f0b87e0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           reports-retention: 1
-          reports-path: "api/build/reports/pitest"
+          reports-path: "backend/build/reports/pitest"
           reports-name: "mutation-results"
-          working-directory: api
+          working-directory: backend

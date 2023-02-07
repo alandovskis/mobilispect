@@ -1,4 +1,4 @@
-package com.mobilispect.api
+package com.mobilispect.backend
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
