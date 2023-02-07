@@ -21,9 +21,9 @@ class AgencyAPIIntegrationTest : APIIntegrationTest() {
 
         val response: ResponseEntity<String> = template.getForEntity("/agencies", String::class.java)
 
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(response.body).contains(""""name" : "${AGENCY_A.name}""")
         assertThat(response.body).contains(""""name" : "${AGENCY_B.name}""")
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
     }
 
     @AfterEach
