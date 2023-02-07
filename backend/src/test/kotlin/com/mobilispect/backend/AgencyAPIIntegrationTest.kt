@@ -5,10 +5,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.context.ApplicationContextInitializer
-import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.containers.MongoDBContainer
@@ -23,7 +20,7 @@ private val AGENCY_B = Agency(_id = "o-abcd-b", "B")
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
-@ContextConfiguration(initializers = [AgencyAPIIntegrationTest.Companion.MongoDBInitializer::class])
+@ContextConfiguration(initializers = [AgencyAPIIntegrationTest.Companion.DBInitializer::class])
 @Testcontainers
 class AgencyAPIIntegrationTest {
     companion object {
@@ -31,16 +28,7 @@ class AgencyAPIIntegrationTest {
         @JvmStatic
         val container = MongoDBContainer(DockerImageName.parse("mongo:6.0.3"))
 
-        class MongoDBInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
-            override fun initialize(applicationContext: ConfigurableApplicationContext) {
-                val values = TestPropertyValues.of(
-                    "spring.data.mongodb.host=" + container.host,
-                    "spring.data.mongodb.port=" + container.firstMappedPort
-                )
-                values.applyTo(applicationContext)
-            }
-
-        }
+        class DBInitializer : MongoDBInitializer(container)
     }
 
     @Autowired
@@ -65,4 +53,5 @@ class AgencyAPIIntegrationTest {
     fun cleanUp() {
         agencyRepository.deleteAll()
     }
+
 }
