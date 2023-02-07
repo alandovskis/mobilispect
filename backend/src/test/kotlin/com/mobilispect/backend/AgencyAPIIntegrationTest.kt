@@ -8,10 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.ContextConfiguration
-import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import org.testcontainers.utility.DockerImageName
 
 
 private val AGENCY_A = Agency(_id = "o-abcd-a", "A")
@@ -26,7 +24,7 @@ class AgencyAPIIntegrationTest {
     companion object {
         @Container
         @JvmStatic
-        val container = MongoDBContainer(DockerImageName.parse("mongo:6.0.3"))
+        val container = createMongoDBContainer()
 
         class DBInitializer : MongoDBInitializer(container)
     }
@@ -53,5 +51,4 @@ class AgencyAPIIntegrationTest {
     fun cleanUp() {
         agencyRepository.deleteAll()
     }
-
 }

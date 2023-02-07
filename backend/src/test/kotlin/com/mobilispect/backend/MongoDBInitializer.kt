@@ -4,6 +4,9 @@ import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.testcontainers.containers.MongoDBContainer
+import org.testcontainers.utility.DockerImageName
+
+fun createMongoDBContainer() = MongoDBContainer(DockerImageName.parse("mongo:6.0.3"))
 
 /**
  * An [ApplicationContextInitializer] that configures Spring Data MongoDB to use testcontainers instance.
