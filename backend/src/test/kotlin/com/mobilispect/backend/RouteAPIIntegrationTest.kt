@@ -4,7 +4,18 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.util.TestPropertyValues
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.context.ApplicationContextInitializer
+import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.http.HttpStatus
+import org.springframework.test.context.ContextConfiguration
+import org.testcontainers.containers.MongoDBContainer
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
+import org.testcontainers.utility.DockerImageName
+
 
 private val AGENCY_A = Agency(_id = "o-abcd-a", "A")
 private val AGENCY_B = Agency(_id = "o-abcd-b", "B")
@@ -13,7 +24,32 @@ private val ROUTE_A1 = Route("r-abcd-1", shortName = "1", "Main Street", agencyI
 private val ROUTE_A2 = Route("r-abcd-2", shortName = "2", "Central Avenue", agencyID = AGENCY_A._id)
 private val ROUTE_B1 = Route("r-cdef-1", shortName = "1", "1st Street", agencyID = AGENCY_B._id)
 
-class RouteAPIIntegrationTest : APIIntegrationTest() {
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+)
+@ContextConfiguration(initializers = [RouteAPIIntegrationTest.Companion.MongoDBInitializer::class])
+@Testcontainers
+class RouteAPIIntegrationTest {
+    companion object {
+        @Container
+        @JvmStatic
+        val container = MongoDBContainer(DockerImageName.parse("mongo:6.0.3"))
+
+        class MongoDBInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
+            override fun initialize(applicationContext: ConfigurableApplicationContext) {
+                val values = TestPropertyValues.of(
+                    "spring.data.mongodb.host=" + container.host,
+                    "spring.data.mongodb.port=" + container.firstMappedPort
+                )
+                values.applyTo(applicationContext)
+            }
+
+        }
+    }
+
+    @Autowired
+    private lateinit var template: TestRestTemplate
+
     @Autowired
     private lateinit var routeRepository: RouteRepository
 
