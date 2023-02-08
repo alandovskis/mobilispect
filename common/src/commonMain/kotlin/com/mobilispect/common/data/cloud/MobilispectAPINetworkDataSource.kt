@@ -39,19 +39,36 @@ class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine) : NetworkDat
     override suspend fun agencies(): Result<Collection<NetworkAgency>> {
         return try {
             val response = client.get(Agencies())
-            val body = response.body<Body>()
+            val body = response.body<Body<EmbeddedAgency>>()
             Result.success(body._embedded.agencies)
         } catch (e: IOException) {
             Result.failure(NetworkError)
         }
     }
+
+    override suspend fun routesOperatedBy(agencyID: String): Result<Collection<NetworkRoute>> {
+        return try {
+            val response = client.get(Routes(agencyID))
+            val body = response.body<Body<EmbeddedRoute>>()
+            Result.success(body._embedded.routes)
+        } catch (e: IOException) {
+            Result.failure(NetworkError)
+        }
+    }
+
 }
 
 @Resource("/agencies")
 class Agencies(val sort: String? = null)
 
-@kotlinx.serialization.Serializable
-data class Body(val _embedded: Embedded)
+@Resource("/routes/search/findAllByAgencyID")
+class Routes(val id: String)
 
 @kotlinx.serialization.Serializable
-data class Embedded(val agencies: Collection<NetworkAgency>)
+data class Body<T>(val _embedded: T)
+
+@kotlinx.serialization.Serializable
+data class EmbeddedAgency(val agencies: Collection<NetworkAgency>)
+
+@kotlinx.serialization.Serializable
+data class EmbeddedRoute(val routes: Collection<NetworkRoute>)

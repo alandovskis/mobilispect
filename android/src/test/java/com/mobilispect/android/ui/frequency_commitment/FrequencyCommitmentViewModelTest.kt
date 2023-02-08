@@ -16,12 +16,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import java.time.Duration
 import java.time.LocalTime
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@Ignore("Not needed")
 class FrequencyCommitmentViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()

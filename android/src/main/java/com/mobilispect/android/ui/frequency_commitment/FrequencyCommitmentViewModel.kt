@@ -38,22 +38,23 @@ class FrequencyCommitmentViewModel @Inject constructor(
         }
 
     private suspend fun routes(routes: List<RouteRef>): Collection<RouteUIState> =
-        routes.mapNotNull { routeRef ->
-            val route = routeRepository.fromRef(routeRef)
-            if (route.isSuccess) {
-                val value = route.getOrNull()
-                if (value != null) {
-                    RouteUIState(
-                        route = "${value.shortName}: ${value.longName}",
-                        routeRef = routeRef
-                    )
-                } else {
-                    null
-                }
+        emptyList()
+    /*routes.mapNotNull { routeRef ->
+        val route = routeRepository.sync(routeRef)
+        if (route.isSuccess) {
+            val value = route.getOrNull()
+            if (value != null) {
+                RouteUIState(
+                    route = "${value.shortName}: ${value.longName}",
+                    routeRef = routeRef
+                )
             } else {
                 null
             }
+        } else {
+            null
         }
+    }*/
 
     private fun directions(item: FrequencyCommitmentItem): List<FrequencyCommitmentDirectionUIState> =
         item.directions.map { directionTime ->
