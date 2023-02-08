@@ -7,7 +7,7 @@ import com.mobilispect.common.data.AppDatabase
 import com.mobilispect.common.data.cloud.Link
 import com.mobilispect.common.data.cloud.Links
 import com.mobilispect.common.data.cloud.NetworkAgency
-import com.mobilispect.common.data.cloud.NetworkDataSource
+import com.mobilispect.common.data.cloud.TestNetworkDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -117,16 +117,5 @@ class OfflineFirstAgencyRepositoryTest {
         }
 
         override fun all(): Flow<List<Agency>> = flowOf(agencies)
-    }
-
-    class TestNetworkDataSource : NetworkDataSource {
-        private val agencies = mutableListOf<NetworkAgency>()
-
-        override suspend fun agencies(): Result<Collection<NetworkAgency>> =
-            Result.success(agencies)
-
-        fun insert(agency: NetworkAgency) {
-            agencies.add(agency)
-        }
     }
 }
