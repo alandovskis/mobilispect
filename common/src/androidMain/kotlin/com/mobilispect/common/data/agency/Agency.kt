@@ -13,7 +13,6 @@ data class Agency(
 )
 
 fun NetworkAgency.asEntity(): Agency {
-    val id = _links.self.href.split("/").last()
     return Agency(
         ref = id, name = name
     )
