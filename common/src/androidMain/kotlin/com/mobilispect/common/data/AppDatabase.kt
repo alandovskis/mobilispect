@@ -11,7 +11,7 @@ import com.mobilispect.common.data.route.Route
 import com.mobilispect.common.data.route.RouteDAO
 
 @Database(
-    version = 2,
+    version = 3,
     exportSchema = true,
     entities = [
         Agency::class,

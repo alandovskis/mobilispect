@@ -18,9 +18,10 @@ internal class TransitLandRouteDataSource @Inject constructor(
 
                 val route = cloudRoute.routes.first()
                 return@map Route(
-                    id = routeRef,
+                    id = routeRef.id,
                     shortName = route.shortName,
-                    longName = route.longName
+                    longName = route.longName,
+                    agencyID = ""
                 )
             }
 }
