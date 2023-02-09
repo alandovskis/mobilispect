@@ -8,14 +8,15 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 internal class OfflineFirstRouteRepository @Inject constructor(
-    private val coroutineDispatcher: CoroutineDispatcher,
-    private val routeNetworkDataSource: RouteNetworkDataSource,
     private val networkDataSource: NetworkDataSource,
     private val routeDAO: RouteDAO,
     private val appDatabase: AppDatabase,
 ) :
     RouteRepository {
     override suspend fun all(): Flow<Collection<Route>> = routeDAO.all()
+
+    override fun operatedBy(agencyID: String): Flow<Collection<Route>> =
+        routeDAO.operatedBy(agencyID)
 
     override suspend fun syncRoutesOperatedBy(agencyID: String) {
         val remoteRes = networkDataSource.routesOperatedBy(agencyID)

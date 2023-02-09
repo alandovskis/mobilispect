@@ -9,6 +9,10 @@ class TestRouteRepository : RouteRepository {
         TODO("Not yet implemented")
     }
 
+    override fun operatedBy(agencyID: String): Flow<Collection<Route>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun syncRoutesOperatedBy(agencyID: String) {
         TODO("Not yet implemented")
     }
