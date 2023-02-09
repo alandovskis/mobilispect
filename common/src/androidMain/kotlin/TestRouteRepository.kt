@@ -5,10 +5,6 @@ import kotlinx.coroutines.flow.Flow
 class TestRouteRepository : RouteRepository {
     private val routesByRef: MutableMap<String, Route> = mutableMapOf()
 
-    override suspend fun fromRef(routeRef: RouteRef): Result<Route?> {
-        return Result.success(routesByRef[routeRef.id])
-    }
-
     override suspend fun all(): Flow<Collection<Route>> {
         TODO("Not yet implemented")
     }

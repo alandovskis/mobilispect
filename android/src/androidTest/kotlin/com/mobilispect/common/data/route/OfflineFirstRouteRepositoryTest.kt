@@ -11,8 +11,6 @@ import com.mobilispect.common.data.cloud.NetworkRoute
 import com.mobilispect.common.data.cloud.TestNetworkDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -44,23 +42,16 @@ private val LOCAL_ROUTE_2 = Route(
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class OfflineFirstRouteRepositoryTest {
-    private val testScope = TestScope()
-
     private lateinit var routeDAO: FakeRouteDAO
-    private lateinit var routeNetworkDataSource: RouteNetworkDataSource
     private lateinit var networkDataSource: TestNetworkDataSource
 
     private lateinit var subject: OfflineFirstRouteRepository
 
     @Before
     fun setup() {
-        val coroutineDispatcher = StandardTestDispatcher(testScope.testScheduler)
-        routeNetworkDataSource = FakeRouteNetworkDataSource()
         routeDAO = FakeRouteDAO()
         networkDataSource = TestNetworkDataSource()
         subject = OfflineFirstRouteRepository(
-            coroutineDispatcher = coroutineDispatcher,
-            routeNetworkDataSource = routeNetworkDataSource,
             routeDAO = routeDAO,
             networkDataSource = networkDataSource,
             appDatabase = Room.inMemoryDatabaseBuilder(
