@@ -37,7 +37,7 @@ class FrequencyCommitmentViewModel @Inject constructor(
             )
         }
 
-    private suspend fun routes(routes: List<RouteRef>): Collection<RouteUIState> =
+    private suspend fun routes(routes: List<String>): Collection<RouteUIState> =
         emptyList()
     /*routes.mapNotNull { routeRef ->
         val route = routeRepository.sync(routeRef)

@@ -8,7 +8,6 @@ import com.mobilispect.common.data.frequency_commitment.FrequencyCommitment
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency_commitment.TestFrequencyCommitmentRepository
 import com.mobilispect.common.data.route.Route
-import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.route.TestRouteRepository
 import com.mobilispect.common.data.time.WEEKDAYS
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -61,7 +60,7 @@ class FrequencyCommitmentViewModelTest {
         val commitmentItem = FrequencyCommitmentItem(
             daysOfWeek = WEEKDAYS, frequency = Duration.ofMinutes(10),
             directions = expectedDirections,
-            routes = listOf(RouteRef("not", "found"))
+            routes = listOf("r-not-found")
         )
         val commitment = FrequencyCommitment(
             spans = listOf(
@@ -97,9 +96,10 @@ class FrequencyCommitmentViewModelTest {
     @Test
     fun commitmentFound_bothDirections_routeFound() = runTest {
         val route = Route(
-            id = RouteRef("was", "found"),
+            id = "r-was-found",
             shortName = "Found",
-            longName = "Really Found"
+            longName = "Really Found",
+            agencyID = "o-abcd-a"
         )
         routeRepository.insert(route)
 

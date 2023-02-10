@@ -1,6 +1,5 @@
 package com.mobilispect.common.data.frequency_commitment
 
-import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
 import java.time.DayOfWeek
 import java.time.Duration
@@ -10,7 +9,8 @@ import java.time.LocalTime
 data class DirectionTime(
     val direction: Direction?,
     val start: LocalTime,
-    val end: LocalTime) {
+    val end: LocalTime
+) {
 
     companion object {
         fun both(start: LocalTime, end: LocalTime): Collection<DirectionTime> {
@@ -30,6 +30,6 @@ data class DirectionTime(
 data class FrequencyCommitmentItem(
     val daysOfWeek: Collection<DayOfWeek>,
     val frequency: Duration,
-    val routes: List<RouteRef>,
+    val routes: List<String>,
     val directions: Collection<DirectionTime>,
 )

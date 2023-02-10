@@ -1,6 +1,5 @@
 package com.mobilispect.common.data.schedule
 
-import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.stop.StopRef
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -11,7 +10,7 @@ internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository
     override fun forDayAtStopOnRouteInDirection(
         start: LocalDateTime,
         end: LocalDateTime,
-        routeRef: RouteRef,
+        routeRef: String,
         stopRef: StopRef,
         direction: Direction
     ): Collection<ScheduledStop> {
@@ -36,7 +35,7 @@ internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository
     }
 
     private fun inboundDepartures(
-        routeRef: RouteRef,
+        routeRef: String,
         stopRef: StopRef,
         today: LocalDate
     ): List<ScheduledStop> {
@@ -192,7 +191,7 @@ internal class FakeScheduleRepository @Inject constructor() : ScheduleRepository
     }
 
     private fun outboundDepartures(
-        routeRef: RouteRef,
+        routeRef: String,
         stopRef: StopRef,
         today: LocalDate
     ): List<ScheduledStop> {

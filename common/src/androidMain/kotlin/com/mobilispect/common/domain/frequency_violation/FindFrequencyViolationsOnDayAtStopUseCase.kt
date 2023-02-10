@@ -1,7 +1,6 @@
 package com.mobilispect.common.domain.frequency_violation
 
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitment
-import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
 import com.mobilispect.common.data.schedule.ScheduleRepository
 import com.mobilispect.common.data.schedule.ScheduledStop
@@ -13,7 +12,7 @@ import javax.inject.Inject
 class FindFrequencyViolationsOnDayAtStopUseCase @Inject constructor(private val scheduleRepo: ScheduleRepository) {
     operator fun invoke(
         start: LocalDateTime,
-        routeRef: RouteRef,
+        routeRef: String,
         stopRef: StopRef,
         direction: Direction,
         commitment: FrequencyCommitment

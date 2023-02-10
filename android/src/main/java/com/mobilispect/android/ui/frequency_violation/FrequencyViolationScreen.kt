@@ -15,7 +15,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.ScreenFrame
-import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
 import com.mobilispect.common.domain.frequency_violation.NoDeparturesFound
 
@@ -24,7 +23,7 @@ fun FrequencyViolationRoute(
     viewModel: FrequencyViolationViewModel = hiltViewModel(),
     routeRef: String?
 ) {
-    RouteRef.fromString(routeRef)?.let {
+    routeRef?.let {
         viewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(
             it
         )
@@ -34,7 +33,7 @@ fun FrequencyViolationRoute(
                 outbound = Result.success(emptyList())
             )
         )
-        FrequencyViolationScreen(it.routeNumber, uiState)
+        FrequencyViolationScreen(it, uiState)
     }
 }
 

@@ -4,7 +4,6 @@ package com.mobilispect.android.ui.frequency_violation
 
 import androidx.lifecycle.ViewModel
 import com.mobilispect.common.data.frequency_commitment.STM_FREQUENCY_COMMITMENT
-import com.mobilispect.common.data.route.RouteRef
 import com.mobilispect.common.data.schedule.Direction
 import com.mobilispect.common.data.stop.StopRef
 import com.mobilispect.common.domain.frequency_violation.FindFrequencyViolationsOnDayAtStopUseCase
@@ -31,7 +30,7 @@ class FrequencyViolationViewModel @Inject constructor(
     )
     val violations: Flow<FrequencyViolationUIState> = _violations
 
-    fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: RouteRef) {
+    fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: String) {
         val start = LocalDateTime.of(
             LocalDate.of(2022, 7, 7),
             LocalTime.MIDNIGHT
