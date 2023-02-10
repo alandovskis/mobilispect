@@ -13,7 +13,7 @@ internal class OfflineFirstRouteRepository @Inject constructor(
     private val appDatabase: AppDatabase,
 ) :
     RouteRepository {
-    override suspend fun all(): Flow<Collection<Route>> = routeDAO.all()
+    override fun all(): Flow<Collection<Route>> = routeDAO.all()
 
     override fun operatedBy(agencyID: String): Flow<Collection<Route>> =
         routeDAO.operatedBy(agencyID)

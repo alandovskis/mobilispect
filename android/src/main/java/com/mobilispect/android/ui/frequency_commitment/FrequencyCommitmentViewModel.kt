@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentItem
 import com.mobilispect.common.data.frequency_commitment.FrequencyCommitmentRepository
 import com.mobilispect.common.data.route.RouteRef
-import com.mobilispect.common.data.route.RouteRepository
 import com.mobilispect.common.data.schedule.Direction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
@@ -16,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FrequencyCommitmentViewModel @Inject constructor(
-    private val routeRepository: RouteRepository,
+    //private val routeRepository: RouteRepository,
     private val frequencyCommitmentRepository: FrequencyCommitmentRepository,
 ) : ViewModel() {
     fun uiState(agency: String) =
@@ -31,13 +30,13 @@ class FrequencyCommitmentViewModel @Inject constructor(
                         daysOfTheWeek = item.daysOfWeek,
                         directions = directions(item),
                         frequency = item.frequency.toMinutes(),
-                        routes = routes(item.routes),
+                        routes = routes(),
                     )
                 }
             )
         }
 
-    private suspend fun routes(routes: List<String>): Collection<RouteUIState> =
+    private fun routes(): Collection<RouteUIState> =
         emptyList()
     /*routes.mapNotNull { routeRef ->
         val route = routeRepository.sync(routeRef)
