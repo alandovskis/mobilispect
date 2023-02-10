@@ -8,8 +8,5 @@
   ],
   "packageRules": [],
   "ignoreDeps": [
-    "com.google.devtools.ksp",
-    "org.jetbrains.kotlin:kotlin-gradle-plugin",
-    "org.jetbrains.kotlin.plugin.serialization"
   ]
 }
