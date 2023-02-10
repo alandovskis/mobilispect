@@ -35,7 +35,7 @@ class FrequencyCommitmentViewModelTest {
 
     @Before
     fun setup() {
-        subject = FrequencyCommitmentViewModel(routeRepository, frequencyCommitmentRepository)
+        subject = FrequencyCommitmentViewModel(frequencyCommitmentRepository)
     }
 
     @Test
