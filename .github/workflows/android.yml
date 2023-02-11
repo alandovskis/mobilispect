@@ -86,6 +86,25 @@ jobs:
       - name: Build Android APKs
         run: ./gradlew android:assembleDebug android:assembleDebugUnitTest
 
+  localTest:
+    runs-on: macOS-12
+    name: "Local Tests"
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
       - name: Run Android local tests
         run: ./gradlew android:testDebugUnitTest
 
