@@ -74,19 +74,13 @@ kotlin {
                 implementation(libs.ktor.okhttp)
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.junit)
                 implementation(libs.room.testing)
                 implementation(libs.truth)
                 implementation(libs.kotlinx.coroutines.test)
                 implementation(libs.mockWebServer)
-            }
-        }
-
-        val androidAndroidTest by getting {
-            dependencies {
-                implementation(libs.hilt.android.testing)
             }
         }
 
