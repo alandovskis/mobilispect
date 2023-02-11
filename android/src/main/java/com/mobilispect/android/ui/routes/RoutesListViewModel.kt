@@ -15,11 +15,11 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class RoutesListViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val routeRepository: RouteRepository
 ) :
     ViewModel() {
-    private val agencyID: String = savedStateHandle["agencyID"]!!
+    private val agencyID: String = savedStateHandle["agencyID"] ?: ""
 
     val uiState = routeUIState(agencyID)
         .stateIn(
