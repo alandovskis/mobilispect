@@ -93,6 +93,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
+          name: 'local-test-results'
           path: '*/build/reports/tests'
 
   androidTest:
@@ -130,5 +131,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: test-reports-${{ matrix.api-level }}
+          name: instrumented-test-reports-${{ matrix.api-level }}
           path: 'android/build/reports/androidTests'
