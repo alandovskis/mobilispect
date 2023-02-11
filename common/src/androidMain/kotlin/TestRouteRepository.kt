@@ -1,11 +1,13 @@
 package com.mobilispect.common.data.route
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.mapLatest
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TestRouteRepository : RouteRepository {
     private val routes = mutableListOf<Route>()
     private val routesByAgency = mutableMapOf<String, MutableCollection<Route>>()
