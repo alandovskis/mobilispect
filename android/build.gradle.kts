@@ -133,5 +133,5 @@ dependencies {
     implementation(libs.ktor.okhttp)
     implementation(libs.ktor.testing)
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.22.0")
+    detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
 }
