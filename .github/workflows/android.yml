@@ -96,11 +96,11 @@ jobs:
           name: 'local-test-results'
           path: '*/build/reports/tests'
 
-  androidTest:
-    name: "Android Instrumented Tests"
+  instrumentedTest:
+    name: "Instrumented Tests"
     needs: build
     runs-on: macOS-12 # enables hardware acceleration in the virtual machine
-    timeout-minutes: 55
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -137,7 +137,7 @@ jobs:
 
   performanceTest:
     name: 'Performance Tests'
-    needs: build
+    needs: instrumentedTest
     runs-on: macOS-12 # enables hardware acceleration in the virtual machine
     timeout-minutes: 55
 
