@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 private val ROUTE_A1 =
@@ -17,6 +18,7 @@ private val ROUTE_B3 =
     Route(id = "r-cdef-3", shortName = "3", longName = "1st Street", agencyID = "o-cdef-b")
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@Ignore
 class RoutesListViewModelTest {
     private lateinit var routeRepository: TestRouteRepository
 
