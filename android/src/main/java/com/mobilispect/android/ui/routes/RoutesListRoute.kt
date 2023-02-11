@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
@@ -23,9 +24,9 @@ fun RoutesListRoute(
 }
 
 @Composable
-fun RouteListScreen(uiState: RouteListUIState) {
+fun RouteListScreen(uiState: RouteListUIState, modifier: Modifier = Modifier) {
     ScreenFrame(screenTitle = stringResource(R.string.routes)) {
-        Card {
+        Card(modifier = modifier) {
             when (uiState) {
                 Loading -> LoadingCard()
                 is RoutesFound -> {

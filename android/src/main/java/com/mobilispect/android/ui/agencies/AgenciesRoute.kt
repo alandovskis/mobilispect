@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
@@ -25,12 +26,16 @@ fun AgenciesRoute(
 ) {
     viewModel.sync()
     val uiState by viewModel.uiState.collectAsState(initial = Loading)
-    AgenciesScreen(uiState, navigateToCommitment)
+    AgenciesScreen(uiState = uiState, navigateToCommitment = navigateToCommitment)
 }
 
 @Composable
-fun AgenciesScreen(uiState: AgenciesUIState, navigateToCommitment: (String) -> Unit) {
-    ScreenFrame(screenTitle = stringResource(id = R.string.agencies)) {
+fun AgenciesScreen(
+    uiState: AgenciesUIState,
+    modifier: Modifier = Modifier,
+    navigateToCommitment: (String) -> Unit
+) {
+    ScreenFrame(screenTitle = stringResource(id = R.string.agencies), modifier = modifier) {
         when (uiState) {
             Loading -> LoadingCard()
             NoAgencyFound -> {

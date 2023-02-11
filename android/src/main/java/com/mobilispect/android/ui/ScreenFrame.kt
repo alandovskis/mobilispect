@@ -15,19 +15,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
-fun ScreenFrame(screenTitle: String, function: @Composable (Modifier) -> Unit) {
-    Scaffold(topBar = { TopBar(screenTitle) }) { padding ->
-        function(Modifier.padding(padding))
+fun ScreenFrame(
+    screenTitle: String,
+    modifier: Modifier = Modifier,
+    function: @Composable (Modifier) -> Unit
+) {
+    Scaffold(topBar = { TopBar(screenTitle, Modifier.testTag("title")) }) { padding ->
+        function(modifier.padding(padding))
     }
 }
 
 @Composable
-fun TopBar(screenTitle: String) {
+fun TopBar(screenTitle: String, modifier: Modifier = Modifier) {
     TopAppBar(backgroundColor = MaterialTheme.colors.primary, title = {
         Text(
             text = screenTitle,
             style = MaterialTheme.typography.h5,
-            modifier = Modifier.testTag("title")
+            modifier = modifier.testTag("title")
         )
     })
 }

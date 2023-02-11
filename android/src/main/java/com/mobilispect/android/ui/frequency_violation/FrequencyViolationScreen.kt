@@ -20,8 +20,8 @@ import com.mobilispect.common.domain.frequency_violation.NoDeparturesFound
 
 @Composable
 fun FrequencyViolationRoute(
-    viewModel: FrequencyViolationViewModel = hiltViewModel(),
-    routeRef: String?
+    routeRef: String?,
+    viewModel: FrequencyViolationViewModel = hiltViewModel()
 ) {
     routeRef?.let {
         viewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(
@@ -41,14 +41,16 @@ fun FrequencyViolationRoute(
 fun FrequencyViolationScreen(
     routeNumber: String,
     uiState: FrequencyViolationUIState,
+    modifier: Modifier = Modifier
 ) {
     ScreenFrame(
-        stringResource(
+        screenTitle = stringResource(
             id = R.string.frequency_violations,
             routeNumber
-        )
-    ) { modifier ->
-        Column(modifier = modifier) {
+        ),
+        modifier = modifier,
+    ) {
+        Column(modifier = Modifier) {
             FrequencyViolationCard(
                 direction = Direction.Inbound,
                 uiState.inbound

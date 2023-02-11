@@ -39,8 +39,8 @@ import java.time.format.FormatStyle
 
 @Composable
 fun FrequencyCommitmentRoute(
-    viewModel: FrequencyCommitmentViewModel = hiltViewModel(),
     agencyRef: String?,
+    viewModel: FrequencyCommitmentViewModel = hiltViewModel(),
     navigateToViolation: (RouteRef) -> Unit
 ) {
     agencyRef?.let {
@@ -48,19 +48,23 @@ fun FrequencyCommitmentRoute(
             initial = Loading
         )
 
-        FrequencyCommitmentScreen(uiState, navigateToViolation)
+        FrequencyCommitmentScreen(uiState = uiState, navigateToViolation = navigateToViolation)
     }
 }
 
 @Composable
 fun FrequencyCommitmentScreen(
     uiState: FrequencyCommitmentUIState,
+    modifier: Modifier = Modifier,
     navigateToViolation: (RouteRef) -> Unit
 ) {
-    ScreenFrame(screenTitle = stringResource(id = R.string.frequency_commitment)) { modifier ->
+    ScreenFrame(
+        screenTitle = stringResource(id = R.string.frequency_commitment),
+        modifier = modifier
+    ) {
         FrequencyCommitmentEntryCards(
-            uiState = uiState, navigateToViolation = navigateToViolation,
-            modifier = modifier
+            uiState = uiState,
+            navigateToViolation = navigateToViolation
         )
     }
 }
@@ -68,12 +72,12 @@ fun FrequencyCommitmentScreen(
 @Composable
 fun FrequencyCommitmentEntryCards(
     uiState: FrequencyCommitmentUIState,
-    navigateToViolation: (RouteRef) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    navigateToViolation: (RouteRef) -> Unit
 ) {
     when (uiState) {
-        Loading -> LoadingCard()
-        NoCommitmentFound -> NotFoundCard()
+        Loading -> LoadingCard(modifier = modifier)
+        NoCommitmentFound -> NotFoundCard(modifier = modifier)
         is CommitmentFound -> {
             val items = uiState.items
             Column(modifier = modifier) {
@@ -86,8 +90,8 @@ fun FrequencyCommitmentEntryCards(
 }
 
 @Composable
-fun NotFoundCard() {
-    Card {
+fun NotFoundCard(modifier: Modifier = Modifier) {
+    Card(modifier) {
         Text(stringResource(id = R.string.no_frequency_commitment_was_found))
     }
 }

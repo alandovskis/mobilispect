@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun OutlinedButton(
     onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    modifier: Modifier = Modifier,
+    content: @Composable (RowScope.() -> Unit)
 ) {
     androidx.compose.material.OutlinedButton(
         colors = ButtonDefaults.outlinedButtonColors(
@@ -21,6 +23,7 @@ fun OutlinedButton(
         ),
         border = BorderStroke(1.dp, MaterialTheme.colors.onSecondary),
         onClick = onClick,
-        content = content
+        content = content,
+        modifier = modifier
     )
 }

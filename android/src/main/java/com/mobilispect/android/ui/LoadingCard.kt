@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
-fun LoadingCard() {
+fun LoadingCard(modifier: Modifier = Modifier) {
     CircularProgressIndicator(
-        modifier = Modifier
+        modifier = modifier
             .size(100.dp)
             .testTag("loading"),
         color = MaterialTheme.colors.primary,
