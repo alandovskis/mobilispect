@@ -7,9 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mobilispect.android.ui.agencies.AgenciesNavDestination
 import com.mobilispect.android.ui.agencies.agenciesGraph
-import com.mobilispect.android.ui.frequency_commitment.FrequencyCommitmentNavDestination
-import com.mobilispect.android.ui.frequency_commitment.frequencyGraph
-import com.mobilispect.android.ui.frequency_violation.FrequencyViolationDestination
+import com.mobilispect.android.ui.frequency_commitment.RoutesListNavDestination
+import com.mobilispect.android.ui.frequency_commitment.routesGraph
 import com.mobilispect.android.ui.frequency_violation.violationGraph
 
 @Composable
@@ -22,10 +21,9 @@ fun MobilispectNavHost(
         startDestination = startDestination,
     ) {
         agenciesGraph(
-            navigateToCommitment = { navController.navigate("${FrequencyCommitmentNavDestination.route}/${it}") },
+            navigateToCommitment = { navController.navigate("${RoutesListNavDestination.route}/${it}") },
             nestedGraphs = {
-                frequencyGraph(
-                    navigateToViolation = { navController.navigate("${FrequencyViolationDestination.route}/${it.id}") },
+                routesGraph(
                     nestedGraphs = {
                         violationGraph()
                     }
