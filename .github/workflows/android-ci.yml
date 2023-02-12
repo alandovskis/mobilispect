@@ -59,7 +59,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: android/build/reports/detekt/debug.sarif
+          sarif_file: 'frontend/android/build/reports/detekt/debug.sarif'
 
       - name: Check lint
         run: ./gradlew android:lintDebug
@@ -68,7 +68,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: android/build/reports/lint-results-debug.sarif
+          sarif_file: 'frontend/android/build/reports/lint-results-debug.sarif'
 
   build:
     runs-on: macOS-12
@@ -158,4 +158,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: instrumented-test-reports-${{ matrix.api-level }}
-          path: 'android/build/reports/androidTests'
+          path: 'frontend/android/build/reports/androidTests'
