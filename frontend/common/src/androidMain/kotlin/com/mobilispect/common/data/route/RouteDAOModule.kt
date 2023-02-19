@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.routes
+package com.mobilispect.common.data.route
 
 import com.mobilispect.common.data.AppDatabase
 import dagger.Module
@@ -8,7 +8,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RouteDAOModule {
+object RouteDAModule {
     @Provides
     internal fun dao(db: AppDatabase) = db.routeDAO()
 }

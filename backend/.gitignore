@@ -1,6 +1,20 @@
-HELP.md
+### Gradle ###
 .gradle
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Cache of project
+.gradletasknamecache
+
+### Gradle Patch ###
+# Java heap dump
+*.hprof
+
+HELP.md
 build/
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -25,6 +39,9 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+
+### HTTPS ###
+/keystore.p12
 
 ### NetBeans ###
 /nbproject/private/
