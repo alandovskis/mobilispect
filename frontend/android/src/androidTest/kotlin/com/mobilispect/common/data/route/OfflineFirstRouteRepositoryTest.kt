@@ -49,14 +49,14 @@ private val LOCAL_ROUTE_B3 = Route(
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class OfflineFirstRouteRepositoryTest {
-    private lateinit var routeDAO: FakeRouteDAO
+    private lateinit var routeDAO: TestRouteDAO
     private lateinit var networkDataSource: TestNetworkDataSource
 
     private lateinit var subject: OfflineFirstRouteRepository
 
     @Before
     fun setup() {
-        routeDAO = FakeRouteDAO()
+        routeDAO = TestRouteDAO()
         networkDataSource = TestNetworkDataSource()
         subject = OfflineFirstRouteRepository(
             routeDAO = routeDAO,

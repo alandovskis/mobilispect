@@ -3,7 +3,10 @@ package com.mobilispect.common.data.route
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-internal class FakeRouteDAO : RouteDAO {
+/**
+ * A minimal test double for [RouteDAO], suitable only for local tests.
+ */
+internal class TestRouteDAO : RouteDAO {
     private val routes = mutableListOf<Route>()
     private val routesByAgency = mutableMapOf<String, MutableCollection<Route>>()
 
