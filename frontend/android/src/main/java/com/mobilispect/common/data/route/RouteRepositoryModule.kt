@@ -1,7 +1,5 @@
-package com.mobilispect.common.data.routes
+package com.mobilispect.common.data.route
 
-import com.mobilispect.common.data.route.OfflineFirstRouteRepository
-import com.mobilispect.common.data.route.RouteRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
