@@ -144,13 +144,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run instrumented tests
-        run: cd frontend &&
-          ./gradlew cleanManagedDevices --unused-only &&
+        run: ./gradlew cleanManagedDevices --unused-only &&
           ./gradlew pixel6Api31DebugAndroidTest --info
 
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: instrumented-test-reports-${{ matrix.api-level }}
+          name: instrumented-test-reports
           path: 'frontend/android/build/reports/androidTests'
