@@ -1,5 +1,3 @@
-import com.android.build.api.dsl.ManagedVirtualDevice
-
 // TODO: Remove once https://youtrack.jetbrains.com/issue/KTIJ-19369 is fixed - for alias call
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -61,6 +59,10 @@ android {
         kotlinCompilerExtensionVersion = "1.4.2"
     }
 
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions
+    }
+
     lint {
         // SARIF is the format supported by GitHub Pull Requests.
         sarifReport = true
@@ -76,18 +78,6 @@ android {
         basePath = projectDir.parent
         toolVersion = "1.22.0"
         config = files("../config/detekt/detekt.yml")
-    }
-
-    testOptions {
-        managedDevices {
-            devices {
-                maybeCreate<ManagedVirtualDevice>("pixel6Api31").apply {
-                    device = "Pixel 6"
-                    apiLevel = 31
-                    systemImageSource = "aosp"
-                }
-            }
-        }
     }
 }
 
