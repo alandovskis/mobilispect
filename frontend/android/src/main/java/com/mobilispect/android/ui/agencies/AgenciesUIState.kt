@@ -8,4 +8,4 @@ data class AgenciesFound(
     val agencies: Collection<AgencyUIState>
 ) : AgenciesUIState
 
-data class AgencyUIState(val ref: String, val name: String)
+data class AgencyUIState(val id: String, val name: String)

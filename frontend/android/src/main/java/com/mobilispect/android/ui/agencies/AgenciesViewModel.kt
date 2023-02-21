@@ -20,7 +20,7 @@ class AgenciesViewModel @Inject constructor(
         .mapLatest { agencies ->
             agencies.map { agency ->
                 AgencyUIState(
-                    ref = agency.ref,
+                    id = agency.id,
                     name = agency.name
                 )
             }

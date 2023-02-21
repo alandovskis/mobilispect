@@ -14,11 +14,11 @@ import org.junit.Rule
 import org.junit.Test
 
 private val AGENCY_A = Agency(
-    ref = "o-abcd-a",
+    id = "o-abcd-a",
     name = "Agency A"
 )
 private val AGENCY_B = Agency(
-    ref = "o-abcd-b",
+    id = "o-abcd-b",
     name = "Agency B"
 )
 
@@ -53,8 +53,8 @@ class AgenciesViewModelTest {
         val uiState = subject.uiState.first()
 
         assertThat(uiState).isInstanceOf(AgenciesFound::class.java)
-        val actualAgencies = (uiState as AgenciesFound).agencies.map { agency -> agency.ref }
-        assertThat(actualAgencies).containsExactly(AGENCY_A.ref, AGENCY_B.ref)
+        val actualAgencies = (uiState as AgenciesFound).agencies.map { agency -> agency.id }
+        assertThat(actualAgencies).containsExactly(AGENCY_A.id, AGENCY_B.id)
     }
 
     class TestAgencyRepository : AgencyRepository {

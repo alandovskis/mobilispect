@@ -9,10 +9,10 @@ import org.junit.Rule
 import org.junit.Test
 
 private val AGENCY_A = AgencyUIState(
-    ref = "o-abcd-A", name = "A"
+    id = "o-abcd-A", name = "A"
 )
 private val AGENCY_B = AgencyUIState(
-    ref = "o-abcd-B", name = "B"
+    id = "o-abcd-B", name = "B"
 )
 
 class AgenciesScreenTest {

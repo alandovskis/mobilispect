@@ -49,7 +49,7 @@ fun AgenciesScreen(
                         for (agency in uiState.agencies) {
                             item {
                                 OutlinedButton(
-                                    onClick = { navigateToCommitment(agency.ref) },
+                                    onClick = { navigateToCommitment(agency.id) },
                                 ) {
                                     Text(
                                         text = agency.name,

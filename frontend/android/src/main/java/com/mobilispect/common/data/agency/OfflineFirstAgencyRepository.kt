@@ -21,15 +21,15 @@ class OfflineFirstAgencyRepository @Inject constructor(
                 val local = agencyDAO.all().first()
                 val remote = remoteAgencies.map { agency -> agency.asEntity() }
 
-                val localIDs = local.map { agency -> agency.ref }
-                val remoteIDs = remote.map { agency -> agency.ref }
+                val localIDs = local.map { agency -> agency.id }
+                val remoteIDs = remote.map { agency -> agency.id }
 
-                val toAdd = remote.filterNot { agency -> localIDs.contains(agency.ref) }
+                val toAdd = remote.filterNot { agency -> localIDs.contains(agency.id) }
                 for (agency in toAdd) {
                     agencyDAO.insert(agency)
                 }
 
-                val toRemove = local.filterNot { agency -> remoteIDs.contains(agency.ref) }
+                val toRemove = local.filterNot { agency -> remoteIDs.contains(agency.id) }
                 for (agency in toRemove) {
                     agencyDAO.delete(agency)
                 }
