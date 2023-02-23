@@ -36,8 +36,7 @@ fun TopBar(screenTitle: String, modifier: Modifier = Modifier) {
     })
 }
 
-@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Previews
 @Composable
 fun PreviewScreenFrame() {
     MobilispectTheme {

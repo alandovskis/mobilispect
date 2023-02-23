@@ -26,6 +26,7 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
+import com.mobilispect.android.ui.Previews
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.common.data.route.RouteRef
@@ -179,8 +180,7 @@ private fun DaysOfTheWeek(daysOfWeek: Collection<DayOfWeek>) {
     )
 }
 
-@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Previews
 @Composable
 fun PreviewFrequencyCommitmentCard() {
     MobilispectTheme {
