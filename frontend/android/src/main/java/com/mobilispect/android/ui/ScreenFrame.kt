@@ -32,8 +32,10 @@ fun ScreenFrame(
 
 @Composable
 fun TopBar(screenTitle: String, modifier: Modifier = Modifier) {
-    TopAppBar(colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary,
-        titleContentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.primary)),
+    TopAppBar(colors = TopAppBarDefaults.smallTopAppBarColors(
+        containerColor = MaterialTheme.colorScheme.primary,
+        titleContentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.primary)
+    ),
         title = {
             Text(
                 text = screenTitle,
