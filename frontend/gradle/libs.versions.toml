@@ -20,6 +20,7 @@ kotlinxSerialization = "1.4.1"
 ksp = "1.8.10-1.0.9"
 ktor = "2.2.3"
 lifecycle = "2.5.1"
+mavericks = "3.0.1"
 mockWebServer = "4.10.0"
 navigation = "2.5.3"
 okhttpProfiler = "1.0.8"
@@ -52,7 +53,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "jetpackC
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 
 # Material Design
-compose-material-core = { module = "androidx.compose.material:material" }
+compose-material-core = { module = "androidx.compose.material3:material3" }
 
 # Material design icons
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }
@@ -96,6 +97,10 @@ ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-resources = { module = "io.ktor:ktor-client-resources", version.ref = "ktor" }
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-testing = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+
+# MVI
+mavericks-compose = { module = "com.airbnb.android:mavericks-compose", version.ref = "mavericks" }
+mavericks-core = { module = "com.airbnb.android:mavericks", version.ref = "mavericks" }
 
 # Mocking HTTP Responses
 mockWebServer = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockWebServer" }

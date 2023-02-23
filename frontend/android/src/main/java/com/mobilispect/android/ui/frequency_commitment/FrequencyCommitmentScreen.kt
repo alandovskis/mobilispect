@@ -12,20 +12,19 @@ import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
+import com.mobilispect.android.ui.Previews
 import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.common.data.route.RouteRef
@@ -117,7 +116,7 @@ private fun Routes(routes: Collection<RouteUIState>, onRoutePressed: (RouteRef) 
         OutlinedButton({ onRoutePressed(route.routeRef) }) {
             Text(
                 text = route.route,
-                style = MaterialTheme.typography.button
+                //style = MaterialTheme.typography.button
             )
         }
     }
@@ -179,8 +178,7 @@ private fun DaysOfTheWeek(daysOfWeek: Collection<DayOfWeek>) {
     )
 }
 
-@Preview(name = "Light Mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Previews
 @Composable
 fun PreviewFrequencyCommitmentCard() {
     MobilispectTheme {

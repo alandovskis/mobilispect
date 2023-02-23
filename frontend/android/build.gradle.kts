@@ -134,4 +134,7 @@ dependencies {
     implementation(libs.ktor.testing)
 
     detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
+
+    implementation(libs.mavericks.compose)
+    implementation(libs.mavericks.core)
 }
