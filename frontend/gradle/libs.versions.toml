@@ -53,7 +53,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "jetpackC
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 
 # Material Design
-compose-material-core = { module = "androidx.compose.material:material" }
+compose-material-core = { module = "androidx.compose.material3:material3" }
 
 # Material design icons
 compose-material-icons-core = { module = "androidx.compose.material:material-icons-core" }

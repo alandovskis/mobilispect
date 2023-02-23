@@ -1,39 +1,45 @@
 @file:Suppress("FunctionNaming")
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.mobilispect.android.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.tooling.preview.Preview
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
 fun ScreenFrame(
     screenTitle: String,
     modifier: Modifier = Modifier,
-    function: @Composable (Modifier) -> Unit
+    function: @Composable () -> Unit
 ) {
     Scaffold(topBar = { TopBar(screenTitle, Modifier.testTag("title")) }) { padding ->
-        function(modifier.padding(padding))
+        Surface(modifier = modifier.padding(padding), color = MaterialTheme.colorScheme.surface) {
+            function()
+        }
     }
 }
 
 @Composable
 fun TopBar(screenTitle: String, modifier: Modifier = Modifier) {
-    TopAppBar(backgroundColor = MaterialTheme.colors.primary, title = {
-        Text(
-            text = screenTitle,
-            style = MaterialTheme.typography.h5,
-            modifier = modifier.testTag("title")
-        )
-    })
+    TopAppBar(colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary,
+        titleContentColor = contentColorFor(backgroundColor = MaterialTheme.colorScheme.primary)),
+        title = {
+            Text(
+                text = screenTitle,
+                modifier = modifier.testTag("title")
+            )
+        })
 }
 
 @Previews

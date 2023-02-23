@@ -4,11 +4,13 @@ package com.mobilispect.android.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
 fun OutlinedButton(
@@ -16,14 +18,24 @@ fun OutlinedButton(
     modifier: Modifier = Modifier,
     content: @Composable (RowScope.() -> Unit)
 ) {
-    androidx.compose.material.OutlinedButton(
+    androidx.compose.material3.OutlinedButton(
         colors = ButtonDefaults.outlinedButtonColors(
-            backgroundColor = MaterialTheme.colors.secondary,
-            contentColor = MaterialTheme.colors.onSecondary
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colors.onSecondary),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondary),
         onClick = onClick,
         content = content,
         modifier = modifier
     )
+}
+
+@Composable
+@Previews
+fun PreviewOutlinedButton() {
+    MobilispectTheme {
+        OutlinedButton(onClick = {  }) {
+            Text("Test")
+        }
+    }
 }

@@ -5,8 +5,7 @@
 package com.mobilispect.android.ui.agencies
 
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,7 +16,9 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
+import com.mobilispect.android.ui.Previews
 import com.mobilispect.android.ui.ScreenFrame
+import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
 fun AgenciesRoute(
@@ -53,7 +54,6 @@ fun AgenciesScreen(
                                 ) {
                                     Text(
                                         text = agency.name,
-                                        style = MaterialTheme.typography.button
                                     )
                                 }
                             }
@@ -62,5 +62,15 @@ fun AgenciesScreen(
                 }
             }
         }
+    }
+}
+
+@Previews
+@Composable
+fun PreviewAgenciesScreen() {
+    MobilispectTheme {
+        AgenciesScreen(uiState = AgenciesFound(agencies = listOf(
+            AgencyUIState(id = "o-abcd-a", name = "Agency A")
+        )), navigateToCommitment = {})
     }
 }

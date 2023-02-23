@@ -12,15 +12,13 @@ import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
@@ -118,7 +116,7 @@ private fun Routes(routes: Collection<RouteUIState>, onRoutePressed: (RouteRef) 
         OutlinedButton({ onRoutePressed(route.routeRef) }) {
             Text(
                 text = route.route,
-                style = MaterialTheme.typography.button
+                //style = MaterialTheme.typography.button
             )
         }
     }
