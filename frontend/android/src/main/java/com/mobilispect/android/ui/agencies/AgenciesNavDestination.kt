@@ -11,7 +11,7 @@ object AgenciesNavDestination : NavDestination {
 }
 
 fun NavGraphBuilder.agenciesGraph(
-    navigateToCommitment: (String) -> Unit,
+    navigateToRoutes: (String) -> Unit,
     nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
     navigation(
@@ -19,7 +19,7 @@ fun NavGraphBuilder.agenciesGraph(
         startDestination = AgenciesNavDestination.destination
     ) {
         composable(route = AgenciesNavDestination.destination) {
-            AgenciesRoute(navigateToCommitment = navigateToCommitment)
+            AgenciesRoute(navigateToCommitment = navigateToRoutes)
         }
         nestedGraphs()
     }

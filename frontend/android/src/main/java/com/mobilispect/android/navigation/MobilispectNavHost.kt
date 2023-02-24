@@ -21,7 +21,7 @@ fun MobilispectNavHost(
         startDestination = startDestination,
     ) {
         agenciesGraph(
-            navigateToCommitment = { navController.navigate("${RoutesListNavDestination.route}/${it}") },
+            navigateToRoutes = { navController.navigate("${RoutesListNavDestination.route}/${it}") },
             nestedGraphs = {
                 routesGraph(
                     nestedGraphs = {
