@@ -59,10 +59,6 @@ android {
         kotlinCompilerExtensionVersion = "1.4.2"
     }
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-        kotlinOptions
-    }
-
     lint {
         // SARIF is the format supported by GitHub Pull Requests.
         sarifReport = true
@@ -83,6 +79,7 @@ android {
 
 dependencies {
     implementation(project(":common"))
+    implementation("androidx.core:core-ktx:+")
     testImplementation(project(":common-testing"))
     androidTestImplementation(project(":common-testing"))
 
