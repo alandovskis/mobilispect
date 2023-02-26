@@ -15,8 +15,8 @@ import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
 fun Card(modifier: Modifier = Modifier, title: String? = null, content: @Composable () -> Unit = {}) {
-    androidx.compose.material3.Card(
-        colors = CardDefaults.cardColors(
+    androidx.compose.material3.OutlinedCard(
+        colors = CardDefaults.outlinedCardColors(
             containerColor = MaterialTheme.colorScheme.secondary,
             disabledContainerColor = MaterialTheme.colorScheme.secondary,
         ),
