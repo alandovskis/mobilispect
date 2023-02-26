@@ -50,9 +50,18 @@ fun RouteListScreen(uiState: RouteListUIState, modifier: Modifier = Modifier) {
 @Composable
 fun PreviewRoutesListScreen() {
     MobilispectTheme {
-        RouteListScreen(uiState = RoutesFound(routes = listOf(
-            RouteUIState(id = "r-abcd-a", shortName = "1", longName = "Main Street", agencyID = "r-abcd-a")
-        )))
-        
+        RouteListScreen(
+            uiState = RoutesFound(
+                routes = listOf(
+                    RouteUIState(
+                        id = "r-abcd-a",
+                        shortName = "1",
+                        longName = "Main Street",
+                        agencyID = "r-abcd-a"
+                    )
+                )
+            )
+        )
+
     }
 }

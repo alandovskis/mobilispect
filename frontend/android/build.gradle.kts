@@ -134,4 +134,6 @@ dependencies {
 
     implementation(libs.mavericks.compose)
     implementation(libs.mavericks.core)
+
+    implementation(libs.kotlinx.datetime)
 }

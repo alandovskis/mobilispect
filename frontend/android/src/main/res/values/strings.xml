@@ -1,5 +1,5 @@
 <resources>
-    <string name="every_n_minutes_or_less">EVERY %d MINUTES OR LESS</string>
+    <string name="minutes">Minutes</string>
     <string name="frequency_commitment">Frequency Commitment</string>
     <string name="frequency_violations">Frequency Violations: %s</string>
     <string name="no_departures_found">No departures were found</string>

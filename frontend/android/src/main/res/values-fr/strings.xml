@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="every_n_minutes_or_less">CHAQUE %d MINUTES OU MOINS</string>
+    <string name="minutes">Minutes</string>
     <string name="frequency_commitment">Engagement de fréquence</string>
     <string name="frequency_violations">Violations de fréquence: %s</string>
     <string name="no_departures_found">Aucun départ n\'a été trouvé</string>

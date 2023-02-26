@@ -30,7 +30,7 @@ fun Card(
             .padding(8.dp)
     )
     {
-        Column(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
+        Column(modifier = Modifier.padding(8.dp)) {
             if (title != null) {
                 Text(text = title, style = MaterialTheme.typography.titleMedium)
             }

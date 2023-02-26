@@ -16,6 +16,7 @@ javaxInject = "1"
 jetpackComposeBom = "2023.01.00"
 junit = "4.13.2"
 kotlinxCoroutines = "1.6.4"
+kotlinxDateTime = "0.4.0"
 kotlinxSerialization = "1.5.0"
 ksp = "1.8.10-1.0.9"
 ktor = "2.2.3"
@@ -83,6 +84,9 @@ javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInjec
 
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }
+
+# Date / Time
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
 
 # Testing Kotlin Coroutines
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }

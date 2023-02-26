@@ -39,7 +39,8 @@ fun TopBar(screenTitle: String, modifier: Modifier = Modifier) {
         title = {
             Text(
                 text = screenTitle,
-                modifier = modifier.testTag("title")
+                modifier = modifier.testTag("title"),
+                style = MaterialTheme.typography.titleLarge
             )
         })
 }
