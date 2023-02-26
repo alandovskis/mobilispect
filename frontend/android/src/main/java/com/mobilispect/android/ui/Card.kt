@@ -14,7 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
-fun Card(modifier: Modifier = Modifier, title: String? = null, content: @Composable () -> Unit = {}) {
+fun Card(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    subtitle: String? = null,
+    content: @Composable () -> Unit = {}
+) {
     androidx.compose.material3.OutlinedCard(
         colors = CardDefaults.outlinedCardColors(
             containerColor = MaterialTheme.colorScheme.secondary,
@@ -27,7 +32,11 @@ fun Card(modifier: Modifier = Modifier, title: String? = null, content: @Composa
     {
         Column(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
             if (title != null) {
-                Text(text = title)
+                Text(text = title, style = MaterialTheme.typography.titleMedium)
+            }
+
+            if (subtitle != null) {
+                Text(text = subtitle, style = MaterialTheme.typography.titleSmall)
             }
 
             content()
@@ -39,6 +48,6 @@ fun Card(modifier: Modifier = Modifier, title: String? = null, content: @Composa
 @Composable
 fun PreviewCard() {
     MobilispectTheme {
-        Card(title = "Test")
+        Card(title = "Test", subtitle = "Testing")
     }
 }
