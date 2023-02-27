@@ -1,10 +1,5 @@
 <resources>
-    <string name="on_weekdays">ON Weekdays</string>
-    <string name="from_start_to_end">FROM %s TO %s</string>
-    <string name="inbound_from_start_to_end">INBOUND FROM %s TO %s</string>
-    <string name="outbound_from_start_to_end">OUTBOUND FROM %s TO %s</string>
     <string name="every_n_minutes_or_less">EVERY %d MINUTES OR LESS</string>
-    <string name="on_routes">ON ROUTES</string>
     <string name="frequency_commitment">Frequency Commitment</string>
     <string name="frequency_violations">Frequency Violations: %s</string>
     <string name="no_departures_found">No departures were found</string>
