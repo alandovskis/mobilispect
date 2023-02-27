@@ -15,9 +15,23 @@ import org.testcontainers.junit.jupiter.Testcontainers
 private val AGENCY_A = Agency(_id = "o-abcd-a", "A")
 private val AGENCY_B = Agency(_id = "o-abcd-b", "B")
 
-private val ROUTE_A1 = Route("r-abcd-1", shortName = "1", "Main Street", agencyID = AGENCY_A._id)
-private val ROUTE_A2 = Route("r-abcd-2", shortName = "2", "Central Avenue", agencyID = AGENCY_A._id)
-private val ROUTE_B1 = Route("r-cdef-1", shortName = "1", "1st Street", agencyID = AGENCY_B._id)
+private val ROUTE_A1 = Route(
+    _id = "r-abcd-1", shortName = "1", longName = "Main Street", agencyID = AGENCY_A._id, headwayHistory = listOf(
+        HeadwayEntry(medianHeadway_min = 5.0)
+    )
+)
+private val ROUTE_A2 = Route(
+    _id = "r-abcd-2", shortName = "2", longName = "Central Avenue", agencyID = AGENCY_A._id, headwayHistory = listOf(
+        HeadwayEntry(medianHeadway_min = 10.0)
+    )
+)
+private val ROUTE_B1 = Route(
+    _id = "r-cdef-1",
+    shortName = "1",
+    longName = "1st Street",
+    agencyID = AGENCY_B._id,
+    headwayHistory = emptyList()
+)
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -47,11 +61,17 @@ class RouteAPIIntegrationTest {
 
         val response = template.getForEntity("/routes/search/findAllByAgencyID?id=${AGENCY_A._id}", String::class.java)
 
+        println(response.body)
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         val positive = listOf(ROUTE_A1, ROUTE_A2)
         for (route in positive) {
             assertThat(response.body).contains(""""shortName" : "${route.shortName}""")
             assertThat(response.body).contains(""""longName" : "${route.longName}""")
+            assertThat(response.body).contains(
+                """"medianHeadway_min" : ${
+                    route.headwayHistory.firstOrNull()?.medianHeadway_min
+                }"""
+            )
         }
         assertThat(response.body).doesNotContain(""""longName" : "${ROUTE_B1.longName}""")
     }
