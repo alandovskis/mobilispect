@@ -1,8 +1,9 @@
+@file:Suppress("PropertyName", "ConstructorParameterNaming") // For _id and medianHeadway_min
+
 package com.mobilispect.backend
 
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Suppress("PropertyName", "ConstructorParameterNaming") // For _id
 @Document(value = "routes")
 data class Route(
     val _id: String,
