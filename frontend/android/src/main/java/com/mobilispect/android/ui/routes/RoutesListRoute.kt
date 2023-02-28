@@ -12,8 +12,8 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
-import com.mobilispect.android.ui.Previews
 import com.mobilispect.android.ui.ScreenFrame
+import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
@@ -46,7 +46,7 @@ fun RouteListScreen(uiState: RouteListUIState, modifier: Modifier = Modifier) {
     }
 }
 
-@Previews
+@ThemePreviews
 @Composable
 fun PreviewRoutesListScreen() {
     MobilispectTheme {

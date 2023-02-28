@@ -12,8 +12,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
-import com.mobilispect.android.ui.Previews
 import com.mobilispect.android.ui.RankedItem
+import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import kotlinx.datetime.DateTimePeriod
 
@@ -44,7 +44,7 @@ private fun RouteName(route: MostFrequentRoutesUIState.Route, modifier: Modifier
     )
 }
 
-@Previews
+@ThemePreviews
 @Composable
 fun PreviewMostFrequentRoutesCard() {
     MobilispectTheme {

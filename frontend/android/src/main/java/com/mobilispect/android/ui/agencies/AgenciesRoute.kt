@@ -16,8 +16,8 @@ import com.mobilispect.android.R
 import com.mobilispect.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
-import com.mobilispect.android.ui.Previews
 import com.mobilispect.android.ui.ScreenFrame
+import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
@@ -65,12 +65,14 @@ fun AgenciesScreen(
     }
 }
 
-@Previews
+@ThemePreviews
 @Composable
 fun PreviewAgenciesScreen() {
     MobilispectTheme {
-        AgenciesScreen(uiState = AgenciesFound(agencies = listOf(
-            AgencyUIState(id = "o-abcd-a", name = "Agency A")
-        )), navigateToCommitment = {})
+        AgenciesScreen(uiState = AgenciesFound(
+            agencies = listOf(
+                AgencyUIState(id = "o-abcd-a", name = "Agency A")
+            )
+        ), navigateToCommitment = {})
     }
 }

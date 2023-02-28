@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
@@ -31,7 +32,7 @@ fun OutlinedButton(
 }
 
 @Composable
-@Previews
+@ThemePreviews
 fun PreviewOutlinedButton() {
     MobilispectTheme {
         OutlinedButton(onClick = {  }) {

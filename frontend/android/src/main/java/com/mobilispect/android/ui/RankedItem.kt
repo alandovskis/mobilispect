@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
@@ -66,7 +67,7 @@ private fun RankedValue(
     }
 }
 
-@Previews
+@ThemePreviews
 @Composable
 fun PreviewRankedItem() {
     MobilispectTheme {
