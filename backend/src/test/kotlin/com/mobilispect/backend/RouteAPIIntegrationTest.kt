@@ -1,5 +1,9 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.data.Agency
+import com.mobilispect.backend.data.HeadwayEntry
+import com.mobilispect.backend.data.Route
+import com.mobilispect.backend.data.RouteRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test

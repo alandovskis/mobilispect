@@ -1,17 +1,17 @@
-package com.mobilispect.backend
+package com.mobilispect.backend.data
 
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "routes")
-interface RouteRepository : Repository<Route, String> {
+@RepositoryRestResource(path = "agencies")
+interface AgencyRepository : Repository<Agency, String> {
     /**
      * Returns all instances of the type.
      *
      * @return all entities
      */
-    fun findAll(): List<Route>
+    fun findAll(): List<Agency>
 
     /**
      * Saves a given entity. Use the returned instance for further operations as the save operation might have changed
@@ -24,7 +24,7 @@ interface RouteRepository : Repository<Route, String> {
      * with a different value from that found in the persistence store. Also thrown if the entity is assumed to be
      * present but does not exist in the database.
      */
-    fun save(entity: Route): Route
+    fun save(entity: Agency): Agency
 
     /**
      * Deletes all entities.
@@ -34,6 +34,4 @@ interface RouteRepository : Repository<Route, String> {
      * entity is assumed to be present but does not exist in the database.
      */
     fun deleteAll()
-
-    fun findAllByAgencyID(id: String): List<Route>
 }

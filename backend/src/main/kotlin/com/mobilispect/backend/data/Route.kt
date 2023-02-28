@@ -1,6 +1,6 @@
 @file:Suppress("PropertyName", "ConstructorParameterNaming") // For _id and medianHeadway_min
 
-package com.mobilispect.backend
+package com.mobilispect.backend.data
 
 import org.springframework.data.mongodb.core.mapping.Document
 
