@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mobilispect.android.ui.previews.FontScalePreviews
 import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
@@ -45,6 +46,7 @@ fun Card(
     }
 }
 
+@FontScalePreviews
 @ThemePreviews
 @Composable
 fun PreviewCard() {

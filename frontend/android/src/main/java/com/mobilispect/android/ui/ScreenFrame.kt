@@ -15,6 +15,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import com.mobilispect.android.ui.previews.FontScalePreviews
 import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
@@ -46,6 +47,7 @@ fun TopBar(screenTitle: String, modifier: Modifier = Modifier) {
         })
 }
 
+@FontScalePreviews
 @ThemePreviews
 @Composable
 fun PreviewScreenFrame() {
