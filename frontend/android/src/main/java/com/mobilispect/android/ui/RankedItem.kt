@@ -18,12 +18,13 @@ import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
-fun RankedItem(
+fun <T> RankedItem(
     index: Int,
-    rankedValue: Int,
+    rankedValues: Collection<Number>,
     rankedUnit: String,
     modifier: Modifier = Modifier,
-    content: @Composable (Modifier) -> Unit
+    item: T,
+    content: @Composable (Modifier, T) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -31,12 +32,12 @@ fun RankedItem(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Rank(index = index, modifier = Modifier.fillMaxWidth(0.1f))
-        content(Modifier.fillMaxWidth(0.5f))
-        RankedValue(
-            value = rankedValue,
+        Rank(index = index, modifier = Modifier.fillMaxWidth(0.05f))
+        content(Modifier.fillMaxWidth(0.45f), item)
+        RankedValues(
+            values = rankedValues,
             unit = rankedUnit,
-            modifier = Modifier.fillMaxWidth(0.4f)
+            modifier = Modifier.fillMaxWidth(1f)
         )
     }
 }
@@ -47,14 +48,27 @@ private fun Rank(index: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun RankedValue(
-    value: Number,
+private fun RankedValues(
+    values: Collection<Number>,
     unit: String,
     modifier: Modifier = Modifier
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = modifier) {
+        val text = if (values.size == 2) {
+            val first = values.first()
+            val second = values.last()
+            if (first != second) {
+                "$first - $second"
+            } else {
+                first.toString()
+            }
+        } else if (values.isNotEmpty()) {
+            values.first().toString()
+        } else {
+            ""
+        }
         Text(
-            text = value.toString(), modifier = Modifier
+            text = text, modifier = Modifier
                 .border(
                     BorderStroke(1.dp, MaterialTheme.colorScheme.onSecondary),
                     shape = MaterialTheme.shapes.medium
@@ -73,9 +87,10 @@ fun PreviewRankedItem() {
     MobilispectTheme {
         RankedItem(
             index = 1,
-            rankedValue = 5,
-            rankedUnit = "Minutes"
-        ) { modifier ->
+            rankedValues = listOf(5, 10),
+            rankedUnit = "Minutes",
+            item = ""
+        ) { modifier, _: Any ->
             Text(text = "Main Street", modifier = modifier)
         }
     }

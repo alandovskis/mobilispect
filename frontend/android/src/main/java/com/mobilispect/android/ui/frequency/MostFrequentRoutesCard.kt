@@ -11,27 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.mobilispect.android.R
-import com.mobilispect.android.ui.Card
-import com.mobilispect.android.ui.RankedItem
+import com.mobilispect.android.ui.RankedCard
 import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
-import kotlinx.datetime.DateTimePeriod
 
 /**
  * The most frequent routes by 7-day median frequency.
  */
 @Composable
 fun MostFrequentRoutesCard(uiState: MostFrequentRoutesUIState, modifier: Modifier = Modifier) {
-    Card(title = "Most Frequent Routes", subtitle = "by Median Frequency", modifier = modifier) {
-        for ((index, route) in uiState.routes.withIndex()) {
-            RankedItem(
-                index = index,
-                rankedValue = route.frequency.minutes,
-                rankedUnit = stringResource(id = R.string.minutes),
-            ) { subModifier ->
-                RouteName(route = route, modifier = subModifier.fillMaxWidth(0.5f))
-            }
-        }
+    RankedCard(
+        "Most Frequent Routes",
+        "by Median Frequency",
+        uiState.routes,
+        stringResource(id = R.string.minutes),
+        modifier
+    ) { subModifier, item ->
+        RouteName(route = item, modifier = subModifier.fillMaxWidth(0.5f))
     }
 }
 
@@ -50,15 +46,17 @@ fun PreviewMostFrequentRoutesCard() {
     MobilispectTheme {
         MostFrequentRoutesCard(
             uiState = MostFrequentRoutesUIState(
-                routes = arrayOf(
+                routes = listOf(
                     MostFrequentRoutesUIState.Route(
                         shortName = "1",
                         longName = "Main Street",
-                        frequency = DateTimePeriod(minutes = 5)
+                        minFrequency = 5,
+                        maxFrequency = 10
                     ), MostFrequentRoutesUIState.Route(
                         shortName = "2",
                         longName = "Central Avenue",
-                        frequency = DateTimePeriod(minutes = 10)
+                        minFrequency = 10,
+                        maxFrequency = 10
                     )
                 )
             )
