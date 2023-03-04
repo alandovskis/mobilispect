@@ -1,4 +1,4 @@
-package com.mobilispect.backend
+package com.mobilispect.backend.data
 
 import org.springframework.boot.test.util.TestPropertyValues
 import org.springframework.context.ApplicationContextInitializer
