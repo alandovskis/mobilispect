@@ -1,10 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+// TODO: Remove once https://youtrack.jetbrains.com/issue/KTIJ-19369 is fixed - for alias call
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("org.springframework.boot") version "3.0.4"
-    id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.8.10"
-    kotlin("plugin.spring") version "1.8.10"
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency)
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.kotlin.serialization)
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("info.solidsoft.pitest") version "1.9.11"
     id("org.cyclonedx.bom") version "1.7.4"
@@ -24,9 +27,15 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.contentNegociation)
+    implementation(libs.ktor.resources)
+    implementation(libs.ktor.serialization.json)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter:1.17.6")
     testImplementation("org.testcontainers:mongodb:1.17.6")
+    testImplementation(libs.ktor.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 tasks.withType<KotlinCompile> {
