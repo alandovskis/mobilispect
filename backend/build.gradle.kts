@@ -58,3 +58,12 @@ pitest {
     setProperty("outputFormats", listOf("HTML"))
     setProperty("avoidCallsTo", listOf("kotlin.jvm.internal"))
 }
+
+// Linting
+detekt {
+    // Specify the base path for file paths in the formatted reports.
+    // If not set, all file paths reported will be absolute file path.
+    basePath = projectDir.parent
+    toolVersion = "1.22.0"
+    config = files("config/detekt/detekt.yml")
+}
