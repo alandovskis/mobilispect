@@ -24,6 +24,12 @@
         "com.google.devtools.ksp"
       ],
       "groupName": "kotlin"
+    },
+    {
+      "matchPackagePatterns": [
+        "gradle"
+      ],
+      "groupName": "gradle"
     }
   ],
   "ignoreDeps": [
