@@ -18,12 +18,13 @@ import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 
 @Composable
+@Suppress("LongParameterList")
 fun <T> RankedItem(
     index: Int,
     rankedValues: Collection<Number>,
     rankedUnit: String,
-    modifier: Modifier = Modifier,
     item: T,
+    modifier: Modifier = Modifier,
     content: @Composable (Modifier, T) -> Unit
 ) {
     Row(

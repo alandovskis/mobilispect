@@ -4,4 +4,4 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview(locale = "en", name = "English")
 @Preview(locale = "fr", name = "French")
-annotation class MultiLanguagePreview
+annotation class LanguagePreviews

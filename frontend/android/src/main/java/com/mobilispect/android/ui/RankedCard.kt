@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.mobilispect.common.util.Ranked
 
 @Composable
+@Suppress("LongParameterList")
 fun <T : Ranked> RankedCard(
     title: String,
     subtitle: String,
