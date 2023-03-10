@@ -1,11 +1,5 @@
 package com.mobilispect.backend.batch
 
-import io.ktor.client.engine.mock.*
-import io.ktor.http.*
-import io.ktor.utils.io.*
-import io.ktor.utils.io.errors.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -18,12 +12,11 @@ import org.springframework.web.reactive.function.client.WebClient
 private const val AGENCIES_URL = "/api/v2/rest/agencies.json"
 
 @SpringBootTest
-@OptIn(ExperimentalCoroutinesApi::class)
 class TransitLandClientTest {
     private lateinit var subject: TransitLandClient
 
     @Test
-    fun agencies_networkError() = runTest {
+    fun agencies_networkError() {
         val mockServer = MockWebServer()
         mockServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse =
@@ -45,13 +38,14 @@ class TransitLandClientTest {
     }
 
     @Test
-    fun agencies_rateLimited() = runTest {
+    fun agencies_rateLimited() {
         val mockServer = MockWebServer()
         mockServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse =
                 when (request.path) {
                     AGENCIES_URL -> MockResponse().setResponseCode(429).setBody("{}")
                         .setHeader("Content-Type", "application/json")
+
                     else -> throw IllegalArgumentException()
                 }
         }
@@ -65,7 +59,7 @@ class TransitLandClientTest {
     }
 
     @Test
-    fun agencies_success() = runTest {
+    fun agencies_success() {
         val mockServer = MockWebServer()
         mockServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse =
