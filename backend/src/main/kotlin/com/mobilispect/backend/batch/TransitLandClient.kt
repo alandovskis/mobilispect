@@ -12,6 +12,7 @@ class TransitLandClient(private val webClient: WebClient) {
     /**
      * Retrieve all [TransitLandAgency]s that serve a given [city].
      */
+    @Suppress("ReturnCount")
     fun agencies(apiKey: String, city: String, limit: Int = 20, after: Int? = null): Result<TransitAgencyResult> {
         try {
             var responseBuilder = webClient.get()

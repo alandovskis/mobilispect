@@ -11,12 +11,15 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 
+@Suppress("ConstPropertyName")
+private const val CONNECT_TIMEOUT_ms = 2_000
+
 @Configuration
 class TransitLandClientConfiguration {
     @Bean
     fun webclient(builder: WebClient.Builder): WebClient {
         val httpClient = HttpClient.create()
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2_000)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_ms)
             .doOnConnected { connection ->
                 connection.addHandlerLast(ReadTimeoutHandler(2))
                 connection.addHandlerLast(WriteTimeoutHandler(2))
