@@ -79,7 +79,6 @@ android {
 
 dependencies {
     implementation(project(":common"))
-    implementation("androidx.core:core-ktx:+")
     testImplementation(project(":common-testing"))
     androidTestImplementation(project(":common-testing"))
 
