@@ -1,59 +1,40 @@
 package com.mobilispect.backend.batch
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.resources.*
-import io.ktor.client.plugins.resources.Resources
-import io.ktor.http.*
-import io.ktor.resources.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.utils.io.errors.*
-import kotlinx.serialization.json.Json
+import org.springframework.http.MediaType
+import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.WebClientRequestException
+import org.springframework.web.reactive.function.client.WebClientResponseException
 
 /**
  * A client to access the transitland API.
  */
-class TransitLandClient(httpEngine: HttpClientEngine) {
-    private val client: HttpClient = HttpClient(httpEngine) {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-            })
-        }
-        install(Resources)
-        defaultRequest {
-            host = "transit.land"
-            url { protocol = URLProtocol.HTTPS }
-        }
-    }
-
+class TransitLandClient(private val webClient: WebClient) {
     /**
      * Retrieve all [TransitLandAgency]s that serve a given [city].
      */
-    suspend fun agencies(city: String, limit: Int = 20, after: Int? = null): Result<TransitAgencyResult> {
-        return try {
-            val response = client.get(Agencies(city = city, limit = limit, after = after))
-            return when (response.status) {
-                HttpStatusCode.TooManyRequests -> return Result.failure(TooManyRequests)
-                HttpStatusCode.OK, HttpStatusCode.Accepted, HttpStatusCode.Created,
-                HttpStatusCode.NonAuthoritativeInformation, HttpStatusCode.NoContent, HttpStatusCode.ResetContent,
-                HttpStatusCode.PartialContent, HttpStatusCode.MultiStatus -> {
-                    val responseBody = response.body<TransitLandAgencyResponse>()
-                    Result.success(TransitAgencyResult(responseBody.agencies, responseBody.meta.after))
-
-                }
-
-                else -> Result.failure(GenericError(response.status.description))
+    fun agencies(apiKey: String, city: String, limit: Int = 20, after: Int? = null): Result<TransitAgencyResult> {
+        try {
+            var responseBuilder = webClient.get()
+                .uri("/agencies.json")
+                .attribute("city", city)
+                .attribute("limit", limit)
+                .header("apikey", apiKey)
+            if (after != null) {
+                responseBuilder = responseBuilder.attribute("after", after)
             }
-        } catch (e: IOException) {
-            Result.failure(NetworkError(e))
+
+            val response = responseBuilder
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(TransitLandAgencyResponse::class.java).block()
+            return Result.success(TransitAgencyResult(response?.agencies.orEmpty(), response?.meta?.after ?: 0))
+        } catch (e: WebClientRequestException) {
+            return Result.failure(NetworkError(e))
+        } catch (e: WebClientResponseException) {
+            return when (e) {
+                is WebClientResponseException.TooManyRequests -> Result.failure(TooManyRequests)
+                else -> Result.failure(GenericError(e.toString()))
+            }
         }
     }
-
 }
-
-@Resource("/api/v2/rest/agencies.json")
-class Agencies(val city: String, val limit: Int, val after: Int? = null)

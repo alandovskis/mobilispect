@@ -3,3 +3,5 @@ server.ssl.key-store=keystore.p12
 #server.ssl.key-store-password=PASSWORD
 server.ssl.keyStoreType=PKCS12
 server.ssl.keyAlias=tomcat
+
+spring.cloud.function.scan.packages=com.mobilispect.backend.batch
