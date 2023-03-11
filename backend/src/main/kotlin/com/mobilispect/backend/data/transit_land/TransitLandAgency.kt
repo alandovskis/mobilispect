@@ -36,12 +36,16 @@ internal class Operator(
     val feeds: Array<OperatorFeed>,
     val name: String,
     @JsonNames("onestop_id") val oneStopID: String,
-    @JsonNames("short_name") val shortName: String,
+    @JsonNames("short_name") val shortName: String?,
     val tags: Tags? = null
 )
 
 @Serializable
-internal class Tags(@JsonNames("twitter_general") val twitter: String? = null)
+internal class Tags(
+    @JsonNames("twitter_general") val twitter: String? = null,
+    @JsonNames("us_ntd_id") val usNtdID: String? = null,
+    @JsonNames("wikidata_id") val wikidataID: String? = null
+)
 
 @Serializable
 internal class OperatorFeed(

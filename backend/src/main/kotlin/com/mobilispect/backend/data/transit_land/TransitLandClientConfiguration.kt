@@ -26,7 +26,7 @@ class TransitLandClientConfiguration {
             }
 
         return builder
-            .baseUrl("https://transit.land")
+            .baseUrl("https://transit.land/api/v2/rest")
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build()

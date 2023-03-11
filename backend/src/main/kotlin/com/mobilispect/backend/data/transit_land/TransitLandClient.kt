@@ -14,23 +14,21 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 /**
  * A client to access the transitland API.
  */
-class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSource {
+internal class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSource {
     /**
      * Retrieve all [Agency] that serve a given [city].
      */
     @Suppress("ReturnCount")
     override fun agencies(apiKey: String, city: String, limit: Int, after: Int?): Result<AgencyResult> {
         try {
-            var responseBuilder = webClient.get()
-                .uri("/agencies.json")
-                .attribute("city", city)
-                .attribute("limit", limit)
-                .header("apikey", apiKey)
+            var uri = "/agencies.json?city_name=$city&limit=$limit"
             if (after != null) {
-                responseBuilder = responseBuilder.attribute("after", after)
+                uri += "&after=$after"
             }
 
-            val response = responseBuilder
+            val response = webClient.get()
+                .uri(uri)
+                .header("apikey", apiKey)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(TransitLandAgencyResponse::class.java).block()
@@ -41,7 +39,7 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
         } catch (e: WebClientResponseException) {
             return when (e) {
                 is WebClientResponseException.TooManyRequests -> Result.failure(TooManyRequests)
-                else -> Result.failure(GenericError(e.toString()))
+                else -> Result.failure(GenericError(e.cause.toString()))
             }
         }
     }
