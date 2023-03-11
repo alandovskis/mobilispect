@@ -1,5 +1,9 @@
-package com.mobilispect.backend.batch
+package com.mobilispect.backend.data.transit_land
 
+import com.mobilispect.backend.batch.AgencyResult
+import com.mobilispect.backend.batch.GenericError
+import com.mobilispect.backend.batch.NetworkError
+import com.mobilispect.backend.batch.TooManyRequests
 import com.mobilispect.backend.data.Agency
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
@@ -11,7 +15,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
  */
 class TransitLandClient(private val webClient: WebClient) {
     /**
-     * Retrieve all [TransitLandAgency]s that serve a given [city].
+     * Retrieve all [Agency] that serve a given [city].
      */
     @Suppress("ReturnCount")
     fun agencies(apiKey: String, city: String, limit: Int = 20, after: Int? = null): Result<AgencyResult> {

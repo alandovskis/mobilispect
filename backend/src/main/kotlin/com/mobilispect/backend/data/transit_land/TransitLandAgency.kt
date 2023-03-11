@@ -1,7 +1,7 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 @file:Suppress("unused") // Deleting any of the unused fields will be break deserialization.
 
-package com.mobilispect.backend.batch
+package com.mobilispect.backend.data.transit_land
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -11,10 +11,10 @@ import kotlinx.serialization.json.JsonNames
 internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAgency>, val meta: Meta)
 
 @Serializable
-class Meta(val after: Int, val next: String? = null)
+internal class Meta(val after: Int, val next: String? = null)
 
 @Serializable
-class TransitLandAgency(
+internal class TransitLandAgency(
     @JsonNames("agency_email") val email: String? = null,
     @JsonNames("agency_fare_url") val fareURL: String? = null,
     @JsonNames("agency_id") val agencyID: String? = null,
@@ -32,7 +32,7 @@ class TransitLandAgency(
 )
 
 @Serializable
-class Operator(
+internal class Operator(
     val feeds: Array<OperatorFeed>,
     val name: String,
     @JsonNames("onestop_id") val oneStopID: String,
@@ -41,10 +41,10 @@ class Operator(
 )
 
 @Serializable
-class Tags(@JsonNames("twitter_general") val twitter: String? = null)
+internal class Tags(@JsonNames("twitter_general") val twitter: String? = null)
 
 @Serializable
-class OperatorFeed(
+internal class OperatorFeed(
     val id: Int,
     val name: String?,
     @JsonNames("onestop_id") val onestopID: String,
@@ -52,14 +52,14 @@ class OperatorFeed(
 )
 
 @Serializable
-class Place(
+internal class Place(
     @JsonNames("adm0_name") val country: String,
     @JsonNames("adm1_name") val provinceState: String,
     @JsonNames("city_name") val city: String? = null
 )
 
 @Serializable
-class FeedVersion(
+internal class FeedVersion(
     val feed: Feed,
     @JsonNames("fetched_at") val fetchedAt: String? = null,
     @JsonNames("id") val id: Int? = null,
@@ -67,7 +67,7 @@ class FeedVersion(
 )
 
 @Serializable
-class Feed(val id: Int? = null, @JsonNames("onestop_id") val oneStopID: String? = null)
+internal class Feed(val id: Int? = null, @JsonNames("onestop_id") val oneStopID: String? = null)
 
 @Serializable
-class Geometry(val coordinates: Array<Array<Array<Double>>>, val type: String)
+internal class Geometry(val coordinates: Array<Array<Array<Double>>>, val type: String)

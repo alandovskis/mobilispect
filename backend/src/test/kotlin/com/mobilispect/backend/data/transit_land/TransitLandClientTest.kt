@@ -1,5 +1,7 @@
-package com.mobilispect.backend.batch
+package com.mobilispect.backend.data.transit_land
 
+import com.mobilispect.backend.batch.NetworkError
+import com.mobilispect.backend.batch.TooManyRequests
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -12,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClient
 private const val AGENCIES_URL = "/api/v2/rest/agencies.json"
 
 @SpringBootTest
-class TransitLandClientTest {
+internal class TransitLandClientTest {
     private lateinit var subject: TransitLandClient
 
     @Test

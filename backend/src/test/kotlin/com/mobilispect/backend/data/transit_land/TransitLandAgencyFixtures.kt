@@ -1,8 +1,8 @@
-package com.mobilispect.backend.batch
+package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.Agency
 
-const val TRANSIT_LAND_AGENCIES_SUCCESS: String = """
+internal const val TRANSIT_LAND_AGENCIES_SUCCESS: String = """
 {
   "agencies": [
     {
