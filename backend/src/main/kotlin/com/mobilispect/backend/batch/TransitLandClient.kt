@@ -1,5 +1,6 @@
 package com.mobilispect.backend.batch
 
+import com.mobilispect.backend.data.Agency
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
@@ -13,7 +14,7 @@ class TransitLandClient(private val webClient: WebClient) {
      * Retrieve all [TransitLandAgency]s that serve a given [city].
      */
     @Suppress("ReturnCount")
-    fun agencies(apiKey: String, city: String, limit: Int = 20, after: Int? = null): Result<TransitAgencyResult> {
+    fun agencies(apiKey: String, city: String, limit: Int = 20, after: Int? = null): Result<AgencyResult> {
         try {
             var responseBuilder = webClient.get()
                 .uri("/agencies.json")
@@ -28,7 +29,8 @@ class TransitLandClient(private val webClient: WebClient) {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(TransitLandAgencyResponse::class.java).block()
-            return Result.success(TransitAgencyResult(response?.agencies.orEmpty(), response?.meta?.after ?: 0))
+            val agencies = response?.agencies?.map { remote -> Agency(_id = remote.onestopID, name = remote.name) }
+            return Result.success(AgencyResult(agencies.orEmpty(), response?.meta?.after ?: 0))
         } catch (e: WebClientRequestException) {
             return Result.failure(NetworkError(e))
         } catch (e: WebClientResponseException) {
