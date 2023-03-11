@@ -1,6 +1,5 @@
 package com.mobilispect.backend.data.agency
 
-import com.mobilispect.backend.batch.AgencyResult
 import com.mobilispect.backend.data.Agency
 
 /**

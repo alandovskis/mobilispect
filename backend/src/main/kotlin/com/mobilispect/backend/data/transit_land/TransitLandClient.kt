@@ -1,10 +1,10 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.batch.AgencyResult
 import com.mobilispect.backend.batch.GenericError
 import com.mobilispect.backend.batch.NetworkError
 import com.mobilispect.backend.batch.TooManyRequests
 import com.mobilispect.backend.data.Agency
+import com.mobilispect.backend.data.agency.AgencyResult
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient

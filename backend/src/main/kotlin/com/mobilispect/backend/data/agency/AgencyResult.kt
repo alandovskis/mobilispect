@@ -1,4 +1,4 @@
-package com.mobilispect.backend.batch
+package com.mobilispect.backend.data.agency
 
 import com.mobilispect.backend.data.Agency
 
