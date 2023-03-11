@@ -1,4 +1,4 @@
-package com.mobilispect.backend.batch
+package com.mobilispect.backend.data.transit_land
 
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
