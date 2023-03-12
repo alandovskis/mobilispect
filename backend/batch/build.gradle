@@ -13,13 +13,13 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin:${wrapperVersion}")
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE")
 	}
 }
 
 plugins {
 	id "com.github.johnrengelman.shadow" version "7.1.2"
+	alias(libs.plugins.spring.boot)
 }
 
 apply plugin: 'java'
