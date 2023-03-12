@@ -1,0 +1,7 @@
+package com.mobilispect.backend.data.agency
+
+import org.springframework.data.mongodb.core.mapping.Document
+
+@Suppress("PropertyName", "ConstructorParameterNaming") // For _id
+@Document(value = "agencies")
+data class Agency(val _id: String, val name: String)
