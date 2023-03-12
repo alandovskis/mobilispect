@@ -60,7 +60,7 @@ jar {
 import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
 
 shadowJar {
-	classifier = 'aws'
+	archiveClassifier = 'gcp'
 	dependencies {
 		exclude(
 				dependency("org.springframework.cloud:spring-cloud-function-web:${springCloudFunctionVersion}"))
@@ -87,7 +87,7 @@ dependencyManagement {
 }
 
 dependencies {
-	implementation("org.springframework.cloud:spring-cloud-function-adapter-aws")
+	implementation("org.springframework.cloud:spring-cloud-function-adapter-gcp")
 	implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
 	implementation("org.springframework.boot:spring-boot-configuration-processor")
 	compileOnly("com.amazonaws:aws-lambda-java-events:${awsLambdaEventsVersion}")
