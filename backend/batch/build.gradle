@@ -1,8 +1,8 @@
+
 buildscript {
 	ext {
 		springBootVersion = '2.6.7'
 		wrapperVersion = '1.0.29.BUILD-SNAPSHOT'
-		shadowVersion = '5.1.0'
 	}
 	repositories {
 		mavenLocal()
@@ -12,25 +12,27 @@ buildscript {
 		maven { url "https://repo.spring.io/milestone" }
 	}
 	dependencies {
-		classpath "com.github.jengelman.gradle.plugins:shadow:${shadowVersion}"
 		classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin:${wrapperVersion}")
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE")
 	}
 }
 
+plugins {
+	id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 apply plugin: 'eclipse'
-apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.springframework.boot.experimental.thin-launcher'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'io.spring.sample'
 version = '2.0.0.RELEASE'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 repositories {
 	mavenLocal()
@@ -54,7 +56,8 @@ jar {
 	}
 }
 
-import com.github.jengelman.gradle.plugins.shadow.transformers.*
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
 
 shadowJar {
 	classifier = 'aws'
