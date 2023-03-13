@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 /**
  * A client to access the transitland API.
  */
-internal class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSource {
+class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSource {
     /**
      * Retrieve all [Agency] that serve a given [city].
      */
