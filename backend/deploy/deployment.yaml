@@ -18,7 +18,7 @@ spec:
         app: mobilispect-api
     spec:
       containers:
-        - image: us-east4-docker.pkg.dev/refined-area-380401/mobilispect/mobilispect-api:0.0.1
+        - image: us-east4-docker.pkg.dev/refined-area-380401/mobilispect/mobilispect-api:0.0.2
           name: mobilispect-api
           resources: { }
 status: { }
