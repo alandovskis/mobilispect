@@ -84,7 +84,6 @@ dependencyManagement {
 }
 
 dependencies {
-	implementation(project(":data"))
 	implementation("org.springframework.cloud:spring-cloud-function-adapter-gcp")
 	implementation("org.springframework.cloud:spring-cloud-starter-function-webflux")
 	implementation("org.springframework.boot:spring-boot-configuration-processor")
