@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mobilispect-api
+  name: mobilispect-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mobilispect-api
+  strategy: { }
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mobilispect-api
+    spec:
+      containers:
+        - image: us-east4-docker.pkg.dev/refined-area-380401/mobilispect/mobilispect-api:0.0.1
+          name: mobilispect-api
+          resources: { }
+status: { }
