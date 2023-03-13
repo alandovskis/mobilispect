@@ -17,6 +17,8 @@ class ImportRegionalAgenciesPipeline(
     private val networkDataSource: RegionalAgencyDataSource
 ) : Function<String, Any> {
     private val logger: Logger = LoggerFactory.getLogger(ImportRegionalAgenciesPipeline::class.java)
+    private val apiKey = "API_KEY"
+
     override fun apply(city: String): Any {
         logger.info("Started")
 
