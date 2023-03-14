@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: "2023-03-14T03:20:54Z"
+  generation: 1
+  name: mobilispect-api
+  namespace: default
+  resourceVersion: "554442"
+  uid: 3c6baee9-4f28-4888-ab74-b42db7f0306e
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.mobilispect.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: mobilispect-api
+                port:
+                  number: 80
+            path: "/"
+            pathType: Prefix
+status:
+  loadBalancer: { }
