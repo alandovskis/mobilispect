@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: mobilispect-api
   name: mobilispect-api
@@ -10,10 +9,8 @@ spec:
   selector:
     matchLabels:
       app: mobilispect-api
-  strategy: { }
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: mobilispect-api
     spec:
@@ -28,4 +25,3 @@ spec:
         - name: config-volume
           configMap:
             name: mobilispect-api
-status: { }
