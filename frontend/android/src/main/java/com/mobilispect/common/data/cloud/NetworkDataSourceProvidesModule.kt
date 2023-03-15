@@ -13,9 +13,7 @@ object NetworkDataSourceProvidesModule {
     @Provides
     fun networkDataSource(): MobilispectAPINetworkDataSource {
         return MobilispectAPINetworkDataSource(
-            httpEngine = OkHttpEngine(
-                okHttpConfig() as OkHttpConfig
-            )
+            httpEngine = OkHttpEngine(OkHttpConfig())
         )
     }
 }
