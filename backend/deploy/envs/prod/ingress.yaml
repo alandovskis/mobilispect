@@ -18,6 +18,8 @@ metadata:
   name: mobilispect-api
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "mobilispect-api-static-ip"
+    networking.gke.io/managed-certificates: managed-cert
+    kubernetes.io/ingress.class: "gce"
 spec:
   rules:
     - host: api.mobilispect.com

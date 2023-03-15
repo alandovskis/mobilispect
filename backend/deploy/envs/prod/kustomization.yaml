@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - managed-cert.yaml
 
 patchesStrategicMerge:
   - version.yaml
