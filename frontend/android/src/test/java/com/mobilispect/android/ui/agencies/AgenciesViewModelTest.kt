@@ -55,6 +55,7 @@ class AgenciesViewModelTest {
         assertThat(uiState).isInstanceOf(AgenciesFound::class.java)
         val actualAgencies = (uiState as AgenciesFound).agencies.map { agency -> agency.id }
         assertThat(actualAgencies).containsExactly(AGENCY_A.id, AGENCY_B.id)
+            .inOrder()
     }
 
     class TestAgencyRepository : AgencyRepository {
@@ -63,8 +64,8 @@ class AgenciesViewModelTest {
         override fun all(): Flow<List<Agency>> = flowOf(agencies)
 
         override suspend fun sync() {
-            agencies.add(AGENCY_A)
             agencies.add(AGENCY_B)
+            agencies.add(AGENCY_A)
         }
     }
 }
