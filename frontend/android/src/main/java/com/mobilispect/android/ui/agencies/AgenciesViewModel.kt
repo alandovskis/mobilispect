@@ -8,6 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -23,7 +24,7 @@ class AgenciesViewModel @Inject constructor(
                     id = agency.id,
                     name = agency.name
                 )
-            }
+            }.sortedBy { agency -> agency.name.uppercase() }
         }
         .mapLatest { agencies ->
             if (agencies.isNotEmpty()) {

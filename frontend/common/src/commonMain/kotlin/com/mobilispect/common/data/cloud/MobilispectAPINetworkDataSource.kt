@@ -29,8 +29,7 @@ class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine) : NetworkDat
             }
             install(Resources)
             defaultRequest {
-                host = "192.168.100.27"
-                port = 8443
+                host = "api.mobilispect.com"
                 url { protocol = URLProtocol.HTTPS }
             }
         }
