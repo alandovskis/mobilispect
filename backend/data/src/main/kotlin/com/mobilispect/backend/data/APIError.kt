@@ -1,4 +1,4 @@
-package com.mobilispect.backend.batch
+package com.mobilispect.backend.data
 
 sealed interface APIError
 class NetworkError(exception: Exception) : Exception(exception), APIError

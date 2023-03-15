@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.spring.dependency)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
-    alias(libs.plugins.kotlin.serialization)
     id("io.gitlab.arturbosch.detekt") version "1.22.0"
     id("info.solidsoft.pitest") version "1.9.11"
     id("org.cyclonedx.bom") version "1.7.4"
@@ -22,13 +21,13 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":data"))
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation(libs.kotlinx.serialization)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter:1.17.6")
     testImplementation("org.testcontainers:mongodb:1.17.6")
