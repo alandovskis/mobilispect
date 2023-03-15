@@ -13,6 +13,7 @@ internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAge
 @Serializable
 internal class Meta(val after: Int, val next: String? = null)
 
+@Suppress("LongParameterList")
 @Serializable
 internal class TransitLandAgency(
     @JsonNames("agency_email") val email: String? = null,
