@@ -16,8 +16,8 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 
-private val AGENCY_A = Agency(_id = "o-abcd-a", "A")
-private val AGENCY_B = Agency(_id = "o-abcd-b", "B")
+private val AGENCY_A = Agency(_id = "o-abcd-a", name = "A", version = "v1")
+private val AGENCY_B = Agency(_id = "o-abcd-b", name = "B", version = "v2")
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,

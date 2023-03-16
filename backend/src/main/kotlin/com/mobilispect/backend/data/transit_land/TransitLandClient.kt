@@ -32,7 +32,13 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(TransitLandAgencyResponse::class.java).block()
-            val agencies = response?.agencies?.map { remote -> Agency(_id = remote.onestopID, name = remote.name) }
+            val agencies = response?.agencies?.map { remote ->
+                Agency(
+                    _id = remote.onestopID,
+                    name = remote.name,
+                    version = remote.feed.version
+                )
+            }
             return Result.success(AgencyResult(agencies.orEmpty(), response?.meta?.after ?: 0))
         } catch (e: WebClientRequestException) {
             return Result.failure(NetworkError(e))

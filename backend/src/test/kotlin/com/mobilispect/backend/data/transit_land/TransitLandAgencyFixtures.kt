@@ -209,9 +209,11 @@ internal const val TRANSIT_LAND_AGENCIES_MINIMAL: String = """
 val TRANSIT_LAND_SUCCESS_AGENCY_1 = Agency(
     _id = "o-sr7f3-mtmmobilitaetrasportimolfetta",
     name = "MTM Mobilita' e Trasporti Molfetta",
+    version = "d043eb31ed57955e134917efbcd8912ccacd74d6"
 )
 
 val TRANSIT_LAND_SUCCESS_AGENCY_2 = Agency(
     _id = "o-9xhvw-townofestespark",
     name = "Town of Estes Park",
+    version = "913b07b945e2b2afbc5d37d7bcd883918933c9ce"
 )

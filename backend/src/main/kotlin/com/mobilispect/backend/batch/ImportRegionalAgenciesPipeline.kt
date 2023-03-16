@@ -44,8 +44,8 @@ class ImportRegionalAgenciesPipeline(
             .map { data -> data.agencies }
 
     private fun transform(localAgencies: Collection<Agency>, remoteAgencies: Collection<Agency>): Collection<Agency> {
-        val localIDs = localAgencies.map { agency -> agency._id }
-        return remoteAgencies.filter { agency: Agency -> !localIDs.contains(agency._id) }
+        val localMap = localAgencies.associateBy { agency -> agency._id }
+        return remoteAgencies.filter { agency: Agency -> !localMap.contains(agency._id) || (localMap[agency._id]!!.version != agency.version) }
     }
 
     private fun load(agencies: Collection<Agency>) {

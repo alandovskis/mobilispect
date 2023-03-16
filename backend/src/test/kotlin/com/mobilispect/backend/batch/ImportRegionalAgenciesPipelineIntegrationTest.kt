@@ -46,10 +46,23 @@ class ImportRegionalAgenciesPipelineIntegrationTest {
     }
 
     @Test
-    fun doesNothingWhenAllAgenciesArePresent() {
+    fun doesNothingWhenAllAgenciesArePresentAndLatestVersion() {
         val expected = networkDataSource.agencies(apiKey = "apikey", city = "city").getOrNull()!!
         for (agency in expected.agencies) {
             agencyRepository.save(agency.copy())
+        }
+
+        subject.apply("city")
+
+        val actual = agencyRepository.findAll()
+        assertThat(actual).containsAll(expected.agencies)
+    }
+
+    @Test
+    fun updatesAgencyWhenAllAgenciesArePresentButNotLatestVersion() {
+        val expected = networkDataSource.agencies(apiKey = "apikey", city = "city").getOrNull()!!
+        for (agency in expected.agencies) {
+            agencyRepository.save(agency.copy(version = "old"))
         }
 
         subject.apply("city")
