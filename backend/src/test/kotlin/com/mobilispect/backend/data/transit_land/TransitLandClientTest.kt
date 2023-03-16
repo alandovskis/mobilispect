@@ -42,15 +42,7 @@ internal class TransitLandClientTest {
     @Test
     fun agencies_rateLimited() {
         val mockServer = MockWebServer()
-        mockServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse =
-                when (request.path) {
-                    AGENCIES_URL -> MockResponse().setResponseCode(429).setBody("{}")
-                        .setHeader("Content-Type", "application/json")
-
-                    else -> throw IllegalArgumentException()
-                }
-        }
+        mockServer.dispatcher = AgenciesDispatcher(responseCode = 429, responseBody = "{}")
         mockServer.start()
         val webClient = webClient(mockServer)
 
@@ -61,18 +53,26 @@ internal class TransitLandClientTest {
     }
 
     @Test
+    fun agencies_minimal() {
+        val mockServer = MockWebServer()
+
+
+        mockServer.dispatcher = AgenciesDispatcher(200, TRANSIT_LAND_AGENCIES_MINIMAL)
+        mockServer.start()
+        val webClient = webClient(mockServer)
+
+        subject = TransitLandClient(webClient)
+        val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
+
+        assertThat(response.after).isEqualTo(3973)
+        assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
+        assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
+    }
+
+    @Test
     fun agencies_success() {
         val mockServer = MockWebServer()
-        mockServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse =
-                when (request.path) {
-                    AGENCIES_URL -> MockResponse().setResponseCode(200).setBody(
-                        TRANSIT_LAND_AGENCIES_SUCCESS
-                    ).setHeader("Content-Type", "application/json")
-
-                    else -> throw IllegalArgumentException()
-                }
-        }
+        mockServer.dispatcher = AgenciesDispatcher(responseCode = 200, responseBody = TRANSIT_LAND_AGENCIES_SUCCESS)
         mockServer.start()
         val webClient = webClient(mockServer)
 
@@ -87,4 +87,17 @@ internal class TransitLandClientTest {
     private fun webClient(mockServer: MockWebServer): WebClient = WebClient.builder()
         .baseUrl(mockServer.url("/api/v2/rest/").toString())
         .build()
+
+    class AgenciesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            val path = request.path ?: throw IllegalArgumentException()
+            return if (path.contains(AGENCIES_URL)) {
+                MockResponse().setResponseCode(responseCode).setBody(
+                    responseBody
+                ).setHeader("Content-Type", "application/json")
+            } else {
+                throw IllegalArgumentException()
+            }
+        }
+    }
 }

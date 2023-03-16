@@ -24,7 +24,7 @@ internal class TransitLandAgency(
     @JsonNames("agency_phone") val phone: String? = null,
     @JsonNames("agency_timezone") val timezone: String? = null,
     @JsonNames("agency_url") val url: String? = null,
-    @JsonNames("feed_version") val feed: FeedVersion? = null,
+    @JsonNames("feed_version") val feed: FeedVersion,
     val geometry: Geometry? = null,
     val id: Int? = null,
     @JsonNames("onestop_id") val onestopID: String,
@@ -65,7 +65,7 @@ internal class Place(
 
 @Serializable
 internal class FeedVersion(
-    val feed: Feed,
+    val feed: Feed? = null,
     @JsonNames("fetched_at") val fetchedAt: String? = null,
     @JsonNames("id") val id: Int? = null,
     @JsonNames("sha1") val version: String

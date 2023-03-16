@@ -181,6 +181,31 @@ internal const val TRANSIT_LAND_AGENCIES_SUCCESS: String = """
 }
 """
 
+internal const val TRANSIT_LAND_AGENCIES_MINIMAL: String = """
+{
+  "agencies": [
+    {
+      "agency_name": "MTM Mobilita' e Trasporti Molfetta",
+      "feed_version": {
+        "sha1": "d043eb31ed57955e134917efbcd8912ccacd74d6"
+      },
+      "onestop_id": "o-sr7f3-mtmmobilitaetrasportimolfetta"
+    },
+    {
+      "agency_name": "Town of Estes Park",
+      "feed_version": {
+        "sha1": "913b07b945e2b2afbc5d37d7bcd883918933c9ce"
+      },
+      "onestop_id": "o-9xhvw-townofestespark"
+    }
+  ],
+  "meta": {
+    "after": 3973,
+    "next": "https://api.transit.land/api/v2/rest/agencies.json?after=3973&limit=100"
+  }
+}
+"""
+
 val TRANSIT_LAND_SUCCESS_AGENCY_1 = Agency(
     _id = "o-sr7f3-mtmmobilitaetrasportimolfetta",
     name = "MTM Mobilita' e Trasporti Molfetta",
