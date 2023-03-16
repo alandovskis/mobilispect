@@ -1,7 +1,7 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.data.NetworkError
-import com.mobilispect.backend.data.TooManyRequests
+import com.mobilispect.backend.batch.NetworkError
+import com.mobilispect.backend.batch.TooManyRequests
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
