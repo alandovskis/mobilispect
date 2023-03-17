@@ -1,6 +1,6 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.data.Agency
+import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyResult
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
 import com.mobilispect.backend.data.api.GenericError

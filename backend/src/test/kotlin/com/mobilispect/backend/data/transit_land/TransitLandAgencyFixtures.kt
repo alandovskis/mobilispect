@@ -1,6 +1,6 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.data.Agency
+import com.mobilispect.backend.data.agency.Agency
 
 internal const val TRANSIT_LAND_AGENCIES_SUCCESS: String = """
 {

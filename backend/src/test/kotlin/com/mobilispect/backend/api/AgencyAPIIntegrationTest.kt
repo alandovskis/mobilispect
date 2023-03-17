@@ -1,8 +1,8 @@
 package com.mobilispect.backend.api
 
-import com.mobilispect.backend.data.Agency
 import com.mobilispect.backend.data.AgencyRepository
 import com.mobilispect.backend.data.MongoDBInitializer
+import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.createMongoDBContainer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach

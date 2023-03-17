@@ -1,7 +1,7 @@
 package com.mobilispect.backend.batch
 
-import com.mobilispect.backend.data.Agency
 import com.mobilispect.backend.data.AgencyRepository
+import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
 import com.mobilispect.backend.data.api.PagingParameters
 import org.slf4j.Logger

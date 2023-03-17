@@ -1,6 +1,5 @@
 package com.mobilispect.backend.data.agency
 
-import com.mobilispect.backend.data.Agency
 import com.mobilispect.backend.data.api.PagingParameters
 
 /**
