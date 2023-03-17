@@ -91,13 +91,10 @@ internal class TransitLandClientTest {
     class AgenciesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val path = request.path ?: throw IllegalArgumentException()
-            return if (path.contains(AGENCIES_URL)) {
-                MockResponse().setResponseCode(responseCode).setBody(
-                    responseBody
-                ).setHeader("Content-Type", "application/json")
-            } else {
-                throw IllegalArgumentException()
-            }
+            require(path.contains(AGENCIES_URL))
+            return MockResponse().setResponseCode(responseCode).setBody(
+                responseBody
+            ).setHeader("Content-Type", "application/json")
         }
     }
 }
