@@ -64,15 +64,4 @@ internal class Place(
 )
 
 @Serializable
-internal class FeedVersion(
-    val feed: Feed? = null,
-    @JsonNames("fetched_at") val fetchedAt: String? = null,
-    @JsonNames("id") val id: Int? = null,
-    @JsonNames("sha1") val version: String
-)
-
-@Serializable
-internal class Feed(val id: Int? = null, @JsonNames("onestop_id") val oneStopID: String? = null)
-
-@Serializable
 internal class Geometry(val coordinates: Array<Array<Array<Double>>>, val type: String)
