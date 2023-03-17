@@ -6,6 +6,7 @@ import com.mobilispect.backend.batch.TooManyRequests
 import com.mobilispect.backend.data.Agency
 import com.mobilispect.backend.data.agency.AgencyResult
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
+import com.mobilispect.backend.data.api.PagingParameters
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
@@ -19,11 +20,11 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
      * Retrieve all [Agency] that serve a given [city].
      */
     @Suppress("ReturnCount")
-    override fun agencies(apiKey: String, city: String, limit: Int, after: Int?): Result<AgencyResult> {
+    override fun agencies(apiKey: String, city: String, paging: PagingParameters): Result<AgencyResult> {
         try {
-            var uri = "/agencies.json?city_name=$city&limit=$limit"
-            if (after != null) {
-                uri += "&after=$after"
+            var uri = "/agencies.json?city_name=$city&limit=${paging.limit}"
+            if (paging.after != null) {
+                uri += "&after=${paging.after}"
             }
 
             val response = webClient.get()

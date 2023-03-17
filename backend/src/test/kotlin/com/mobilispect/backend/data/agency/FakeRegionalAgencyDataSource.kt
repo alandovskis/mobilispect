@@ -1,12 +1,13 @@
 package com.mobilispect.backend.data.agency
 
 import com.mobilispect.backend.data.Agency
+import com.mobilispect.backend.data.api.PagingParameters
 
 /**
  * A [RegionalAgencyDataSource] that is suitable for testing with.
  */
 class FakeRegionalAgencyDataSource : RegionalAgencyDataSource {
-    override fun agencies(apiKey: String, city: String, limit: Int, after: Int?): Result<AgencyResult> =
+    override fun agencies(apiKey: String, city: String, paging: PagingParameters): Result<AgencyResult> =
         Result.success(
             AgencyResult(
                 agencies = listOf(

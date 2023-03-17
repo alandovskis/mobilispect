@@ -3,6 +3,7 @@ package com.mobilispect.backend.batch
 import com.mobilispect.backend.data.Agency
 import com.mobilispect.backend.data.AgencyRepository
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
+import com.mobilispect.backend.data.api.PagingParameters
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -40,7 +41,7 @@ class ImportRegionalAgenciesPipeline(
     private fun readLocal(): Collection<Agency> = agencyRepository.findAll()
 
     private fun extractRemote(city: String): Result<Collection<Agency>> =
-        networkDataSource.agencies(apiKey = apiKey, city = city, limit = 100)
+        networkDataSource.agencies(apiKey = apiKey, city = city, paging = PagingParameters(limit = 100, after = null))
             .map { data -> data.agencies }
 
     private fun transform(localAgencies: Collection<Agency>, remoteAgencies: Collection<Agency>): Collection<Agency> {
