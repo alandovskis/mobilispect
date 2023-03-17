@@ -1,7 +1,7 @@
 package com.mobilispect.backend.batch
 
-import com.mobilispect.backend.data.AgencyRepository
 import com.mobilispect.backend.data.MongoDBInitializer
+import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.agency.FakeRegionalAgencyDataSource
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
 import com.mobilispect.backend.data.createMongoDBContainer
