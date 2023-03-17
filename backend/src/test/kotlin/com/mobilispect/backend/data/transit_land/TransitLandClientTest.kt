@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.reactive.function.client.WebClient
 
-private const val AGENCIES_URL = "/api/v2/rest/agencies.json"
-
 @SpringBootTest
 internal class TransitLandClientTest {
     private lateinit var subject: TransitLandClient
@@ -21,15 +19,7 @@ internal class TransitLandClientTest {
     @Test
     fun agencies_networkError() {
         val mockServer = MockWebServer()
-        mockServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse =
-                when (request.path) {
-                    AGENCIES_URL -> MockResponse().setResponseCode(200).setBody("{}")
-                        .setHeader("Content-Type", "application/json")
-
-                    else -> throw IllegalArgumentException()
-                }
-        }
+        mockServer.dispatcher = AgenciesDispatcher(responseCode = 200, responseBody = "{}")
         mockServer.start()
         val webClient = webClient(mockServer)
         mockServer.shutdown()
@@ -57,7 +47,7 @@ internal class TransitLandClientTest {
     fun agencies_unauthorized() {
         val mockServer = MockWebServer()
 
-        mockServer.dispatcher = AgenciesDispatcher(401, TRANSIT_LAND_UNAUTHORIZED_FIXTURE)
+        mockServer.dispatcher = AgenciesDispatcher(responseCode = 401, responseBody = TRANSIT_LAND_UNAUTHORIZED_FIXTURE)
         mockServer.start()
         val webClient = webClient(mockServer)
 
@@ -71,7 +61,7 @@ internal class TransitLandClientTest {
     fun agencies_minimal() {
         val mockServer = MockWebServer()
 
-        mockServer.dispatcher = AgenciesDispatcher(200, TRANSIT_LAND_AGENCIES_MINIMAL)
+        mockServer.dispatcher = AgenciesDispatcher(responseCode = 200, responseBody = TRANSIT_LAND_AGENCIES_MINIMAL)
         mockServer.start()
         val webClient = webClient(mockServer)
 
@@ -105,7 +95,7 @@ internal class TransitLandClientTest {
     class AgenciesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val path = request.path ?: throw IllegalArgumentException()
-            require(path.contains(AGENCIES_URL))
+            require(path.contains("/api/v2/rest/agencies.json"))
             return MockResponse().setResponseCode(responseCode).setBody(
                 responseBody
             ).setHeader("Content-Type", "application/json")
