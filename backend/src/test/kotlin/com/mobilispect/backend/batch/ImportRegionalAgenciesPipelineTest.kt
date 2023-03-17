@@ -1,17 +1,34 @@
 package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.AgencyRepository
+import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.FakeRegionalAgencyDataSource
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
+import com.mobilispect.backend.data.createMongoDBContainer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ContextConfiguration
+import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.junit.jupiter.Testcontainers
 
 
-@DataMongoTest
-class ImportRegionalAgenciesPipelineIntegrationTest {
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+)
+@ContextConfiguration(initializers = [ImportRegionalAgenciesPipelineTest.Companion.DBInitializer::class])
+@Testcontainers
+class ImportRegionalAgenciesPipelineTest {
+    companion object {
+        @Container
+        @JvmStatic
+        val container = createMongoDBContainer()
+
+        class DBInitializer : MongoDBInitializer(container)
+    }
+
     @Autowired
     private lateinit var agencyRepository: AgencyRepository
 
