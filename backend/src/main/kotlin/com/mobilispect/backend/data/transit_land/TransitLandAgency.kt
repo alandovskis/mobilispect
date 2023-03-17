@@ -10,9 +10,6 @@ import kotlinx.serialization.json.JsonNames
 @Serializable
 internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAgency>, val meta: Meta)
 
-@Serializable
-internal class Meta(val after: Int, val next: String? = null)
-
 @Suppress("LongParameterList")
 @Serializable
 internal class TransitLandAgency(
