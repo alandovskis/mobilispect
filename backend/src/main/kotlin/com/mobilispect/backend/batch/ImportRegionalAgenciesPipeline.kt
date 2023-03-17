@@ -46,7 +46,7 @@ class ImportRegionalAgenciesPipeline(
 
     private fun transform(localAgencies: Collection<Agency>, remoteAgencies: Collection<Agency>): Collection<Agency> {
         val localMap = localAgencies.associateBy { agency -> agency._id }
-        return remoteAgencies.filter { agency: Agency -> !localMap.contains(agency._id) || (localMap[agency._id]!!.version != agency.version) }
+        return remoteAgencies.filter { agency: Agency -> agencyExistsOrIsNewer(localMap, agency) }
     }
 
     private fun load(agencies: Collection<Agency>) {
@@ -54,4 +54,9 @@ class ImportRegionalAgenciesPipeline(
             agencyRepository.save(agency)
         }
     }
+
+    private fun agencyExistsOrIsNewer(
+        localMap: Map<String, Agency>,
+        agency: Agency
+    ) = !localMap.contains(agency._id) || (localMap[agency._id]!!.version != agency.version)
 }
