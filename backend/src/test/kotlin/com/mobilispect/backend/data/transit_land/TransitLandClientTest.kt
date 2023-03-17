@@ -2,6 +2,7 @@ package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.TooManyRequests
+import com.mobilispect.backend.data.api.Unauthorized
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -53,9 +54,22 @@ internal class TransitLandClientTest {
     }
 
     @Test
-    fun agencies_minimal() {
+    fun agencies_unauthorized() {
         val mockServer = MockWebServer()
 
+        mockServer.dispatcher = AgenciesDispatcher(401, TRANSIT_LAND_UNAUTHORIZED_FIXTURE)
+        mockServer.start()
+        val webClient = webClient(mockServer)
+
+        subject = TransitLandClient(webClient)
+        val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()!!
+
+        assertThat(response).isInstanceOf(Unauthorized::class.java)
+    }
+
+    @Test
+    fun agencies_minimal() {
+        val mockServer = MockWebServer()
 
         mockServer.dispatcher = AgenciesDispatcher(200, TRANSIT_LAND_AGENCIES_MINIMAL)
         mockServer.start()

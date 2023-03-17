@@ -7,6 +7,7 @@ import com.mobilispect.backend.data.api.GenericError
 import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.api.TooManyRequests
+import com.mobilispect.backend.data.api.Unauthorized
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
@@ -45,6 +46,7 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
             return Result.failure(NetworkError(e))
         } catch (e: WebClientResponseException) {
             return when (e) {
+                is WebClientResponseException.Unauthorized -> Result.failure(Unauthorized)
                 is WebClientResponseException.TooManyRequests -> Result.failure(TooManyRequests)
                 else -> Result.failure(GenericError(e.cause.toString()))
             }
