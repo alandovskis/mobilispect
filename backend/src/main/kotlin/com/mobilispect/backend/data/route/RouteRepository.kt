@@ -1,6 +1,5 @@
-package com.mobilispect.backend.data
+package com.mobilispect.backend.data.route
 
-import com.mobilispect.backend.data.route.Route
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
