@@ -10,6 +10,7 @@ data class Route(
     val shortName: String,
     val longName: String,
     val agencyID: String,
+    val version: String,
     val headwayHistory: List<HeadwayEntry>
 )
 

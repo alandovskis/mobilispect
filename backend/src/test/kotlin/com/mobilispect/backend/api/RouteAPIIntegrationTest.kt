@@ -22,12 +22,22 @@ private val AGENCY_A = Agency(_id = "o-abcd-a", name = "A", version = "v1")
 private val AGENCY_B = Agency(_id = "o-abcd-b", name = "B", version = "v2")
 
 private val ROUTE_A1 = Route(
-    _id = "r-abcd-1", shortName = "1", longName = "Main Street", agencyID = AGENCY_A._id, headwayHistory = listOf(
+    _id = "r-abcd-1",
+    shortName = "1",
+    longName = "Main Street",
+    agencyID = AGENCY_A._id,
+    version = "v2]1",
+    headwayHistory = listOf(
         HeadwayEntry(medianHeadway_min = 5.0)
     )
 )
 private val ROUTE_A2 = Route(
-    _id = "r-abcd-2", shortName = "2", longName = "Central Avenue", agencyID = AGENCY_A._id, headwayHistory = listOf(
+    _id = "r-abcd-2",
+    shortName = "2",
+    longName = "Central Avenue",
+    agencyID = AGENCY_A._id,
+    version = "v1",
+    headwayHistory = listOf(
         HeadwayEntry(medianHeadway_min = 10.0)
     )
 )
@@ -36,6 +46,7 @@ private val ROUTE_B1 = Route(
     shortName = "1",
     longName = "1st Street",
     agencyID = AGENCY_B._id,
+    version = "v2",
     headwayHistory = emptyList()
 )
 

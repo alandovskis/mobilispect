@@ -35,10 +35,11 @@ internal class TransitLandClientTest {
         withMockServer(dispatcher = AgenciesDispatcher(responseCode = 429, responseBody = "{}")) { mockServer ->
             val webClient = webClient(mockServer)
 
-        subject = TransitLandClient(webClient)
-        val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()
+            subject = TransitLandClient(webClient)
+            val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()
 
-        assertThat(response).isInstanceOf(TooManyRequests::class.java)
+            assertThat(response).isInstanceOf(TooManyRequests::class.java)
+        }
     }
 
     @Test
@@ -51,8 +52,8 @@ internal class TransitLandClientTest {
         ) { mockServer ->
             val webClient = webClient(mockServer)
 
-        subject = TransitLandClient(webClient)
-        val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()!!
+            subject = TransitLandClient(webClient)
+            val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()!!
 
             assertThat(response).isInstanceOf(Unauthorized::class.java)
         }
@@ -68,8 +69,8 @@ internal class TransitLandClientTest {
         ) { mockServer ->
             val webClient = webClient(mockServer)
 
-        subject = TransitLandClient(webClient)
-        val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
+            subject = TransitLandClient(webClient)
+            val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
 
             assertThat(response.after).isEqualTo(3973)
             assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
@@ -87,12 +88,96 @@ internal class TransitLandClientTest {
         ) { mockServer ->
             val webClient = webClient(mockServer)
 
-        subject = TransitLandClient(webClient)
-        val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
+            subject = TransitLandClient(webClient)
+            val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
 
-        assertThat(response.after).isEqualTo(3973)
-        assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
-        assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
+            assertThat(response.after).isEqualTo(3973)
+            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
+            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
+        }
+    }
+
+    @Test
+    fun routes_networkError() {
+        val mockServer = MockWebServer()
+        mockServer.dispatcher = RoutesDispatcher(responseCode = 200, responseBody = "{}")
+        mockServer.start()
+        val webClient = webClient(mockServer)
+        mockServer.shutdown()
+
+        subject = TransitLandClient(webClient)
+        val result = subject.routes(apiKey = "apikey", agencyID = "city")
+
+        assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
+    }
+
+    @Test
+    fun routes_rateLimited() {
+        withMockServer(dispatcher = RoutesDispatcher(responseCode = 429, responseBody = "{}")) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.routes(apiKey = "apikey", agencyID = "city").exceptionOrNull()
+
+            assertThat(response).isInstanceOf(TooManyRequests::class.java)
+        }
+    }
+
+    @Test
+    fun routes_unauthorized() {
+        withMockServer(
+            dispatcher = RoutesDispatcher(
+                responseCode = 401,
+                responseBody = TRANSIT_LAND_UNAUTHORIZED_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.routes(apiKey = "apikey", agencyID = "city").exceptionOrNull()!!
+
+            assertThat(response).isInstanceOf(Unauthorized::class.java)
+        }
+    }
+
+    @Test
+    fun routes_minimal() {
+        withMockServer(
+            dispatcher = RoutesDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_ROUTES_MINIMAL_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response =
+                subject.routes(apiKey = "apikey", agencyID = "o-f25d-socitdetransportdemontral").getOrNull()!!
+
+            assertThat(response.after).isEqualTo(20355691)
+            assertThat(response.routes).contains(TRANSIT_LAND_ROUTE_1)
+            assertThat(response.routes).contains(TRANSIT_LAND_ROUTE_2)
+        }
+    }
+
+    @Test
+    fun routes_success() {
+        withMockServer(
+            dispatcher = RoutesDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_ROUTES_SUCCESS_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response =
+                subject.routes(apiKey = "apikey", agencyID = "o-f25d-socitdetransportdemontral").getOrNull()!!
+
+            assertThat(response.after).isEqualTo(20355691)
+            assertThat(response.routes).contains(TRANSIT_LAND_ROUTE_1)
+            assertThat(response.routes).contains(TRANSIT_LAND_ROUTE_2)
+        }
     }
 
     private fun webClient(mockServer: MockWebServer): WebClient = WebClient.builder()
@@ -111,6 +196,16 @@ internal class TransitLandClientTest {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val path = request.path ?: throw IllegalArgumentException()
             require(path.contains("/api/v2/rest/agencies.json"))
+            return MockResponse().setResponseCode(responseCode).setBody(
+                responseBody
+            ).setHeader("Content-Type", "application/json")
+        }
+    }
+
+    class RoutesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            val path = request.path ?: throw IllegalArgumentException()
+            require(path.contains("/api/v2/rest/routes.json"))
             return MockResponse().setResponseCode(responseCode).setBody(
                 responseBody
             ).setHeader("Content-Type", "application/json")
