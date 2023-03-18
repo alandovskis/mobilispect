@@ -18,9 +18,9 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
-@ContextConfiguration(initializers = [ImportRegionalAgenciesPipelineTest.Companion.DBInitializer::class])
+@ContextConfiguration(initializers = [ImportRegionalAgenciesServiceTest.Companion.DBInitializer::class])
 @Testcontainers
-class ImportRegionalAgenciesPipelineTest {
+class ImportRegionalAgenciesServiceTest {
     companion object {
         @Container
         @JvmStatic
@@ -34,11 +34,11 @@ class ImportRegionalAgenciesPipelineTest {
 
     private val networkDataSource: RegionalAgencyDataSource = FakeRegionalAgencyDataSource()
 
-    private lateinit var subject: ImportRegionalAgenciesPipeline
+    private lateinit var subject: ImportRegionalAgenciesService
 
     @BeforeEach
     fun prepare() {
-        subject = ImportRegionalAgenciesPipeline(agencyRepository, networkDataSource)
+        subject = ImportRegionalAgenciesService(agencyRepository, networkDataSource)
     }
 
     @Test
