@@ -32,10 +32,8 @@ internal class TransitLandClientTest {
 
     @Test
     fun agencies_rateLimited() {
-        val mockServer = MockWebServer()
-        mockServer.dispatcher = AgenciesDispatcher(responseCode = 429, responseBody = "{}")
-        mockServer.start()
-        val webClient = webClient(mockServer)
+        withMockServer(dispatcher = AgenciesDispatcher(responseCode = 429, responseBody = "{}")) { mockServer ->
+            val webClient = webClient(mockServer)
 
         subject = TransitLandClient(webClient)
         val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()
@@ -45,40 +43,49 @@ internal class TransitLandClientTest {
 
     @Test
     fun agencies_unauthorized() {
-        val mockServer = MockWebServer()
-
-        mockServer.dispatcher = AgenciesDispatcher(responseCode = 401, responseBody = TRANSIT_LAND_UNAUTHORIZED_FIXTURE)
-        mockServer.start()
-        val webClient = webClient(mockServer)
+        withMockServer(
+            dispatcher = AgenciesDispatcher(
+                responseCode = 401,
+                responseBody = TRANSIT_LAND_UNAUTHORIZED_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
 
         subject = TransitLandClient(webClient)
         val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()!!
 
-        assertThat(response).isInstanceOf(Unauthorized::class.java)
+            assertThat(response).isInstanceOf(Unauthorized::class.java)
+        }
     }
 
     @Test
     fun agencies_minimal() {
-        val mockServer = MockWebServer()
-
-        mockServer.dispatcher = AgenciesDispatcher(responseCode = 200, responseBody = TRANSIT_LAND_AGENCIES_MINIMAL)
-        mockServer.start()
-        val webClient = webClient(mockServer)
+        withMockServer(
+            dispatcher = AgenciesDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_AGENCIES_MINIMAL
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
 
         subject = TransitLandClient(webClient)
         val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
 
-        assertThat(response.after).isEqualTo(3973)
-        assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
-        assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
+            assertThat(response.after).isEqualTo(3973)
+            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
+            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
+        }
     }
 
     @Test
     fun agencies_success() {
-        val mockServer = MockWebServer()
-        mockServer.dispatcher = AgenciesDispatcher(responseCode = 200, responseBody = TRANSIT_LAND_AGENCIES_SUCCESS)
-        mockServer.start()
-        val webClient = webClient(mockServer)
+        withMockServer(
+            dispatcher = AgenciesDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_AGENCIES_SUCCESS
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
 
         subject = TransitLandClient(webClient)
         val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
@@ -91,6 +98,14 @@ internal class TransitLandClientTest {
     private fun webClient(mockServer: MockWebServer): WebClient = WebClient.builder()
         .baseUrl(mockServer.url("/api/v2/rest/").toString())
         .build()
+
+    fun withMockServer(dispatcher: Dispatcher, block: (MockWebServer) -> Unit) {
+        val mockServer = MockWebServer()
+        mockServer.dispatcher = dispatcher
+        mockServer.start()
+        block(mockServer)
+        mockServer.shutdown()
+    }
 
     class AgenciesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
