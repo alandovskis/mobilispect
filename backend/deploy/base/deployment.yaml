@@ -27,3 +27,5 @@ spec:
         - name: config-volume
           configMap:
             name: mobilispect-api
+      securityContext:
+        runAsNonRoot: true
