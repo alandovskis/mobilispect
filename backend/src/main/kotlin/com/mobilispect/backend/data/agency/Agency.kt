@@ -1,7 +1,8 @@
 package com.mobilispect.backend.data.agency
 
+import com.mobilispect.backend.batch.Entity
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Suppress("PropertyName", "ConstructorParameterNaming") // For _id
+@Suppress("ConstructorParameterNaming") // For _id
 @Document(value = "agencies")
-data class Agency(val _id: String, val name: String, val version: String)
+data class Agency(override val _id: String, val name: String, override val version: String) : Entity
