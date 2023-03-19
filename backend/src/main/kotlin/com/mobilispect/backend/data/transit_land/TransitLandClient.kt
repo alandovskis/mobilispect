@@ -30,12 +30,7 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                 uri += "&after=${paging.after}"
             }
 
-            val response = webClient.get()
-                .uri(uri)
-                .header("apikey", apiKey)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(TransitLandAgencyResponse::class.java).block()
+            val response = get(uri, apiKey, TransitLandAgencyResponse::class.java)
             val agencies = response?.agencies?.map { remote ->
                 Agency(
                     _id = remote.onestopID,
@@ -54,14 +49,8 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                 uri += "&after=${paging.after}"
             }
 
-            val response = webClient.get()
-                .uri(uri)
-                .header("apikey", apiKey)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-
-            val convertedResponse = response.bodyToMono(TransitLandRouteResponse::class.java).block()
-            val routes = convertedResponse?.routes?.map { remote ->
+            val response = get(uri, apiKey, TransitLandRouteResponse::class.java)
+            val routes = response?.routes?.map { remote ->
                 Route(
                     _id = remote.onestopID,
                     shortName = remote.shortName,
@@ -71,7 +60,7 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                     headwayHistory = emptyList()
                 )
             }
-            return@handleError Result.success(RouteResult(routes.orEmpty(), convertedResponse?.meta?.after ?: 0))
+            return@handleError Result.success(RouteResult(routes.orEmpty(), response?.meta?.after ?: 0))
         }
     }
 
@@ -89,5 +78,19 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                 else -> Result.failure(GenericError(e.cause.toString()))
             }
         }
+    }
+
+    private fun <T> get(
+        uri: String,
+        apiKey: String,
+        clazz: Class<T>
+    ): T? {
+        return webClient.get()
+            .uri(uri)
+            .header("apikey", apiKey)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .bodyToMono(clazz)
+            .block()
     }
 }
