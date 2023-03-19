@@ -180,6 +180,89 @@ internal class TransitLandClientTest {
         }
     }
 
+    @Test
+    fun stops_networkError() {
+        val mockServer = MockWebServer()
+        mockServer.dispatcher = StopsDispatcher(responseCode = 200, responseBody = "{}")
+        mockServer.start()
+        val webClient = webClient(mockServer)
+        mockServer.shutdown()
+
+        subject = TransitLandClient(webClient)
+        val result = subject.stops(apiKey = "apikey", agencyID = "city")
+
+        assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
+    }
+
+    @Test
+    fun stops_rateLimited() {
+        withMockServer(dispatcher = StopsDispatcher(responseCode = 429, responseBody = "{}")) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.stops(apiKey = "apikey", agencyID = "city").exceptionOrNull()
+
+            assertThat(response).isInstanceOf(TooManyRequests::class.java)
+        }
+    }
+
+    @Test
+    fun stops_unauthorized() {
+        withMockServer(
+            dispatcher = StopsDispatcher(
+                responseCode = 401,
+                responseBody = TRANSIT_LAND_UNAUTHORIZED_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.stops(apiKey = "apikey", agencyID = "city").exceptionOrNull()!!
+
+            assertThat(response).isInstanceOf(Unauthorized::class.java)
+        }
+    }
+
+    @Test
+    fun stops_minimal() {
+        withMockServer(
+            dispatcher = StopsDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_STOPS_SUCCESS_MINIMAL_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response =
+                subject.stops(apiKey = "apikey", agencyID = "o-f25d-socitdetransportdemontral").getOrNull()!!
+
+            assertThat(response.after).isEqualTo(439365585)
+            assertThat(response.stops).contains(TRANSIT_LAND_STOP_1)
+            assertThat(response.stops).contains(TRANSIT_LAND_STOP_2)
+        }
+    }
+
+    @Test
+    fun stops_success() {
+        withMockServer(
+            dispatcher = StopsDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_STOPS_SUCCESS_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response =
+                subject.stops(apiKey = "apikey", agencyID = "o-f25d-socitdetransportdemontral").getOrNull()!!
+
+            assertThat(response.after).isEqualTo(439365585)
+            assertThat(response.stops).contains(TRANSIT_LAND_STOP_1)
+            assertThat(response.stops).contains(TRANSIT_LAND_STOP_2)
+        }
+    }
+
     private fun webClient(mockServer: MockWebServer): WebClient = WebClient.builder()
         .baseUrl(mockServer.url("/api/v2/rest/").toString())
         .build()
@@ -206,6 +289,16 @@ internal class TransitLandClientTest {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val path = request.path ?: throw IllegalArgumentException()
             require(path.contains("/api/v2/rest/routes.json"))
+            return MockResponse().setResponseCode(responseCode).setBody(
+                responseBody
+            ).setHeader("Content-Type", "application/json")
+        }
+    }
+
+    class StopsDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            val path = request.path ?: throw IllegalArgumentException()
+            require(path.contains("/api/v2/rest/stops.json"))
             return MockResponse().setResponseCode(responseCode).setBody(
                 responseBody
             ).setHeader("Content-Type", "application/json")

@@ -1,0 +1,40 @@
+@file:OptIn(ExperimentalSerializationApi::class)
+@file:Suppress("unused") // Deleting any of the unused fields will be break deserialization.
+
+package com.mobilispect.backend.data.transit_land
+
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonNames
+
+@Serializable
+internal class TransitLandStop(
+    @JsonNames("feed_version") val feed: FeedVersion,
+    val geometry: PointGeometry? = null,
+    val id: Int? = null,
+    val level: Int? = null,
+    @JsonNames("location_type") val locationType: Int? = null,
+    @JsonNames("onestop_id") val onestopID: String,
+    val parent: ParentStop? = null,
+    @JsonNames("platform_code") val platformCode: String? = null,
+    @JsonNames("stop_code") val stopCode: String? = null,
+    @JsonNames("stop_desc") val description: String? = null,
+    @JsonNames("stop_id") val stopID: String? = null,
+    @JsonNames("stop_name") val name: String,
+    @JsonNames("stop_timezone") val timezone: String? = null,
+    @JsonNames("stop_url") val url: String? = null,
+    @JsonNames("tts_stop_name") val ttsStopName: String? = null,
+    @JsonNames("wheelchair_boarding") val wheelchairBoarding: Int? = null,
+    @JsonNames("zone_id") val zoneID: String? = null
+)
+
+@Serializable
+internal class ParentStop(
+    val geometry: PointGeometry? = null,
+    val id: Int? = null,
+    @JsonNames("stop_id") val stopID: String?,
+    @JsonNames("stop_name") val name: String?
+)
+
+@Serializable
+internal class PointGeometry(val coordinates: Array<Double>, val type: String)

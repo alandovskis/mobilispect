@@ -22,7 +22,7 @@ internal class TransitLandAgency(
     @JsonNames("agency_timezone") val timezone: String? = null,
     @JsonNames("agency_url") val url: String? = null,
     @JsonNames("feed_version") val feed: FeedVersion,
-    val geometry: Geometry? = null,
+    val geometry: PolygonGeometry? = null,
     val id: Int? = null,
     @JsonNames("onestop_id") val onestopID: String,
     val operator: Operator? = null,
@@ -61,4 +61,4 @@ internal class Place(
 )
 
 @Serializable
-internal class Geometry(val coordinates: Array<Array<Array<Double>>>, val type: String)
+internal class PolygonGeometry(val coordinates: Array<Array<Array<Double>>>, val type: String)

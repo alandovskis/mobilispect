@@ -10,6 +10,9 @@ import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteDataSource
+import com.mobilispect.backend.data.stop.Stop
+import com.mobilispect.backend.data.stop.StopDataSource
+import com.mobilispect.backend.data.stop.StopResult
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
@@ -18,7 +21,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 /**
  * A client to access the transitland API.
  */
-class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSource, RouteDataSource {
+class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSource, RouteDataSource, StopDataSource {
     /**
      * Retrieve all [Agency] that serve a given [city].
      */
@@ -53,6 +56,21 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                 )
             }
             return@handleError Result.success(RouteResult(routes.orEmpty(), response?.meta?.after ?: 0))
+        }
+    }
+
+    override fun stops(apiKey: String, agencyID: String, paging: PagingParameters): Result<StopResult> {
+        return handleError {
+            val uri = pagedURI("/stops.json?served_by_onestop_ids=$agencyID", paging)
+            val response = get(uri, apiKey, TransitLandStopResponse::class.java)
+            val stops = response?.stops?.map { remote ->
+                Stop(
+                    _id = remote.onestopID,
+                    name = remote.name,
+                    version = remote.feed.version,
+                )
+            }
+            return@handleError Result.success(StopResult(stops.orEmpty(), response?.meta?.after ?: 0))
         }
     }
 
@@ -93,4 +111,5 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
             .bodyToMono(clazz)
             .block()
     }
+
 }
