@@ -25,11 +25,7 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
     @Suppress("ReturnCount")
     override fun agencies(apiKey: String, city: String, paging: PagingParameters): Result<AgencyResult> {
         return handleError {
-            var uri = "/agencies.json?city_name=$city&limit=${paging.limit}"
-            if (paging.after != null) {
-                uri += "&after=${paging.after}"
-            }
-
+            val uri = pagedURI("/agencies.json?city_name=$city", paging)
             val response = get(uri, apiKey, TransitLandAgencyResponse::class.java)
             val agencies = response?.agencies?.map { remote ->
                 Agency(
@@ -44,11 +40,7 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
 
     override fun routes(apiKey: String, agencyID: String, paging: PagingParameters): Result<RouteResult> {
         return handleError {
-            var uri = "/routes.json?operator_onestop_id=$agencyID&limit=${paging.limit}"
-            if (paging.after != null) {
-                uri += "&after=${paging.after}"
-            }
-
+            val uri = pagedURI("/routes.json?operator_onestop_id=$agencyID", paging)
             val response = get(uri, apiKey, TransitLandRouteResponse::class.java)
             val routes = response?.routes?.map { remote ->
                 Route(
@@ -78,6 +70,14 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                 else -> Result.failure(GenericError(e.cause.toString()))
             }
         }
+    }
+
+    private fun pagedURI(endpoint: String, paging: PagingParameters): String {
+        var uri = "$endpoint&limit=${paging.limit}"
+        if (paging.after != null) {
+            uri += "&after=${paging.after}"
+        }
+        return uri
     }
 
     private fun <T> get(
