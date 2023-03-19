@@ -4,6 +4,7 @@ import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
 import com.mobilispect.backend.data.api.PagingParameters
+import com.mobilispect.backend.data.transit_land.TransitLandCredentialsRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -15,15 +16,21 @@ import java.util.function.Function
 @Service
 class ImportRegionalAgenciesService(
     private val agencyRepository: AgencyRepository,
-    private val networkDataSource: RegionalAgencyDataSource
+    private val networkDataSource: RegionalAgencyDataSource,
+    private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : Function<String, Any> {
     private val logger: Logger = LoggerFactory.getLogger(ImportRegionalAgenciesService::class.java)
-    private val apiKey = "API_KEY"
 
     override fun apply(city: String): Any {
         logger.info("Started")
 
-        val remoteAgenciesRes = extractRemote(city)
+        val apiKey = transitLandCredentialsRepository.get()
+        if (apiKey == null) {
+            logger.error("Missing transit land credentials")
+            return Any()
+        }
+
+        val remoteAgenciesRes = extractRemote(apiKey, city)
         if (remoteAgenciesRes.isFailure) {
             logger.error("Error retrieving agencies: ${remoteAgenciesRes.exceptionOrNull()}")
             return Any()
@@ -40,7 +47,7 @@ class ImportRegionalAgenciesService(
 
     private fun readLocal(): Collection<Agency> = agencyRepository.findAll()
 
-    private fun extractRemote(city: String): Result<Collection<Agency>> =
+    private fun extractRemote(apiKey: String, city: String): Result<Collection<Agency>> =
         networkDataSource.agencies(apiKey = apiKey, city = city, paging = PagingParameters(limit = 100, after = null))
             .map { data -> data.agencies }
 

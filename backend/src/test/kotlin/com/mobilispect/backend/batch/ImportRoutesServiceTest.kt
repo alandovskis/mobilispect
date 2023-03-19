@@ -4,6 +4,7 @@ import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.route.FakeRouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
+import com.mobilispect.backend.data.transit_land.FakeTransitLandCredentialsRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -37,7 +38,7 @@ class ImportRoutesServiceTest {
 
     @BeforeEach
     fun prepare() {
-        subject = ImportRoutesService(routeRepository, networkDataSource)
+        subject = ImportRoutesService(routeRepository, networkDataSource, FakeTransitLandCredentialsRepository())
     }
 
     @Test

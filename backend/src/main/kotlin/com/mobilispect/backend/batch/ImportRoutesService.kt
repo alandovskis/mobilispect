@@ -4,6 +4,7 @@ import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
+import com.mobilispect.backend.data.transit_land.TransitLandCredentialsRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -15,15 +16,21 @@ import java.util.function.Function
 @Service
 class ImportRoutesService(
     private val routeRepository: RouteRepository,
-    private val networkDataSource: RouteDataSource
+    private val networkDataSource: RouteDataSource,
+    private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : Function<String, Any> {
     private val logger: Logger = LoggerFactory.getLogger(ImportRoutesService::class.java)
-    private val apiKey: String = "API_KEY"
 
     override fun apply(agencyID: String): Any {
         logger.info("Started - $agencyID")
 
-        val remoteRes = extractRemote(agencyID)
+        val apiKey = transitLandCredentialsRepository.get()
+        if (apiKey == null) {
+            logger.error("Missing transit land credentials")
+            return Any()
+        }
+
+        val remoteRes = extractRemote(apiKey, agencyID)
         if (remoteRes.isFailure) {
             logger.error("Error retrieving routes: ${remoteRes.exceptionOrNull()}")
             return Any()
@@ -40,7 +47,7 @@ class ImportRoutesService(
 
     private fun readLocal(): Collection<Route> = routeRepository.findAll()
 
-    private fun extractRemote(agencyID: String): Result<Collection<Route>> {
+    private fun extractRemote(apiKey: String, agencyID: String): Result<Collection<Route>> {
         val allRoutes = mutableListOf<Route>()
         var after: Int? = null
         do {

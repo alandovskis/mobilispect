@@ -5,6 +5,7 @@ import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.agency.FakeRegionalAgencyDataSource
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
 import com.mobilispect.backend.data.createMongoDBContainer
+import com.mobilispect.backend.data.transit_land.FakeTransitLandCredentialsRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -38,7 +39,8 @@ class ImportRegionalAgenciesServiceTest {
 
     @BeforeEach
     fun prepare() {
-        subject = ImportRegionalAgenciesService(agencyRepository, networkDataSource)
+        subject =
+            ImportRegionalAgenciesService(agencyRepository, networkDataSource, FakeTransitLandCredentialsRepository())
     }
 
     @Test
