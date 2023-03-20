@@ -30,6 +30,12 @@
         "gradle"
       ],
       "groupName": "gradle"
+    },
+    {
+      "matchPackagePatterns": [
+        "com.github.johnrengelman.shadow"
+      ],
+      "groupName": "gradle"
     }
   ],
   "ignoreDeps": [
