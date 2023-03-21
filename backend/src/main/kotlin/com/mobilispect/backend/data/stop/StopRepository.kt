@@ -4,7 +4,7 @@ import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "stops")
+@RepositoryRestResource(exported = false)
 interface StopRepository : Repository<Stop, String> {
     /**
      * Returns all instances of the type.
