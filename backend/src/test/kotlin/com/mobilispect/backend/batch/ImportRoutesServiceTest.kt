@@ -2,8 +2,9 @@ package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.createMongoDBContainer
+import com.mobilispect.backend.data.route.ExportedRouteRepository
 import com.mobilispect.backend.data.route.FakeRouteDataSource
-import com.mobilispect.backend.data.route.RouteRepository
+import com.mobilispect.backend.data.route.UnexportedRouteRepository
 import com.mobilispect.backend.data.transit_land.FakeTransitLandCredentialsRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -30,7 +31,10 @@ class ImportRoutesServiceTest {
     }
 
     @Autowired
-    private lateinit var routeRepository: RouteRepository
+    private lateinit var exportedRouteRepository: ExportedRouteRepository
+
+    @Autowired
+    private lateinit var unexportedRouteRepository: UnexportedRouteRepository
 
     private val networkDataSource: FakeRouteDataSource = FakeRouteDataSource()
 
@@ -38,7 +42,12 @@ class ImportRoutesServiceTest {
 
     @BeforeEach
     fun prepare() {
-        subject = ImportRoutesService(routeRepository, networkDataSource, FakeTransitLandCredentialsRepository())
+        subject = ImportRoutesService(
+            exportedRouteRepository,
+            unexportedRouteRepository,
+            networkDataSource,
+            FakeTransitLandCredentialsRepository()
+        )
     }
 
     @Test
@@ -47,18 +56,18 @@ class ImportRoutesServiceTest {
 
         subject.apply(agencyID = "agencyID")
 
-        val actual = routeRepository.findAll()
+        val actual = unexportedRouteRepository.findAll()
         assertThat(actual).containsAll(expected)
     }
 
     @Test
     fun addsAnyMissingAgencies() {
         val expected = FakeRouteDataSource().routes(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
-        routeRepository.save(expected.routes.first().copy())
+        unexportedRouteRepository.save(expected.routes.first().copy())
 
         subject.apply(agencyID = "agencyID")
 
-        val actual = routeRepository.findAll()
+        val actual = unexportedRouteRepository.findAll()
         assertThat(actual).containsAll(expected.routes)
     }
 
@@ -66,12 +75,12 @@ class ImportRoutesServiceTest {
     fun doesNothingWhenAllAgenciesArePresentAndLatestVersion() {
         val expected = FakeRouteDataSource().routes(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         for (agency in expected.routes) {
-            routeRepository.save(agency.copy())
+            unexportedRouteRepository.save(agency.copy())
         }
 
         subject.apply(agencyID = "agencyID")
 
-        val actual = routeRepository.findAll()
+        val actual = unexportedRouteRepository.findAll()
         assertThat(actual).containsAll(expected.routes)
     }
 
@@ -79,12 +88,12 @@ class ImportRoutesServiceTest {
     fun updatesAgencyWhenAllAgenciesArePresentButNotLatestVersion() {
         val expected = FakeRouteDataSource().routes(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         for (agency in expected.routes) {
-            routeRepository.save(agency.copy(version = "old"))
+            unexportedRouteRepository.save(agency.copy(version = "old"))
         }
 
         subject.apply(agencyID = "agencyID")
 
-        val actual = routeRepository.findAll()
+        val actual = unexportedRouteRepository.findAll()
         assertThat(actual).containsAll(expected.routes)
     }
 }
