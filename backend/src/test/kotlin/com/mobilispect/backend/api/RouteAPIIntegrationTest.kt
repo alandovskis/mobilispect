@@ -5,7 +5,7 @@ import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.route.HeadwayEntry
 import com.mobilispect.backend.data.route.Route
-import com.mobilispect.backend.data.route.UnexportedRouteRepository
+import com.mobilispect.backend.data.route.RouteRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -68,13 +68,13 @@ class RouteAPIIntegrationTest {
     private lateinit var template: TestRestTemplate
 
     @Autowired
-    private lateinit var unexportedRouteRepository: UnexportedRouteRepository
+    private lateinit var routeRepository: RouteRepository
 
     @Test
     fun showsRoutesForSpecifiedAgency() {
-        unexportedRouteRepository.save(ROUTE_A1)
-        unexportedRouteRepository.save(ROUTE_A2)
-        unexportedRouteRepository.save(ROUTE_B1)
+        routeRepository.save(ROUTE_A1)
+        routeRepository.save(ROUTE_A2)
+        routeRepository.save(ROUTE_B1)
 
         val response = template.getForEntity("/routes/search/findAllByAgencyID?id=${AGENCY_A._id}", String::class.java)
 
@@ -95,6 +95,6 @@ class RouteAPIIntegrationTest {
 
     @AfterEach
     fun cleanUp() {
-        unexportedRouteRepository.deleteAll()
+        routeRepository.deleteAll()
     }
 }

@@ -1,10 +1,9 @@
 package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.api.PagingParameters
-import com.mobilispect.backend.data.route.ExportedRouteRepository
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteDataSource
-import com.mobilispect.backend.data.route.UnexportedRouteRepository
+import com.mobilispect.backend.data.route.RouteRepository
 import com.mobilispect.backend.data.transit_land.TransitLandCredentialsRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,8 +15,7 @@ import java.util.function.Function
  */
 @Service
 class ImportRoutesService(
-    private val exportedRouteRepository: ExportedRouteRepository,
-    private val unexportedRouteRepository: UnexportedRouteRepository,
+    private val routeRepository: RouteRepository,
     private val networkDataSource: RouteDataSource,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : Function<String, Any> {
@@ -47,7 +45,7 @@ class ImportRoutesService(
         return Any()
     }
 
-    private fun readLocal(): Collection<Route> = unexportedRouteRepository.findAll()
+    private fun readLocal(): Collection<Route> = routeRepository.findAll()
 
     private fun extractRemote(apiKey: String, agencyID: String): Result<Collection<Route>> {
         val allRoutes = mutableListOf<Route>()
@@ -77,7 +75,7 @@ class ImportRoutesService(
 
     private fun load(routes: Collection<Route>) {
         for (route in routes) {
-            unexportedRouteRepository.save(route)
+            routeRepository.save(route)
         }
     }
 }
