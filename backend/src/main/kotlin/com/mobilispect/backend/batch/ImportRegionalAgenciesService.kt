@@ -1,9 +1,8 @@
 package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.agency.Agency
-import com.mobilispect.backend.data.agency.ExportedAgencyRepository
+import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
-import com.mobilispect.backend.data.agency.UnexportedAgencyRepository
 import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.transit_land.TransitLandCredentialsRepository
 import org.slf4j.Logger
@@ -16,8 +15,7 @@ import java.util.function.Function
  */
 @Service
 class ImportRegionalAgenciesService(
-    private val exportedAgencyRepository: ExportedAgencyRepository,
-    private val unexportedAgencyRepository: UnexportedAgencyRepository,
+    private val agencyRepository: AgencyRepository,
     private val networkDataSource: RegionalAgencyDataSource,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : Function<String, Any> {
@@ -47,7 +45,7 @@ class ImportRegionalAgenciesService(
         return Any()
     }
 
-    private fun readLocal(): Collection<Agency> = exportedAgencyRepository.findAll()
+    private fun readLocal(): Collection<Agency> = agencyRepository.findAll()
 
     private fun extractRemote(apiKey: String, city: String): Result<Collection<Agency>> =
         networkDataSource.agencies(apiKey = apiKey, city = city, paging = PagingParameters(limit = 100, after = null))
@@ -60,7 +58,7 @@ class ImportRegionalAgenciesService(
 
     private fun load(agencies: Collection<Agency>) {
         for (agency in agencies) {
-            unexportedAgencyRepository.save(agency)
+            agencyRepository.save(agency)
         }
     }
 }
