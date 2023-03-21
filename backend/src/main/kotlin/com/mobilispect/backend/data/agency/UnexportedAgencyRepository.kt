@@ -4,15 +4,11 @@ import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(path = "agencies")
-interface AgencyRepository : Repository<Agency, String> {
-    /**
-     * Returns all instances of the type.
-     *
-     * @return all entities
-     */
-    fun findAll(): List<Agency>
-
+/**
+ * Agency repository operations that not exposed as part of the API.
+ */
+@RepositoryRestResource(exported = false)
+interface UnexportedAgencyRepository : Repository<Agency, String> {
     /**
      * Saves a given entity. Use the returned instance for further operations as the save operation might have changed
      * the entity instance completely.

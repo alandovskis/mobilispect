@@ -1,9 +1,10 @@
 package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.MongoDBInitializer
-import com.mobilispect.backend.data.agency.AgencyRepository
+import com.mobilispect.backend.data.agency.ExportedAgencyRepository
 import com.mobilispect.backend.data.agency.FakeRegionalAgencyDataSource
 import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
+import com.mobilispect.backend.data.agency.UnexportedAgencyRepository
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.transit_land.FakeTransitLandCredentialsRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -31,7 +32,10 @@ class ImportRegionalAgenciesServiceTest {
     }
 
     @Autowired
-    private lateinit var agencyRepository: AgencyRepository
+    private lateinit var exportedAgencyRepository: ExportedAgencyRepository
+
+    @Autowired
+    private lateinit var unexportedAgencyRepository: UnexportedAgencyRepository
 
     private val networkDataSource: RegionalAgencyDataSource = FakeRegionalAgencyDataSource()
 
@@ -40,7 +44,12 @@ class ImportRegionalAgenciesServiceTest {
     @BeforeEach
     fun prepare() {
         subject =
-            ImportRegionalAgenciesService(agencyRepository, networkDataSource, FakeTransitLandCredentialsRepository())
+            ImportRegionalAgenciesService(
+                exportedAgencyRepository,
+                unexportedAgencyRepository,
+                networkDataSource,
+                FakeTransitLandCredentialsRepository()
+            )
     }
 
     @Test
@@ -49,18 +58,18 @@ class ImportRegionalAgenciesServiceTest {
 
         subject.apply("city")
 
-        val actual = agencyRepository.findAll()
+        val actual = exportedAgencyRepository.findAll()
         assertThat(actual).containsAll(expected.agencies)
     }
 
     @Test
     fun addsAnyMissingAgencies() {
         val expected = networkDataSource.agencies(apiKey = "apikey", city = "city").getOrNull()!!
-        agencyRepository.save(expected.agencies.first().copy())
+        unexportedAgencyRepository.save(expected.agencies.first().copy())
 
         subject.apply("city")
 
-        val actual = agencyRepository.findAll()
+        val actual = exportedAgencyRepository.findAll()
         assertThat(actual).containsAll(expected.agencies)
     }
 
@@ -68,12 +77,12 @@ class ImportRegionalAgenciesServiceTest {
     fun doesNothingWhenAllAgenciesArePresentAndLatestVersion() {
         val expected = networkDataSource.agencies(apiKey = "apikey", city = "city").getOrNull()!!
         for (agency in expected.agencies) {
-            agencyRepository.save(agency.copy())
+            unexportedAgencyRepository.save(agency.copy())
         }
 
         subject.apply("city")
 
-        val actual = agencyRepository.findAll()
+        val actual = exportedAgencyRepository.findAll()
         assertThat(actual).containsAll(expected.agencies)
     }
 
@@ -81,12 +90,12 @@ class ImportRegionalAgenciesServiceTest {
     fun updatesAgencyWhenAllAgenciesArePresentButNotLatestVersion() {
         val expected = networkDataSource.agencies(apiKey = "apikey", city = "city").getOrNull()!!
         for (agency in expected.agencies) {
-            agencyRepository.save(agency.copy(version = "old"))
+            unexportedAgencyRepository.save(agency.copy(version = "old"))
         }
 
         subject.apply("city")
 
-        val actual = agencyRepository.findAll()
+        val actual = exportedAgencyRepository.findAll()
         assertThat(actual).containsAll(expected.agencies)
     }
 }

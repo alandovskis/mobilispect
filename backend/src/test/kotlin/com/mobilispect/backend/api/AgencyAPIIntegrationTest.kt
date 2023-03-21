@@ -2,7 +2,7 @@ package com.mobilispect.backend.api
 
 import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.Agency
-import com.mobilispect.backend.data.agency.AgencyRepository
+import com.mobilispect.backend.data.agency.UnexportedAgencyRepository
 import com.mobilispect.backend.data.createMongoDBContainer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -37,12 +37,12 @@ class AgencyAPIIntegrationTest {
     private lateinit var template: TestRestTemplate
 
     @Autowired
-    private lateinit var agencyRepository: AgencyRepository
+    private lateinit var unexportedAgencyRepository: UnexportedAgencyRepository
 
     @Test
     fun showsDataForAllAgencies() {
-        agencyRepository.save(AGENCY_A)
-        agencyRepository.save(AGENCY_B)
+        unexportedAgencyRepository.save(AGENCY_A)
+        unexportedAgencyRepository.save(AGENCY_B)
 
         val response = template.getForEntity("/agencies", String::class.java)
 
@@ -53,6 +53,6 @@ class AgencyAPIIntegrationTest {
 
     @AfterEach
     fun cleanUp() {
-        agencyRepository.deleteAll()
+        unexportedAgencyRepository.deleteAll()
     }
 }
