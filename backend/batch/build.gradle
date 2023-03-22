@@ -39,9 +39,9 @@ repositories {
 }
 
 ext {
-	springCloudFunctionVersion = "3.2.4"
-	awsLambdaEventsVersion = "3.9.0"
-	awsLambdaCoreVersion = "1.1.0"
+	springCloudFunctionVersion = "4.0.1"
+	awsLambdaEventsVersion = "3.11.1"
+	awsLambdaCoreVersion = "1.2.2"
 }
 ext['reactor.version'] = "3.1.7.RELEASE"
 
