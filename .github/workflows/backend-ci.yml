@@ -80,6 +80,29 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: Create Transit Land Repository Configuration
+        run: cat > src/main/kotlin/com/mobilispect/backend/data/transit_land/TransitLandCredentialsConfiguration.kt < EOF
+        package com.mobilispect.backend.data.transit_land
+
+        import org.springframework.context.annotation.Bean
+        import org.springframework.context.annotation.Configuration
+
+        @Configuration
+        class TransitLandCredentialsConfiguration {
+        @Bean
+        fun repository(): TransitLandCredentialsRepository = DummyTransitLandCredentialsRepository()
+    }
+        EOF
+
+    - name: Create Transit Land Repository
+      run: cat > src/main/kotlin/com/mobilispect/backend/data/transit_land/DummyTransitLandCredentialsRepository.kt < EOF
+      package com.mobilispect.backend.data.transit_land
+
+      class DummyTransitLandCredentialsRepository : TransitLandCredentialsRepository {
+        override fun get(): String = "CvaXEwfuCJ7x1mC169r53ygiVU8N55mj"
+      }
+      EOF
+
       - name: Build
         run: ./gradlew assemble
 
