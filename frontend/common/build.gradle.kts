@@ -60,7 +60,7 @@ kotlin {
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "androidx.room",
                         "room-compiler",
-                        "2.5.0"
+                        "2.5.1"
                     )
                 )
                 configurations.getByName("kapt").dependencies.add(
