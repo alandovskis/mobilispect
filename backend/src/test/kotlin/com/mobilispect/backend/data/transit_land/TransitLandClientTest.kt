@@ -11,6 +11,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.reactive.function.client.WebClient
+import java.time.LocalDate
 
 @SpringBootTest
 internal class TransitLandClientTest {
@@ -263,6 +264,105 @@ internal class TransitLandClientTest {
         }
     }
 
+    @Test
+    fun departures_networkError() {
+        val mockServer = MockWebServer()
+        mockServer.dispatcher = DeparturesDispatcher(responseCode = 200, responseBody = "{}")
+        mockServer.start()
+        val webClient = webClient(mockServer)
+        mockServer.shutdown()
+
+        subject = TransitLandClient(webClient)
+        val result = subject.departures(
+            apiKey = "apikey",
+            stopID = "s-f25dt17bg5-stationangrignon",
+            serviceDate = LocalDate.of(2023, 3, 22)
+        ).exceptionOrNull()!!
+
+        assertThat(result).isInstanceOf(NetworkError::class.java)
+    }
+
+    @Test
+    fun departures_rateLimited() {
+        withMockServer(dispatcher = DeparturesDispatcher(responseCode = 429, responseBody = "{}")) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.departures(
+                apiKey = "apikey",
+                stopID = "s-f25dt17bg5-stationangrignon",
+                serviceDate = LocalDate.of(2023, 3, 22)
+            ).exceptionOrNull()!!
+
+            assertThat(response).isInstanceOf(TooManyRequests::class.java)
+        }
+    }
+
+    @Test
+    fun departures_unauthorized() {
+        withMockServer(
+            dispatcher = DeparturesDispatcher(
+                responseCode = 401,
+                responseBody = TRANSIT_LAND_UNAUTHORIZED_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.departures(
+                apiKey = "apikey",
+                stopID = "s-f25dt17bg5-stationangrignon",
+                serviceDate = LocalDate.of(2023, 3, 22)
+            ).exceptionOrNull()!!
+
+            assertThat(response).isInstanceOf(Unauthorized::class.java)
+        }
+    }
+
+    @Test
+    fun departures_minimal() {
+        withMockServer(
+            dispatcher = DeparturesDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_DEPARTURE_MINIMAL_FIXTURE,
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.departures(
+                apiKey = "apikey",
+                stopID = "s-f25dt17bg5-stationangrignon",
+                serviceDate = LocalDate.of(2023, 3, 22)
+            ).getOrNull()!!
+
+            assertThat(response).contains(TRANSIT_LAND_DEPARTURE_1)
+            assertThat(response).contains(TRANSIT_LAND_DEPARTURE_2)
+        }
+    }
+
+    @Test
+    fun departures_success() {
+        withMockServer(
+            dispatcher = DeparturesDispatcher(
+                responseCode = 200,
+                responseBody = TRANSIT_LAND_DEPARTURE_FULL_FIXTURE
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.departures(
+                apiKey = "apikey",
+                stopID = "s-f25dt17bg5-stationangrignon",
+                serviceDate = LocalDate.of(2023, 3, 22)
+            ).getOrNull()!!
+
+            assertThat(response).contains(TRANSIT_LAND_DEPARTURE_1)
+            assertThat(response).contains(TRANSIT_LAND_DEPARTURE_2)
+        }
+    }
+
     private fun webClient(mockServer: MockWebServer): WebClient = WebClient.builder()
         .baseUrl(mockServer.url("/api/v2/rest/").toString())
         .build()
@@ -304,4 +404,15 @@ internal class TransitLandClientTest {
             ).setHeader("Content-Type", "application/json")
         }
     }
+
+    class DeparturesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            val path = request.path ?: throw IllegalArgumentException()
+            require(path.contains("/api/v2/rest/stops/"))
+            return MockResponse().setResponseCode(responseCode).setBody(
+                responseBody
+            ).setHeader("Content-Type", "application/json")
+        }
+    }
+
 }

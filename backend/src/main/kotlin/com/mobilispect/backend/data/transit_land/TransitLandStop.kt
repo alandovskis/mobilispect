@@ -35,6 +35,3 @@ internal class ParentStop(
     @JsonNames("stop_id") val stopID: String?,
     @JsonNames("stop_name") val name: String?
 )
-
-@Serializable
-internal class PointGeometry(val coordinates: Array<Double>, val type: String)
