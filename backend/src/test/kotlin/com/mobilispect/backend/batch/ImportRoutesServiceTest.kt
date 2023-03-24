@@ -42,7 +42,7 @@ class ImportRoutesServiceTest {
     }
 
     @Test
-    fun addsAllMissingAgenciesWhenThereAreNone() {
+    fun addsAllMissingRoutesWhenThereAreNone() {
         val expected = networkDataSource.all()
 
         subject.apply(agencyID = "agencyID")
@@ -52,7 +52,7 @@ class ImportRoutesServiceTest {
     }
 
     @Test
-    fun addsAnyMissingAgencies() {
+    fun addsAnyMissingRoutes() {
         val expected = FakeRouteDataSource().routes(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         routeRepository.save(expected.routes.first().copy())
 
@@ -63,7 +63,7 @@ class ImportRoutesServiceTest {
     }
 
     @Test
-    fun doesNothingWhenAllAgenciesArePresentAndLatestVersion() {
+    fun doesNothingWhenAllRoutesArePresentAndLatestVersion() {
         val expected = FakeRouteDataSource().routes(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         for (agency in expected.routes) {
             routeRepository.save(agency.copy())
@@ -76,7 +76,7 @@ class ImportRoutesServiceTest {
     }
 
     @Test
-    fun updatesAgencyWhenAllAgenciesArePresentButNotLatestVersion() {
+    fun updatesRouteWhenAllRoutesArePresentButNotLatestVersion() {
         val expected = FakeRouteDataSource().routes(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         for (agency in expected.routes) {
             routeRepository.save(agency.copy(version = "old"))
