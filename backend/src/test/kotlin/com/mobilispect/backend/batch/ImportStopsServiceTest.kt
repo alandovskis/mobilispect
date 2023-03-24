@@ -41,7 +41,7 @@ class ImportStopsServiceTest {
     }
 
     @Test
-    fun addsAllMissingAgenciesWhenThereAreNone() {
+    fun addsAllMissingStopsWhenThereAreNone() {
         val expected = networkDataSource.all()
 
         subject.apply(agencyID = "agencyID")
@@ -51,7 +51,7 @@ class ImportStopsServiceTest {
     }
 
     @Test
-    fun addsAnyMissingAgencies() {
+    fun addsAnyMissingStops() {
         val expected = FakeStopDataSource().stops(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         stopRepository.save(expected.stops.first().copy())
 
@@ -62,7 +62,7 @@ class ImportStopsServiceTest {
     }
 
     @Test
-    fun doesNothingWhenAllAgenciesArePresentAndLatestVersion() {
+    fun doesNothingWhenAllStopsArePresentAndLatestVersion() {
         val expected = FakeStopDataSource().stops(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         for (agency in expected.stops) {
             stopRepository.save(agency.copy())
@@ -75,7 +75,7 @@ class ImportStopsServiceTest {
     }
 
     @Test
-    fun updatesAgencyWhenAllAgenciesArePresentButNotLatestVersion() {
+    fun updatesStopWhenAllStopsArePresentButNotLatestVersion() {
         val expected = FakeStopDataSource().stops(apiKey = "apikey", agencyID = "agencyID").getOrNull()!!
         for (agency in expected.stops) {
             stopRepository.save(agency.copy(version = "old"))
