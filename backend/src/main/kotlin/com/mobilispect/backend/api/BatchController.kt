@@ -3,6 +3,7 @@ package com.mobilispect.backend.api
 import com.mobilispect.backend.batch.ImportRegionalAgenciesService
 import com.mobilispect.backend.batch.ImportRoutesService
 import com.mobilispect.backend.batch.ImportStopsService
+import com.mobilispect.backend.batch.ImportUpdatedFeedsService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -30,8 +31,14 @@ private val AGENCIES = arrayOf(
 class BatchController(
     private val agencyService: ImportRegionalAgenciesService,
     private val routesService: ImportRoutesService,
-    private val stopsService: ImportStopsService
+    private val stopsService: ImportStopsService,
+    private val importUpdatedFeedsService: ImportUpdatedFeedsService
 ) {
+    @PostMapping("/batch/import/feeds")
+    fun importUpdatedFeeds() {
+        importUpdatedFeedsService.get()
+    }
+
     @PostMapping("/batch/import/agencies")
     fun importAgencies() {
         agencyService.apply("Montréal")

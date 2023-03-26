@@ -1,11 +1,10 @@
 package com.mobilispect.backend.data.schedule
 
-import java.time.LocalDateTime
-
 data class ScheduledStop(
-    val routeID: String,
+    val tripID: String,
     val stopID: String,
-    val departsAt: LocalDateTime? = null,
-    val arrivesAt: LocalDateTime? = null,
-    val direction: String
+    val departsAt: DateTimeOffset? = null,
+    val arrivesAt: DateTimeOffset? = null,
+    val stopSequence: Int,
+    val version: String,
 )

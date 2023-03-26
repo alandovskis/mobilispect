@@ -1,17 +1,15 @@
-package com.mobilispect.backend.data.stop
+package com.mobilispect.backend.data.schedule
 
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository
-import org.springframework.data.rest.core.annotation.RepositoryRestResource
 
-@RepositoryRestResource(exported = false)
-interface StopRepository : Repository<Stop, String> {
+interface ScheduledTripRepository : Repository<ScheduledTrip, String> {
     /**
      * Returns all instances of the type.
      *
      * @return all entities
      */
-    fun findAll(): List<Stop>
+    fun findAll(): List<ScheduledTrip>
 
     /**
      * Saves a given entity. Use the returned instance for further operations as the save operation might have changed
@@ -24,7 +22,7 @@ interface StopRepository : Repository<Stop, String> {
      * with a different value from that found in the persistence store. Also thrown if the entity is assumed to be
      * present but does not exist in the database.
      */
-    fun save(entity: Stop): Stop
+    fun save(entity: ScheduledTrip): ScheduledTrip
 
     /**
      * Deletes all entities.

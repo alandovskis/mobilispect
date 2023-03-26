@@ -10,7 +10,6 @@ import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteDataSource
-import com.mobilispect.backend.data.schedule.ScheduledStop
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopDataSource
 import com.mobilispect.backend.data.stop.StopResult
@@ -18,12 +17,6 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-
-private const val HOURS_PER_DAY = 24
 
 /**
  * A client to access the transitland API.
@@ -78,48 +71,6 @@ class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSo
                 )
             }
             return@handleError Result.success(StopResult(stops.orEmpty(), response?.meta?.after ?: 0))
-        }
-    }
-
-    fun departures(
-        apiKey: String,
-        stopID: String,
-        serviceDate: LocalDate,
-        paging: PagingParameters = PagingParameters()
-    ): Result<Collection<ScheduledStop>> {
-        return handleError {
-            val uri = pagedURI(
-                "/stops/$stopID/departures?service_data=${serviceDate.format(DateTimeFormatter.ISO_DATE)}",
-                paging
-            )
-            val response = get(uri, apiKey, TransitLandDepartureResponse::class.java)
-            val departures = response?.stops?.flatMap { remote -> remote.departures }?.map { departure ->
-                ScheduledStop(
-                    routeID = departure.trip.route.onestopID,
-                    stopID = stopID,
-                    departsAt = departure.departure.scheduled?.let { time -> parseGTFSTime(serviceDate, time) },
-                    arrivesAt = departure.arrival.scheduled?.let { time -> parseGTFSTime(serviceDate, time) },
-                    direction = departure.trip.headsign
-                )
-            }
-            return@handleError Result.success(departures.orEmpty())
-        }
-    }
-
-    /**
-     * Parse a time in GTFS format (i.e. 25:00:00)
-     */
-    private fun parseGTFSTime(date: LocalDate, time: String): LocalDateTime? {
-        val split = time.split(":")
-        if (split.size >= 3) {
-            val hour = split[0].toIntOrNull() ?: return null
-            val days = hour / HOURS_PER_DAY
-            val hours = hour % HOURS_PER_DAY
-            val minute = split[1].toIntOrNull() ?: return null
-            val second = split[2].toIntOrNull() ?: return null
-            return LocalDateTime.of(date.plusDays(days.toLong()), LocalTime.of(hours, minute, second))
-        } else {
-            return LocalDateTime.of(date, LocalTime.parse(time))
         }
     }
 
