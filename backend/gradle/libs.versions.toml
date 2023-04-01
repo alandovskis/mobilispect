@@ -5,6 +5,7 @@ kotlinxSerializationCSV = "2.0.0"
 kotlinxSerialization = "1.5.0"
 springBoot = "3.0.5"
 springDependency = "1.1.0"
+squareSortDependency = "0.2"
 
 [libraries]
 
@@ -22,3 +23,5 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 spring-dependency = { id = "io.spring.dependency-management", version.ref = "springDependency" }
+
+square-sortDependencies = { id = "com.squareup.sort-dependencies", version.ref = "squareSortDependency" }
