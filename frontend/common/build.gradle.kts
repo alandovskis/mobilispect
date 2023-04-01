@@ -6,7 +6,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("kapt")
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.20"
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
