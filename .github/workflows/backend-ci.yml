@@ -29,6 +29,9 @@ jobs:
           allow-snapshots: false
           allow-checksums: false
 
+      - name: Verify Dependency Order
+        run: ./gradlew sortDependencies --mode=check
+
   analysis:
     runs-on: ubuntu-22.04
     name: "Static Analysis"
