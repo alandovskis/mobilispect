@@ -2,6 +2,7 @@ package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyRepository
+import com.mobilispect.backend.data.download.Downloader
 import com.mobilispect.backend.data.feed.FeedDataSource
 import com.mobilispect.backend.data.feed.FeedRepository
 import com.mobilispect.backend.data.feed.FeedVersionRepository
@@ -27,16 +28,11 @@ import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.core.io.buffer.DataBuffer
-import org.springframework.core.io.buffer.DataBufferUtils
 import org.springframework.stereotype.Service
-import org.springframework.web.reactive.function.client.WebClient
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import java.nio.file.Path
-import java.nio.file.StandardOpenOption
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.util.function.Supplier
@@ -54,7 +50,7 @@ class ImportUpdatedFeedsService(
     private val feedDataSource: FeedDataSource,
     private val feedRepository: FeedRepository,
     private val feedVersionRepository: FeedVersionRepository,
-    private val webClientBuilder: WebClient.Builder,
+    private val downloader: Downloader,
     private val agencyRepository: AgencyRepository,
     private val routeRepository: RouteRepository,
     private val stopRepository: StopRepository,
@@ -92,15 +88,16 @@ class ImportUpdatedFeedsService(
     }
 
     private fun importFeed(): (VersionedFeed) -> Unit = { cloudFeed ->
-        val archive = downloadFeed(cloudFeed)
-        val extractedDir = extractFeed(archive)
-        importAgencies(cloudFeed.version._id, extractedDir)
-        importRoutes(cloudFeed.version._id, extractedDir)
-        importStops(cloudFeed.version._id, extractedDir)
-        importTrips(cloudFeed.version._id, extractedDir)
-        importStopTimes(cloudFeed.version._id, extractedDir)
-        feedRepository.save(cloudFeed.feed)
-        feedVersionRepository.save(cloudFeed.version)
+        downloadFeed(cloudFeed).map { archive ->
+            val extractedDir = extractFeed(archive)
+            importAgencies(cloudFeed.version._id, extractedDir)
+            importRoutes(cloudFeed.version._id, extractedDir)
+            importStops(cloudFeed.version._id, extractedDir)
+            importTrips(cloudFeed.version._id, extractedDir)
+            importStopTimes(cloudFeed.version._id, extractedDir)
+            feedRepository.save(cloudFeed.feed)
+            feedVersionRepository.save(cloudFeed.version)
+        }
     }
 
     private fun importAgencies(version: String, extractedDir: String) {
@@ -242,15 +239,12 @@ class ImportUpdatedFeedsService(
         return date
     }
 
-    private fun downloadFeed(cloudFeed: VersionedFeed): String {
-        val archive = "/tmp/${cloudFeed.version._id}.zip"
-        val webClient = webClientBuilder.build()
-        val dataBuffer = webClient.get().uri(cloudFeed.feed.url).retrieve().bodyToFlux(DataBuffer::class.java)
-        DataBufferUtils.write(
-            dataBuffer, Path.of(archive), StandardOpenOption.CREATE
-        ).share().block()
-        logger.debug("Downloaded feed from ${cloudFeed.feed.url} to $archive")
-        return archive
+    private fun downloadFeed(cloudFeed: VersionedFeed): Result<String> {
+        val result = downloader.download(cloudFeed.feed.url)
+        result.onSuccess { archive ->
+            logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive)
+        }
+        return result
     }
 
     private fun extractFeed(archive: String): String {

@@ -4,9 +4,12 @@ import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.createMongoDBContainer
+import com.mobilispect.backend.data.download.Downloader
 import com.mobilispect.backend.data.feed.DefaultFeedDataSource
+import com.mobilispect.backend.data.feed.Feed
 import com.mobilispect.backend.data.feed.FeedDataSource
 import com.mobilispect.backend.data.feed.FeedRepository
+import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.FeedVersionRepository
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.route.Route
@@ -18,14 +21,14 @@ import com.mobilispect.backend.data.schedule.ScheduledTrip
 import com.mobilispect.backend.data.schedule.ScheduledTripRepository
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopRepository
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.web.reactive.function.client.WebClient
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDate
@@ -43,6 +46,9 @@ class ImportUpdatedFeedsServiceTest {
 
         class DBInitializer : MongoDBInitializer(container)
     }
+
+    @Autowired
+    lateinit var downloader: Downloader
 
     @Autowired
     lateinit var feedRepository: FeedRepository
@@ -65,13 +71,34 @@ class ImportUpdatedFeedsServiceTest {
     @Autowired
     lateinit var scheduledStopRepository: ScheduledStopRepository
 
-    private val networkDataSource: FeedDataSource = DefaultFeedDataSource()
+    @Test
+    fun noNetwork() {
+        val mockServer = MockWebServer()
+        mockServer.enqueue(MockResponse())
+        mockServer.start()
 
-    private lateinit var subject: ImportUpdatedFeedsService
-
-    @BeforeEach
-    fun prepare() {
-        subject = ImportUpdatedFeedsService(
+        val networkDataSource = object : FeedDataSource {
+            override fun feeds(): Result<Collection<VersionedFeed>> =
+                Result.success(
+                    listOf(
+                        VersionedFeed(
+                            feed = Feed(
+                                _id = "f-f256-exo~citlapresquîle",
+                                name = "exo la Presqu'ile",
+                                url = mockServer.url("").toString()
+                            ),
+                            version = FeedVersion(
+                                _id = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
+                                feedID = "f-f256-exo~citlapresquîle",
+                                startsOn = LocalDate.of(2022, 11, 23),
+                                endsOn = LocalDate.of(2023, 6, 25)
+                            )
+                        )
+                    )
+                )
+        }
+        mockServer.shutdown()
+        val subject = ImportUpdatedFeedsService(
             feedDataSource = networkDataSource,
             feedRepository = feedRepository,
             feedVersionRepository = feedVersionRepository,
@@ -80,13 +107,36 @@ class ImportUpdatedFeedsServiceTest {
             stopRepository = stopRepository,
             scheduledTripRepository = scheduledTripRepository,
             scheduledStopRepository = scheduledStopRepository,
-            webClientBuilder = WebClient.builder()
+            downloader = downloader
         )
+
+        subject.get()
+
+        assertThat(feedRepository.findAll()).isEmpty()
+        assertThat(feedVersionRepository.findAll()).isEmpty()
+        assertThat(agencyRepository.findAll()).isEmpty()
+        assertThat(routeRepository.findAll()).isEmpty()
+        assertThat(stopRepository.findAll()).isEmpty()
+        assertThat(scheduledTripRepository.findAll()).isEmpty()
+        assertThat(scheduledStopRepository.findAll()).isEmpty()
     }
 
     @Test
     fun addsFeedAndVersionIfNone() {
+        val networkDataSource = DefaultFeedDataSource()
+
         val expected = networkDataSource.feeds().getOrNull()!!
+        val subject = ImportUpdatedFeedsService(
+            feedDataSource = networkDataSource,
+            feedRepository = feedRepository,
+            feedVersionRepository = feedVersionRepository,
+            agencyRepository = agencyRepository,
+            routeRepository = routeRepository,
+            stopRepository = stopRepository,
+            scheduledTripRepository = scheduledTripRepository,
+            scheduledStopRepository = scheduledStopRepository,
+            downloader = downloader
+        )
 
         subject.get()
 
