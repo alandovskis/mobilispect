@@ -8,7 +8,6 @@ import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
 import com.mobilispect.backend.data.route.Route
-import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopDataSource
 import com.mobilispect.backend.data.stop.StopResult
@@ -20,7 +19,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 /**
  * A client to access the transitland API.
  */
-class TransitLandClient(private val webClient: WebClient) : RouteDataSource, StopDataSource {
+class TransitLandClient(private val webClient: WebClient) : StopDataSource {
     /**
      * Retrieve all [Agency] that serve a given [city].
      */
@@ -40,7 +39,7 @@ class TransitLandClient(private val webClient: WebClient) : RouteDataSource, Sto
         }
     }
 
-    override fun routes(apiKey: String, agencyID: String, paging: PagingParameters): Result<RouteResult> {
+    fun routes(apiKey: String, agencyID: String, paging: PagingParameters = PagingParameters()): Result<RouteResult> {
         return handleError {
             val uri = pagedURI("/routes.json?operator_onestop_id=$agencyID", paging)
             val response = get(uri, apiKey, TransitLandRouteResponse::class.java)

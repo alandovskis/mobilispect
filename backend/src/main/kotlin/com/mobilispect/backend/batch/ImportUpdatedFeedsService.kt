@@ -9,11 +9,10 @@ import com.mobilispect.backend.data.feed.FeedVersionRepository
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.gtfs.GTFSCalendar
 import com.mobilispect.backend.data.gtfs.GTFSCalendarDate
-import com.mobilispect.backend.data.gtfs.GTFSRoute
 import com.mobilispect.backend.data.gtfs.GTFSStop
 import com.mobilispect.backend.data.gtfs.GTFSStopTime
 import com.mobilispect.backend.data.gtfs.GTFSTrip
-import com.mobilispect.backend.data.route.Route
+import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
 import com.mobilispect.backend.data.schedule.DateTimeOffset
 import com.mobilispect.backend.data.schedule.ScheduledStop
@@ -56,7 +55,8 @@ class ImportUpdatedFeedsService(
     private val stopRepository: StopRepository,
     private val scheduledTripRepository: ScheduledTripRepository,
     private val scheduledStopRepository: ScheduledStopRepository,
-    private val agencyDataSource: AgencyDataSource
+    private val agencyDataSource: AgencyDataSource,
+    val routeDataSource: RouteDataSource
 ) : Supplier<Any> {
     private val logger: Logger = LoggerFactory.getLogger(ImportUpdatedFeedsService::class.java)
     private val csv: Csv = Csv {
@@ -105,21 +105,10 @@ class ImportUpdatedFeedsService(
         .map { agencies -> agencies.forEach { agency -> agencyRepository.save(agency) } }
         .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
 
-    private fun importRoutes(version: String, extractedDir: String) {
-        val path = "$extractedDir/routes.txt"
-        val input = File(path).readTextAndNormalize()
-        val routes = csv.decodeFromString<Collection<GTFSRoute>>(input).map { route ->
-            Route(
-                _id = route.route_id,
-                shortName = route.route_short_name,
-                longName = route.route_long_name,
-                agencyID = route.agency_id,
-                version = version,
-                headwayHistory = emptyList()
-            )
-        }.map { route -> routeRepository.save(route) }
-        logger.debug("Imported routes: {}", routes)
-    }
+    private fun importRoutes(version: String, extractedDir: String) =
+        routeDataSource.routes(extractedDir, version)
+            .map { routes -> routes.forEach { route -> routeRepository.save(route) } }
+            .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
 
     private fun importStops(version: String, extractedDir: String) {
         val path = "$extractedDir/stops.txt"
