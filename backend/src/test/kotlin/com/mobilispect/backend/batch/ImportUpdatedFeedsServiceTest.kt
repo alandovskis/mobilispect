@@ -2,6 +2,7 @@ package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.Agency
+import com.mobilispect.backend.data.agency.AgencyDataSource
 import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.download.Downloader
@@ -71,6 +72,9 @@ class ImportUpdatedFeedsServiceTest {
     @Autowired
     lateinit var scheduledStopRepository: ScheduledStopRepository
 
+    @Autowired
+    lateinit var agencyDataSource: AgencyDataSource
+
     @Test
     fun noNetwork() {
         val mockServer = MockWebServer()
@@ -102,12 +106,13 @@ class ImportUpdatedFeedsServiceTest {
             feedDataSource = networkDataSource,
             feedRepository = feedRepository,
             feedVersionRepository = feedVersionRepository,
+            downloader = downloader,
             agencyRepository = agencyRepository,
             routeRepository = routeRepository,
             stopRepository = stopRepository,
             scheduledTripRepository = scheduledTripRepository,
             scheduledStopRepository = scheduledStopRepository,
-            downloader = downloader
+            agencyDataSource = agencyDataSource
         )
 
         subject.get()
@@ -130,12 +135,13 @@ class ImportUpdatedFeedsServiceTest {
             feedDataSource = networkDataSource,
             feedRepository = feedRepository,
             feedVersionRepository = feedVersionRepository,
+            downloader = downloader,
             agencyRepository = agencyRepository,
             routeRepository = routeRepository,
             stopRepository = stopRepository,
             scheduledTripRepository = scheduledTripRepository,
             scheduledStopRepository = scheduledStopRepository,
-            downloader = downloader
+            agencyDataSource = agencyDataSource
         )
 
         subject.get()

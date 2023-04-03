@@ -1,13 +1,12 @@
 package com.mobilispect.backend.batch
 
-import com.mobilispect.backend.data.agency.Agency
+import com.mobilispect.backend.data.agency.AgencyDataSource
 import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.download.Downloader
 import com.mobilispect.backend.data.feed.FeedDataSource
 import com.mobilispect.backend.data.feed.FeedRepository
 import com.mobilispect.backend.data.feed.FeedVersionRepository
 import com.mobilispect.backend.data.feed.VersionedFeed
-import com.mobilispect.backend.data.gtfs.GTFSAgency
 import com.mobilispect.backend.data.gtfs.GTFSCalendar
 import com.mobilispect.backend.data.gtfs.GTFSCalendarDate
 import com.mobilispect.backend.data.gtfs.GTFSRoute
@@ -23,6 +22,7 @@ import com.mobilispect.backend.data.schedule.ScheduledTrip
 import com.mobilispect.backend.data.schedule.ScheduledTripRepository
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopRepository
+import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
@@ -55,7 +55,8 @@ class ImportUpdatedFeedsService(
     private val routeRepository: RouteRepository,
     private val stopRepository: StopRepository,
     private val scheduledTripRepository: ScheduledTripRepository,
-    private val scheduledStopRepository: ScheduledStopRepository
+    private val scheduledStopRepository: ScheduledStopRepository,
+    private val agencyDataSource: AgencyDataSource
 ) : Supplier<Any> {
     private val logger: Logger = LoggerFactory.getLogger(ImportUpdatedFeedsService::class.java)
     private val csv: Csv = Csv {
@@ -100,15 +101,9 @@ class ImportUpdatedFeedsService(
         }
     }
 
-    private fun importAgencies(version: String, extractedDir: String) {
-        val path = "$extractedDir/agency.txt"
-        val input = File(path).readTextAndNormalize()
-        val csv = csv
-        val agencies = csv.decodeFromString<Collection<GTFSAgency>>(input)
-            .map { agency -> Agency(_id = agency.agency_id, name = agency.agency_name, version = version) }
-            .map { agency -> agencyRepository.save(agency) }
-        logger.debug("Imported agencies: {}", agencies)
-    }
+    private fun importAgencies(version: String, extractedDir: String) = agencyDataSource.agencies(extractedDir, version)
+        .map { agencies -> agencies.forEach { agency -> agencyRepository.save(agency) } }
+        .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
 
     private fun importRoutes(version: String, extractedDir: String) {
         val path = "$extractedDir/routes.txt"
@@ -275,7 +270,7 @@ class ImportUpdatedFeedsService(
     }
 
     @Throws(IOException::class)
-    // Source: https://www.baeldung.com/java-compress-and-uncompress
+// Source: https://www.baeldung.com/java-compress-and-uncompress
     private fun newFile(destinationDir: File, zipEntry: ZipEntry): File {
         val destFile = File(destinationDir, zipEntry.name)
         val destDirPath: String = destinationDir.canonicalPath
@@ -304,5 +299,3 @@ class ImportUpdatedFeedsService(
         }
     }
 }
-
-fun File.readTextAndNormalize(): String = readText().replace("\r\n", "\n")

@@ -2,7 +2,6 @@ package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyResult
-import com.mobilispect.backend.data.agency.RegionalAgencyDataSource
 import com.mobilispect.backend.data.api.GenericError
 import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.PagingParameters
@@ -21,12 +20,12 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 /**
  * A client to access the transitland API.
  */
-class TransitLandClient(private val webClient: WebClient) : RegionalAgencyDataSource, RouteDataSource, StopDataSource {
+class TransitLandClient(private val webClient: WebClient) : RouteDataSource, StopDataSource {
     /**
      * Retrieve all [Agency] that serve a given [city].
      */
     @Suppress("ReturnCount")
-    override fun agencies(apiKey: String, city: String, paging: PagingParameters): Result<AgencyResult> {
+    fun agencies(apiKey: String, city: String, paging: PagingParameters = PagingParameters()): Result<AgencyResult> {
         return handleError {
             val uri = pagedURI("/agencies.json?city_name=$city", paging)
             val response = get(uri, apiKey, TransitLandAgencyResponse::class.java)
