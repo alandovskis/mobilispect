@@ -9,7 +9,6 @@ import com.mobilispect.backend.data.feed.FeedVersionRepository
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.gtfs.GTFSCalendar
 import com.mobilispect.backend.data.gtfs.GTFSCalendarDate
-import com.mobilispect.backend.data.gtfs.GTFSStop
 import com.mobilispect.backend.data.gtfs.GTFSStopTime
 import com.mobilispect.backend.data.gtfs.GTFSTrip
 import com.mobilispect.backend.data.route.RouteDataSource
@@ -19,7 +18,7 @@ import com.mobilispect.backend.data.schedule.ScheduledStop
 import com.mobilispect.backend.data.schedule.ScheduledStopRepository
 import com.mobilispect.backend.data.schedule.ScheduledTrip
 import com.mobilispect.backend.data.schedule.ScheduledTripRepository
-import com.mobilispect.backend.data.stop.Stop
+import com.mobilispect.backend.data.stop.StopDataSource
 import com.mobilispect.backend.data.stop.StopRepository
 import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -56,7 +55,8 @@ class ImportUpdatedFeedsService(
     private val scheduledTripRepository: ScheduledTripRepository,
     private val scheduledStopRepository: ScheduledStopRepository,
     private val agencyDataSource: AgencyDataSource,
-    val routeDataSource: RouteDataSource
+    private val routeDataSource: RouteDataSource,
+    private val stopDataSource: StopDataSource
 ) : Supplier<Any> {
     private val logger: Logger = LoggerFactory.getLogger(ImportUpdatedFeedsService::class.java)
     private val csv: Csv = Csv {
@@ -110,16 +110,9 @@ class ImportUpdatedFeedsService(
             .map { routes -> routes.forEach { route -> routeRepository.save(route) } }
             .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
 
-    private fun importStops(version: String, extractedDir: String) {
-        val path = "$extractedDir/stops.txt"
-        val input = File(path).readTextAndNormalize()
-        val stops = csv.decodeFromString<Collection<GTFSStop>>(input).map { stop ->
-            Stop(
-                _id = stop.stop_id, name = stop.stop_name, version = version
-            )
-        }.map { stop -> stopRepository.save(stop) }
-        logger.debug("Imported stops: {}", stops)
-    }
+    private fun importStops(version: String, extractedDir: String) = stopDataSource.stops(extractedDir, version)
+        .map { stops -> stops.forEach { stop -> stopRepository.save(stop) } }
+        .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
 
     private fun importTrips(version: String, extractedDir: String) {
         val calendarDatesIn = File("$extractedDir/calendar_dates.txt").readTextAndNormalize()
