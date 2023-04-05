@@ -4,6 +4,7 @@ import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyDataSource
 import com.mobilispect.backend.data.agency.AgencyRepository
+import com.mobilispect.backend.data.archive.ArchiveExtractor
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.download.Downloader
 import com.mobilispect.backend.data.feed.DefaultFeedDataSource
@@ -54,6 +55,9 @@ class ImportUpdatedFeedsServiceTest {
     lateinit var downloader: Downloader
 
     @Autowired
+    lateinit var archiveExtractor: ArchiveExtractor
+
+    @Autowired
     lateinit var feedRepository: FeedRepository
 
     @Autowired
@@ -82,6 +86,7 @@ class ImportUpdatedFeedsServiceTest {
 
     @Autowired
     lateinit var stopDataSource: StopDataSource
+
 
     @Test
     fun noNetwork() {
@@ -115,6 +120,7 @@ class ImportUpdatedFeedsServiceTest {
             feedRepository = feedRepository,
             feedVersionRepository = feedVersionRepository,
             downloader = downloader,
+            archiveExtractor = archiveExtractor,
             agencyRepository = agencyRepository,
             routeRepository = routeRepository,
             stopRepository = stopRepository,
@@ -122,7 +128,8 @@ class ImportUpdatedFeedsServiceTest {
             scheduledStopRepository = scheduledStopRepository,
             agencyDataSource = agencyDataSource,
             routeDataSource = routeDataSource,
-            stopDataSource = stopDataSource
+            stopDataSource = stopDataSource,
+            scheduledTripDataSource = tripDataSource
         )
 
         subject.get()
@@ -146,6 +153,7 @@ class ImportUpdatedFeedsServiceTest {
             feedRepository = feedRepository,
             feedVersionRepository = feedVersionRepository,
             downloader = downloader,
+            archiveExtractor = archiveExtractor,
             agencyRepository = agencyRepository,
             routeRepository = routeRepository,
             stopRepository = stopRepository,
@@ -153,7 +161,8 @@ class ImportUpdatedFeedsServiceTest {
             scheduledStopRepository = scheduledStopRepository,
             agencyDataSource = agencyDataSource,
             routeDataSource = routeDataSource,
-            stopDataSource = stopDataSource
+            stopDataSource = stopDataSource,
+            scheduledTripDataSource = tripDataSource
         )
 
         subject.get()
