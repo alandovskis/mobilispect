@@ -21,6 +21,7 @@ import com.mobilispect.backend.data.schedule.DateTimeOffset
 import com.mobilispect.backend.data.schedule.ScheduledStop
 import com.mobilispect.backend.data.schedule.ScheduledStopRepository
 import com.mobilispect.backend.data.schedule.ScheduledTrip
+import com.mobilispect.backend.data.schedule.ScheduledTripDataSource
 import com.mobilispect.backend.data.schedule.ScheduledTripRepository
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopDataSource
@@ -87,6 +88,8 @@ class ImportUpdatedFeedsServiceTest {
     @Autowired
     lateinit var stopDataSource: StopDataSource
 
+    @Autowired
+    lateinit var tripDataSource: ScheduledTripDataSource
 
     @Test
     fun noNetwork() {

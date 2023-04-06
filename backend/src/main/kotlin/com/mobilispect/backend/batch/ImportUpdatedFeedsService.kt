@@ -9,12 +9,12 @@ import com.mobilispect.backend.data.feed.FeedRepository
 import com.mobilispect.backend.data.feed.FeedVersionRepository
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.gtfs.GTFSStopTime
-import com.mobilispect.backend.data.schedule.ScheduledTripDataSource
 import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
 import com.mobilispect.backend.data.schedule.DateTimeOffset
 import com.mobilispect.backend.data.schedule.ScheduledStop
 import com.mobilispect.backend.data.schedule.ScheduledStopRepository
+import com.mobilispect.backend.data.schedule.ScheduledTripDataSource
 import com.mobilispect.backend.data.schedule.ScheduledTripRepository
 import com.mobilispect.backend.data.stop.StopDataSource
 import com.mobilispect.backend.data.stop.StopRepository
