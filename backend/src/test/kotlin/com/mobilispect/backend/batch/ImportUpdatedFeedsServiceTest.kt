@@ -19,6 +19,7 @@ import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
 import com.mobilispect.backend.data.schedule.DateTimeOffset
 import com.mobilispect.backend.data.schedule.ScheduledStop
+import com.mobilispect.backend.data.schedule.ScheduledStopDataSource
 import com.mobilispect.backend.data.schedule.ScheduledStopRepository
 import com.mobilispect.backend.data.schedule.ScheduledTrip
 import com.mobilispect.backend.data.schedule.ScheduledTripDataSource
@@ -91,6 +92,9 @@ class ImportUpdatedFeedsServiceTest {
     @Autowired
     lateinit var tripDataSource: ScheduledTripDataSource
 
+    @Autowired
+    lateinit var scheduledStopDataSource: ScheduledStopDataSource
+
     @Test
     fun noNetwork() {
         val mockServer = MockWebServer()
@@ -132,7 +136,8 @@ class ImportUpdatedFeedsServiceTest {
             agencyDataSource = agencyDataSource,
             routeDataSource = routeDataSource,
             stopDataSource = stopDataSource,
-            scheduledTripDataSource = tripDataSource
+            scheduledTripDataSource = tripDataSource,
+            scheduledStopDataSource = scheduledStopDataSource,
         )
 
         subject.get()
@@ -165,7 +170,8 @@ class ImportUpdatedFeedsServiceTest {
             agencyDataSource = agencyDataSource,
             routeDataSource = routeDataSource,
             stopDataSource = stopDataSource,
-            scheduledTripDataSource = tripDataSource
+            scheduledTripDataSource = tripDataSource,
+            scheduledStopDataSource = scheduledStopDataSource,
         )
 
         subject.get()
