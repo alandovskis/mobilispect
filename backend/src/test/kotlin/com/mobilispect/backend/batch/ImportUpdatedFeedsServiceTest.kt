@@ -37,6 +37,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.io.IOException
 import java.time.LocalDate
 
 @SpringBootTest(
@@ -96,7 +97,41 @@ class ImportUpdatedFeedsServiceTest {
     lateinit var scheduledStopDataSource: ScheduledStopDataSource
 
     @Test
-    fun noNetwork() {
+    fun unableToRetrieveFeeds() {
+        val networkDataSource = object : FeedDataSource {
+            override fun feeds(): Result<Collection<VersionedFeed>> = Result.failure(IOException("Couldn't connect"))
+        }
+        val subject = ImportUpdatedFeedsService(
+            feedDataSource = networkDataSource,
+            feedRepository = feedRepository,
+            feedVersionRepository = feedVersionRepository,
+            downloader = downloader,
+            archiveExtractor = archiveExtractor,
+            agencyRepository = agencyRepository,
+            routeRepository = routeRepository,
+            stopRepository = stopRepository,
+            scheduledTripRepository = scheduledTripRepository,
+            scheduledStopRepository = scheduledStopRepository,
+            agencyDataSource = agencyDataSource,
+            routeDataSource = routeDataSource,
+            stopDataSource = stopDataSource,
+            scheduledTripDataSource = tripDataSource,
+            scheduledStopDataSource = scheduledStopDataSource,
+        )
+
+        subject.get()
+
+        assertThat(feedRepository.findAll()).isEmpty()
+        assertThat(feedVersionRepository.findAll()).isEmpty()
+        assertThat(agencyRepository.findAll()).isEmpty()
+        assertThat(routeRepository.findAll()).isEmpty()
+        assertThat(stopRepository.findAll()).isEmpty()
+        assertThat(scheduledTripRepository.findAll()).isEmpty()
+        assertThat(scheduledStopRepository.findAll()).isEmpty()
+    }
+
+    @Test
+    fun unableToDownloadFeed() {
         val mockServer = MockWebServer()
         mockServer.enqueue(MockResponse())
         mockServer.start()

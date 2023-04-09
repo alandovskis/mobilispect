@@ -46,27 +46,27 @@ class ImportUpdatedFeedsService(
 
     override fun get(): Any {
         logger.info("\nStarted")
-        return feedDataSource.feeds().map { cloudFeeds ->
-            val updatedFeeds = findUpdatedFeeds(cloudFeeds)
-            updatedFeeds.forEach { cloudFeed -> importFeed(cloudFeed) }
-            if (updatedFeeds.isNotEmpty()) {
-                logger.info("Completed\n")
-            } else {
-                logger.info("Nothing to do\n")
+        return findUpdatedFeeds()
+            .onSuccess { updatedFeeds ->
+                if (updatedFeeds.isEmpty()) {
+                    logger.info("Nothing to do\n")
+                }
             }
-        }
+            .map { updatedFeeds -> updatedFeeds.map { cloudFeed -> importFeed(cloudFeed) } }
+            .onSuccess { logger.info("Completed") }
+            .onFailure { exception -> logger.error("Failed: $exception") }
     }
 
-    private fun findUpdatedFeeds(cloudFeeds: Collection<VersionedFeed>): Collection<VersionedFeed> {
-        val updatedFeeds = cloudFeeds.filter { cloudFeed ->
-            val localVersions =
-                feedVersionRepository.findAllById(listOf(cloudFeed.version._id)).map { version -> version._id }
-
-            return@filter !localVersions.contains(cloudFeed.version._id)
-        }
-        logger.debug("Found updated feeds: {}", updatedFeeds)
-        return updatedFeeds
-    }
+    private fun findUpdatedFeeds(): Result<Collection<VersionedFeed>> = feedDataSource.feeds()
+        .onSuccess { cloudFeeds -> logger.debug("Retrieved feeds: {}", cloudFeeds) }
+        .onFailure { exception -> logger.error("Error retrieving feeds: $exception") }
+        .map { cloudFeeds ->
+            cloudFeeds.filter { cloudFeed ->
+                val localVersions =
+                    feedVersionRepository.findAllById(listOf(cloudFeed.version._id)).map { version -> version._id }
+                return@filter !localVersions.contains(cloudFeed.version._id)
+            }
+        }.onSuccess { updatedFeeds -> logger.debug("Found updated feeds: {}", updatedFeeds) }
 
     private fun importFeed(cloudFeed: VersionedFeed): Result<*> = downloadFeed(cloudFeed)
         .map { archive -> extractFeed(archive) }
@@ -79,12 +79,14 @@ class ImportUpdatedFeedsService(
                 importStopTimes(cloudFeed.version._id, extractedDir)
                 feedRepository.save(cloudFeed.feed)
                 feedVersionRepository.save(cloudFeed.version)
+                cloudFeed
             }
         }
 
-    private fun importAgencies(version: String, extractedDir: String) = agencyDataSource.agencies(extractedDir, version)
-        .map { agencies -> agencies.forEach { agency -> agencyRepository.save(agency) } }
-        .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
+    private fun importAgencies(version: String, extractedDir: String) =
+        agencyDataSource.agencies(extractedDir, version)
+            .map { agencies -> agencies.forEach { agency -> agencyRepository.save(agency) } }
+            .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
 
     private fun importRoutes(version: String, extractedDir: String) =
         routeDataSource.routes(extractedDir, version)
@@ -105,15 +107,11 @@ class ImportUpdatedFeedsService(
     private fun importStopTimes(version: String, extractedDir: String) =
         scheduledStopDataSource.scheduledStops(extractedDir, version)
             .map { scheduledStops -> scheduledStops.map { stop -> scheduledStopRepository.save(stop) } }
-            .onSuccess { logger.debug("Import scheduled stops") }
+            .onSuccess { logger.debug("Imported scheduled stops") }
 
-    private fun downloadFeed(cloudFeed: VersionedFeed): Result<String> {
-        val result = downloader.download(cloudFeed.feed.url)
-        result.onSuccess { archive ->
-            logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive)
-        }
-        return result
-    }
+    private fun downloadFeed(cloudFeed: VersionedFeed): Result<String> = downloader.download(cloudFeed.feed.url)
+        .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
+        .onFailure { exception -> logger.error("Error downloading feed from ${cloudFeed.feed.url}: $exception") }
 
     private fun extractFeed(archive: String): Result<String> = archiveExtractor.extract(archive)
         .onSuccess { path -> logger.debug("Extracted archive to {}", path) }
