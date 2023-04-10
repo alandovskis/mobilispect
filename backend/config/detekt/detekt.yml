@@ -317,6 +317,8 @@ naming:
     privateParameterPattern: '[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
     ignoreOverridden: true
+    ignoreAnnotated:
+      - 'Serializable'
   EnumNaming:
     active: true
     enumEntryPattern: '[A-Z][_a-zA-Z0-9]*'
