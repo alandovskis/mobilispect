@@ -8,6 +8,8 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import kotlin.io.path.createTempDirectory
 
+private const val BUFFER_SIZE = 1024
+
 /**
  * An [ArchiveExtractor] that supports zip files.
  */
@@ -27,7 +29,7 @@ internal class ZipArchiveExtractor : ArchiveExtractor {
 
                 val out = FileOutputStream(newFile)
                 var len: Int
-                val buffer = ByteArray(1024)
+                val buffer = ByteArray(BUFFER_SIZE)
                 while (archiveInputStream.read(buffer).also { len = it } > 0) {
                     out.write(buffer, 0, len)
                 }

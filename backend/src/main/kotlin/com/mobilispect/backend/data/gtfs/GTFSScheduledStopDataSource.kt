@@ -12,6 +12,7 @@ import java.io.File
 import java.io.IOException
 
 private const val HOURS_PER_DAY = 24
+private const val DATE_COMPONENT_LENGTH = 3
 
 /**
  * A [ScheduledStopDataSource] that uses a GTFS feed as its source.
@@ -50,7 +51,7 @@ class GTFSScheduledStopDataSource : ScheduledStopDataSource {
      */
     private fun parseGTFSTime(time: String): DateTimeOffset? {
         val split = time.split(":")
-        if (split.size >= 3) {
+        return if (split.size >= DATE_COMPONENT_LENGTH) {
             val hour = split[0].toIntOrNull() ?: return null
             return DateTimeOffset(
                 days = hour / HOURS_PER_DAY,

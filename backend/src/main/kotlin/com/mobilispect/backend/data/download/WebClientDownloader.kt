@@ -10,6 +10,8 @@ import reactor.util.retry.Retry
 import java.nio.file.StandardOpenOption
 import java.time.Duration
 
+private const val RETRY_ATTEMPTS = 3L
+
 /**
  * A [Downloader] that uses Spring [WebClient].
  */
@@ -23,7 +25,7 @@ internal class WebClientDownloader(webClientBuilder: WebClient.Builder) : Downlo
                 .uri(url)
                 .retrieve()
                 .bodyToFlux(DataBuffer::class.java)
-                .retryWhen(Retry.backoff(3, Duration.ofSeconds(1))
+                .retryWhen(Retry.backoff(RETRY_ATTEMPTS, Duration.ofSeconds(1))
                     .filter { error ->
                         val responseError = error as? WebClientResponseException
                         val serverError = responseError?.statusCode?.is5xxServerError ?: false
