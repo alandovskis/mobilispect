@@ -232,6 +232,8 @@ class ImportUpdatedFeedsServiceTest {
         )
     }
 
+
+    @Suppress("LongMethod")
     private fun importedAllRoutes(version: String) {
         val routes = routeRepository.findAll()
         assertThat(routes).contains(
@@ -2137,6 +2139,7 @@ class ImportUpdatedFeedsServiceTest {
         assertThat(stops).contains(Stop(_id = "72998", name = "Gare Île-Perrot Quai 1", version = version))
     }
 
+    @Suppress("LongMethod")
     private fun importedAllTrips(version: String) {
         val trips = scheduledTripRepository.findAll()
 
@@ -2226,6 +2229,7 @@ class ImportUpdatedFeedsServiceTest {
         )
     }
 
+    @Suppress("LongMethod")
     private fun importedAllStopTimes(version: String) {
         val scheduledStops = scheduledStopRepository.findAll()
         assertThat(scheduledStops).contains(

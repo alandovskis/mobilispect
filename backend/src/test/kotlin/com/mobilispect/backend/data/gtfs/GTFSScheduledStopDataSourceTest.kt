@@ -43,6 +43,7 @@ class GTFSScheduledStopDataSourceTest {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun importsSuccessfully(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-stop-times.txt", root = root, dst = "stop_times.txt")
 

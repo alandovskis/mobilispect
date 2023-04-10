@@ -47,6 +47,7 @@ class GTFSScheduledTripDataSourceTest {
     }
 
     @Test
+    @Suppress("LongMethod")
     fun importsSuccessfully(@TempDir root: Path) {
         resourceLoader.copyResourceTo(
             src = "classpath:citpi-calendar-dates.txt",
