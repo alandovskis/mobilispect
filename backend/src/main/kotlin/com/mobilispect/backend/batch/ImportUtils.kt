@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.mobilispect.backend.batch
 
 import com.mobilispect.backend.data.Identified
