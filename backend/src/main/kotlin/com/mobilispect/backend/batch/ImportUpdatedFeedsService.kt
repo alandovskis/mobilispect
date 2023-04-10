@@ -25,6 +25,7 @@ import java.util.function.Supplier
  * Import all updated feeds listed in [feedDataSource].
  */
 @Service
+@Suppress("LongParameterList")
 class ImportUpdatedFeedsService(
     private val feedDataSource: FeedDataSource,
     private val feedRepository: FeedRepository,
