@@ -3,6 +3,7 @@ package com.mobilispect.backend.data.region
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(value = "regions")
+@Suppress("ConstructorParameterNaming") // For _id
 data class Region(
     /**
      * A ID in OneStopID format (ex: reg-geohash-city)

@@ -45,6 +45,7 @@ import java.time.LocalDate
 )
 @ContextConfiguration(initializers = [ImportUpdatedFeedsServiceTest.Companion.DBInitializer::class])
 @Testcontainers
+@Suppress("LargeClass")
 class ImportUpdatedFeedsServiceTest {
     companion object {
         @Container

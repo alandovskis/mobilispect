@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
 @Document(value = "scheduled_trips")
+@Suppress("ConstructorParameterNaming") // For _id
 data class ScheduledTrip(
     val _id: String,
     val routeID: String,
