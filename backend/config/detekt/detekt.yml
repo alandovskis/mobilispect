@@ -135,6 +135,8 @@ complexity:
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]
+    ignoreAnnotated:
+      - 'Serializable'
   MethodOverloading:
     active: false
     threshold: 6
