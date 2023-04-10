@@ -82,5 +82,4 @@ internal class ZipArchiveExtractorTest {
             "21903ac7cad3bd905ae3dc5391d38d0442d0bf32"
         )
     }
-
 }
