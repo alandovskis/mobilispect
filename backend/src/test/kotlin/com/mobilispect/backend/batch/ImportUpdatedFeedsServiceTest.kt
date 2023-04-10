@@ -599,6 +599,7 @@ class ImportUpdatedFeedsServiceTest {
         )
     }
 
+    @Suppress("LongMethod")
     private fun importedAllStops(version: String) {
         val stops = stopRepository.findAll()
         assertThat(stops).contains(Stop(_id = "71998", name = "1e Boulevard / 11e Avenue", version = version))
