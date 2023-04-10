@@ -21,7 +21,6 @@ class DefaultFeedDataSource : FeedDataSource {
             VersionedFeed(
                 feed = Feed(
                     _id = "f-f256-exo~citlapresquîle",
-                    name = "exo la Presqu'ile",
                     url = "https://exo.quebec/xdata/citpi/google_transit.zip"
                 ),
                 version = FeedVersion(

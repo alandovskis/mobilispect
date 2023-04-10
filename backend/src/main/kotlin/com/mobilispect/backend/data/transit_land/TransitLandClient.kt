@@ -7,6 +7,9 @@ import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
+import com.mobilispect.backend.data.feed.Feed
+import com.mobilispect.backend.data.feed.FeedVersion
+import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopResult
@@ -14,11 +17,35 @@ import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
+import java.time.LocalDate
 
 /**
  * A client to access the transitland API.
  */
 class TransitLandClient(private val webClient: WebClient) {
+    fun feed(apiKey: String, feedID: String): Result<VersionedFeed> {
+        return handleError {
+            val uri = "/feeds.json?onestop_id=$feedID"
+            val response = get(uri, apiKey, TransitLandFeedResponse::class.java)
+            val feeds = response?.feeds?.mapNotNull { remote ->
+                val latestVersion = remote.feed_versions.firstOrNull() ?: return@mapNotNull null
+                VersionedFeed(
+                    feed = Feed(
+                        _id = feedID,
+                        url = latestVersion.url
+                    ),
+                    version = FeedVersion(
+                        _id = latestVersion.sha1,
+                        feedID = feedID,
+                        startsOn = LocalDate.parse(latestVersion.earliest_calendar_date),
+                        endsOn = LocalDate.parse(latestVersion.latest_calendar_date)
+                    ),
+                )
+            } ?: emptyList()
+            return@handleError Result.success(feeds.first())
+        }
+    }
+
     /**
      * Retrieve all [Agency] that serve a given [city].
      */

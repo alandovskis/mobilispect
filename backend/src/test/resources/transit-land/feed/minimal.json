@@ -1,0 +1,15 @@
+{
+  "feeds": [
+    {
+      "feed_versions": [
+        {
+          "earliest_calendar_date": "2023-06-26",
+          "latest_calendar_date": "2023-08-20",
+          "sha1": "41c3e41b979db2e58f9deeb98f8f91be47f3ba17",
+          "url": "https://www.rtl-longueuil.qc.ca/transit/latestfeed/RTL.zip"
+        }
+      ],
+      "spec": "GTFS"
+    }
+  ]
+}

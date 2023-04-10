@@ -143,7 +143,6 @@ class ImportUpdatedFeedsServiceTest {
                         VersionedFeed(
                             feed = Feed(
                                 _id = "f-f256-exo~citlapresquîle",
-                                name = "exo la Presqu'ile",
                                 url = mockServer.url("").toString()
                             ),
                             version = FeedVersion(
