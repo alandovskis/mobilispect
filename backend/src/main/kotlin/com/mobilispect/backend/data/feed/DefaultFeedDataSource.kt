@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 @Suppress("MagicNumber")
 class DefaultFeedDataSource : FeedDataSource {
-    override fun feeds(): Result<Collection<VersionedFeed>> = Result.success(
+    override fun feeds(region: String): Result<Collection<VersionedFeed>> = Result.success(
         listOf(
             VersionedFeed(
                 feed = Feed(

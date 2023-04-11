@@ -58,7 +58,7 @@ class ImportUpdatedFeedsService(
             .onFailure { exception -> logger.error("Failed: $exception") }
     }
 
-    private fun findUpdatedFeeds(): Result<Collection<VersionedFeed>> = feedDataSource.feeds()
+    private fun findUpdatedFeeds(): Result<Collection<VersionedFeed>> = feedDataSource.feeds("")
         .onSuccess { cloudFeeds -> logger.debug("Retrieved feeds: {}", cloudFeeds) }
         .onFailure { exception -> logger.error("Error retrieving feeds: $exception") }
         .map { cloudFeeds ->

@@ -100,7 +100,8 @@ class ImportUpdatedFeedsServiceTest {
     @Test
     fun unableToRetrieveFeeds() {
         val networkDataSource = object : FeedDataSource {
-            override fun feeds(): Result<Collection<VersionedFeed>> = Result.failure(IOException("Couldn't connect"))
+            override fun feeds(region: String): Result<Collection<VersionedFeed>> =
+                Result.failure(IOException("Couldn't connect"))
         }
         val subject = ImportUpdatedFeedsService(
             feedDataSource = networkDataSource,
@@ -138,7 +139,7 @@ class ImportUpdatedFeedsServiceTest {
         mockServer.start()
 
         val networkDataSource = object : FeedDataSource {
-            override fun feeds(): Result<Collection<VersionedFeed>> =
+            override fun feeds(region: String): Result<Collection<VersionedFeed>> =
                 Result.success(
                     listOf(
                         VersionedFeed(
@@ -190,7 +191,7 @@ class ImportUpdatedFeedsServiceTest {
     fun addsFeedAndVersionIfNone() {
         val networkDataSource = DefaultFeedDataSource()
 
-        val expected = networkDataSource.feeds().getOrNull()!!
+        val expected = networkDataSource.feeds("").getOrNull()!!
         val subject = ImportUpdatedFeedsService(
             feedDataSource = networkDataSource,
             feedRepository = feedRepository,
