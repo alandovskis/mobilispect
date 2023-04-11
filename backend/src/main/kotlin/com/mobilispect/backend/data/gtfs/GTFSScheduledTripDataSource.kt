@@ -32,9 +32,8 @@ internal class GTFSScheduledTripDataSource : ScheduledTripDataSource {
 
             val tripsIn = File("$extractedDir/trips.txt").readTextAndNormalize()
             Result.success(csv.decodeFromString<Collection<GTFSTrip>>(tripsIn).map { trip ->
-                val added =
-                    calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.ADDED }
-                        ?.map { it.date } ?: emptyList()
+                val added = calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.ADDED }
+                    ?.map { it.date } ?: emptyList()
                 val removed =
                     calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.REMOVED }
                         ?.map { it.date } ?: emptyList()
@@ -79,20 +78,17 @@ internal class GTFSScheduledTripDataSource : ScheduledTripDataSource {
     }
 
     private fun findCalendars(
-        extractedDir: String,
-        csv: Csv
+        extractedDir: String, csv: Csv
     ): Map<String, GTFSCalendar> {
         val calendarIn = File("$extractedDir/calendar.txt").readTextAndNormalize()
         val calendars =
-            csv.decodeFromString<Collection<GTFSCalendar>>(calendarIn)
-                .associateBy { calendar -> calendar.service_id }
+            csv.decodeFromString<Collection<GTFSCalendar>>(calendarIn).associateBy { calendar -> calendar.service_id }
         logger.debug("Imported calendars: {}", calendars)
         return calendars
     }
 
     private fun findCalendarExceptions(
-        extractedDir: String,
-        csv: Csv
+        extractedDir: String, csv: Csv
     ): Map<String, List<GTFSCalendarDate>> {
         val calendarDatesIn = File("$extractedDir/calendar_dates.txt").readTextAndNormalize()
         val calendarDates = csv.decodeFromString<Collection<GTFSCalendarDate>>(calendarDatesIn)
@@ -110,7 +106,7 @@ internal class GTFSScheduledTripDataSource : ScheduledTripDataSource {
     ): List<LocalDate> {
         val dates = mutableListOf<LocalDate>()
         if (predicate(calendar)) {
-            var date = findFirstInRange(startDate, dayOfWeek)
+            var date = findFirstInRange(startDate, endDate, dayOfWeek) ?: return emptyList()
             dates += date
 
             date = date.plusWeeks(1)
@@ -122,10 +118,13 @@ internal class GTFSScheduledTripDataSource : ScheduledTripDataSource {
         return dates
     }
 
-    private fun findFirstInRange(startDate: LocalDate, dayOfWeek: DayOfWeek): LocalDate {
+    private fun findFirstInRange(startDate: LocalDate, endDate: LocalDate, dayOfWeek: DayOfWeek): LocalDate? {
         var date = startDate
         // TODO: Are we guaranteed to find a dayOfWeek.
         while (date.dayOfWeek != dayOfWeek) {
+            if (date.isAfter(endDate)) {
+                return null
+            }
             date = date.plusDays(1)
         }
         return date

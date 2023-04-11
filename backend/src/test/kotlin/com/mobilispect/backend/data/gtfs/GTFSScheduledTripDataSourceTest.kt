@@ -47,6 +47,23 @@ class GTFSScheduledTripDataSourceTest {
     }
 
     @Test
+    fun dayOfWeekNotFound(@TempDir root: Path) {
+        resourceLoader.copyResourceTo(
+            src = "classpath:gtfs/citpi-calendar-dates.txt",
+            root = root,
+            dst = "calendar_dates.txt"
+        )
+        resourceLoader.copyResourceTo(
+            src = "classpath:gtfs/citpi-calendar-day-of-week-not-found.txt",
+            root = root,
+            dst = "calendar.txt"
+        )
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips.txt", root = root, dst = "trips.txt")
+
+        subject.trips(root.toString(), VERSION).getOrNull()!!
+    }
+
+    @Test
     @Suppress("LongMethod")
     fun importsSuccessfully(@TempDir root: Path) {
         resourceLoader.copyResourceTo(
