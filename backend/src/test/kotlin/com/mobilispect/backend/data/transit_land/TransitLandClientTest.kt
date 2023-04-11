@@ -103,83 +103,68 @@ internal class TransitLandClientTest {
     }
 
     @Test
-    fun agencies_networkError() {
+    fun feedsFor_networkError() {
         val mockServer = MockWebServer()
-        mockServer.dispatcher = AgenciesDispatcher(responseCode = 200, responseBody = "{}")
+        mockServer.dispatcher = FeedsForDispatcher(responseCode = 200, responseResource = "{}")
         mockServer.start()
         val webClient = webClient(mockServer)
         mockServer.shutdown()
 
         subject = TransitLandClient(webClient)
-        val result = subject.agencies(apiKey = "apikey", city = "city")
+        val result = subject.feedsFor(apiKey = "apikey", region = "city")
 
         assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
     }
 
     @Test
-    fun agencies_rateLimited() {
-        withMockServer(dispatcher = AgenciesDispatcher(responseCode = 429, responseBody = "{}")) { mockServer ->
+    fun feedsFor_rateLimited() {
+        withMockServer(
+            dispatcher = FeedsForDispatcher(
+                responseCode = 429,
+                responseResource = "transit-land/common/rate-limited.json"
+            )
+        ) { mockServer ->
             val webClient = webClient(mockServer)
 
             subject = TransitLandClient(webClient)
-            val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()
+            val response = subject.feedsFor(apiKey = "apikey", region = "city").exceptionOrNull()
 
             assertThat(response).isInstanceOf(TooManyRequests::class.java)
         }
     }
 
     @Test
-    fun agencies_unauthorized() {
+    fun feedsFor_unauthorized() {
         withMockServer(
-            dispatcher = AgenciesDispatcher(
+            dispatcher = FeedsForDispatcher(
                 responseCode = 401,
-                responseBody = TRANSIT_LAND_UNAUTHORIZED_FIXTURE
+                responseResource = "transit-land/common/unauthorized.json"
             )
         ) { mockServer ->
             val webClient = webClient(mockServer)
 
             subject = TransitLandClient(webClient)
-            val response = subject.agencies(apiKey = "apikey", city = "city").exceptionOrNull()!!
+            val response = subject.feedsFor(apiKey = "apikey", region = "city").exceptionOrNull()!!
 
             assertThat(response).isInstanceOf(Unauthorized::class.java)
         }
     }
 
     @Test
-    fun agencies_minimal() {
+    fun feedsFor_success() {
         withMockServer(
-            dispatcher = AgenciesDispatcher(
+            dispatcher = FeedsForDispatcher(
                 responseCode = 200,
-                responseBody = TRANSIT_LAND_AGENCIES_MINIMAL
+                responseResource = "transit-land/feeds-for/full.json"
             )
         ) { mockServer ->
             val webClient = webClient(mockServer)
 
             subject = TransitLandClient(webClient)
-            val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
+            val response = subject.feedsFor(apiKey = "apikey", region = "city").getOrNull()!!
 
-            assertThat(response.after).isEqualTo(3973)
-            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
-            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
-        }
-    }
-
-    @Test
-    fun agencies_success() {
-        withMockServer(
-            dispatcher = AgenciesDispatcher(
-                responseCode = 200,
-                responseBody = TRANSIT_LAND_AGENCIES_SUCCESS
-            )
-        ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
-            val response = subject.agencies(apiKey = "apikey", city = "city").getOrNull()!!
-
-            assertThat(response.after).isEqualTo(3973)
-            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
-            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
+            assertThat(response).contains("f-9xhvw-townofestespark")
+            assertThat(response).contains("f-sr7f3-mtmmobilitaetrasportimolfetta")
         }
     }
 
@@ -192,19 +177,22 @@ internal class TransitLandClientTest {
             val requestPath = request.path ?: throw IllegalArgumentException()
             require(requestPath.contains("/api/v2/rest/feeds.json"))
             val body =
-                resourcePath?.let { resourceLoader.getResource("classpath:$it").file.readTextAndNormalize() } ?: "{}"
+                resourcePath?.let { resourceLoader.getResource("classpath:$it").file.readTextAndNormalize() }
+                    ?: "{}"
             return MockResponse().setResponseCode(responseCode).setBody(
                 body
             ).setHeader("Content-Type", "application/json")
         }
     }
 
-    class AgenciesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
+    inner class FeedsForDispatcher(private val responseCode: Int, private val responseResource: String) :
+        Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val path = request.path ?: throw IllegalArgumentException()
             require(path.contains("/api/v2/rest/agencies.json"))
+            val body = resourceLoader.getResource("classpath:$responseResource").file.readTextAndNormalize()
             return MockResponse().setResponseCode(responseCode).setBody(
-                responseBody
+                body
             ).setHeader("Content-Type", "application/json")
         }
     }

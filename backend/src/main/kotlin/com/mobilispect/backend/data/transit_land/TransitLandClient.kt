@@ -41,21 +41,14 @@ class TransitLandClient(private val webClient: WebClient) {
     }
 
     /**
-     * Retrieve all [Agency] that serve a given [city].
+     * Retrieve all feed IDs that serve a given [region].
      */
-    @Suppress("ReturnCount")
-    fun agencies(apiKey: String, city: String, paging: PagingParameters = PagingParameters()): Result<AgencyResult> {
+    fun feedsFor(apiKey: String, region: String): Result<Collection<String>> {
         return handleError {
-            val uri = pagedURI("/agencies.json?city_name=$city", paging)
+            val uri = "/agencies.json?city_name=$region"
             val response = get(uri, apiKey, TransitLandAgencyResponse::class.java)
-            val agencies = response?.agencies?.map { remote ->
-                Agency(
-                    _id = remote.onestopID,
-                    name = remote.name,
-                    version = remote.feed.version
-                )
-            }
-            return@handleError Result.success(AgencyResult(agencies.orEmpty(), response?.meta?.after ?: 0))
+            val feedIDs = response?.agencies?.map { remote -> remote.feed.feed.oneStopID }
+            return@handleError Result.success(feedIDs.orEmpty())
         }
     }
 
