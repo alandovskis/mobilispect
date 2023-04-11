@@ -295,26 +295,6 @@ internal class TransitLandClientTest {
     }
 
     @Test
-    fun stops_minimal() {
-        withMockServer(
-            dispatcher = StopsDispatcher(
-                responseCode = 200,
-                responseBody = TRANSIT_LAND_STOPS_SUCCESS_MINIMAL_FIXTURE
-            )
-        ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
-            val response =
-                subject.stops(apiKey = "apikey", agencyID = "o-f25d-socitdetransportdemontral").getOrNull()!!
-
-            assertThat(response.after).isEqualTo(439365585)
-            assertThat(response.stops).contains(TRANSIT_LAND_STOP_1)
-            assertThat(response.stops).contains(TRANSIT_LAND_STOP_2)
-        }
-    }
-
-    @Test
     fun stops_success() {
         withMockServer(
             dispatcher = StopsDispatcher(

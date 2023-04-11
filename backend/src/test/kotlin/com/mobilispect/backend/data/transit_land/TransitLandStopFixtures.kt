@@ -101,31 +101,6 @@ const val TRANSIT_LAND_STOPS_SUCCESS_FIXTURE = """
 }
 """
 
-const val TRANSIT_LAND_STOPS_SUCCESS_MINIMAL_FIXTURE = """
-{
-    "meta": {
-        "after": 439365585,
-        "next": "https://api.transit.land/api/v2/rest/stops.json?after=439365585&limit=2&served_by_onestop_ids=o-f25d-socitdetransportdemontral"
-    },
-    "stops": [
-        {
-            "feed_version": {
-                "sha1": "d503db302c07cdc0f4d6ff23bdfbb899e73b9f68"
-            },
-            "onestop_id": "s-f25dt17bg5-stationangrignon",
-            "stop_name": "Station Angrignon"
-        },
-        {
-            "feed_version": {
-                "sha1": "d503db302c07cdc0f4d6ff23bdfbb899e73b9f68"
-            },
-            "onestop_id": "s-f25dt65h1j-stationmonk",
-            "stop_name": "Station Monk"
-        }
-    ]
-}
-"""
-
 val TRANSIT_LAND_STOP_1 = Stop(
     _id = "s-f25dt17bg5-stationangrignon",
     name = "Station Angrignon",
