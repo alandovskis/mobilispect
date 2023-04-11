@@ -4,6 +4,7 @@ import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
 import com.mobilispect.backend.util.readTextAndNormalize
+import com.mobilispect.backend.util.withMockServer
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -351,14 +352,6 @@ internal class TransitLandClientTest {
     private fun webClient(mockServer: MockWebServer): WebClient = WebClient.builder()
         .baseUrl(mockServer.url("/api/v2/rest/").toString())
         .build()
-
-    fun withMockServer(dispatcher: Dispatcher, block: (MockWebServer) -> Unit) {
-        val mockServer = MockWebServer()
-        mockServer.dispatcher = dispatcher
-        mockServer.start()
-        block(mockServer)
-        mockServer.shutdown()
-    }
 
     inner class FeedDispatcher(private val responseCode: Int, private val resourcePath: String?) : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
