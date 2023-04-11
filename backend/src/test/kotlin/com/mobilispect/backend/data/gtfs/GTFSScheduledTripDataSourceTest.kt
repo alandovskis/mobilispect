@@ -24,7 +24,7 @@ class GTFSScheduledTripDataSourceTest {
 
     @Test
     fun bothCalendarFilesNotFound(@TempDir root: Path) {
-        resourceLoader.copyResourceTo(src = "classpath:citpi-trips.txt", root = root, dst = "trips.txt")
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips.txt", root = root, dst = "trips.txt")
 
         val result = subject.trips(root.toString(), VERSION).exceptionOrNull()
 
@@ -34,12 +34,12 @@ class GTFSScheduledTripDataSourceTest {
     @Test
     fun corrupted(@TempDir root: Path) {
         resourceLoader.copyResourceTo(
-            src = "classpath:citpi-calendar-dates.txt",
+            src = "classpath:gtfs/citpi-calendar-dates.txt",
             root = root,
             dst = "calendar_dates.txt"
         )
-        resourceLoader.copyResourceTo(src = "classpath:citpi-calendar.txt", root = root, dst = "calendar.txt")
-        resourceLoader.copyResourceTo(src = "classpath:citpi-trips-corrupt.txt", root = root, dst = "trips.txt")
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-calendar.txt", root = root, dst = "calendar.txt")
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips-corrupt.txt", root = root, dst = "trips.txt")
 
         val result = subject.trips(root.toString(), VERSION).exceptionOrNull()
 
@@ -50,12 +50,12 @@ class GTFSScheduledTripDataSourceTest {
     @Suppress("LongMethod")
     fun importsSuccessfully(@TempDir root: Path) {
         resourceLoader.copyResourceTo(
-            src = "classpath:citpi-calendar-dates.txt",
+            src = "classpath:gtfs/citpi-calendar-dates.txt",
             root = root,
             dst = "calendar_dates.txt"
         )
-        resourceLoader.copyResourceTo(src = "classpath:citpi-calendar.txt", root = root, dst = "calendar.txt")
-        resourceLoader.copyResourceTo(src = "classpath:citpi-trips.txt", root = root, dst = "trips.txt")
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-calendar.txt", root = root, dst = "calendar.txt")
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips.txt", root = root, dst = "trips.txt")
 
         val trips = subject.trips(root.toString(), VERSION).getOrNull()!!
 
