@@ -135,4 +135,9 @@ android {
     dependencies {
         coreLibraryDesugaring(libs.android.desugar.libs)
     }
+
+    buildFeatures {
+        // Generate BuildConfig
+        buildConfig = true
+    }
 }
