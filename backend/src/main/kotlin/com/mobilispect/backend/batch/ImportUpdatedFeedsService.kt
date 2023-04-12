@@ -8,6 +8,7 @@ import com.mobilispect.backend.data.feed.FeedDataSource
 import com.mobilispect.backend.data.feed.FeedRepository
 import com.mobilispect.backend.data.feed.FeedVersionRepository
 import com.mobilispect.backend.data.feed.VersionedFeed
+import com.mobilispect.backend.data.region.RegionRepository
 import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
 import com.mobilispect.backend.data.schedule.ScheduledStopDataSource
@@ -32,6 +33,7 @@ class ImportUpdatedFeedsService(
     private val feedVersionRepository: FeedVersionRepository,
     private val downloader: Downloader,
     private val archiveExtractor: ArchiveExtractor,
+    private val regionRepository: RegionRepository,
     private val agencyRepository: AgencyRepository,
     private val routeRepository: RouteRepository,
     private val stopRepository: StopRepository,
@@ -48,59 +50,67 @@ class ImportUpdatedFeedsService(
     override fun get(): Any {
         logger.info("\nStarted")
         return findUpdatedFeeds()
-            .onSuccess { updatedFeeds ->
+            /*.onSuccess { updatedFeeds ->
                 if (updatedFeeds.isEmpty()) {
                     logger.info("Nothing to do\n")
                 }
-            }
-            .map { updatedFeeds -> updatedFeeds.map { cloudFeed -> importFeed(cloudFeed) } }
-            .onSuccess { logger.info("Completed") }
-            .onFailure { exception -> logger.error("Failed: $exception") }
+            }*/
+            .map { updatedFeed -> importFeed(updatedFeed) }
+        //.onSuccess { logger.info("Completed") }
+        //.onFailure { exception -> logger.error("Failed: $exception") }
     }
 
-    private fun findUpdatedFeeds(): Result<Collection<VersionedFeed>> = feedDataSource.feeds("")
-        .onSuccess { cloudFeeds -> logger.debug("Retrieved feeds: {}", cloudFeeds) }
-        .onFailure { exception -> logger.error("Error retrieving feeds: $exception") }
-        .map { cloudFeeds ->
-            cloudFeeds.filter { cloudFeed ->
-                val localVersions =
-                    feedVersionRepository.findAllById(listOf(cloudFeed.version._id)).map { version -> version._id }
+    private fun findUpdatedFeeds(): List<VersionedFeed> {
+        val feeds = regionRepository.findAll()
+            .flatMap { region -> feedDataSource.feeds(region.name) }
+        logger.debug("Found feeds: {}", feeds)
+
+        val updatedFeeds = feeds.mapNotNull { cloudFeedRes -> cloudFeedRes.getOrNull() }
+            .filter { cloudFeed ->
+                val localVersions = feedVersionRepository.findAllById(listOf(cloudFeed.version._id))
+                    .map { version -> version._id }
                 return@filter !localVersions.contains(cloudFeed.version._id)
             }
-        }.onSuccess { updatedFeeds -> logger.debug("Found updated feeds: {}", updatedFeeds) }
+        logger.debug("Found updated feeds: {}", updatedFeeds)
+        return updatedFeeds
+    }
 
-    private fun importFeed(cloudFeed: VersionedFeed): Result<*> = downloadFeed(cloudFeed)
-        .map { archive -> extractFeed(archive) }
-        .map { extractedDirRes ->
-            extractedDirRes.getOrNull()?.let { extractedDir ->
-                importAgencies(cloudFeed.version._id, extractedDir)
-                importRoutes(cloudFeed.version._id, extractedDir)
-                importStops(cloudFeed.version._id, extractedDir)
-                importTrips(cloudFeed.version._id, extractedDir)
-                importStopTimes(cloudFeed.version._id, extractedDir)
-                feedRepository.save(cloudFeed.feed)
-                feedVersionRepository.save(cloudFeed.version)
-                cloudFeed
+    private fun importFeed(cloudFeed: VersionedFeed): Result<*> {
+        logger.debug("Import started: {}", cloudFeed)
+        return downloadFeed(cloudFeed)
+            .map { archive -> extractFeed(archive) }
+            .map { extractedDirRes ->
+                extractedDirRes.getOrNull()?.let { extractedDir ->
+                    importAgencies(cloudFeed.version._id, extractedDir)
+                    importRoutes(cloudFeed.version._id, extractedDir)
+                    importStops(cloudFeed.version._id, extractedDir)
+                    importTrips(cloudFeed.version._id, extractedDir)
+                    importStopTimes(cloudFeed.version._id, extractedDir)
+                    feedRepository.save(cloudFeed.feed)
+                    feedVersionRepository.save(cloudFeed.version)
+                    cloudFeed
+                }
             }
-        }
+            .onSuccess { feed -> logger.debug("Import completed: {}", feed) }
+    }
 
     private fun importAgencies(version: String, extractedDir: String) =
         agencyDataSource.agencies(extractedDir, version)
-            .map { agencies -> agencies.forEach { agency -> agencyRepository.save(agency) } }
+            .map { agencies -> agencies.map { agency -> agencyRepository.save(agency) } }
             .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
 
     private fun importRoutes(version: String, extractedDir: String) =
         routeDataSource.routes(extractedDir, version)
-            .map { routes -> routes.forEach { route -> routeRepository.save(route) } }
+            .map { routes -> routes.map { route -> routeRepository.save(route) } }
             .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
 
     private fun importStops(version: String, extractedDir: String) = stopDataSource.stops(extractedDir, version)
-        .map { stops -> stops.forEach { stop -> stopRepository.save(stop) } }
+        .map { stops -> stops.map { stop -> stopRepository.save(stop) } }
         .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
 
     private fun importTrips(version: String, extractedDir: String) =
         scheduledTripDataSource.trips(extractedDir, version)
-            .map { trips -> trips.forEach { trip -> scheduledTripRepository.save(trip) } }
+            .map { trips -> trips.map { trip -> scheduledTripRepository.save(trip) } }
             .onSuccess { trips ->
                 logger.debug("Imported scheduled trips: {}", trips)
             }

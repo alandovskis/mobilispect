@@ -24,4 +24,13 @@ interface RegionRepository : org.springframework.data.repository.Repository<Regi
      * present but does not exist in the database.
      */
     fun save(entity: Region): Region
+
+    /**
+     * Deletes all entities.
+     *
+     * @throws OptimisticLockingFailureException when at least one entity uses optimistic locking and has a version
+     * attribute with a different value from that found in the persistence store. Also thrown if at least one
+     * entity is assumed to be present but does not exist in the database.
+     */
+    fun deleteAll()
 }

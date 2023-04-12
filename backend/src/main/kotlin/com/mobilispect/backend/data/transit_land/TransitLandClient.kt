@@ -8,6 +8,7 @@ import com.mobilispect.backend.data.feed.Feed
 import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.VersionedFeed
 import org.springframework.http.MediaType
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
@@ -16,6 +17,7 @@ import java.time.LocalDate
 /**
  * A client to access the transitland API.
  */
+@Component
 class TransitLandClient(private val webClient: WebClient) {
     fun feed(apiKey: String, feedID: String): Result<VersionedFeed> {
         return handleError {
