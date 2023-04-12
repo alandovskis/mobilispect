@@ -1,5 +1,8 @@
 package com.mobilispect.backend.data.schedule
 
+import org.springframework.data.mongodb.core.mapping.Document
+
+@Document(value = "scheduled_stops")
 data class ScheduledStop(
     val tripID: String,
     val stopID: String,
