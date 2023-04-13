@@ -81,7 +81,7 @@ class ImportUpdatedFeedsService(
             .map { archive -> extractFeed(archive) }
             .map { extractedDirRes ->
                 extractedDirRes.getOrNull()?.let { extractedDir ->
-                    importAgencies(cloudFeed.version._id, extractedDir)
+                    importAgencies(cloudFeed.version._id, extractedDir).getOrNull()
                     importRoutes(cloudFeed.version._id, extractedDir)
                     importStops(cloudFeed.version._id, extractedDir)
                     importTrips(cloudFeed.version._id, extractedDir)
@@ -98,27 +98,30 @@ class ImportUpdatedFeedsService(
         agencyDataSource.agencies(extractedDir, version)
             .map { agencies -> agencies.map { agency -> agencyRepository.save(agency) } }
             .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
+            .onFailure { e -> logger.error("Failed to import agencies: $e") }
 
     private fun importRoutes(version: String, extractedDir: String) =
         routeDataSource.routes(extractedDir, version)
             .map { routes -> routes.map { route -> routeRepository.save(route) } }
             .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
+            .onFailure { e -> logger.error("Failed to import routes: $e") }
 
     private fun importStops(version: String, extractedDir: String) = stopDataSource.stops(extractedDir, version)
         .map { stops -> stops.map { stop -> stopRepository.save(stop) } }
         .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
+        .onFailure { e -> logger.error("Failed to import stops: $e") }
 
     private fun importTrips(version: String, extractedDir: String) =
         scheduledTripDataSource.trips(extractedDir, version)
             .map { trips -> trips.map { trip -> scheduledTripRepository.save(trip) } }
-            .onSuccess { trips ->
-                logger.debug("Imported scheduled trips: {}", trips)
-            }
+            .onSuccess { trips -> logger.debug("Imported scheduled trips: {}", trips) }
+            .onFailure { e -> logger.error("Failed to import scheduled trips: $e") }
 
     private fun importStopTimes(version: String, extractedDir: String) =
         scheduledStopDataSource.scheduledStops(extractedDir, version)
             .map { scheduledStops -> scheduledStops.map { stop -> scheduledStopRepository.save(stop) } }
             .onSuccess { logger.debug("Imported scheduled stops") }
+            .onFailure { e -> logger.error("Failed to import scheduled stops: $e") }
 
     private fun downloadFeed(cloudFeed: VersionedFeed): Result<String> = downloader.download(cloudFeed.feed.url)
         .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
