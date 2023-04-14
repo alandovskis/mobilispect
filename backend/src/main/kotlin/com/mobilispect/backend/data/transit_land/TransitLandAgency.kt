@@ -10,9 +10,6 @@ import kotlinx.serialization.json.JsonNames
 @Serializable
 internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAgency>, val meta: Meta)
 
-@Serializable
-internal class Meta(val after: Int, val next: String? = null)
-
 @Suppress("LongParameterList")
 @Serializable
 internal class TransitLandAgency(
@@ -24,8 +21,8 @@ internal class TransitLandAgency(
     @JsonNames("agency_phone") val phone: String? = null,
     @JsonNames("agency_timezone") val timezone: String? = null,
     @JsonNames("agency_url") val url: String? = null,
-    @JsonNames("feed_version") val feed: FeedVersion? = null,
-    val geometry: Geometry? = null,
+    @JsonNames("feed_version") val feed: FeedVersion,
+    val geometry: PolygonGeometry? = null,
     val id: Int? = null,
     @JsonNames("onestop_id") val onestopID: String,
     val operator: Operator? = null,
@@ -64,15 +61,4 @@ internal class Place(
 )
 
 @Serializable
-internal class FeedVersion(
-    val feed: Feed,
-    @JsonNames("fetched_at") val fetchedAt: String? = null,
-    @JsonNames("id") val id: Int? = null,
-    @JsonNames("sha1") val version: String
-)
-
-@Serializable
-internal class Feed(val id: Int? = null, @JsonNames("onestop_id") val oneStopID: String? = null)
-
-@Serializable
-internal class Geometry(val coordinates: Array<Array<Array<Double>>>, val type: String)
+internal class PolygonGeometry(val coordinates: Array<Array<Array<Double>>>, val type: String)

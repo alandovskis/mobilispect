@@ -1,16 +1,19 @@
 [versions]
-kotlin = "1.8.10"
+kotlin = "1.8.20"
 kotlinxCoroutines = "1.6.4"
+kotlinxSerializationCSV = "2.0.0"
 kotlinxSerialization = "1.5.0"
-springBoot = "3.0.4"
+springBoot = "3.0.5"
 springDependency = "1.1.0"
+squareSortDependency = "0.2"
 
 [libraries]
 
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 # Serialization
-kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-serialization-csv = { module = "de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv", version.ref = "kotlinxSerializationCSV" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
 [plugins]
 
@@ -20,3 +23,5 @@ kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotl
 
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 spring-dependency = { id = "io.spring.dependency-management", version.ref = "springDependency" }
+
+square-sortDependencies = { id = "com.squareup.sort-dependencies", version.ref = "squareSortDependency" }

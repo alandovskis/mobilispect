@@ -1,11 +1,11 @@
 package com.mobilispect.backend.api
 
-import com.mobilispect.backend.data.Agency
-import com.mobilispect.backend.data.HeadwayEntry
 import com.mobilispect.backend.data.MongoDBInitializer
-import com.mobilispect.backend.data.Route
-import com.mobilispect.backend.data.RouteRepository
+import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.createMongoDBContainer
+import com.mobilispect.backend.data.route.HeadwayEntry
+import com.mobilispect.backend.data.route.Route
+import com.mobilispect.backend.data.route.RouteRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -18,16 +18,26 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 
-private val AGENCY_A = Agency(_id = "o-abcd-a", "A")
-private val AGENCY_B = Agency(_id = "o-abcd-b", "B")
+private val AGENCY_A = Agency(_id = "o-abcd-a", name = "A", version = "v1")
+private val AGENCY_B = Agency(_id = "o-abcd-b", name = "B", version = "v2")
 
 private val ROUTE_A1 = Route(
-    _id = "r-abcd-1", shortName = "1", longName = "Main Street", agencyID = AGENCY_A._id, headwayHistory = listOf(
+    _id = "r-abcd-1",
+    shortName = "1",
+    longName = "Main Street",
+    agencyID = AGENCY_A._id,
+    version = "v2]1",
+    headwayHistory = listOf(
         HeadwayEntry(medianHeadway_min = 5.0)
     )
 )
 private val ROUTE_A2 = Route(
-    _id = "r-abcd-2", shortName = "2", longName = "Central Avenue", agencyID = AGENCY_A._id, headwayHistory = listOf(
+    _id = "r-abcd-2",
+    shortName = "2",
+    longName = "Central Avenue",
+    agencyID = AGENCY_A._id,
+    version = "v1",
+    headwayHistory = listOf(
         HeadwayEntry(medianHeadway_min = 10.0)
     )
 )
@@ -36,6 +46,7 @@ private val ROUTE_B1 = Route(
     shortName = "1",
     longName = "1st Street",
     agencyID = AGENCY_B._id,
+    version = "v2",
     headwayHistory = emptyList()
 )
 

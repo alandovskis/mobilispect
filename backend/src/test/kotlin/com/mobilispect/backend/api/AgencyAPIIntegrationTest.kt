@@ -1,8 +1,8 @@
 package com.mobilispect.backend.api
 
-import com.mobilispect.backend.data.Agency
-import com.mobilispect.backend.data.AgencyRepository
 import com.mobilispect.backend.data.MongoDBInitializer
+import com.mobilispect.backend.data.agency.Agency
+import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.createMongoDBContainer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -16,8 +16,8 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 
-private val AGENCY_A = Agency(_id = "o-abcd-a", "A")
-private val AGENCY_B = Agency(_id = "o-abcd-b", "B")
+private val AGENCY_A = Agency(_id = "o-abcd-a", name = "A", version = "v1")
+private val AGENCY_B = Agency(_id = "o-abcd-b", name = "B", version = "v2")
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,

@@ -6,7 +6,7 @@ plugins {
     kotlin("multiplatform")
     kotlin("kapt")
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.20"
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
@@ -60,7 +60,7 @@ kotlin {
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "androidx.room",
                         "room-compiler",
-                        "2.5.0"
+                        "2.5.1"
                     )
                 )
                 configurations.getByName("kapt").dependencies.add(
@@ -124,15 +124,20 @@ android {
     }
 
     compileOptions {
-// Enable de-sugaring of Java 8 APIs
+        // Enable de-sugaring of Java 8 APIs
         isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     namespace = "com.mobilispect.common"
 
     dependencies {
         coreLibraryDesugaring(libs.android.desugar.libs)
+    }
+
+    buildFeatures {
+        // Generate BuildConfig
+        buildConfig = true
     }
 }
