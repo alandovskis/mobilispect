@@ -4,6 +4,8 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(17)
+
     android {
         compilations.all {
             kotlinOptions {
