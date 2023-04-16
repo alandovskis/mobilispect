@@ -40,16 +40,7 @@ class AgenciesViewModelTest {
     }
 
     @Test
-    fun noAgenciesFoundWhenNotSynchronized() = runTest {
-        val uiState = subject.uiState.first()
-
-        assertThat(uiState).isInstanceOf(NoAgencyFound::class.java)
-    }
-
-    @Test
-    fun isInitializedWithSync() = runTest {
-        subject.sync()
-
+    fun syncedUponCreation() = runTest {
         val uiState = subject.uiState.first()
 
         assertThat(uiState).isInstanceOf(AgenciesFound::class.java)
