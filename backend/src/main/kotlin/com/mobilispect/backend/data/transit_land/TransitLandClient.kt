@@ -2,6 +2,7 @@ package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyResult
+import com.mobilispect.backend.data.agency.AgencyResultItem
 import com.mobilispect.backend.data.api.GenericError
 import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.PagingParameters
@@ -49,14 +50,22 @@ class TransitLandClient(private val webClient: WebClient) {
     }
 
     /**
-     * Retrieve all feed IDs that serve a given [region].
+     * Retrieve all [Agency] that serve a given [region].
      */
-    fun feedsFor(apiKey: String, region: String): Result<Collection<String>> {
+    @Suppress("ReturnCount")
+    fun agencies(apiKey: String, region: String, paging: PagingParameters = PagingParameters()): Result<AgencyResult> {
         return handleError {
-            val uri = "/agencies.json?city_name=$region"
+            val uri = pagedURI("/agencies.json?city_name=$region", paging)
             val response = get(uri, apiKey, TransitLandAgencyResponse::class.java)
-            val feedIDs = response?.agencies?.map { remote -> remote.feed.feed.oneStopID }
-            return@handleError Result.success(feedIDs.orEmpty())
+            val agencies = response?.agencies?.map { remote ->
+                AgencyResultItem(
+                    id = remote.onestopID,
+                    name = remote.name,
+                    version = remote.feed.version,
+                    feedID = remote.feed.feed.oneStopID
+                )
+            }
+            return@handleError Result.success(AgencyResult(agencies.orEmpty(), response?.meta?.after ?: 0))
         }
     }
 

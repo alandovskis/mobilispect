@@ -16,14 +16,14 @@ class TransitLandFeedDataSource(
         val apiKey =
             transitLandCredentialsRepository.get()
                 ?: return listOf(Result.failure(IllegalStateException("Missing API key")))
-        return transitLandClient.feedsFor(apiKey = apiKey, region = region)
+        return transitLandClient.agencies(apiKey = apiKey, region = region)
             .onSuccess { feedIDs -> logger.debug("Found feed IDs: {}", feedIDs) }
             .onFailure { e -> logger.error("Unable to get feed IDs: $e") }
-            .map { feeds ->
-                feeds.map { feedID ->
+            .map { agencies ->
+                agencies.agencies.map { item ->
                     transitLandClient.feed(
                         apiKey = apiKey,
-                        feedID = feedID
+                        feedID = item.feedID
                     )
                 }
             }.getOrNull() ?: emptyList()
