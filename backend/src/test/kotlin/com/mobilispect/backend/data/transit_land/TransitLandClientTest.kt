@@ -3,6 +3,7 @@ package com.mobilispect.backend.data.transit_land
 import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
+import com.mobilispect.backend.util.ResourceDispatcher
 import com.mobilispect.backend.util.readTextAndNormalize
 import com.mobilispect.backend.util.withMockServer
 import okhttp3.mockwebserver.Dispatcher
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ResourceLoader
 import org.springframework.web.reactive.function.client.WebClient
+
+private const val AGENCIES_URL = "/api/v2/rest/agencies.json"
 
 @SpringBootTest
 internal class TransitLandClientTest {
@@ -105,7 +108,8 @@ internal class TransitLandClientTest {
     @Test
     fun agencies_networkError() {
         val mockServer = MockWebServer()
-        mockServer.dispatcher = AgenciesDispatcher(responseCode = 200, responseResource = null)
+        mockServer.dispatcher = ResourceDispatcher(resourceLoader)
+            .returningResponseFor(url = AGENCIES_URL, responseCode = 200, resource = null)
         mockServer.start()
         val webClient = webClient(mockServer)
         mockServer.shutdown()
@@ -118,7 +122,10 @@ internal class TransitLandClientTest {
 
     @Test
     fun agencies_rateLimited() {
-        withMockServer(dispatcher = AgenciesDispatcher(responseCode = 429, responseResource = null)) { mockServer ->
+        withMockServer(
+            dispatcher = ResourceDispatcher(resourceLoader)
+                .returningResponseFor(url = AGENCIES_URL, responseCode = 429, resource = null)
+        ) { mockServer ->
             val webClient = webClient(mockServer)
 
             subject = TransitLandClient(webClient)
@@ -131,10 +138,12 @@ internal class TransitLandClientTest {
     @Test
     fun agencies_unauthorized() {
         withMockServer(
-            dispatcher = AgenciesDispatcher(
-                responseCode = 401,
-                responseResource = "transit-land/common/unauthorized.json"
-            )
+            dispatcher = ResourceDispatcher(resourceLoader)
+                .returningResponseFor(
+                    url = AGENCIES_URL,
+                    responseCode = 401,
+                    resource = "transit-land/common/unauthorized.json"
+                )
         ) { mockServer ->
             val webClient = webClient(mockServer)
 
@@ -148,10 +157,12 @@ internal class TransitLandClientTest {
     @Test
     fun agencies_success() {
         withMockServer(
-            dispatcher = AgenciesDispatcher(
-                responseCode = 200,
-                responseResource = "transit-land/feeds-for/full.json"
-            )
+            dispatcher = ResourceDispatcher(resourceLoader)
+                .returningResponseFor(
+                    url = AGENCIES_URL,
+                    responseCode = 200,
+                    resource = "transit-land/feeds-for/full.json"
+                )
         ) { mockServer ->
             val webClient = webClient(mockServer)
 
@@ -327,22 +338,6 @@ internal class TransitLandClientTest {
         }
     }
 
-    inner class AgenciesDispatcher(private val responseCode: Int, private val responseResource: String?) :
-        Dispatcher() {
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            val path = request.path ?: throw IllegalArgumentException()
-            require(path.contains("/api/v2/rest/agencies.json"))
-            val body = if (responseResource != null) {
-                resourceLoader.getResource("classpath:$responseResource").file.readTextAndNormalize()
-            } else {
-                ""
-            }
-            return MockResponse().setResponseCode(responseCode).setBody(
-                body
-            ).setHeader("Content-Type", "application/json")
-        }
-    }
-
     class RoutesDispatcher(private val responseCode: Int, private val responseBody: String) : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             val path = request.path ?: throw IllegalArgumentException()
@@ -362,4 +357,5 @@ internal class TransitLandClientTest {
             ).setHeader("Content-Type", "application/json")
         }
     }
+
 }
