@@ -1,12 +1,18 @@
 package com.mobilispect.backend.data.transit_land
 
+import com.mobilispect.backend.data.agency.Agency
+import com.mobilispect.backend.data.agency.AgencyResult
 import com.mobilispect.backend.data.api.GenericError
 import com.mobilispect.backend.data.api.NetworkError
+import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
 import com.mobilispect.backend.data.feed.Feed
 import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.VersionedFeed
+import com.mobilispect.backend.data.route.Route
+import com.mobilispect.backend.data.stop.Stop
+import com.mobilispect.backend.data.stop.StopResult
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -54,6 +60,39 @@ class TransitLandClient(private val webClient: WebClient) {
         }
     }
 
+    fun routes(apiKey: String, agencyID: String, paging: PagingParameters = PagingParameters()): Result<RouteResult> {
+        return handleError {
+            val uri = pagedURI("/routes.json?operator_onestop_id=$agencyID", paging)
+            val response = get(uri, apiKey, TransitLandRouteResponse::class.java)
+            val routes = response?.routes?.map { remote ->
+                Route(
+                    _id = remote.onestopID,
+                    shortName = remote.shortName,
+                    longName = remote.longName,
+                    agencyID = agencyID,
+                    version = remote.feed.version,
+                    headwayHistory = emptyList()
+                )
+            }
+            return@handleError Result.success(RouteResult(routes.orEmpty(), response?.meta?.after ?: 0))
+        }
+    }
+
+    fun stops(apiKey: String, agencyID: String, paging: PagingParameters = PagingParameters()): Result<StopResult> {
+        return handleError {
+            val uri = pagedURI("/stops.json?served_by_onestop_ids=$agencyID", paging)
+            val response = get(uri, apiKey, TransitLandStopResponse::class.java)
+            val stops = response?.stops?.map { remote ->
+                Stop(
+                    _id = remote.onestopID,
+                    name = remote.name,
+                    version = remote.feed.version,
+                )
+            }
+            return@handleError Result.success(StopResult(stops.orEmpty(), response?.meta?.after ?: 0))
+        }
+    }
+
     private fun <T> handleError(
         block: () -> Result<T>
     ): Result<T> {
@@ -68,6 +107,14 @@ class TransitLandClient(private val webClient: WebClient) {
                 else -> Result.failure(GenericError(e.cause.toString()))
             }
         }
+    }
+
+    private fun pagedURI(endpoint: String, paging: PagingParameters): String {
+        var uri = "$endpoint&limit=${paging.limit}"
+        if (paging.after != null) {
+            uri += "&after=${paging.after}"
+        }
+        return uri
     }
 
     private fun <T> get(
