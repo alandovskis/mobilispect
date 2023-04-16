@@ -25,7 +25,6 @@ fun AgenciesRoute(
     viewModel: AgenciesViewModel = hiltViewModel(),
     navigateToCommitment: (String) -> Unit
 ) {
-    viewModel.sync()
     val uiState by viewModel.uiState.collectAsState(initial = Loading)
     AgenciesScreen(uiState = uiState, navigateToCommitment = navigateToCommitment)
 }

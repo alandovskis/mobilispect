@@ -34,7 +34,11 @@ class AgenciesViewModel @Inject constructor(
             }
         }
 
-    fun sync() {
+    init {
+        sync()
+    }
+
+    private fun sync() {
         viewModelScope.launch {
             agencyRepository.sync()
         }
