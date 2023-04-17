@@ -15,7 +15,7 @@ internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAge
 internal class TransitLandAgency(
     @JsonNames("agency_email") val email: String? = null,
     @JsonNames("agency_fare_url") val fareURL: String? = null,
-    @JsonNames("agency_id") val agencyID: String? = null,
+    @JsonNames("agency_id") val agencyID: String,
     @JsonNames("agency_lang") val language: String? = null,
     @JsonNames("agency_name") val name: String,
     @JsonNames("agency_phone") val phone: String? = null,

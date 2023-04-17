@@ -81,7 +81,11 @@ class ImportUpdatedFeedsService(
             .map { archive -> extractFeed(archive) }
             .map { extractedDirRes ->
                 extractedDirRes.getOrNull()?.let { extractedDir ->
-                    importAgencies(cloudFeed.version._id, extractedDir).getOrNull()
+                    importAgencies(
+                        version = cloudFeed.version._id,
+                        extractedDir = extractedDir,
+                        feedID = cloudFeed.feed._id
+                    )
                     importRoutes(cloudFeed.version._id, extractedDir)
                     importStops(cloudFeed.version._id, extractedDir)
                     importTrips(cloudFeed.version._id, extractedDir)
@@ -94,8 +98,8 @@ class ImportUpdatedFeedsService(
             .onSuccess { feed -> logger.debug("Import completed: {}", feed) }
     }
 
-    private fun importAgencies(version: String, extractedDir: String) =
-        agencyDataSource.agencies(extractedDir, version)
+    private fun importAgencies(version: String, extractedDir: String, feedID: String): Result<List<Any>> =
+        agencyDataSource.agencies(root = extractedDir, version = version, feedID = feedID)
             .map { agencies -> agencies.map { agency -> agencyRepository.save(agency) } }
             .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
             .onFailure { e -> logger.error("Failed to import agencies: $e") }

@@ -2,28 +2,47 @@ package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyDataSource
+import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
 import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
+import org.springframework.stereotype.Component
 import java.io.File
 import java.io.IOException
 
 /**
- * An [AgencyDataSource] that uses a GTFS feed as a source for agencies.
+ * An [AgencyDataSource] that uses a GTFS feed as a source.
  */
 @OptIn(ExperimentalSerializationApi::class)
-internal class GTFSAgencyDataSource : AgencyDataSource {
-    override fun agencies(root: String, version: String): Result<Collection<Agency>> {
+@Component
+internal class GTFSAgencyDataSource(
+    private val agencyIDDataSource: OneStopAgencyIDDataSource
+) : AgencyDataSource {
+    override fun agencies(root: String, version: String, feedID: String): Result<Collection<Agency>> {
+        val agencyIDRes = agencyIDDataSource.agencyIDs(feedID)
+        if (agencyIDRes.isFailure) {
+            return Result.failure(Exception("Missing agency IDs"))
+        }
+        val agencyIDs = agencyIDRes.getOrNull()!!
+
         return try {
             val input = File(root, "agency.txt").readTextAndNormalize()
             val csv = Csv {
                 hasHeaderRecord = true
                 ignoreUnknownColumns = true
             }
-            Result.success(csv.decodeFromString<Collection<GTFSAgency>>(input)
-                .map { agency -> Agency(_id = agency.agency_id, name = agency.agency_name, version = version) })
+            val agencies = csv.decodeFromString<Collection<GTFSAgency>>(input)
+                .mapNotNull { agency ->
+                    val id = agencyIDs[agency.agency_id] ?: return@mapNotNull null
+                    Agency(
+                        _id = id,
+                        name = agency.agency_name,
+                        version = version
+                    )
+                }
+            Result.success(agencies)
         } catch (e: IOException) {
             Result.failure(e)
         } catch (e: SerializationException) {
