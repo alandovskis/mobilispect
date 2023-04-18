@@ -89,9 +89,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Create Transit Land Repository Configuration
-        run: ../.github/create-transit-land.sh
-
       - name: Build
         run: ./gradlew assemble
 

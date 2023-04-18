@@ -1,1 +1,0 @@
-../../.github/create-transit-land.sh
