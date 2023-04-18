@@ -3,7 +3,6 @@ package com.mobilispect.backend.data.agency
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-
 class AgencyTest {
     @Test
     fun agencyNotCreatedIfIDMissingGeoHash() {
