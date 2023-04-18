@@ -33,7 +33,7 @@ class TransitLandFeedDataSourceTest {
             val transitLandClient = TransitLandClient(client)
             val subject = TransitLandFeedDataSource(
                 transitLandClient = transitLandClient,
-                transitLandCredentialsRepository = DummyTransitLandCredentialsRepository()
+                transitLandCredentialsRepository = FakeTransitLandCredentialsRepository()
             )
 
             val feeds = subject.feeds("Montréal")
