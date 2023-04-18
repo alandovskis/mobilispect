@@ -120,7 +120,6 @@ internal class GTFSScheduledTripDataSource : ScheduledTripDataSource {
 
     private fun findFirstInRange(startDate: LocalDate, endDate: LocalDate, dayOfWeek: DayOfWeek): LocalDate? {
         var date = startDate
-        // TODO: Are we guaranteed to find a dayOfWeek.
         while (date.dayOfWeek != dayOfWeek) {
             if (date.isAfter(endDate)) {
                 return null
