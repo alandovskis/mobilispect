@@ -48,16 +48,22 @@ class ImportUpdatedFeedsService(
     private val logger: Logger = LoggerFactory.getLogger(ImportUpdatedFeedsService::class.java)
 
     override fun get(): Any {
-        logger.info("\nStarted")
-        return findUpdatedFeeds()
-            /*.onSuccess { updatedFeeds ->
-                if (updatedFeeds.isEmpty()) {
-                    logger.info("Nothing to do\n")
-                }
-            }*/
-            .map { updatedFeed -> importFeed(updatedFeed) }
-        //.onSuccess { logger.info("Completed") }
-        //.onFailure { exception -> logger.error("Failed: $exception") }
+        logger.info("Started")
+        val updatedFeeds = findUpdatedFeeds()
+        if (updatedFeeds.isEmpty()) {
+            logger.info("Completed without updates")
+            return Any()
+        }
+
+        val results = updatedFeeds.map { updatedFeed -> importFeed(updatedFeed) }
+
+        if (results.all { result -> result.isSuccess }) {
+            logger.info("Completed with updates")
+        } else {
+            logger.error("Completed with errors")
+        }
+
+        return Any()
     }
 
     private fun findUpdatedFeeds(): List<VersionedFeed> {
@@ -81,15 +87,35 @@ class ImportUpdatedFeedsService(
             .map { archive -> extractFeed(archive) }
             .map { extractedDirRes ->
                 extractedDirRes.getOrNull()?.let { extractedDir ->
-                    importAgencies(
+                    val agencyRes = importAgencies(
                         version = cloudFeed.version._id,
                         extractedDir = extractedDir,
                         feedID = cloudFeed.feed._id
                     )
-                    importRoutes(cloudFeed.version._id, extractedDir)
-                    importStops(cloudFeed.version._id, extractedDir)
-                    importTrips(cloudFeed.version._id, extractedDir)
-                    importStopTimes(cloudFeed.version._id, extractedDir)
+                    if (agencyRes.isFailure) {
+                        return agencyRes
+                    }
+
+                    val routeRes = importRoutes(cloudFeed.version._id, extractedDir)
+                    if (routeRes.isFailure) {
+                        return routeRes
+                    }
+
+                    val stopRes = importStops(cloudFeed.version._id, extractedDir)
+                    if (stopRes.isFailure) {
+                        return stopRes
+                    }
+
+                    val tripRes = importTrips(cloudFeed.version._id, extractedDir)
+                    if (tripRes.isFailure) {
+                        return tripRes
+                    }
+
+                    val stopTimeRes = importStopTimes(cloudFeed.version._id, extractedDir)
+                    if (stopTimeRes.isFailure) {
+                        return stopTimeRes
+                    }
+
                     feedRepository.save(cloudFeed.feed)
                     feedVersionRepository.save(cloudFeed.version)
                     cloudFeed

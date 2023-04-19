@@ -87,9 +87,6 @@ class ImportUpdatedFeedsServiceTest {
     lateinit var scheduledStopRepository: ScheduledStopRepository
 
     @Autowired
-    lateinit var feedDataSource: FeedDataSource
-
-    @Autowired
     lateinit var agencyDataSource: AgencyDataSource
 
     @Autowired
@@ -201,8 +198,28 @@ class ImportUpdatedFeedsServiceTest {
         val region = Region(_id = "reg-f25-mtl", name = "Montréal")
         regionRepository.save(region)
 
-        val version = "41c3e41b979db2e58f9deeb98f8f91be47f3ba17"
-        //val expected = feedDataSource.feeds(region.name).mapNotNull { feedRes -> feedRes.getOrNull() }
+        val feedDataSource = object : FeedDataSource {
+            override fun feeds(region: String): Collection<Result<VersionedFeed>> =
+                listOf(
+                    Result.success(
+
+                        VersionedFeed(
+                            feed = Feed(
+                                _id = "f-f256-exo~citlapresquîle",
+                                url = "https://exo.quebec/xdata/citpi/google_transit.zip"
+                            ),
+                            version = FeedVersion(
+                                _id = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
+                                feedID = "f-f256-exo~citlapresquîle",
+                                startsOn = LocalDate.of(2022, 11, 23),
+                                endsOn = LocalDate.of(2023, 6, 25)
+                            )
+                        )
+                    )
+                )
+        }
+
+        val version = "d89aa5de884111e4b6a9365220ded9f746ef2dbf"
         val subject = ImportUpdatedFeedsService(
             feedDataSource = feedDataSource,
             feedRepository = feedRepository,
@@ -224,7 +241,7 @@ class ImportUpdatedFeedsServiceTest {
 
         subject.get()
 
-        //importedAllFeeds(expected)
+        importedAllFeeds()
         importedAllAgencies(version)
         importedAllRoutes(version)
         importedAllStops(version)
@@ -232,17 +249,30 @@ class ImportUpdatedFeedsServiceTest {
         importedAllStopTimes(version)
     }
 
-    private fun importedAllFeeds(expected: Collection<VersionedFeed>) {
+    private fun importedAllFeeds() {
         val actualFeeds = feedRepository.findAll()
-        assertThat(actualFeeds).containsAll(expected.map { feed -> feed.feed })
+        assertThat(actualFeeds).contains(
+            Feed(
+                _id = "f-f256-exo~citlapresquîle",
+                url = "https://exo.quebec/xdata/citpi/google_transit.zip"
+            )
+        )
+
         val actualFeedVersions = feedVersionRepository.findAll()
-        assertThat(actualFeedVersions).containsAll(expected.map { feed -> feed.version })
+        assertThat(actualFeedVersions).contains(
+            FeedVersion(
+                _id = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
+                feedID = "f-f256-exo~citlapresquîle",
+                startsOn = LocalDate.of(2022, 11, 23),
+                endsOn = LocalDate.of(2023, 6, 25)
+            )
+        )
     }
 
     private fun importedAllAgencies(version: String) {
         val agencies = agencyRepository.findAll()
         assertThat(agencies).contains(
-            Agency(_id = "CITPI", name = "exo-La Presqu'île", version = version)
+            Agency(_id = "o-f256-exo~citlapresquîle", name = "exo-La Presqu'île", version = version)
         )
     }
 
