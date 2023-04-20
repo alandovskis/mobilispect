@@ -81,6 +81,7 @@ class ImportUpdatedFeedsService(
         return updatedFeeds
     }
 
+    @Suppress("ReturnCount")
     private fun importFeed(cloudFeed: VersionedFeed): Result<*> {
         logger.debug("Import started: {}", cloudFeed)
         return downloadFeed(cloudFeed)
@@ -96,7 +97,11 @@ class ImportUpdatedFeedsService(
                         return agencyRes
                     }
 
-                    val routeRes = importRoutes(cloudFeed.version._id, extractedDir)
+                    val routeRes = importRoutes(
+                        version = cloudFeed.version._id,
+                        extractedDir = extractedDir,
+                        feedID = cloudFeed.feed._id
+                    )
                     if (routeRes.isFailure) {
                         return routeRes
                     }
@@ -130,8 +135,8 @@ class ImportUpdatedFeedsService(
             .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
             .onFailure { e -> logger.error("Failed to import agencies: $e") }
 
-    private fun importRoutes(version: String, extractedDir: String) =
-        routeDataSource.routes(extractedDir, version)
+    private fun importRoutes(version: String, extractedDir: String, feedID: String): Result<List<Any>> =
+        routeDataSource.routes(root = extractedDir, version = version, feedID = feedID)
             .map { routes -> routes.map { route -> routeRepository.save(route) } }
             .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
             .onFailure { e -> logger.error("Failed to import routes: $e") }

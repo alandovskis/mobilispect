@@ -11,7 +11,7 @@ import com.mobilispect.backend.data.api.Unauthorized
 import com.mobilispect.backend.data.feed.Feed
 import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.VersionedFeed
-import com.mobilispect.backend.data.route.Route
+import com.mobilispect.backend.data.route.RouteResultItem
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopResult
 import org.springframework.http.MediaType
@@ -77,18 +77,15 @@ class TransitLandClient(private val webClient: WebClient) {
         }
     }
 
-    fun routes(apiKey: String, agencyID: String, paging: PagingParameters = PagingParameters()): Result<RouteResult> {
+    fun routes(apiKey: String, feedID: String, paging: PagingParameters = PagingParameters()): Result<RouteResult> {
         return handleError {
-            val uri = pagedURI("/routes.json?operator_onestop_id=$agencyID", paging)
+            val uri = pagedURI("/routes.json?feed_onestop_id=$feedID", paging)
             val response = get(uri, apiKey, TransitLandRouteResponse::class.java)
             val routes = response?.routes?.map { remote ->
-                Route(
-                    _id = remote.onestopID,
-                    shortName = remote.shortName,
-                    longName = remote.longName,
-                    agencyID = agencyID,
-                    version = remote.feed.version,
-                    headwayHistory = emptyList()
+                RouteResultItem(
+                    id = remote.onestopID,
+                    agencyID = remote.agency.agencyID,
+                    routeID = remote.routeID
                 )
             }
             return@handleError Result.success(RouteResult(routes.orEmpty(), response?.meta?.after ?: 0))

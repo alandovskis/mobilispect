@@ -1,6 +1,6 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.data.route.Route
+import com.mobilispect.backend.data.route.RouteResultItem
 
 const val TRANSIT_LAND_ROUTES_SUCCESS_FIXTURE = """
 {
@@ -144,20 +144,14 @@ const val TRANSIT_LAND_ROUTES_MINIMAL_FIXTURE = """
 }
 """
 
-val TRANSIT_LAND_ROUTE_1 = Route(
-    _id = "r-f25d-1",
-    shortName = "1",
-    longName = "Verte",
-    agencyID = "o-f25d-socitdetransportdemontral",
-    version = "d503db302c07cdc0f4d6ff23bdfbb899e73b9f68",
-    headwayHistory = emptyList()
+val TRANSIT_LAND_ROUTE_1 = RouteResultItem(
+    id = "r-f25d-1",
+    routeID = "1",
+    agencyID = "STM",
 )
 
-val TRANSIT_LAND_ROUTE_2 = Route(
-    _id = "r-f25d-2",
-    shortName = "2",
-    longName = "Orange",
-    agencyID = "o-f25d-socitdetransportdemontral",
-    version = "d503db302c07cdc0f4d6ff23bdfbb899e73b9f68",
-    headwayHistory = emptyList()
+val TRANSIT_LAND_ROUTE_2 = RouteResultItem(
+    id = "r-f25d-2",
+    routeID = "2",
+    agencyID = "STM",
 )

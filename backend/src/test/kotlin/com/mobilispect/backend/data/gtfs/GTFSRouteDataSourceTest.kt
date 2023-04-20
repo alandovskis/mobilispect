@@ -1,6 +1,9 @@
 package com.mobilispect.backend.data.gtfs
 
+import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
+import com.mobilispect.backend.data.route.OneStopRouteIDDataSource
 import com.mobilispect.backend.data.route.Route
+import com.mobilispect.backend.data.route.RouteIDMap
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat
@@ -13,17 +16,18 @@ import java.io.IOException
 import java.nio.file.Path
 
 private const val VERSION = "v1"
+private const val FEED_ID = "feed_id"
 
 @SpringBootTest
 internal class GTFSRouteDataSourceTest {
     @Autowired
     lateinit var resourceLoader: ResourceLoader
 
-    private val subject = GTFSRouteDataSource()
+    private val subject = GTFSRouteDataSource(TestAgencyIDDataSource(), TestRouteIDDataSource())
 
     @Test
     fun fileNotFound(@TempDir root: Path) {
-        val result = subject.routes(root.toString(), VERSION).exceptionOrNull()!!
+        val result = subject.routes(root.toString(), VERSION, FEED_ID).exceptionOrNull()!!
 
         assertThat(result).isInstanceOf(IOException::class.java)
     }
@@ -32,7 +36,7 @@ internal class GTFSRouteDataSourceTest {
     fun corrupted(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-routes-corrupt.txt", root = root, dst = "routes.txt")
 
-        val result = subject.routes(root.toString(), VERSION).exceptionOrNull()
+        val result = subject.routes(root.toString(), VERSION, FEED_ID).exceptionOrNull()
 
         assertThat(result).isInstanceOf(SerializationException::class.java)
     }
@@ -41,14 +45,14 @@ internal class GTFSRouteDataSourceTest {
     fun importsSuccessfully(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-routes.txt", root = root, dst = "routes.txt")
 
-        val routes = subject.routes(root.toString(), VERSION).getOrNull()!!
+        val routes = subject.routes(root.toString(), VERSION, FEED_ID).getOrNull()!!
 
         assertThat(routes).contains(
             Route(
-                _id = "1",
+                _id = "r-f2566-1",
                 shortName = "1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
-                agencyID = "CITPI",
+                agencyID = "o-f256-exo~citlapresquîle",
                 version = VERSION,
                 headwayHistory = emptyList()
             )
@@ -56,13 +60,29 @@ internal class GTFSRouteDataSourceTest {
 
         assertThat(routes).contains(
             Route(
-                _id = "T1",
+                _id = "r-f2566-t1",
                 shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
-                agencyID = "CITPI",
+                agencyID = "o-f256-exo~citlapresquîle",
                 version = VERSION,
                 headwayHistory = emptyList()
             )
         )
+    }
+
+    class TestAgencyIDDataSource : OneStopAgencyIDDataSource {
+        override fun agencyIDs(feedID: String): Result<Map<String, String>> =
+            Result.success(mapOf("CITPI" to "o-f256-exo~citlapresquîle"))
+    }
+
+    class TestRouteIDDataSource : OneStopRouteIDDataSource {
+        private val routeIDMap = RouteIDMap()
+
+        init {
+            routeIDMap.add(agencyID = "CITPI", routeID = "1", onestopID = "r-f2566-1")
+            routeIDMap.add(agencyID = "CITPI", routeID = "T1", onestopID = "r-f2566-t1")
+        }
+
+        override fun routeIDs(feedID: String): Result<RouteIDMap> = Result.success(routeIDMap)
     }
 }
