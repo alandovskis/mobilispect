@@ -92,6 +92,9 @@ jobs:
       - name: Build
         run: ./gradlew assemble
 
+      - name: Setup transit-land.properties
+        run: cp ./src/main/resources/transit-land.sample.properties ./src/test/resources/transit-land.properties
+
       - name: Run tests
         run: ./gradlew test
 
