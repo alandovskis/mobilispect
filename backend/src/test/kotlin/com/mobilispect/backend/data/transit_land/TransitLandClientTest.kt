@@ -267,7 +267,7 @@ internal class TransitLandClientTest {
         mockServer.shutdown()
 
         subject = TransitLandClient(webClient)
-        val result = subject.stops(apiKey = "apikey", agencyID = "city")
+        val result = subject.stops(apiKey = "apikey", feedID = "city")
 
         assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
     }
@@ -278,7 +278,7 @@ internal class TransitLandClientTest {
             val webClient = webClient(mockServer)
 
             subject = TransitLandClient(webClient)
-            val response = subject.stops(apiKey = "apikey", agencyID = "city").exceptionOrNull()
+            val response = subject.stops(apiKey = "apikey", feedID = "city").exceptionOrNull()
 
             assertThat(response).isInstanceOf(TooManyRequests::class.java)
         }
@@ -295,7 +295,7 @@ internal class TransitLandClientTest {
             val webClient = webClient(mockServer)
 
             subject = TransitLandClient(webClient)
-            val response = subject.stops(apiKey = "apikey", agencyID = "city").exceptionOrNull()!!
+            val response = subject.stops(apiKey = "apikey", feedID = "city").exceptionOrNull()!!
 
             assertThat(response).isInstanceOf(Unauthorized::class.java)
         }
@@ -313,7 +313,7 @@ internal class TransitLandClientTest {
 
             subject = TransitLandClient(webClient)
             val response =
-                subject.stops(apiKey = "apikey", agencyID = "o-f25d-socitdetransportdemontral").getOrNull()!!
+                subject.stops(apiKey = "apikey", feedID = "o-f25d-socitdetransportdemontral").getOrNull()!!
 
             assertThat(response.after).isEqualTo(439365585)
             assertThat(response.stops).contains(TRANSIT_LAND_STOP_1)

@@ -1,6 +1,6 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.data.stop.Stop
+import com.mobilispect.backend.data.stop.StopResultItem
 
 const val TRANSIT_LAND_STOPS_SUCCESS_FIXTURE = """
 {
@@ -101,13 +101,11 @@ const val TRANSIT_LAND_STOPS_SUCCESS_FIXTURE = """
 }
 """
 
-val TRANSIT_LAND_STOP_1 = Stop(
-    _id = "s-f25dt17bg5-stationangrignon",
-    name = "Station Angrignon",
-    version = "d503db302c07cdc0f4d6ff23bdfbb899e73b9f68"
+val TRANSIT_LAND_STOP_1 = StopResultItem(
+    id = "s-f25dt17bg5-stationangrignon",
+    stopID = "43",
 )
-val TRANSIT_LAND_STOP_2 = Stop(
-    _id = "s-f25dt65h1j-stationmonk",
-    name = "Station Monk",
-    version = "d503db302c07cdc0f4d6ff23bdfbb899e73b9f68"
+val TRANSIT_LAND_STOP_2 = StopResultItem(
+    id = "s-f25dt65h1j-stationmonk",
+    stopID = "42",
 )

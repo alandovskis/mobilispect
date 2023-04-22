@@ -12,8 +12,8 @@ import com.mobilispect.backend.data.feed.Feed
 import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.route.RouteResultItem
-import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopResult
+import com.mobilispect.backend.data.stop.StopResultItem
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -92,15 +92,14 @@ class TransitLandClient(private val webClient: WebClient) {
         }
     }
 
-    fun stops(apiKey: String, agencyID: String, paging: PagingParameters = PagingParameters()): Result<StopResult> {
+    fun stops(apiKey: String, feedID: String, paging: PagingParameters = PagingParameters()): Result<StopResult> {
         return handleError {
-            val uri = pagedURI("/stops.json?served_by_onestop_ids=$agencyID", paging)
+            val uri = pagedURI("/stops.json?feed_onestop_ids=$feedID", paging)
             val response = get(uri, apiKey, TransitLandStopResponse::class.java)
             val stops = response?.stops?.map { remote ->
-                Stop(
-                    _id = remote.onestopID,
-                    name = remote.name,
-                    version = remote.feed.version,
+                StopResultItem(
+                    id = remote.onestopID,
+                    stopID = remote.stopID
                 )
             }
             return@handleError Result.success(StopResult(stops.orEmpty(), response?.meta?.after ?: 0))

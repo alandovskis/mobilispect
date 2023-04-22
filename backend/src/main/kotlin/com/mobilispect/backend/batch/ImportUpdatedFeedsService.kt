@@ -106,7 +106,11 @@ class ImportUpdatedFeedsService(
                         return routeRes
                     }
 
-                    val stopRes = importStops(cloudFeed.version._id, extractedDir)
+                    val stopRes = importStops(
+                        version = cloudFeed.version._id,
+                        extractedDir = extractedDir,
+                        feedID = cloudFeed.feed._id
+                    )
                     if (stopRes.isFailure) {
                         return stopRes
                     }
@@ -141,10 +145,11 @@ class ImportUpdatedFeedsService(
             .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
             .onFailure { e -> logger.error("Failed to import routes: $e") }
 
-    private fun importStops(version: String, extractedDir: String) = stopDataSource.stops(extractedDir, version)
-        .map { stops -> stops.map { stop -> stopRepository.save(stop) } }
-        .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
-        .onFailure { e -> logger.error("Failed to import stops: $e") }
+    private fun importStops(version: String, extractedDir: String, feedID: String) =
+        stopDataSource.stops(extractedDir, version, feedID)
+            .map { stops -> stops.map { stop -> stopRepository.save(stop) } }
+            .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
+            .onFailure { e -> logger.error("Failed to import stops: $e") }
 
     private fun importTrips(version: String, extractedDir: String) =
         scheduledTripDataSource.trips(extractedDir, version)

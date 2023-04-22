@@ -19,7 +19,7 @@ internal class TransitLandStop(
     @JsonNames("platform_code") val platformCode: String? = null,
     @JsonNames("stop_code") val stopCode: String? = null,
     @JsonNames("stop_desc") val description: String? = null,
-    @JsonNames("stop_id") val stopID: String? = null,
+    @JsonNames("stop_id") val stopID: String,
     @JsonNames("stop_name") val name: String,
     @JsonNames("stop_timezone") val timezone: String? = null,
     @JsonNames("stop_url") val url: String? = null,
