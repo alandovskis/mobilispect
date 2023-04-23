@@ -31,7 +31,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.csv)
     implementation(libs.kotlinx.serialization.json)
 
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter:1.18.0")
     testImplementation("org.testcontainers:mongodb:1.18.0")
