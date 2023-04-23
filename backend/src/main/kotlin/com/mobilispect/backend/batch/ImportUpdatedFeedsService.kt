@@ -133,6 +133,14 @@ class ImportUpdatedFeedsService(
             .onSuccess { feed -> logger.debug("Import completed: {}", feed) }
     }
 
+    private fun downloadFeed(cloudFeed: VersionedFeed): Result<String> = downloader.download(cloudFeed.feed.url)
+        .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
+        .onFailure { exception -> logger.error("Error downloading feed from ${cloudFeed.feed.url}: $exception") }
+
+    private fun extractFeed(archive: String): Result<String> = archiveExtractor.extract(archive)
+        .onSuccess { path -> logger.debug("Extracted archive to {}", path) }
+        .onFailure { exception -> logger.error("Error extracting feed: $exception") }
+
     private fun importAgencies(version: String, extractedDir: String, feedID: String): Result<List<Any>> =
         agencyDataSource.agencies(root = extractedDir, version = version, feedID = feedID)
             .map { agencies -> agencies.map { agency -> agencyRepository.save(agency) } }
@@ -162,11 +170,4 @@ class ImportUpdatedFeedsService(
             .map { scheduledStops -> scheduledStops.map { stop -> scheduledStopRepository.save(stop) } }
             .onSuccess { logger.debug("Imported scheduled stops") }
             .onFailure { e -> logger.error("Failed to import scheduled stops: $e") }
-
-    private fun downloadFeed(cloudFeed: VersionedFeed): Result<String> = downloader.download(cloudFeed.feed.url)
-        .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
-        .onFailure { exception -> logger.error("Error downloading feed from ${cloudFeed.feed.url}: $exception") }
-
-    private fun extractFeed(archive: String): Result<String> = archiveExtractor.extract(archive)
-        .onSuccess { path -> logger.debug("Extracted archive to {}", path) }
 }
