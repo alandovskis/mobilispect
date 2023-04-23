@@ -15,6 +15,7 @@ import com.mobilispect.backend.data.feed.FeedVersionRepository
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.region.Region
 import com.mobilispect.backend.data.region.RegionRepository
+import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
@@ -279,7 +280,7 @@ internal class ImportUpdatedFeedsServiceTest {
         val routes = routeRepository.findAll()
         assertThat(routes).contains(
             Route(
-                _id = "r-f2566-1",
+                _id = OneStopRouteID("r-f2566-1"),
                 shortName = "1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = "o-f256-exo~citlapresquîle",
@@ -289,7 +290,7 @@ internal class ImportUpdatedFeedsServiceTest {
         )
         assertThat(routes).contains(
             Route(
-                _id = "r-f2566-t1",
+                _id = OneStopRouteID("r-f2566-t1"),
                 shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = "o-f256-exo~citlapresquîle",

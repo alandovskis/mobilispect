@@ -3,6 +3,10 @@
 
 package com.mobilispect.backend.data.transit_land
 
+import com.mobilispect.backend.data.route.FeedLocalRouteID
+import com.mobilispect.backend.data.route.FeedLocalRouteIDSerializer
+import com.mobilispect.backend.data.route.OneStopRouteID
+import com.mobilispect.backend.data.route.OneStopRouteIDSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
@@ -14,10 +18,15 @@ internal class TransitLandRoute(
     @JsonNames("continuous_pickup") val continuousPickup: Boolean? = null,
     @JsonNames("feed_version") val feed: FeedVersion,
     val id: Int?,
-    @JsonNames("onestop_id") val onestopID: String,
+
+    @Serializable(with = OneStopRouteIDSerializer::class)
+    @JsonNames("onestop_id") val onestopID: OneStopRouteID,
     @JsonNames("route_color") val colour: String?,
     @JsonNames("route_desc") val description: String?,
-    @JsonNames("route_id") val routeID: String,
+
+    @Serializable(with = FeedLocalRouteIDSerializer::class)
+    @JsonNames("route_id") val routeID: FeedLocalRouteID,
+
     @JsonNames("route_long_name") val longName: String,
     @JsonNames("route_short_name") val shortName: String,
     @JsonNames("route_sort_order") val sortOrder: Int? = null,

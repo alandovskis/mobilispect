@@ -1,6 +1,8 @@
 package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
+import com.mobilispect.backend.data.route.FeedLocalRouteID
+import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.OneStopRouteIDDataSource
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteIDMap
@@ -49,7 +51,7 @@ internal class GTFSRouteDataSourceTest {
 
         assertThat(routes).contains(
             Route(
-                _id = "r-f2566-1",
+                _id = OneStopRouteID("r-f2566-1"),
                 shortName = "1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = "o-f256-exo~citlapresquîle",
@@ -60,7 +62,7 @@ internal class GTFSRouteDataSourceTest {
 
         assertThat(routes).contains(
             Route(
-                _id = "r-f2566-t1",
+                _id = OneStopRouteID("r-f2566-t1"),
                 shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = "o-f256-exo~citlapresquîle",
@@ -79,8 +81,12 @@ internal class GTFSRouteDataSourceTest {
         private val routeIDMap = RouteIDMap()
 
         init {
-            routeIDMap.add(agencyID = "CITPI", routeID = "1", onestopID = "r-f2566-1")
-            routeIDMap.add(agencyID = "CITPI", routeID = "T1", onestopID = "r-f2566-t1")
+            routeIDMap.add(agencyID = "CITPI", routeID = FeedLocalRouteID("1"), onestopID = OneStopRouteID("r-f2566-1"))
+            routeIDMap.add(
+                agencyID = "CITPI",
+                routeID = FeedLocalRouteID("T1"),
+                onestopID = OneStopRouteID("r-f2566-t1")
+            )
         }
 
         override fun routeIDs(feedID: String): Result<RouteIDMap> = Result.success(routeIDMap)
