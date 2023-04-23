@@ -16,7 +16,7 @@ internal class TransitLandOneStopRouteIDDataSource(
         return findRouteIDs(feedID)
             .map { routes ->
                 routes.fold(RouteIDMap()) { acc, item ->
-                    acc.add(item.agencyID, item.routeID, item.id)
+                    acc.add(item.routeID, item.id)
                     acc
                 }
             }

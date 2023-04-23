@@ -1,13 +1,13 @@
 package com.mobilispect.backend.data.route
 
 /**
- * A map to look up a route onestop ID given agencyID and routeID
+ * A map to look up a route onestop ID given a routeID.
+ * RouteID must be unique within a feed (https://gtfs.org/schedule/reference/#routestxt)
  */
-class RouteIDMap(private val store: MutableMap<String, MutableMap<FeedLocalRouteID, OneStopRouteID>> = mutableMapOf()) {
-    fun add(agencyID: String, routeID: FeedLocalRouteID, onestopID: OneStopRouteID) {
-        store.putIfAbsent(agencyID, mutableMapOf())
-        store[agencyID]!![routeID] = onestopID
+class RouteIDMap(private val store: MutableMap<FeedLocalRouteID, OneStopRouteID> = mutableMapOf()) {
+    fun add(routeID: FeedLocalRouteID, onestopID: OneStopRouteID) {
+        store[routeID] = onestopID
     }
 
-    fun get(agencyID: String, routeID: FeedLocalRouteID): OneStopRouteID? = store[agencyID]?.get(routeID)
+    fun get(routeID: FeedLocalRouteID): OneStopRouteID? = store[routeID]
 }

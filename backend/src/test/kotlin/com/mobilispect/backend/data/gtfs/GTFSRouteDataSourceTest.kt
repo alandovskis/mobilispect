@@ -81,9 +81,8 @@ internal class GTFSRouteDataSourceTest {
         private val routeIDMap = RouteIDMap()
 
         init {
-            routeIDMap.add(agencyID = "CITPI", routeID = FeedLocalRouteID("1"), onestopID = OneStopRouteID("r-f2566-1"))
+            routeIDMap.add(routeID = FeedLocalRouteID("1"), onestopID = OneStopRouteID("r-f2566-1"))
             routeIDMap.add(
-                agencyID = "CITPI",
                 routeID = FeedLocalRouteID("T1"),
                 onestopID = OneStopRouteID("r-f2566-t1")
             )

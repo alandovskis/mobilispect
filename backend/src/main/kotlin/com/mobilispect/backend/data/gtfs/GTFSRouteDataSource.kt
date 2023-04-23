@@ -43,7 +43,7 @@ class GTFSRouteDataSource(
 
             Result.success(csv.decodeFromString<Collection<GTFSRoute>>(input).mapNotNull { route ->
                 val agencyID = agencyIDs[route.agency_id] ?: return@mapNotNull null
-                val routeID = routeIDs.get(route.agency_id, route.route_id) ?: return@mapNotNull null
+                val routeID = routeIDs.get(route.route_id) ?: return@mapNotNull null
                 Route(
                     _id = routeID,
                     shortName = route.route_short_name,
