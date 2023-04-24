@@ -1,5 +1,6 @@
 package com.mobilispect.backend.data.schedule
 
+import com.mobilispect.backend.data.route.OneStopRouteID
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
@@ -7,7 +8,7 @@ import java.time.LocalDate
 @Suppress("ConstructorParameterNaming") // For _id
 data class ScheduledTrip(
     val _id: String,
-    val routeID: String,
+    val routeID: OneStopRouteID,
     val dates: Collection<LocalDate>,
     val direction: String,
     val version: String

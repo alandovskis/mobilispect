@@ -1,5 +1,6 @@
 package com.mobilispect.backend.data.gtfs
 
+import com.mobilispect.backend.data.route.OneStopRouteIDDataSource
 import com.mobilispect.backend.data.schedule.ScheduledTrip
 import com.mobilispect.backend.data.schedule.ScheduledTripDataSource
 import com.mobilispect.backend.util.readTextAndNormalize
@@ -18,63 +19,79 @@ import java.time.LocalDate
 /**
  * A [ScheduledTripDataSource] that uses a GTFS feed as source for [ScheduledTrip]s.
  */
-internal class GTFSScheduledTripDataSource : ScheduledTripDataSource {
+internal class GTFSScheduledTripDataSource(private val routeIDDataSource: OneStopRouteIDDataSource) :
+    ScheduledTripDataSource {
     private val logger: Logger = LoggerFactory.getLogger(GTFSScheduledTripDataSource::class.java)
 
-    override fun trips(extractedDir: String, version: String): Result<Collection<ScheduledTrip>> {
-        return try {
-            val csv = Csv {
-                hasHeaderRecord = true
-                ignoreUnknownColumns = true
-            }
-            val calendarExceptions = findCalendarExceptions(extractedDir, csv)
-            val calendars = findCalendars(extractedDir, csv)
+    override fun trips(extractedDir: String, version: String, feedID: String): Result<Collection<ScheduledTrip>> =
+        routeIDDataSource.routeIDs(feedID)
+            .map { routeIDs ->
+                return try {
+                    val csv = Csv {
+                        hasHeaderRecord = true
+                        ignoreUnknownColumns = true
+                    }
 
-            val tripsIn = File("$extractedDir/trips.txt").readTextAndNormalize()
-            Result.success(csv.decodeFromString<Collection<GTFSTrip>>(tripsIn).map { trip ->
-                val added = calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.ADDED }
-                    ?.map { it.date } ?: emptyList()
-                val removed =
-                    calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.REMOVED }
-                        ?.map { it.date } ?: emptyList()
-                val dates = calendars[trip.service_id]?.let { calendar ->
-                    listOf(
-                        allDayOfWeekInRange(
-                            calendar, calendar.start_date, calendar.end_date, DayOfWeek.MONDAY
-                        ) { it.monday == 1 },
-                        allDayOfWeekInRange(
-                            calendar, calendar.start_date, calendar.end_date, DayOfWeek.TUESDAY
-                        ) { it.tuesday == 1 },
-                        allDayOfWeekInRange(
-                            calendar, calendar.start_date, calendar.end_date, DayOfWeek.WEDNESDAY
-                        ) { it.wednesday == 1 },
-                        allDayOfWeekInRange(
-                            calendar, calendar.start_date, calendar.end_date, DayOfWeek.THURSDAY
-                        ) { it.thursday == 1 },
-                        allDayOfWeekInRange(
-                            calendar, calendar.start_date, calendar.end_date, DayOfWeek.FRIDAY
-                        ) { it.friday == 1 },
-                        allDayOfWeekInRange(
-                            calendar, calendar.start_date, calendar.end_date, DayOfWeek.SATURDAY
-                        ) { it.saturday == 1 },
-                        allDayOfWeekInRange(
-                            calendar, calendar.start_date, calendar.end_date, DayOfWeek.SUNDAY
-                        ) { it.sunday == 1 },
-                    ).flatten()
-                }?.filter { !removed.contains(it) } ?: emptyList()
-                ScheduledTrip(
-                    _id = trip.trip_id,
-                    routeID = trip.route_id,
-                    direction = trip.trip_headsign,
-                    version = version,
-                    dates = (dates + added).sorted()
-                )
-            })
-        } catch (e: IOException) {
-            Result.failure(e)
-        } catch (e: SerializationException) {
-            Result.failure(e)
-        }
+                    val calendarExceptions = findCalendarExceptions(extractedDir, csv)
+                    val calendars = findCalendars(extractedDir, csv)
+
+                    val tripsIn = File("$extractedDir/trips.txt").readTextAndNormalize()
+                    Result.success(csv.decodeFromString<Collection<GTFSTrip>>(tripsIn).mapNotNull { trip ->
+                        val added =
+                            calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.ADDED }
+                                ?.map { it.date } ?: emptyList()
+                        val removed =
+                            calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.REMOVED }
+                                ?.map { it.date } ?: emptyList()
+                        val dates = findDates(calendars, trip, removed, added)
+                        val routeID = routeIDs.get(routeID = trip.route_id) ?: return@mapNotNull null
+                        ScheduledTrip(
+                            _id = trip.trip_id,
+                            routeID = routeID,
+                            direction = trip.trip_headsign,
+                            version = version,
+                            dates = dates
+                        )
+                    })
+                } catch (e: IOException) {
+                    Result.failure(e)
+                } catch (e: SerializationException) {
+                    Result.failure(e)
+                }
+            }
+
+    private fun findDates(
+        calendars: Map<String, GTFSCalendar>,
+        trip: GTFSTrip,
+        removed: List<LocalDate>,
+        added: List<LocalDate>
+    ): List<LocalDate> {
+        val dates = calendars[trip.service_id]?.let { calendar ->
+            listOf(
+                allDayOfWeekInRange(
+                    calendar, calendar.start_date, calendar.end_date, DayOfWeek.MONDAY
+                ) { it.monday == 1 },
+                allDayOfWeekInRange(
+                    calendar, calendar.start_date, calendar.end_date, DayOfWeek.TUESDAY
+                ) { it.tuesday == 1 },
+                allDayOfWeekInRange(
+                    calendar, calendar.start_date, calendar.end_date, DayOfWeek.WEDNESDAY
+                ) { it.wednesday == 1 },
+                allDayOfWeekInRange(
+                    calendar, calendar.start_date, calendar.end_date, DayOfWeek.THURSDAY
+                ) { it.thursday == 1 },
+                allDayOfWeekInRange(
+                    calendar, calendar.start_date, calendar.end_date, DayOfWeek.FRIDAY
+                ) { it.friday == 1 },
+                allDayOfWeekInRange(
+                    calendar, calendar.start_date, calendar.end_date, DayOfWeek.SATURDAY
+                ) { it.saturday == 1 },
+                allDayOfWeekInRange(
+                    calendar, calendar.start_date, calendar.end_date, DayOfWeek.SUNDAY
+                ) { it.sunday == 1 },
+            ).flatten()
+        }?.filter { !removed.contains(it) } ?: emptyList()
+        return (dates + added).sorted()
     }
 
     private fun findCalendars(

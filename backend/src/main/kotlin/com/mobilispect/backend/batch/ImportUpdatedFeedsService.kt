@@ -115,7 +115,11 @@ class ImportUpdatedFeedsService(
                         return stopRes
                     }
 
-                    val tripRes = importTrips(cloudFeed.version._id, extractedDir)
+                    val tripRes = importTrips(
+                        version = cloudFeed.version._id,
+                        extractedDir = extractedDir,
+                        feedID = cloudFeed.feed._id
+                    )
                     if (tripRes.isFailure) {
                         return tripRes
                     }
@@ -159,8 +163,8 @@ class ImportUpdatedFeedsService(
             .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
             .onFailure { e -> logger.error("Failed to import stops: $e") }
 
-    private fun importTrips(version: String, extractedDir: String) =
-        scheduledTripDataSource.trips(extractedDir, version)
+    private fun importTrips(version: String, extractedDir: String, feedID: String) =
+        scheduledTripDataSource.trips(extractedDir, version, feedID)
             .map { trips -> trips.map { trip -> scheduledTripRepository.save(trip) } }
             .onSuccess { trips -> logger.debug("Imported scheduled trips: {}", trips) }
             .onFailure { e -> logger.error("Failed to import scheduled trips: $e") }

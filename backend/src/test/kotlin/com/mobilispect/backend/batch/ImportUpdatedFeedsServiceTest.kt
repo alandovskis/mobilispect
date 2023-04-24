@@ -325,7 +325,7 @@ internal class ImportUpdatedFeedsServiceTest {
         assertThat(trips).contains(
             ScheduledTrip(
                 _id = "3281905-PI-A22-PI_GTFS-Semaine-01",
-                routeID = "1",
+                routeID = OneStopRouteID("r-f2566-1"),
                 direction = "Seigneurie - Joseph-Carrier AM",
                 version = version,
                 dates = listOf(
@@ -363,7 +363,7 @@ internal class ImportUpdatedFeedsServiceTest {
         assertThat(trips).contains(
             ScheduledTrip(
                 _id = "3282456-PI-A22-PI_GTFS-Fête-1-01",
-                routeID = "115",
+                routeID = OneStopRouteID("r-f2565-115"),
                 direction = "Terminus Vaudreuil",
                 version = version,
                 dates = listOf(
@@ -375,7 +375,7 @@ internal class ImportUpdatedFeedsServiceTest {
         assertThat(trips).contains(
             ScheduledTrip(
                 _id = "3282393-PI-A22-PI_GTFS-Samedi-01",
-                routeID = "115",
+                routeID = OneStopRouteID("r-f2565-115"),
                 direction = "Terminus Vaudreuil",
                 version = version,
                 dates = listOf(
@@ -392,7 +392,7 @@ internal class ImportUpdatedFeedsServiceTest {
         assertThat(trips).contains(
             ScheduledTrip(
                 _id = "3282456-PI-A22-PI_GTFS-Dimanche-01",
-                routeID = "115",
+                routeID = OneStopRouteID("r-f2565-115"),
                 direction = "Terminus Vaudreuil",
                 version = version,
                 dates = listOf(

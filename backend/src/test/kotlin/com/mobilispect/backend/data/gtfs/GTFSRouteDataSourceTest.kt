@@ -1,11 +1,8 @@
 package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
-import com.mobilispect.backend.data.route.FeedLocalRouteID
 import com.mobilispect.backend.data.route.OneStopRouteID
-import com.mobilispect.backend.data.route.OneStopRouteIDDataSource
 import com.mobilispect.backend.data.route.Route
-import com.mobilispect.backend.data.route.RouteIDMap
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat
@@ -75,19 +72,5 @@ internal class GTFSRouteDataSourceTest {
     class TestAgencyIDDataSource : OneStopAgencyIDDataSource {
         override fun agencyIDs(feedID: String): Result<Map<String, String>> =
             Result.success(mapOf("CITPI" to "o-f256-exo~citlapresquîle"))
-    }
-
-    class TestRouteIDDataSource : OneStopRouteIDDataSource {
-        private val routeIDMap = RouteIDMap()
-
-        init {
-            routeIDMap.add(routeID = FeedLocalRouteID("1"), onestopID = OneStopRouteID("r-f2566-1"))
-            routeIDMap.add(
-                routeID = FeedLocalRouteID("T1"),
-                onestopID = OneStopRouteID("r-f2566-t1")
-            )
-        }
-
-        override fun routeIDs(feedID: String): Result<RouteIDMap> = Result.success(routeIDMap)
     }
 }
