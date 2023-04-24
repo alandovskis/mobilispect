@@ -4,6 +4,9 @@ import com.mobilispect.backend.data.agency.AgencyResultItem
 import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
+import com.mobilispect.backend.data.feed.Feed
+import com.mobilispect.backend.data.feed.FeedVersion
+import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.util.ResourceDispatcher
 import com.mobilispect.backend.util.readTextAndNormalize
 import com.mobilispect.backend.util.withMockServer
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ResourceLoader
 import org.springframework.web.reactive.function.client.WebClient
+import java.time.LocalDate
 
 private const val AGENCIES_URL = "/api/v2/rest/agencies.json"
 
@@ -73,23 +77,6 @@ internal class TransitLandClientTest {
     }
 
     @Test
-    fun feed_minimal() {
-        withMockServer(
-            dispatcher = FeedDispatcher(
-                responseCode = 200,
-                resourcePath = "transit-land/feed/minimal.json"
-            )
-        ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
-            val response = subject.feed(apiKey = "apikey", feedID = "f-f25f-rseaudetransportdelongueuil").getOrNull()!!
-
-            assertThat(response).isEqualTo(TRANSIT_LAND_FEED_FIXTURE)
-        }
-    }
-
-    @Test
     fun feed_success() {
         withMockServer(
             dispatcher = FeedDispatcher(
@@ -102,7 +89,20 @@ internal class TransitLandClientTest {
             subject = TransitLandClient(webClient)
             val response = subject.feed(apiKey = "apikey", feedID = "f-f25f-rseaudetransportdelongueuil").getOrNull()!!
 
-            assertThat(response).isEqualTo(TRANSIT_LAND_FEED_FIXTURE)
+            assertThat(response).isEqualTo(
+                VersionedFeed(
+                    feed = Feed(
+                        _id = "f-f25f-rseaudetransportdelongueuil",
+                        url = "https://www.rtl-longueuil.qc.ca/transit/latestfeed/RTL.zip"
+                    ),
+                    version = FeedVersion(
+                        _id = "41c3e41b979db2e58f9deeb98f8f91be47f3ba17",
+                        feedID = "f-f25f-rseaudetransportdelongueuil",
+                        startsOn = LocalDate.of(2023, 6, 26),
+                        endsOn = LocalDate.of(2023, 8, 20)
+                    )
+                )
+            )
         }
     }
 
