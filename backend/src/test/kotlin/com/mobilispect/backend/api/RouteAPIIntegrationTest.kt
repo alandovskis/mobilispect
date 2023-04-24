@@ -2,6 +2,7 @@ package com.mobilispect.backend.api
 
 import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.Agency
+import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.route.HeadwayEntry
 import com.mobilispect.backend.data.route.OneStopRouteID
@@ -19,8 +20,8 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 
-private val AGENCY_A = Agency(_id = "o-abcd-a", name = "A", version = "v1")
-private val AGENCY_B = Agency(_id = "o-abcd-b", name = "B", version = "v2")
+private val AGENCY_A = Agency(_id = OneStopAgencyID("o-abcd-a"), name = "A", version = "v1")
+private val AGENCY_B = Agency(_id = OneStopAgencyID("o-abcd-b"), name = "B", version = "v2")
 
 private val ROUTE_A1 = Route(
     _id = OneStopRouteID("r-abcd-1"),

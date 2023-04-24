@@ -3,6 +3,10 @@
 
 package com.mobilispect.backend.data.transit_land
 
+import com.mobilispect.backend.data.agency.FeedLocalAgencyID
+import com.mobilispect.backend.data.agency.FeedLocalAgencyIDSerializer
+import com.mobilispect.backend.data.agency.OneStopAgencyID
+import com.mobilispect.backend.data.agency.OneStopAgencyIDSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
@@ -15,7 +19,10 @@ internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAge
 internal class TransitLandAgency(
     @JsonNames("agency_email") val email: String? = null,
     @JsonNames("agency_fare_url") val fareURL: String? = null,
-    @JsonNames("agency_id") val agencyID: String,
+
+    @Serializable(with = FeedLocalAgencyIDSerializer::class)
+    @JsonNames("agency_id") val agencyID: FeedLocalAgencyID,
+
     @JsonNames("agency_lang") val language: String? = null,
     @JsonNames("agency_name") val name: String,
     @JsonNames("agency_phone") val phone: String? = null,
@@ -24,7 +31,10 @@ internal class TransitLandAgency(
     @JsonNames("feed_version") val feed: FeedVersion,
     val geometry: PolygonGeometry? = null,
     val id: Int? = null,
-    @JsonNames("onestop_id") val onestopID: String,
+
+    @Serializable(with = OneStopAgencyIDSerializer::class)
+    @JsonNames("onestop_id") val onestopID: OneStopAgencyID,
+
     val operator: Operator? = null,
     val places: Array<Place> = emptyArray(),
 )

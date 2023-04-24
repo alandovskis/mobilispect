@@ -1,5 +1,7 @@
 package com.mobilispect.backend.data.gtfs
 
+import com.mobilispect.backend.data.agency.FeedLocalAgencyID
+import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
 import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.Route
@@ -51,7 +53,7 @@ internal class GTFSRouteDataSourceTest {
                 _id = OneStopRouteID("r-f2566-1"),
                 shortName = "1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
-                agencyID = "o-f256-exo~citlapresquîle",
+                agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
                 version = VERSION,
                 headwayHistory = emptyList()
             )
@@ -62,7 +64,7 @@ internal class GTFSRouteDataSourceTest {
                 _id = OneStopRouteID("r-f2566-t1"),
                 shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
-                agencyID = "o-f256-exo~citlapresquîle",
+                agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
                 version = VERSION,
                 headwayHistory = emptyList()
             )
@@ -70,7 +72,7 @@ internal class GTFSRouteDataSourceTest {
     }
 
     class TestAgencyIDDataSource : OneStopAgencyIDDataSource {
-        override fun agencyIDs(feedID: String): Result<Map<String, String>> =
-            Result.success(mapOf("CITPI" to "o-f256-exo~citlapresquîle"))
+        override fun agencyIDs(feedID: String): Result<Map<FeedLocalAgencyID, OneStopAgencyID>> =
+            Result.success(mapOf(FeedLocalAgencyID("CITPI") to OneStopAgencyID("o-f256-exo~citlapresquîle")))
     }
 }

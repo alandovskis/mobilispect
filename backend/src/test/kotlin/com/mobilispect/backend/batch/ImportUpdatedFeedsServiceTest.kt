@@ -4,6 +4,7 @@ import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyDataSource
 import com.mobilispect.backend.data.agency.AgencyRepository
+import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.archive.ArchiveExtractor
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.download.Downloader
@@ -272,7 +273,7 @@ internal class ImportUpdatedFeedsServiceTest {
     private fun importedAllAgencies(version: String) {
         val agencies = agencyRepository.findAll()
         assertThat(agencies).contains(
-            Agency(_id = "o-f256-exo~citlapresquîle", name = "exo-La Presqu'île", version = version)
+            Agency(_id = OneStopAgencyID("o-f256-exo~citlapresquîle"), name = "exo-La Presqu'île", version = version)
         )
     }
 
@@ -283,7 +284,7 @@ internal class ImportUpdatedFeedsServiceTest {
                 _id = OneStopRouteID("r-f2566-1"),
                 shortName = "1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
-                agencyID = "o-f256-exo~citlapresquîle",
+                agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
                 version = version,
                 headwayHistory = emptyList()
             )
@@ -293,7 +294,7 @@ internal class ImportUpdatedFeedsServiceTest {
                 _id = OneStopRouteID("r-f2566-t1"),
                 shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
-                agencyID = "o-f256-exo~citlapresquîle",
+                agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
                 version = version,
                 headwayHistory = emptyList()
             )

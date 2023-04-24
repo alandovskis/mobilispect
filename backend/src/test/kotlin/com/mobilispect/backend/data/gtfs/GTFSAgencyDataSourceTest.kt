@@ -1,6 +1,8 @@
 package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.agency.Agency
+import com.mobilispect.backend.data.agency.FeedLocalAgencyID
+import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
@@ -46,7 +48,7 @@ internal class GTFSAgencyDataSourceTest {
         resourceLoader.copyResourceTo(src = "classpath:citpi-agency.txt", root = root, dst = "agency.txt")
         val agencyIDDataSource = TestOneStopAgencyIDDataSource(
             mapOf(
-                "STM" to "o-f25d-socitdetransportdemontral"
+                FeedLocalAgencyID("STM") to OneStopAgencyID("o-f25d-socitdetransportdemontral")
             )
         )
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
@@ -61,8 +63,8 @@ internal class GTFSAgencyDataSourceTest {
         resourceLoader.copyResourceTo(src = "classpath:citpi-agency.txt", root = root, dst = "agency.txt")
         val agencyIDDataSource = TestOneStopAgencyIDDataSource(
             mapOf(
-                "CITPI" to "o-f256-exo~citlapresquîle",
-                "STM" to "o-f25d-socitdetransportdemontral"
+                FeedLocalAgencyID("CITPI") to OneStopAgencyID("o-f256-exo~citlapresquîle"),
+                FeedLocalAgencyID("STM") to OneStopAgencyID("o-f25d-socitdetransportdemontral")
             )
         )
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
@@ -70,11 +72,12 @@ internal class GTFSAgencyDataSourceTest {
         val agencies = subject.agencies(root.toString(), VERSION, "Montréal").getOrNull()!!
 
         assertThat(agencies).contains(
-            Agency(_id = "o-f256-exo~citlapresquîle", name = "exo-La Presqu'île", version = VERSION)
+            Agency(_id = OneStopAgencyID("o-f256-exo~citlapresquîle"), name = "exo-La Presqu'île", version = VERSION)
         )
     }
 
-    class TestOneStopAgencyIDDataSource(private val pairs: Map<String, String>) : OneStopAgencyIDDataSource {
-        override fun agencyIDs(feedID: String): Result<Map<String, String>> = Result.success(pairs)
+    class TestOneStopAgencyIDDataSource(private val pairs: Map<FeedLocalAgencyID, OneStopAgencyID>) :
+        OneStopAgencyIDDataSource {
+        override fun agencyIDs(feedID: String): Result<Map<FeedLocalAgencyID, OneStopAgencyID>> = Result.success(pairs)
     }
 }
