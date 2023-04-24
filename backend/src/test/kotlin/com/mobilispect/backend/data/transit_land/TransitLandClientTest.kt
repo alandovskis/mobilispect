@@ -1,5 +1,6 @@
 package com.mobilispect.backend.data.transit_land
 
+import com.mobilispect.backend.data.agency.AgencyResultItem
 import com.mobilispect.backend.data.api.NetworkError
 import com.mobilispect.backend.data.api.TooManyRequests
 import com.mobilispect.backend.data.api.Unauthorized
@@ -170,8 +171,24 @@ internal class TransitLandClientTest {
             val response = subject.agencies(apiKey = "apikey", region = "city").getOrNull()!!
 
             assertThat(response.after).isEqualTo(3973)
-            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_1)
-            assertThat(response.agencies).contains(TRANSIT_LAND_SUCCESS_AGENCY_2)
+            assertThat(response.agencies).contains(
+                AgencyResultItem(
+                    id = "o-sr7f3-mtmmobilitaetrasportimolfetta",
+                    name = "MTM Mobilita' e Trasporti Molfetta",
+                    version = "d043eb31ed57955e134917efbcd8912ccacd74d6",
+                    feedID = "f-sr7f3-mtmmobilitaetrasportimolfetta",
+                    agencyID = "MTM"
+                )
+            )
+            assertThat(response.agencies).contains(
+                AgencyResultItem(
+                    id = "o-9xhvw-townofestespark",
+                    name = "Town of Estes Park",
+                    version = "913b07b945e2b2afbc5d37d7bcd883918933c9ce",
+                    feedID = "f-9xhvw-townofestespark",
+                    agencyID = "EPS"
+                )
+            )
         }
     }
 
