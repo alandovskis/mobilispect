@@ -37,11 +37,12 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: OneSto
 
                     val tripsIn = File("$extractedDir/trips.txt").readTextAndNormalize()
                     Result.success(csv.decodeFromString<Collection<GTFSTrip>>(tripsIn).mapNotNull { trip ->
-                        val added =
-                            calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.ADDED }
-                                ?.map { it.date } ?: emptyList()
+                        val added = calendarExceptions[trip.service_id]
+                            ?.filter { it.exception_type == GTFSCalendarDate.ADDED }
+                            ?.map { it.date } ?: emptyList()
                         val removed =
-                            calendarExceptions[trip.service_id]?.filter { it.exception_type == GTFSCalendarDate.REMOVED }
+                            calendarExceptions[trip.service_id]
+                                ?.filter { it.exception_type == GTFSCalendarDate.REMOVED }
                                 ?.map { it.date } ?: emptyList()
                         val dates = findDates(calendars, trip, removed, added)
                         val routeID = routeIDs.get(routeID = trip.route_id) ?: return@mapNotNull null
