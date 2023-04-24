@@ -22,6 +22,7 @@ class TransitLandOneStopStopIDDataSource(
             }
     }
 
+    @Suppress("ReturnCount")
     private fun findStopIDs(feedID: String): Result<Collection<StopResultItem>> {
         val apiKey = transitLandCredentialsRepository.get() ?: return Result.failure(Exception("Missing API key"))
         val allStops = mutableListOf<StopResultItem>()
@@ -47,4 +48,3 @@ class TransitLandOneStopStopIDDataSource(
         return Result.success(allStops)
     }
 }
-
