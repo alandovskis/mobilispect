@@ -5,6 +5,7 @@ kotlinxSerializationCSV = "2.0.0"
 kotlinxSerialization = "1.5.0"
 springBoot = "3.0.6"
 springDependency = "1.1.0"
+springDoc = "2.1.0"
 squareSortDependency = "0.2"
 
 [libraries]
@@ -14,6 +15,9 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 # Serialization
 kotlinx-serialization-csv = { module = "de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv", version.ref = "kotlinxSerializationCSV" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# View OpenAPI
+springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springDoc" }
 
 [plugins]
 
