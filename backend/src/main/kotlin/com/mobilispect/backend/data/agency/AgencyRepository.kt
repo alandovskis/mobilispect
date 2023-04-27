@@ -3,6 +3,7 @@ package com.mobilispect.backend.data.agency
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import org.springframework.data.rest.core.annotation.RestResource
 
 @RepositoryRestResource(path = "agencies")
 interface AgencyRepository : Repository<Agency, String> {
@@ -24,6 +25,7 @@ interface AgencyRepository : Repository<Agency, String> {
      * with a different value from that found in the persistence store. Also thrown if the entity is assumed to be
      * present but does not exist in the database.
      */
+    @RestResource(exported = false)
     fun save(entity: Agency): Agency
 
     /**
@@ -33,5 +35,6 @@ interface AgencyRepository : Repository<Agency, String> {
      * attribute with a different value from that found in the persistence store. Also thrown if at least one
      * entity is assumed to be present but does not exist in the database.
      */
+    @RestResource(exported = false)
     fun deleteAll()
 }
