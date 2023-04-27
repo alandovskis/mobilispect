@@ -3,6 +3,7 @@ package com.mobilispect.backend.data.transit_land
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
@@ -16,6 +17,8 @@ private const val CONNECT_TIMEOUT_ms = 2_000
 
 @Configuration
 class TransitLandClientConfiguration {
+    private val logger = LoggerFactory.getLogger(TransitLandClient::class.java)
+
     @Bean
     fun webclient(builder: WebClient.Builder): WebClient {
         val httpClient = HttpClient.create()
@@ -23,6 +26,21 @@ class TransitLandClientConfiguration {
             .doOnConnected { connection ->
                 connection.addHandlerLast(ReadTimeoutHandler(2))
                 connection.addHandlerLast(WriteTimeoutHandler(2))
+            }
+            .doOnRequest { request, _ ->
+                logger.trace(
+                    "${
+                        request.method().name()
+                    } ${request.uri()} ${request.fullPath()} ->"
+                )
+            }
+            .doOnResponse { response, _ ->
+                logger.trace(
+                    "<- {}: {} {}",
+                    response.uri(),
+                    response.status().codeAsText(),
+                    response.status().reasonPhrase()
+                )
             }
 
         return builder
