@@ -12,6 +12,7 @@ plugins {
     id("info.solidsoft.pitest") version "1.9.11"
     id("org.cyclonedx.bom") version "1.7.4"
     alias(libs.plugins.square.sortDependencies)
+    alias(libs.plugins.springdoc.openapi)
 }
 
 group = "com.mobilispect"
