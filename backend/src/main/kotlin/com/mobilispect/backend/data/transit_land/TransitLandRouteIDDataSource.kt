@@ -1,8 +1,9 @@
 package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.api.PagingParameters
+import com.mobilispect.backend.data.route.FeedLocalRouteID
+import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.RouteIDDataSource
-import com.mobilispect.backend.data.route.RouteIDMap
 import com.mobilispect.backend.data.route.RouteResultItem
 
 /**
@@ -12,11 +13,11 @@ internal class TransitLandRouteIDDataSource(
     private val transitLandClient: TransitLandClient,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : RouteIDDataSource {
-    override fun routeIDs(feedID: String): Result<RouteIDMap> {
+    override fun routeIDs(feedID: String): Result<Map<FeedLocalRouteID, OneStopRouteID>> {
         return findRouteIDs(feedID)
             .map { routes ->
-                routes.fold(RouteIDMap()) { acc, item ->
-                    acc.add(item.routeID, item.id)
+                routes.fold(mutableMapOf()) { acc, item ->
+                    acc[item.routeID] = item.id
                     acc
                 }
             }

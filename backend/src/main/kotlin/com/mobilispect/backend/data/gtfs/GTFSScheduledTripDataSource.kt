@@ -45,7 +45,7 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteI
                                 ?.filter { it.exception_type == GTFSCalendarDate.REMOVED }
                                 ?.map { it.date } ?: emptyList()
                         val dates = findDates(calendars, trip, removed, added)
-                        val routeID = routeIDs.get(routeID = trip.route_id) ?: return@mapNotNull null
+                        val routeID = routeIDs[trip.route_id] ?: return@mapNotNull null
                         ScheduledTrip(
                             _id = trip.trip_id,
                             routeID = routeID,
