@@ -1,5 +1,5 @@
 package com.mobilispect.backend.data.stop
 
-interface OneStopStopIDDataSource {
+interface StopIDDataSource {
     fun stops(feedID: String): Result<StopIDMap>
 }

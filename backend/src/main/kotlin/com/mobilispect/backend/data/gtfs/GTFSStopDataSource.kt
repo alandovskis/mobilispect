@@ -1,8 +1,8 @@
 package com.mobilispect.backend.data.gtfs
 
-import com.mobilispect.backend.data.stop.OneStopStopIDDataSource
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopDataSource
+import com.mobilispect.backend.data.stop.StopIDDataSource
 import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -16,7 +16,7 @@ import java.io.IOException
  * A [StopDataSource] that uses a GTFS feed as a source.
  */
 @OptIn(ExperimentalSerializationApi::class)
-internal class GTFSStopDataSource(private val stopIDDataSource: OneStopStopIDDataSource) : StopDataSource {
+internal class GTFSStopDataSource(private val stopIDDataSource: StopIDDataSource) : StopDataSource {
     private val logger = LoggerFactory.getLogger(GTFSStopDataSource::class.java)
     override fun stops(root: String, version: String, feedID: String): Result<Collection<Stop>> =
         stopIDDataSource.stops(feedID)

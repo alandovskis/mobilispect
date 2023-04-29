@@ -1,7 +1,7 @@
 package com.mobilispect.backend.data.gtfs
 
-import com.mobilispect.backend.data.stop.OneStopStopIDDataSource
 import com.mobilispect.backend.data.stop.Stop
+import com.mobilispect.backend.data.stop.StopIDDataSource
 import com.mobilispect.backend.data.stop.StopIDMap
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
@@ -63,7 +63,7 @@ internal class GTFSStopDataSourceTest {
     }
 }
 
-class TestStopIDDataSource : OneStopStopIDDataSource {
+class TestStopIDDataSource : StopIDDataSource {
     private val stopIDMap = StopIDMap()
 
     init {
