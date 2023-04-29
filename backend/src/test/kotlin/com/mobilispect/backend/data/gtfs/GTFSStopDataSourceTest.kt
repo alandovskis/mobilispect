@@ -2,7 +2,6 @@ package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopIDDataSource
-import com.mobilispect.backend.data.stop.StopIDMap
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat
@@ -64,12 +63,12 @@ internal class GTFSStopDataSourceTest {
 }
 
 class TestStopIDDataSource : StopIDDataSource {
-    private val stopIDMap = StopIDMap()
+    private val stopIDMap = mutableMapOf<String, String>()
 
     init {
-        stopIDMap.add("71998", "s-f256hrvf2g-1eboulevard~11eavenue")
-        stopIDMap.add("71999", "s-f256hrtws3-1eboulevard~11eavenue")
+        stopIDMap["71998"] = "s-f256hrvf2g-1eboulevard~11eavenue"
+        stopIDMap["71999"] = "s-f256hrtws3-1eboulevard~11eavenue"
     }
 
-    override fun stops(feedID: String): Result<StopIDMap> = Result.success(stopIDMap)
+    override fun stops(feedID: String): Result<Map<String, String>> = Result.success(stopIDMap)
 }

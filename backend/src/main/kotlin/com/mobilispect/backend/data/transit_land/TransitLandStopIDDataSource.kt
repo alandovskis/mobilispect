@@ -2,7 +2,6 @@ package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.stop.StopIDDataSource
-import com.mobilispect.backend.data.stop.StopIDMap
 import com.mobilispect.backend.data.stop.StopResultItem
 
 /**
@@ -12,11 +11,11 @@ class TransitLandStopIDDataSource(
     private val transitLandClient: TransitLandClient,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : StopIDDataSource {
-    override fun stops(feedID: String): Result<StopIDMap> {
+    override fun stops(feedID: String): Result<Map<String, String>> {
         return findStopIDs(feedID)
             .map { stops ->
-                stops.fold(StopIDMap()) { acc, item ->
-                    acc.add(item.stopID, item.id)
+                stops.fold(mutableMapOf()) { acc, item ->
+                    acc[item.stopID] = item.id
                     acc
                 }
             }
