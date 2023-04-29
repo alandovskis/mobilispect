@@ -2,13 +2,13 @@ package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.route.FeedLocalRouteID
 import com.mobilispect.backend.data.route.OneStopRouteID
-import com.mobilispect.backend.data.route.OneStopRouteIDDataSource
+import com.mobilispect.backend.data.route.RouteIDDataSource
 import com.mobilispect.backend.data.route.RouteIDMap
 
 /**
- * A [OneStopRouteIDDataSource] suitable for testing.
+ * A [RouteIDDataSource] suitable for testing.
  */
-internal class TestRouteIDDataSource : OneStopRouteIDDataSource {
+internal class TestRouteIDDataSource : RouteIDDataSource {
     private val routeIDMap = RouteIDMap()
 
     init {

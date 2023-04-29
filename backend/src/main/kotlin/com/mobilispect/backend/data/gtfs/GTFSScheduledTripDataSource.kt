@@ -1,6 +1,6 @@
 package com.mobilispect.backend.data.gtfs
 
-import com.mobilispect.backend.data.route.OneStopRouteIDDataSource
+import com.mobilispect.backend.data.route.RouteIDDataSource
 import com.mobilispect.backend.data.schedule.ScheduledTrip
 import com.mobilispect.backend.data.schedule.ScheduledTripDataSource
 import com.mobilispect.backend.util.readTextAndNormalize
@@ -19,7 +19,7 @@ import java.time.LocalDate
 /**
  * A [ScheduledTripDataSource] that uses a GTFS feed as source for [ScheduledTrip]s.
  */
-internal class GTFSScheduledTripDataSource(private val routeIDDataSource: OneStopRouteIDDataSource) :
+internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteIDDataSource) :
     ScheduledTripDataSource {
     private val logger: Logger = LoggerFactory.getLogger(GTFSScheduledTripDataSource::class.java)
 
