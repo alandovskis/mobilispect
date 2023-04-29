@@ -1,9 +1,9 @@
 package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.agency.AgencyDataSource
+import com.mobilispect.backend.data.transit_land.TransitLandAgencyIDDataSource
 import com.mobilispect.backend.data.transit_land.TransitLandClient
 import com.mobilispect.backend.data.transit_land.TransitLandCredentialsRepository
-import com.mobilispect.backend.data.transit_land.TransitLandOneStopAgencyIDDataSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -16,6 +16,6 @@ internal class GTFSAgencyDataSourceConfiguration {
         transitLandCredentialsRepository: TransitLandCredentialsRepository
     ): AgencyDataSource =
         GTFSAgencyDataSource(
-            TransitLandOneStopAgencyIDDataSource(transitLandClient, transitLandCredentialsRepository)
+            TransitLandAgencyIDDataSource(transitLandClient, transitLandCredentialsRepository)
         )
 }

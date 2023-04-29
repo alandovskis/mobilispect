@@ -1,6 +1,6 @@
 package com.mobilispect.backend.data.gtfs
 
-import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
+import com.mobilispect.backend.data.agency.AgencyIDDataSource
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteIDDataSource
@@ -18,7 +18,7 @@ import java.io.IOException
 @OptIn(ExperimentalSerializationApi::class)
 @Suppress("ReturnCount")
 class GTFSRouteDataSource(
-    private val agencyIDDataSource: OneStopAgencyIDDataSource,
+    private val agencyIDDataSource: AgencyIDDataSource,
     private val routeIDDataSource: RouteIDDataSource
 ) : RouteDataSource {
     override fun routes(root: String, version: String, feedID: String): Result<Collection<Route>> {

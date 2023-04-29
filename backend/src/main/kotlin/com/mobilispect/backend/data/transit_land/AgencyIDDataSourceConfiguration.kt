@@ -1,14 +1,14 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
+import com.mobilispect.backend.data.agency.AgencyIDDataSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class OneStopAgencyIDDataSourceConfiguration {
+internal class AgencyIDDataSourceConfiguration {
     @Bean
     fun oneStopAgencyIDDataSource(
         client: TransitLandClient,
         credentialRepository: TransitLandCredentialsRepository
-    ): OneStopAgencyIDDataSource = TransitLandOneStopAgencyIDDataSource(client, credentialRepository)
+    ): AgencyIDDataSource = TransitLandAgencyIDDataSource(client, credentialRepository)
 }

@@ -1,9 +1,9 @@
 package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.agency.Agency
+import com.mobilispect.backend.data.agency.AgencyIDDataSource
 import com.mobilispect.backend.data.agency.FeedLocalAgencyID
 import com.mobilispect.backend.data.agency.OneStopAgencyID
-import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat
@@ -24,7 +24,7 @@ internal class GTFSAgencyDataSourceTest {
 
     @Test
     fun fileNotFound(@TempDir root: Path) {
-        val agencyIDDataSource = TestOneStopAgencyIDDataSource(emptyMap())
+        val agencyIDDataSource = TestAgencyIDDataSource(emptyMap())
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
 
         val result = subject.agencies(root.toString(), VERSION, "Montréal").exceptionOrNull()!!
@@ -35,7 +35,7 @@ internal class GTFSAgencyDataSourceTest {
     @Test
     fun corrupted(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-agency-corrupt.txt", root = root, dst = "agency.txt")
-        val agencyIDDataSource = TestOneStopAgencyIDDataSource(emptyMap())
+        val agencyIDDataSource = TestAgencyIDDataSource(emptyMap())
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
 
         val result = subject.agencies(root.toString(), VERSION, "Montréal").exceptionOrNull()
@@ -46,7 +46,7 @@ internal class GTFSAgencyDataSourceTest {
     @Test
     fun missingOneStopID(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-agency.txt", root = root, dst = "agency.txt")
-        val agencyIDDataSource = TestOneStopAgencyIDDataSource(
+        val agencyIDDataSource = TestAgencyIDDataSource(
             mapOf(
                 FeedLocalAgencyID("STM") to OneStopAgencyID("o-f25d-socitdetransportdemontral")
             )
@@ -61,7 +61,7 @@ internal class GTFSAgencyDataSourceTest {
     @Test
     fun importsSuccessfully(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-agency.txt", root = root, dst = "agency.txt")
-        val agencyIDDataSource = TestOneStopAgencyIDDataSource(
+        val agencyIDDataSource = TestAgencyIDDataSource(
             mapOf(
                 FeedLocalAgencyID("CITPI") to OneStopAgencyID("o-f256-exo~citlapresquîle"),
                 FeedLocalAgencyID("STM") to OneStopAgencyID("o-f25d-socitdetransportdemontral")
@@ -76,8 +76,8 @@ internal class GTFSAgencyDataSourceTest {
         )
     }
 
-    class TestOneStopAgencyIDDataSource(private val pairs: Map<FeedLocalAgencyID, OneStopAgencyID>) :
-        OneStopAgencyIDDataSource {
+    class TestAgencyIDDataSource(private val pairs: Map<FeedLocalAgencyID, OneStopAgencyID>) :
+        AgencyIDDataSource {
         override fun agencyIDs(feedID: String): Result<Map<FeedLocalAgencyID, OneStopAgencyID>> = Result.success(pairs)
     }
 }

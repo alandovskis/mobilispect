@@ -1,8 +1,8 @@
 package com.mobilispect.backend.data.gtfs
 
+import com.mobilispect.backend.data.agency.AgencyIDDataSource
 import com.mobilispect.backend.data.agency.FeedLocalAgencyID
 import com.mobilispect.backend.data.agency.OneStopAgencyID
-import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
 import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.util.copyResourceTo
@@ -69,7 +69,7 @@ internal class GTFSRouteDataSourceTest {
         )
     }
 
-    class TestAgencyIDDataSource : OneStopAgencyIDDataSource {
+    class TestAgencyIDDataSource : AgencyIDDataSource {
         override fun agencyIDs(feedID: String): Result<Map<FeedLocalAgencyID, OneStopAgencyID>> =
             Result.success(mapOf(FeedLocalAgencyID("CITPI") to OneStopAgencyID("o-f256-exo~citlapresquîle")))
     }

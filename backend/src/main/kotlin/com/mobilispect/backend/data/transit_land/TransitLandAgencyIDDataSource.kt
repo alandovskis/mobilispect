@@ -1,16 +1,16 @@
 package com.mobilispect.backend.data.transit_land
 
+import com.mobilispect.backend.data.agency.AgencyIDDataSource
 import com.mobilispect.backend.data.agency.FeedLocalAgencyID
 import com.mobilispect.backend.data.agency.OneStopAgencyID
-import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
 
 /**
- * A [OneStopAgencyIDDataSource] that uses transit.land for agency IDs.
+ * A [AgencyIDDataSource] that uses transit.land for agency IDs.
  */
-class TransitLandOneStopAgencyIDDataSource(
+class TransitLandAgencyIDDataSource(
     private val transitLandClient: TransitLandClient,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository,
-) : OneStopAgencyIDDataSource {
+) : AgencyIDDataSource {
     override fun agencyIDs(feedID: String): Result<Map<FeedLocalAgencyID, OneStopAgencyID>> {
         val apiKey = transitLandCredentialsRepository.get() ?: return Result.failure(Exception("Missing API key"))
         return transitLandClient.agencies(apiKey = apiKey, feedID = feedID)

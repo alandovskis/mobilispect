@@ -2,7 +2,7 @@ package com.mobilispect.backend.data.gtfs
 
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyDataSource
-import com.mobilispect.backend.data.agency.OneStopAgencyIDDataSource
+import com.mobilispect.backend.data.agency.AgencyIDDataSource
 import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -18,7 +18,7 @@ import java.io.IOException
 @OptIn(ExperimentalSerializationApi::class)
 @Component
 internal class GTFSAgencyDataSource(
-    private val agencyIDDataSource: OneStopAgencyIDDataSource
+    private val agencyIDDataSource: AgencyIDDataSource
 ) : AgencyDataSource {
     override fun agencies(root: String, version: String, feedID: String): Result<Collection<Agency>> {
         val agencyIDRes = agencyIDDataSource.agencyIDs(feedID)
