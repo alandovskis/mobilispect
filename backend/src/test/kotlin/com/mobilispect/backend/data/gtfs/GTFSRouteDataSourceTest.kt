@@ -50,23 +50,21 @@ internal class GTFSRouteDataSourceTest {
 
         assertThat(routes).contains(
             Route(
-                _id = OneStopRouteID("r-f2566-1"),
+                id = OneStopRouteID("r-f2566-1"),
                 shortName = "1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
-                version = VERSION,
-                headwayHistory = emptyList()
+                version = VERSION
             )
         )
 
         assertThat(routes).contains(
             Route(
-                _id = OneStopRouteID("r-f2566-t1"),
+                id = OneStopRouteID("r-f2566-t1"),
                 shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
-                version = VERSION,
-                headwayHistory = emptyList()
+                version = VERSION
             )
         )
     }

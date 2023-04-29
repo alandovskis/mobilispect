@@ -45,12 +45,11 @@ class GTFSRouteDataSource(
                 val agencyID = agencyIDs[route.agency_id] ?: return@mapNotNull null
                 val routeID = routeIDs.get(route.route_id) ?: return@mapNotNull null
                 Route(
-                    _id = routeID,
+                    id = routeID,
                     shortName = route.route_short_name,
                     longName = route.route_long_name,
                     agencyID = agencyID,
-                    version = version,
-                    headwayHistory = emptyList()
+                    version = version
                 )
             })
         } catch (e: IOException) {

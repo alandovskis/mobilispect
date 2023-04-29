@@ -72,7 +72,7 @@ internal class GTFSAgencyDataSourceTest {
         val agencies = subject.agencies(root.toString(), VERSION, "Montréal").getOrNull()!!
 
         assertThat(agencies).contains(
-            Agency(_id = OneStopAgencyID("o-f256-exo~citlapresquîle"), name = "exo-La Presqu'île", version = VERSION)
+            Agency(id = OneStopAgencyID("o-f256-exo~citlapresquîle"), name = "exo-La Presqu'île", version = VERSION)
         )
     }
 

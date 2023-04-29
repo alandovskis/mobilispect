@@ -273,7 +273,7 @@ internal class ImportUpdatedFeedsServiceTest {
     private fun importedAllAgencies(version: String) {
         val agencies = agencyRepository.findAll()
         assertThat(agencies).contains(
-            Agency(_id = OneStopAgencyID("o-f256-exo~citlapresquîle"), name = "exo-La Presqu'île", version = version)
+            Agency(id = OneStopAgencyID("o-f256-exo~citlapresquîle"), name = "exo-La Presqu'île", version = version)
         )
     }
 
@@ -281,22 +281,20 @@ internal class ImportUpdatedFeedsServiceTest {
         val routes = routeRepository.findAll()
         assertThat(routes).contains(
             Route(
-                _id = OneStopRouteID("r-f2566-1"),
+                id = OneStopRouteID("r-f2566-1"),
                 shortName = "1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
-                version = version,
-                headwayHistory = emptyList()
+                version = version
             )
         )
         assertThat(routes).contains(
             Route(
-                _id = OneStopRouteID("r-f2566-t1"),
+                id = OneStopRouteID("r-f2566-t1"),
                 shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
-                version = version,
-                headwayHistory = emptyList()
+                version = version
             )
         )
     }

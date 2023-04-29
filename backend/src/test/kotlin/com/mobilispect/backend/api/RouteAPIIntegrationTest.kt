@@ -4,7 +4,6 @@ import com.mobilispect.backend.data.MongoDBInitializer
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.createMongoDBContainer
-import com.mobilispect.backend.data.route.HeadwayEntry
 import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteRepository
@@ -20,36 +19,29 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
 
-private val AGENCY_A = Agency(_id = OneStopAgencyID("o-abcd-a"), name = "A", version = "v1")
-private val AGENCY_B = Agency(_id = OneStopAgencyID("o-abcd-b"), name = "B", version = "v2")
+private val AGENCY_A = Agency(id = OneStopAgencyID("o-abcd-a"), name = "A", version = "v1")
+private val AGENCY_B = Agency(id = OneStopAgencyID("o-abcd-b"), name = "B", version = "v2")
 
 private val ROUTE_A1 = Route(
-    _id = OneStopRouteID("r-abcd-1"),
+    id = OneStopRouteID("r-abcd-1"),
     shortName = "1",
     longName = "Main Street",
-    agencyID = AGENCY_A._id,
-    version = "v2]1",
-    headwayHistory = listOf(
-        HeadwayEntry(medianHeadway_min = 5.0)
-    )
+    agencyID = OneStopAgencyID(AGENCY_A._id),
+    version = "v2"
 )
 private val ROUTE_A2 = Route(
-    _id = OneStopRouteID("r-abcd-2"),
+    id = OneStopRouteID("r-abcd-2"),
     shortName = "2",
     longName = "Central Avenue",
-    agencyID = AGENCY_A._id,
-    version = "v1",
-    headwayHistory = listOf(
-        HeadwayEntry(medianHeadway_min = 10.0)
-    )
+    agencyID = OneStopAgencyID(AGENCY_A._id),
+    version = "v1"
 )
 private val ROUTE_B1 = Route(
-    _id = OneStopRouteID("r-cdef-1"),
+    id = OneStopRouteID("r-cdef-1"),
     shortName = "1",
     longName = "1st Street",
-    agencyID = AGENCY_B._id,
-    version = "v2",
-    headwayHistory = emptyList()
+    agencyID = OneStopAgencyID(AGENCY_B._id),
+    version = "v2"
 )
 
 @SpringBootTest(
@@ -86,11 +78,6 @@ class RouteAPIIntegrationTest {
         for (route in positive) {
             assertThat(response.body).contains(""""shortName" : "${route.shortName}""")
             assertThat(response.body).contains(""""longName" : "${route.longName}""")
-            assertThat(response.body).contains(
-                """"medianHeadway_min" : ${
-                    route.headwayHistory.firstOrNull()?.medianHeadway_min
-                }"""
-            )
         }
         assertThat(response.body).doesNotContain(""""longName" : "${ROUTE_B1.longName}""")
     }
