@@ -12,11 +12,11 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 
-@Suppress("ConstPropertyName")
-private const val CONNECT_TIMEOUT_ms = 2_000
+private const val CONNECT_TIMEOUT_ms = 5_000
 
 @Configuration
-class TransitLandClientConfiguration {
+@Suppress("Unused")
+internal class TransitLandClientConfiguration {
     private val logger = LoggerFactory.getLogger(TransitLandClient::class.java)
 
     @Bean
@@ -24,8 +24,8 @@ class TransitLandClientConfiguration {
         val httpClient = HttpClient.create()
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_ms)
             .doOnConnected { connection ->
-                connection.addHandlerLast(ReadTimeoutHandler(2))
-                connection.addHandlerLast(WriteTimeoutHandler(2))
+                connection.addHandlerLast(ReadTimeoutHandler(5))
+                connection.addHandlerLast(WriteTimeoutHandler(5))
             }
             .doOnRequest { request, _ ->
                 logger.trace(
