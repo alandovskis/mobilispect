@@ -92,6 +92,22 @@ jobs:
       - name: Setup transit-land.properties
         run: cp ./src/main/resources/transit-land.sample.properties ./src/test/resources/transit-land.properties
 
+  test:
+    runs-on: ubuntu-22.04
+    name: "Test"
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
       - name: Run tests
         run: ./gradlew test
 
