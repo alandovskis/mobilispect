@@ -89,9 +89,6 @@ jobs:
       - name: Build
         run: ./gradlew assemble
 
-      - name: Setup transit-land.properties
-        run: cp ./src/main/resources/transit-land.sample.properties ./src/test/resources/transit-land.properties
-
   test:
     runs-on: ubuntu-22.04
     name: "Test"
@@ -107,6 +104,9 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+
+      - name: Setup transit-land.properties
+        run: cp ./src/main/resources/transit-land.sample.properties ./src/test/resources/transit-land.properties
 
       - name: Run tests
         run: ./gradlew test
