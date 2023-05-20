@@ -69,7 +69,7 @@ kotlin {
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "com.google.dagger",
                         "hilt-compiler",
-                        "2.46"
+                        "2.46.1"
                     )
                 )
                 implementation(libs.okhttp.profiler)
