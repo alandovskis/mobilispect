@@ -1,7 +1,6 @@
 plugins {
     id("com.android.test")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
 }
 
 android {

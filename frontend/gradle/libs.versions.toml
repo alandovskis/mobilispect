@@ -17,6 +17,7 @@ jetpackComposeBom = "2023.05.01"
 junit = "4.13.2"
 kotlinxCoroutines = "1.7.0"
 kotlinxDateTime = "0.4.0"
+kotlinxKover = "0.7.0"
 kotlinxSerialization = "1.5.0"
 ksp = "1.8.21-1.0.11"
 ktor = "2.3.0"
@@ -152,5 +153,8 @@ retrofit = [
 [plugins]
 # A static code analyzer for Kotlin
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
+# Code Coverage
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kotlinxKover" }
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
