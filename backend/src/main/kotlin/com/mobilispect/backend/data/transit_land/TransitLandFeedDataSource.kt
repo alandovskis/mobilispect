@@ -17,13 +17,14 @@ class TransitLandFeedDataSource(
             transitLandCredentialsRepository.get()
                 ?: return listOf(Result.failure(IllegalStateException("Missing API key")))
         return transitLandClient.agencies(apiKey = apiKey, region = region)
+            .map { result -> result.agencies.map { feed -> feed.feedID } }
             .onSuccess { feedIDs -> logger.debug("Found feed IDs: {}", feedIDs) }
             .onFailure { e -> logger.error("Unable to get feed IDs: $e") }
-            .map { agencies ->
-                agencies.agencies.map { item ->
+            .map { feedIDs ->
+                feedIDs.map { feedID ->
                     transitLandClient.feed(
                         apiKey = apiKey,
-                        feedID = item.feedID
+                        feedID = feedID
                     )
                 }
             }.getOrNull() ?: emptyList()
