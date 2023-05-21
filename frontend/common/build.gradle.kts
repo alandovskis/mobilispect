@@ -1,7 +1,5 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-// TODO: Remove once https://youtrack.jetbrains.com/issue/KTIJ-19369 is fixed - for alias call
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform")
     kotlin("kapt")

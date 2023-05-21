@@ -1,7 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-// TODO: Remove once https://youtrack.jetbrains.com/issue/KTIJ-19369 is fixed - for alias call
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dependency)
