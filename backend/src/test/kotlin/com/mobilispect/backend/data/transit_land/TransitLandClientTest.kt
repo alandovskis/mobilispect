@@ -161,6 +161,32 @@ internal class TransitLandClientTest {
     }
 
     @Test
+    fun agencies_corruptOneStopID() {
+        withMockServer(
+            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+                url = AGENCIES_URL, responseCode = 200, resource = "transit-land/feeds-for/corrupt-onestop-id.json"
+            )
+        ) { mockServer ->
+            val webClient = webClient(mockServer)
+
+            subject = TransitLandClient(webClient)
+            val response = subject.agencies(apiKey = "apikey", region = "city").getOrNull()!!
+
+            assertThat(response.after).isEqualTo(3973)
+            assertThat(response.agencies).contains(
+                AgencyResultItem(
+                    id = OneStopAgencyID("o-sr7f3-mtmmobilitaetrasportimolfetta"),
+                    name = "MTM Mobilita' e Trasporti Molfetta",
+                    version = "d043eb31ed57955e134917efbcd8912ccacd74d6",
+                    feedID = "f-sr7f3-mtmmobilitaetrasportimolfetta",
+                    agencyID = FeedLocalAgencyID("MTM")
+                )
+            )
+            assertThat(response.agencies).hasSize(1)
+        }
+    }
+
+    @Test
     fun agencies_success() {
         withMockServer(
             dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(

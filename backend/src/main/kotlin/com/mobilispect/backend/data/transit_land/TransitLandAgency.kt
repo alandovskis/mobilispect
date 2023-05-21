@@ -5,8 +5,6 @@ package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.agency.FeedLocalAgencyID
 import com.mobilispect.backend.data.agency.FeedLocalAgencyIDSerializer
-import com.mobilispect.backend.data.agency.OneStopAgencyID
-import com.mobilispect.backend.data.agency.OneStopAgencyIDSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
@@ -32,8 +30,7 @@ internal class TransitLandAgency(
     val geometry: PolygonGeometry? = null,
     val id: Int? = null,
 
-    @Serializable(with = OneStopAgencyIDSerializer::class)
-    @JsonNames("onestop_id") val onestopID: OneStopAgencyID,
+    val onestop_id: String,
 
     val operator: Operator? = null,
     val places: Array<Place> = emptyArray(),

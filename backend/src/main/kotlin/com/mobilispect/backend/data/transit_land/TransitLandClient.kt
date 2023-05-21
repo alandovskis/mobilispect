@@ -3,17 +3,15 @@ package com.mobilispect.backend.data.transit_land
 import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyResult
 import com.mobilispect.backend.data.agency.AgencyResultItem
-import com.mobilispect.backend.data.api.GenericError
-import com.mobilispect.backend.data.api.NetworkError
-import com.mobilispect.backend.data.api.PagingParameters
-import com.mobilispect.backend.data.api.TooManyRequests
-import com.mobilispect.backend.data.api.Unauthorized
+import com.mobilispect.backend.data.agency.OneStopAgencyID
+import com.mobilispect.backend.data.api.*
 import com.mobilispect.backend.data.feed.Feed
 import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.route.RouteResultItem
 import com.mobilispect.backend.data.stop.StopResult
 import com.mobilispect.backend.data.stop.StopResultItem
+import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
@@ -26,6 +24,7 @@ import java.time.LocalDate
  */
 @Component
 class TransitLandClient(private val webClient: WebClient) {
+    private val logger = LoggerFactory.getLogger(TransitLandClient::class.java)
     fun feed(apiKey: String, feedID: String): Result<VersionedFeed> {
         return handleError {
             val uri = "/feeds.json?onestop_id=$feedID"
@@ -64,14 +63,22 @@ class TransitLandClient(private val webClient: WebClient) {
             }
 
             val response = get(uri, apiKey, TransitLandAgencyResponse::class.java)
-            val agencies = response?.agencies?.map { remote ->
-                AgencyResultItem(
-                    id = remote.onestopID,
-                    name = remote.name,
-                    version = remote.feed.version,
-                    feedID = remote.feed.feed.oneStopID,
-                    agencyID = remote.agencyID
-                )
+            val agencies = response?.agencies?.mapNotNull { remote ->
+                try {
+                    val id = OneStopAgencyID(remote.onestop_id)
+                    AgencyResultItem(
+                        id = id,
+                        name = remote.name,
+                        version = remote.feed.version,
+                        feedID = remote.feed.feed.oneStopID,
+                        agencyID = remote.agencyID
+                    )
+                } catch (e: IllegalArgumentException) {
+                    if (e.message?.startsWith("Must be in OneStopID format") == true) {
+                        return@mapNotNull null
+                    }
+                    throw e
+                }
             }
             return@handleError Result.success(AgencyResult(agencies.orEmpty(), response?.meta?.after ?: 0))
         }
