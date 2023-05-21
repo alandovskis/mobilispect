@@ -19,7 +19,12 @@ internal class OneStopAgencyIDTest {
     }
 
     @Test
-    fun agencyIsCreatedIfValidID() {
+    fun idIsAcceptedIfHasGeohashAndName() {
         OneStopAgencyID("o-a-b")
+    }
+
+    @Test
+    fun idIsAcceptedIfMissingGeohashButHasName() {
+        OneStopAgencyID("o-orleans~express~ca")
     }
 }
