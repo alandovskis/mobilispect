@@ -42,7 +42,7 @@ android {
             isDebuggable = false
         }
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "META-INF/AL2.0"
             excludes += "META-INF/LGPL2.1"
