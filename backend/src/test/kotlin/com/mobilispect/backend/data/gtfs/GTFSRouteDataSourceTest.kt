@@ -43,7 +43,38 @@ internal class GTFSRouteDataSourceTest {
     }
 
     @Test
-    fun importsSuccessfully(@TempDir root: Path) {
+    fun importsSuccessfullyEvenIfMissingAgencyID(@TempDir root: Path) {
+        resourceLoader.copyResourceTo(
+            src = "classpath:gtfs/routes/missing-agency-id.txt",
+            root = root,
+            dst = "routes.txt"
+        )
+
+        val routes = subject.routes(root.toString(), VERSION, FEED_ID).getOrNull()!!
+
+        assertThat(routes).contains(
+            Route(
+                id = OneStopRouteID("r-f2566-1"),
+                shortName = "1",
+                longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
+                agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
+                version = VERSION
+            )
+        )
+
+        assertThat(routes).contains(
+            Route(
+                id = OneStopRouteID("r-f2566-t1"),
+                shortName = "T1",
+                longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
+                agencyID = OneStopAgencyID("o-f256-exo~citlapresquîle"),
+                version = VERSION
+            )
+        )
+    }
+
+    @Test
+    fun importsSuccessfullyWithAgencyID(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-routes.txt", root = root, dst = "routes.txt")
 
         val routes = subject.routes(root.toString(), VERSION, FEED_ID).getOrNull()!!

@@ -14,5 +14,5 @@ class GTFSRoute(
     val route_long_name: String,
 
     @Serializable(with = FeedLocalAgencyIDSerializer::class)
-    val agency_id: FeedLocalAgencyID
+    val agency_id: FeedLocalAgencyID? = null,
 )
