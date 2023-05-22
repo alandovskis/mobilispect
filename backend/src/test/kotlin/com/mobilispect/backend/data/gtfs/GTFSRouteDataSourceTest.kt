@@ -35,7 +35,7 @@ internal class GTFSRouteDataSourceTest {
 
     @Test
     fun corrupted(@TempDir root: Path) {
-        resourceLoader.copyResourceTo(src = "classpath:citpi-routes-corrupt.txt", root = root, dst = "routes.txt")
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/routes/corrupt.txt", root = root, dst = "routes.txt")
 
         val result = subject.routes(root.toString(), VERSION, FEED_ID).exceptionOrNull()
 
@@ -75,7 +75,7 @@ internal class GTFSRouteDataSourceTest {
 
     @Test
     fun importsSuccessfullyWithAgencyID(@TempDir root: Path) {
-        resourceLoader.copyResourceTo(src = "classpath:citpi-routes.txt", root = root, dst = "routes.txt")
+        resourceLoader.copyResourceTo(src = "classpath:gtfs/routes/full.txt", root = root, dst = "routes.txt")
 
         val routes = subject.routes(root.toString(), VERSION, FEED_ID).getOrNull()!!
 
