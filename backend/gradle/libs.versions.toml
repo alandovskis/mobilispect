@@ -3,6 +3,7 @@ kotlin = "1.8.21"
 kotlinxCoroutines = "1.7.1"
 kotlinxSerializationCSV = "2.0.0"
 kotlinxSerialization = "1.5.1"
+resilience4j = "1.7.0"
 springBoot = "3.1.0"
 springDependency = "1.1.0"
 springDoc = "2.1.0"
@@ -16,6 +17,9 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 # Serialization
 kotlinx-serialization-csv = { module = "de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv", version.ref = "kotlinxSerializationCSV" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# Fault Tolerance
+resilience4j-spring = { module = "io.github.resilience4j:resilience4j-spring-boot2", version.ref = "resilience4j" }
 
 # View OpenAPI
 springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springDoc" }

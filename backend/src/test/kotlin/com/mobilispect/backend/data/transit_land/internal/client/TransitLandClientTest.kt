@@ -24,10 +24,10 @@ import org.springframework.core.io.ResourceLoader
 import org.springframework.web.reactive.function.client.WebClient
 import java.time.LocalDate
 
-private const val FEEDS_URL = "/api/v2/rest/feeds.json"
-private const val AGENCIES_URL = "/api/v2/rest/agencies.json"
-private const val ROUTES_URL = "/api/v2/rest/routes.json"
-private const val STOPS_URL = "/api/v2/rest/stops.json"
+const val FEEDS_URL = "/api/v2/rest/feeds.json"
+const val AGENCIES_URL = "/api/v2/rest/agencies.json"
+const val ROUTES_URL = "/api/v2/rest/routes.json"
+const val STOPS_URL = "/api/v2/rest/stops.json"
 
 @SpringBootTest
 internal class TransitLandClientTest {
