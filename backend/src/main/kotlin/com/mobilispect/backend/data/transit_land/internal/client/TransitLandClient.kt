@@ -1,16 +1,11 @@
-package com.mobilispect.backend.data.transit_land
+package com.mobilispect.backend.data.transit_land.internal.client
 
-import com.mobilispect.backend.data.agency.AgencyResult
-import com.mobilispect.backend.data.agency.AgencyResultItem
 import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.api.*
 import com.mobilispect.backend.data.feed.Feed
 import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.VersionedFeed
-import com.mobilispect.backend.data.route.RouteResultItem
-import com.mobilispect.backend.data.stop.StopResult
-import com.mobilispect.backend.data.stop.StopResultItem
-import com.mobilispect.backend.data.transit_land.api.TransitLandAPI
+import com.mobilispect.backend.data.transit_land.api.*
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler

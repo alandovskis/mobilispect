@@ -2,7 +2,9 @@ package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.stop.StopIDDataSource
-import com.mobilispect.backend.data.stop.StopResultItem
+import com.mobilispect.backend.data.transit_land.api.StopResultItem
+import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
+import com.mobilispect.backend.data.transit_land.internal.client.TransitLandClient
 
 /**
  * A [StopIDDataSource] that uses transit.land for stop IDs.

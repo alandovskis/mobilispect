@@ -1,6 +1,5 @@
-package com.mobilispect.backend.data.transit_land
+package com.mobilispect.backend.data.transit_land.internal.client
 
-import com.mobilispect.backend.data.agency.AgencyResultItem
 import com.mobilispect.backend.data.agency.FeedLocalAgencyID
 import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.api.NetworkError
@@ -11,8 +10,9 @@ import com.mobilispect.backend.data.feed.FeedVersion
 import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.route.FeedLocalRouteID
 import com.mobilispect.backend.data.route.OneStopRouteID
-import com.mobilispect.backend.data.route.RouteResultItem
-import com.mobilispect.backend.data.stop.StopResultItem
+import com.mobilispect.backend.data.transit_land.api.AgencyResultItem
+import com.mobilispect.backend.data.transit_land.api.RouteResultItem
+import com.mobilispect.backend.data.transit_land.api.StopResultItem
 import com.mobilispect.backend.util.ResourceDispatcher
 import com.mobilispect.backend.util.readTextAndNormalize
 import com.mobilispect.backend.util.withMockServer

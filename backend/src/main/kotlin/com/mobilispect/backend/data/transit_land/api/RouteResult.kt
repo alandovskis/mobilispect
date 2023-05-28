@@ -1,6 +1,4 @@
-package com.mobilispect.backend.data.transit_land
-
-import com.mobilispect.backend.data.route.RouteResultItem
+package com.mobilispect.backend.data.transit_land.api
 
 /**
  * The combination of routes extracted and any paging parameters.

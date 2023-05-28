@@ -1,5 +1,6 @@
-package com.mobilispect.backend.data.transit_land
+package com.mobilispect.backend.data.transit_land.internal.credentials
 
+import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.PropertySource
 import org.springframework.stereotype.Repository

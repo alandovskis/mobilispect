@@ -1,10 +1,7 @@
 package com.mobilispect.backend.data.transit_land.api
 
-import com.mobilispect.backend.data.agency.AgencyResult
 import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.feed.VersionedFeed
-import com.mobilispect.backend.data.stop.StopResult
-import com.mobilispect.backend.data.transit_land.RouteResult
 
 /**
  * A client to access the transitland API.

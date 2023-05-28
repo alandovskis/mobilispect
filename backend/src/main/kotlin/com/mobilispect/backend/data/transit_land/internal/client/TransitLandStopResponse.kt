@@ -1,4 +1,4 @@
-package com.mobilispect.backend.data.transit_land
+package com.mobilispect.backend.data.transit_land.internal.client
 
 import kotlinx.serialization.Serializable
 

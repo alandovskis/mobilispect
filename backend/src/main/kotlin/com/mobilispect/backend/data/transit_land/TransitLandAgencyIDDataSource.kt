@@ -3,6 +3,8 @@ package com.mobilispect.backend.data.transit_land
 import com.mobilispect.backend.data.agency.AgencyIDDataSource
 import com.mobilispect.backend.data.agency.FeedLocalAgencyID
 import com.mobilispect.backend.data.agency.OneStopAgencyID
+import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
+import com.mobilispect.backend.data.transit_land.internal.client.TransitLandClient
 
 /**
  * A [AgencyIDDataSource] that uses transit.land for agency IDs.

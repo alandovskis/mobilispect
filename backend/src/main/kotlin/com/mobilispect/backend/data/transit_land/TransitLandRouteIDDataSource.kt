@@ -4,7 +4,9 @@ import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.route.FeedLocalRouteID
 import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.RouteIDDataSource
-import com.mobilispect.backend.data.route.RouteResultItem
+import com.mobilispect.backend.data.transit_land.api.RouteResultItem
+import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
+import com.mobilispect.backend.data.transit_land.internal.client.TransitLandClient
 
 /**
  * A [RouteIDDataSource] uses transit land for route IDs.

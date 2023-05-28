@@ -1,4 +1,4 @@
-package com.mobilispect.backend.data.agency
+package com.mobilispect.backend.data.transit_land.api
 
 /**
  * The combination of agencies extracted and any paging parameters.

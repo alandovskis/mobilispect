@@ -1,6 +1,7 @@
 package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.feed.VersionedFeed
+import com.mobilispect.backend.data.transit_land.internal.client.TransitLandClient
 import com.mobilispect.backend.util.readTextAndNormalize
 import com.mobilispect.backend.util.withMockServer
 import okhttp3.mockwebserver.Dispatcher

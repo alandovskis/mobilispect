@@ -2,6 +2,8 @@ package com.mobilispect.backend.data.transit_land
 
 import com.mobilispect.backend.data.feed.FeedDataSource
 import com.mobilispect.backend.data.feed.VersionedFeed
+import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
+import com.mobilispect.backend.data.transit_land.internal.client.TransitLandClient
 import org.slf4j.LoggerFactory
 
 /**
