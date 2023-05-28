@@ -1,6 +1,5 @@
 package com.mobilispect.backend.data.transit_land
 
-import com.mobilispect.backend.data.agency.Agency
 import com.mobilispect.backend.data.agency.AgencyResult
 import com.mobilispect.backend.data.agency.AgencyResultItem
 import com.mobilispect.backend.data.agency.OneStopAgencyID
@@ -57,6 +56,9 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build()
     }
 
+    /**
+     * Retrieve the [Feed] identified by [feedID].
+     */
     fun feed(apiKey: String, feedID: String): Result<VersionedFeed> {
         return handleError {
             val uri = "/feeds.json?onestop_id=$feedID"
@@ -80,7 +82,7 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
     }
 
     /**
-     * Retrieve all [Agency] that serve a given [region].
+     * Retrieve all agencies that serve a given [region] or are contained in the feed identified by [feedID].
      */
     @Suppress("ReturnCount")
     fun agencies(apiKey: String, region: String? = null, feedID: String? = null): Result<AgencyResult> {
@@ -115,6 +117,9 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
         }
     }
 
+    /**
+     * Retrieve the routes contained in the feed identified by [feedID].
+     */
     fun routes(apiKey: String, feedID: String, paging: PagingParameters = PagingParameters()): Result<RouteResult> {
         return handleError {
             val uri = pagedURI("/routes.json?feed_onestop_id=$feedID", paging)
@@ -128,6 +133,9 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
         }
     }
 
+    /**
+     * Retrieve all stops contained in the feed identified by [feedID].
+     */
     fun stops(apiKey: String, feedID: String, paging: PagingParameters = PagingParameters()): Result<StopResult> {
         return handleError {
             val uri = pagedURI("/stops.json?feed_onestop_ids=$feedID", paging)
