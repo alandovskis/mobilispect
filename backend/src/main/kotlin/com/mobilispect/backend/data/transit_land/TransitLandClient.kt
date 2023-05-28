@@ -11,20 +11,52 @@ import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.route.RouteResultItem
 import com.mobilispect.backend.data.stop.StopResult
 import com.mobilispect.backend.data.stop.StopResultItem
+import io.netty.channel.ChannelOption
+import io.netty.handler.timeout.ReadTimeoutHandler
+import io.netty.handler.timeout.WriteTimeoutHandler
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.WebClientResponseException
+import reactor.netty.http.client.HttpClient
 import java.time.LocalDate
+
+private const val CONNECT_TIMEOUT_ms = 5_000
 
 /**
  * A client to access the transitland API.
  */
 @Component
-class TransitLandClient(private val webClient: WebClient) {
+class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://transit.land/api/v2/rest") {
     private val logger = LoggerFactory.getLogger(TransitLandClient::class.java)
+
+    private val webClient: WebClient
+
+    init {
+        val httpClient = HttpClient.create().option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_ms)
+            .doOnConnected { connection ->
+                connection.addHandlerLast(ReadTimeoutHandler(5))
+                connection.addHandlerLast(WriteTimeoutHandler(5))
+            }.doOnRequest { request, _ ->
+                logger.trace(
+                    "${
+                        request.method().name()
+                    } ${request.uri()} ${request.fullPath()} ->"
+                )
+            }.doOnResponse { response, _ ->
+                logger.trace(
+                    "<- {}: {} {}", response.uri(), response.status().codeAsText(), response.status().reasonPhrase()
+                )
+            }
+
+        webClient = builder.baseUrl(baseURL).clientConnector(ReactorClientHttpConnector(httpClient))
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build()
+    }
+
     fun feed(apiKey: String, feedID: String): Result<VersionedFeed> {
         return handleError {
             val uri = "/feeds.json?onestop_id=$feedID"
@@ -33,8 +65,7 @@ class TransitLandClient(private val webClient: WebClient) {
                 val latestVersion = remote.feed_versions.firstOrNull() ?: return@mapNotNull null
                 VersionedFeed(
                     feed = Feed(
-                        _id = feedID,
-                        url = latestVersion.url
+                        _id = feedID, url = latestVersion.url
                     ),
                     version = FeedVersion(
                         _id = latestVersion.sha1,
@@ -90,9 +121,7 @@ class TransitLandClient(private val webClient: WebClient) {
             val response = get(uri, apiKey, TransitLandRouteResponse::class.java)
             val routes = response?.routes?.map { remote ->
                 RouteResultItem(
-                    id = remote.onestopID,
-                    agencyID = remote.agency.agencyID,
-                    routeID = remote.routeID
+                    id = remote.onestopID, agencyID = remote.agency.agencyID, routeID = remote.routeID
                 )
             }
             return@handleError Result.success(RouteResult(routes.orEmpty(), response?.meta?.after ?: 0))
@@ -105,8 +134,7 @@ class TransitLandClient(private val webClient: WebClient) {
             val response = get(uri, apiKey, TransitLandStopResponse::class.java)
             val stops = response?.stops?.map { remote ->
                 StopResultItem(
-                    id = remote.onestopID,
-                    stopID = remote.stopID
+                    id = remote.onestopID, stopID = remote.stopID
                 )
             }
             return@handleError Result.success(StopResult(stops.orEmpty(), response?.meta?.after ?: 0))
@@ -138,16 +166,9 @@ class TransitLandClient(private val webClient: WebClient) {
     }
 
     private fun <T> get(
-        uri: String,
-        apiKey: String,
-        clazz: Class<T>
+        uri: String, apiKey: String, clazz: Class<T>
     ): T? {
-        return webClient.get()
-            .uri(uri)
-            .header("apikey", apiKey)
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToMono(clazz)
-            .block()
+        return webClient.get().uri(uri).header("apikey", apiKey).accept(MediaType.APPLICATION_JSON).retrieve()
+            .bodyToMono(clazz).block()
     }
 }

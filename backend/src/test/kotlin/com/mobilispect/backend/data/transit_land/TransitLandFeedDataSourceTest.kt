@@ -27,10 +27,9 @@ class TransitLandFeedDataSourceTest {
                 feedResource = "transit-land/feed/full.json"
             )
         ) { mockServer ->
-            val client = WebClient.builder()
-                .baseUrl(mockServer.url("/api/v2/rest/").toString())
-                .build()
-            val transitLandClient = TransitLandClient(client)
+            val transitLandClient = TransitLandClient(
+                builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
+            )
             val subject = TransitLandFeedDataSource(
                 transitLandClient = transitLandClient,
                 transitLandCredentialsRepository = FakeTransitLandCredentialsRepository()

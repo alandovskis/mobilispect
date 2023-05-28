@@ -44,10 +44,9 @@ internal class TransitLandClientTest {
         val mockServer = MockWebServer()
         mockServer.dispatcher = FeedDispatcher(responseCode = 200, resourcePath = null)
         mockServer.start()
-        val webClient = webClient(mockServer)
         mockServer.shutdown()
 
-        subject = TransitLandClient(webClient)
+        subject = TransitLandClient(builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString())
         val result = subject.feed(apiKey = "apikey", feedID = "f-f25f-rseaudetransportdelongueuil")
 
         assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
@@ -56,9 +55,9 @@ internal class TransitLandClientTest {
     @Test
     fun feed_rateLimited() {
         withMockServer(dispatcher = FeedDispatcher(responseCode = 429, resourcePath = null)) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
+            )
             val response =
                 subject.feed(apiKey = "apikey", feedID = "f-f25f-rseaudetransportdelongueuil").exceptionOrNull()
 
@@ -74,9 +73,9 @@ internal class TransitLandClientTest {
                 resourcePath = "transit-land/common/unauthorized.json",
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
+            )
             val response =
                 subject.feed(apiKey = "apikey", feedID = "f-f25f-rseaudetransportdelongueuil").exceptionOrNull()!!
 
@@ -91,9 +90,10 @@ internal class TransitLandClientTest {
                 responseCode = 200, resourcePath = "transit-land/feed/full.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
 
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
+            )
             val response = subject.feed(apiKey = "apikey", feedID = "f-f25f-rseaudetransportdelongueuil").getOrNull()!!
 
             assertThat(response).isEqualTo(
@@ -119,10 +119,9 @@ internal class TransitLandClientTest {
             url = AGENCIES_URL, responseCode = 200, resource = null
         )
         mockServer.start()
-        val webClient = webClient(mockServer)
         mockServer.shutdown()
 
-        subject = TransitLandClient(webClient)
+        subject = TransitLandClient(builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString())
         val result = subject.agencies(apiKey = "apikey", region = "city")
 
         assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
@@ -135,9 +134,9 @@ internal class TransitLandClientTest {
                 url = AGENCIES_URL, responseCode = 429, resource = null
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
+            )
             val response = subject.agencies(apiKey = "apikey", region = "city").exceptionOrNull()
 
             assertThat(response).isInstanceOf(TooManyRequests::class.java)
@@ -146,18 +145,20 @@ internal class TransitLandClientTest {
 
     @Test
     fun agencies_unauthorized() {
-        withMockServer(
-            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
-                url = AGENCIES_URL, responseCode = 401, resource = "transit-land/common/unauthorized.json"
-            )
-        ) { mockServer ->
-            val webClient = webClient(mockServer)
+        fun function(): (MockWebServer) -> Unit = { mockServer ->
 
-            subject = TransitLandClient(webClient)
+            subject =
+                TransitLandClient(builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString())
             val response = subject.agencies(apiKey = "apikey", region = "city").exceptionOrNull()!!
 
             assertThat(response).isInstanceOf(Unauthorized::class.java)
         }
+
+        withMockServer(
+            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+                url = AGENCIES_URL, responseCode = 401, resource = "transit-land/common/unauthorized.json"
+            ), block = function()
+        )
     }
 
     @Test
@@ -167,9 +168,9 @@ internal class TransitLandClientTest {
                 url = AGENCIES_URL, responseCode = 200, resource = "transit-land/feeds-for/corrupt-onestop-id.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
+            )
             val response = subject.agencies(apiKey = "apikey", region = "city").getOrNull()!!
 
             assertThat(response.after).isEqualTo(3973)
@@ -193,9 +194,11 @@ internal class TransitLandClientTest {
                 url = AGENCIES_URL, responseCode = 200, resource = "transit-land/feeds-for/full.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
 
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
             val response = subject.agencies(apiKey = "apikey", region = "city").getOrNull()!!
 
             assertThat(response.after).isEqualTo(3973)
@@ -227,10 +230,13 @@ internal class TransitLandClientTest {
             url = ROUTES_URL, responseCode = 200, resource = null
         )
         mockServer.start()
-        val webClient = webClient(mockServer)
         mockServer.shutdown()
 
-        subject = TransitLandClient(webClient)
+        subject =
+            TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
         val result = subject.routes(apiKey = "apikey", feedID = "city")
 
         assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
@@ -243,9 +249,11 @@ internal class TransitLandClientTest {
                 url = ROUTES_URL, responseCode = 429, resource = "transit-land/common/rate-limited.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
 
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
             val response = subject.routes(apiKey = "apikey", feedID = "city").exceptionOrNull()
 
             assertThat(response).isInstanceOf(TooManyRequests::class.java)
@@ -256,14 +264,14 @@ internal class TransitLandClientTest {
     fun routes_unauthorized() {
         withMockServer(
             dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
-                ROUTES_URL,
-                401,
-                "transit-land/common/unauthorized.json"
+                ROUTES_URL, 401, "transit-land/common/unauthorized.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
 
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
             val response = subject.routes(apiKey = "apikey", feedID = "city").exceptionOrNull()!!
 
             assertThat(response).isInstanceOf(Unauthorized::class.java)
@@ -277,9 +285,11 @@ internal class TransitLandClientTest {
                 url = ROUTES_URL, responseCode = 200, resource = "transit-land/routes/full.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
 
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
             val response = subject.routes(apiKey = "apikey", feedID = "o-f25d-socitdetransportdemontral").getOrNull()!!
 
             assertThat(response.after).isEqualTo(20355691)
@@ -304,15 +314,14 @@ internal class TransitLandClientTest {
     fun stops_networkError() {
         val mockServer = MockWebServer()
         mockServer.dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
-            url = STOPS_URL,
-            responseCode = 200,
-            resource = null
+            url = STOPS_URL, responseCode = 200, resource = null
         )
         mockServer.start()
-        val webClient = webClient(mockServer)
+        val baseURL = mockServer.url("/api/v2/rest/").toString()
         mockServer.shutdown()
 
-        subject = TransitLandClient(webClient)
+        subject =
+            TransitLandClient(builder = WebClient.builder(), baseURL = baseURL)
         val result = subject.stops(apiKey = "apikey", feedID = "city")
 
         assertThat(result.exceptionOrNull()).isInstanceOf(NetworkError::class.java)
@@ -325,9 +334,10 @@ internal class TransitLandClientTest {
                 STOPS_URL, responseCode = 429, resource = null
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
             val response = subject.stops(apiKey = "apikey", feedID = "city").exceptionOrNull()
 
             assertThat(response).isInstanceOf(TooManyRequests::class.java)
@@ -341,9 +351,10 @@ internal class TransitLandClientTest {
                 STOPS_URL, responseCode = 401, resource = "transit-land/common/unauthorized.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
-
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
             val response = subject.stops(apiKey = "apikey", feedID = "city").exceptionOrNull()!!
 
             assertThat(response).isInstanceOf(Unauthorized::class.java)
@@ -357,9 +368,11 @@ internal class TransitLandClientTest {
                 STOPS_URL, responseCode = 200, resource = "transit-land/stops/full.json"
             )
         ) { mockServer ->
-            val webClient = webClient(mockServer)
 
-            subject = TransitLandClient(webClient)
+            subject = TransitLandClient(
+                builder = WebClient.builder(),
+                baseURL = mockServer.url("/api/v2/rest/").toString(),
+            )
             val response = subject.stops(apiKey = "apikey", feedID = "o-f25d-socitdetransportdemontral").getOrNull()!!
 
             assertThat(response.after).isEqualTo(439365585)
@@ -377,9 +390,6 @@ internal class TransitLandClientTest {
             )
         }
     }
-
-    private fun webClient(mockServer: MockWebServer): WebClient =
-        WebClient.builder().baseUrl(mockServer.url("/api/v2/rest/").toString()).build()
 
     inner class FeedDispatcher(private val responseCode: Int, private val resourcePath: String?) : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
