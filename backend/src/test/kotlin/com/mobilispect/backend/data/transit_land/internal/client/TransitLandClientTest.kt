@@ -14,12 +14,8 @@ import com.mobilispect.backend.data.transit_land.api.AgencyResultItem
 import com.mobilispect.backend.data.transit_land.api.RouteResultItem
 import com.mobilispect.backend.data.transit_land.api.StopResultItem
 import com.mobilispect.backend.util.ResourceDispatcher
-import com.mobilispect.backend.util.readTextAndNormalize
 import com.mobilispect.backend.util.withMockServer
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,6 +24,7 @@ import org.springframework.core.io.ResourceLoader
 import org.springframework.web.reactive.function.client.WebClient
 import java.time.LocalDate
 
+private const val FEEDS_URL = "/api/v2/rest/feeds.json"
 private const val AGENCIES_URL = "/api/v2/rest/agencies.json"
 private const val ROUTES_URL = "/api/v2/rest/routes.json"
 private const val STOPS_URL = "/api/v2/rest/stops.json"
@@ -42,7 +39,9 @@ internal class TransitLandClientTest {
     @Test
     fun feed_networkError() {
         val mockServer = MockWebServer()
-        mockServer.dispatcher = FeedDispatcher(responseCode = 200, resourcePath = null)
+        mockServer.dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+            url = FEEDS_URL, responseCode = 200, resource = null
+        )
         mockServer.start()
         mockServer.shutdown()
 
@@ -54,7 +53,11 @@ internal class TransitLandClientTest {
 
     @Test
     fun feed_rateLimited() {
-        withMockServer(dispatcher = FeedDispatcher(responseCode = 429, resourcePath = null)) { mockServer ->
+        withMockServer(
+            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+                url = FEEDS_URL, responseCode = 429, resource = null
+            )
+        ) { mockServer ->
             subject = TransitLandClient(
                 builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
             )
@@ -68,9 +71,8 @@ internal class TransitLandClientTest {
     @Test
     fun feed_unauthorized() {
         withMockServer(
-            dispatcher = FeedDispatcher(
-                responseCode = 401,
-                resourcePath = "transit-land/common/unauthorized.json",
+            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+                url = FEEDS_URL, responseCode = 401, resource = "transit-land/common/unauthorized.json",
             )
         ) { mockServer ->
             subject = TransitLandClient(
@@ -86,11 +88,10 @@ internal class TransitLandClientTest {
     @Test
     fun feed_success() {
         withMockServer(
-            dispatcher = FeedDispatcher(
-                responseCode = 200, resourcePath = "transit-land/feed/full.json"
+            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+                url = FEEDS_URL, responseCode = 200, resource = "transit-land/feed/full.json"
             )
         ) { mockServer ->
-
             subject = TransitLandClient(
                 builder = WebClient.builder(), baseURL = mockServer.url("/api/v2/rest/").toString()
             )
@@ -388,18 +389,6 @@ internal class TransitLandClientTest {
                     stopID = "42",
                 )
             )
-        }
-    }
-
-    inner class FeedDispatcher(private val responseCode: Int, private val resourcePath: String?) : Dispatcher() {
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            val requestPath = request.path ?: throw IllegalArgumentException()
-            require(requestPath.contains("/api/v2/rest/feeds.json"))
-            val body =
-                resourcePath?.let { resourceLoader.getResource("classpath:$it").file.readTextAndNormalize() } ?: "{}"
-            return MockResponse().setResponseCode(responseCode).setBody(
-                body
-            ).setHeader("Content-Type", "application/json")
         }
     }
 }
