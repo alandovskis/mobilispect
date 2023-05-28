@@ -10,6 +10,7 @@ import com.mobilispect.backend.data.feed.VersionedFeed
 import com.mobilispect.backend.data.route.RouteResultItem
 import com.mobilispect.backend.data.stop.StopResult
 import com.mobilispect.backend.data.stop.StopResultItem
+import com.mobilispect.backend.data.transit_land.api.TransitLandAPI
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
@@ -30,7 +31,8 @@ private const val CONNECT_TIMEOUT_ms = 5_000
  * A client to access the transitland API.
  */
 @Component
-class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://transit.land/api/v2/rest") {
+class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://transit.land/api/v2/rest") :
+    TransitLandAPI {
     private val logger = LoggerFactory.getLogger(TransitLandClient::class.java)
 
     private val webClient: WebClient
@@ -57,9 +59,9 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
     }
 
     /**
-     * Retrieve the [Feed] identified by [feedID].
+     * Retrieve the feed identified by [feedID].
      */
-    fun feed(apiKey: String, feedID: String): Result<VersionedFeed> {
+    override fun feed(apiKey: String, feedID: String): Result<VersionedFeed> {
         return handleError {
             val uri = "/feeds.json?onestop_id=$feedID"
             val response = get(uri, apiKey, TransitLandFeedResponse::class.java)
@@ -85,7 +87,7 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
      * Retrieve all agencies that serve a given [region] or are contained in the feed identified by [feedID].
      */
     @Suppress("ReturnCount")
-    fun agencies(apiKey: String, region: String? = null, feedID: String? = null): Result<AgencyResult> {
+    override fun agencies(apiKey: String, region: String?, feedID: String?): Result<AgencyResult> {
         return handleError {
             var uri = "/agencies.json"
             if (region != null) {
@@ -120,7 +122,7 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
     /**
      * Retrieve the routes contained in the feed identified by [feedID].
      */
-    fun routes(apiKey: String, feedID: String, paging: PagingParameters = PagingParameters()): Result<RouteResult> {
+    override fun routes(apiKey: String, feedID: String, paging: PagingParameters): Result<RouteResult> {
         return handleError {
             val uri = pagedURI("/routes.json?feed_onestop_id=$feedID", paging)
             val response = get(uri, apiKey, TransitLandRouteResponse::class.java)
@@ -136,7 +138,7 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
     /**
      * Retrieve all stops contained in the feed identified by [feedID].
      */
-    fun stops(apiKey: String, feedID: String, paging: PagingParameters = PagingParameters()): Result<StopResult> {
+    override fun stops(apiKey: String, feedID: String, paging: PagingParameters): Result<StopResult> {
         return handleError {
             val uri = pagedURI("/stops.json?feed_onestop_ids=$feedID", paging)
             val response = get(uri, apiKey, TransitLandStopResponse::class.java)
