@@ -3,14 +3,14 @@ package com.mobilispect.backend.data.transit_land
 import com.mobilispect.backend.data.api.PagingParameters
 import com.mobilispect.backend.data.stop.StopIDDataSource
 import com.mobilispect.backend.data.transit_land.api.StopResultItem
+import com.mobilispect.backend.data.transit_land.api.TransitLandAPI
 import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
-import com.mobilispect.backend.data.transit_land.internal.client.TransitLandClient
 
 /**
  * A [StopIDDataSource] that uses transit.land for stop IDs.
  */
 class TransitLandStopIDDataSource(
-    private val transitLandClient: TransitLandClient,
+    private val transitLandAPI: TransitLandAPI,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : StopIDDataSource {
     override fun stops(feedID: String): Result<Map<String, String>> {
@@ -29,7 +29,7 @@ class TransitLandStopIDDataSource(
         val allStops = mutableListOf<StopResultItem>()
         var after: Int? = null
         do {
-            val stopsRes = transitLandClient.stops(
+            val stopsRes = transitLandAPI.stops(
                 apiKey = apiKey,
                 feedID = feedID,
                 paging = PagingParameters(limit = 100, after = after)

@@ -5,14 +5,14 @@ import com.mobilispect.backend.data.route.FeedLocalRouteID
 import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.RouteIDDataSource
 import com.mobilispect.backend.data.transit_land.api.RouteResultItem
+import com.mobilispect.backend.data.transit_land.api.TransitLandAPI
 import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
-import com.mobilispect.backend.data.transit_land.internal.client.TransitLandClient
 
 /**
  * A [RouteIDDataSource] uses transit land for route IDs.
  */
 internal class TransitLandRouteIDDataSource(
-    private val transitLandClient: TransitLandClient,
+    private val transitLandAPI: TransitLandAPI,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : RouteIDDataSource {
     override fun routeIDs(feedID: String): Result<Map<FeedLocalRouteID, OneStopRouteID>> {
@@ -31,7 +31,7 @@ internal class TransitLandRouteIDDataSource(
         val allRoutes = mutableListOf<RouteResultItem>()
         var after: Int? = null
         do {
-            val routesRes = transitLandClient.routes(
+            val routesRes = transitLandAPI.routes(
                 apiKey = apiKey,
                 feedID = feedID,
                 paging = PagingParameters(limit = 100, after = after)
