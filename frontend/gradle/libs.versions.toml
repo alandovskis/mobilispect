@@ -20,7 +20,7 @@ kotlinxDateTime = "0.4.0"
 kotlinxKover = "0.7.0"
 kotlinxSerialization = "1.5.1"
 ksp = "1.8.21-1.0.11"
-ktor = "2.3.0"
+ktor = "2.3.1"
 lifecycle = "2.6.1"
 mavericks = "3.0.3"
 mockWebServer = "4.11.0"
@@ -28,7 +28,7 @@ navigation = "2.5.3"
 okhttpProfiler = "1.0.8"
 retrofit = "2.9.0"
 room = "2.5.1"
-truth = "1.1.3"
+truth = "1.1.4"
 
 [libraries]
 
