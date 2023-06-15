@@ -36,7 +36,7 @@ jobs:
           java-version: 17
 
       - name: Verify Dependency Order
-        run: ./gradlew sortDependencies --mode=check
+        run: ./gradlew checkSortDependencies
 
   analysis:
     runs-on: ubuntu-22.04
