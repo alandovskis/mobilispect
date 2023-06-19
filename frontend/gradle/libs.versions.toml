@@ -28,7 +28,7 @@ navigation = "2.6.0"
 okhttpProfiler = "1.0.8"
 retrofit = "2.9.0"
 room = "2.5.1"
-truth = "1.1.4"
+truth = "1.1.5"
 
 [libraries]
 
