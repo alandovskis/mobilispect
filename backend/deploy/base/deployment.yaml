@@ -23,6 +23,7 @@ spec:
           resources: { }
           securityContext:
             allowPrivilegeEscalation: false
+            runAsNonRoot: true
       volumes:
         - name: config-volume
           configMap:
