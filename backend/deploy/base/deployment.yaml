@@ -21,6 +21,8 @@ spec:
             - name: config-volume
               mountPath: /workspace/config
           resources: { }
+          securityContext:
+            allowPrivilegeEscalation: false
       volumes:
         - name: config-volume
           configMap:
