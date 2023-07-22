@@ -9,15 +9,15 @@
   "packageRules": [
     {
       "matchPackagePatterns": [
-        "androidx.compose.compiler:compiler"
+        "composeOptions"
       ],
-      "groupName": "kotlin"
+      "groupName": "androidKotlin"
     },
     {
       "matchPackagePatterns": [
-        "org.jetbrains.kotlin.*"
+        "org.jetbrains.kotlin:kotlin-gradle-plugin"
       ],
-      "groupName": "kotlin"
+      "groupName": "androidKotlin"
     },
     {
       "matchPackagePatterns": [
