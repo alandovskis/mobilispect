@@ -8,34 +8,20 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "composeOptions"
-      ],
-      "groupName": "androidKotlin"
-    },
-    {
-      "matchPackagePatterns": [
+      "matchPackageNames": [
+        "composeOptions",
+        "com.google.devtools.ksp",
         "org.jetbrains.kotlin:kotlin-gradle-plugin"
       ],
-      "groupName": "androidKotlin"
+      "groupName": "Kotlin (Android)"
     },
     {
-      "matchPackagePatterns": [
-        "com.google.devtools.ksp"
+      "matchPackageNames": [
+        "org.jetbrains.kotlin.plugin.serialization",
+        "org.jetbrains.kotlin.plugin.spring",
+        "org.jetbrains.kotlin.jvm"
       ],
-      "groupName": "kotlin"
-    },
-    {
-      "matchPackagePatterns": [
-        "gradle"
-      ],
-      "groupName": "gradle"
-    },
-    {
-      "matchPackagePatterns": [
-        "com.github.johnrengelman.shadow"
-      ],
-      "groupName": "gradle"
+      "groupName": "Kotlin (JVM)"
     }
   ],
   "ignoreDeps": [
