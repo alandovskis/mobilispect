@@ -71,7 +71,7 @@ android {
         // If not set, all file paths reported will be absolute file path.
         basePath = projectDir.parent
         toolVersion = "1.23.0"
-        config = files("../config/detekt/detekt.yml")
+        config.setFrom(file("../config/detekt/detekt.yml"))
     }
 }
 
