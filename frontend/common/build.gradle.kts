@@ -4,7 +4,8 @@ plugins {
     kotlin("multiplatform")
     kotlin("kapt")
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.9.0"
+    // TODO: Restore once build not failing.
+    //kotlin("plugin.serialization") version "1.9.0"
     id("dagger.hilt.android.plugin")
     // TODO: Restore once build not failing.
 //    alias(libs.plugins.ksp)
