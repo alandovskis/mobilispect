@@ -6,7 +6,8 @@ plugins {
     id("com.android.library")
     kotlin("plugin.serialization") version "1.9.0"
     id("dagger.hilt.android.plugin")
-    alias(libs.plugins.ksp)
+    // TODO: Restore once build not failing.
+//    alias(libs.plugins.ksp)
     alias(libs.plugins.kover)
 }
 
@@ -56,13 +57,14 @@ kotlin {
                 implementation(libs.room.ktx)
                 api(libs.appcompat)
                 api(libs.core.ktx)
-                configurations.getByName("ksp").dependencies.add(
+                // TODO: Restore once build not failing.
+                /*configurations.getByName("ksp").dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "androidx.room",
                         "room-compiler",
                         "2.5.2"
                     )
-                )
+                )*/
                 configurations.getByName("kapt").dependencies.add(
                     org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
                         "com.google.dagger",
@@ -118,9 +120,10 @@ android {
         minSdk = libs.versions.minSDK.get().toInt()
         targetSdk = libs.versions.targetSDK.get().toInt()
 
-        ksp {
+        // TODO: Restore once build not failing
+        /*ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
-        }
+        }*/
     }
 
     compileOptions {
