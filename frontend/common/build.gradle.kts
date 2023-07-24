@@ -77,7 +77,7 @@ kotlin {
                 implementation(libs.ktor.okhttp)
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.junit)
                 implementation(libs.room.testing)
@@ -87,7 +87,7 @@ kotlin {
             }
         }
 
-        val androidAndroidTest by getting {
+        val androidInstrumentedTest by getting {
             dependencies {
                 implementation(libs.hilt.android.testing)
             }
