@@ -53,7 +53,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run detekt
-        run: ./gradlew android:detektDebug
+        run: ./gradlew --warning-mode all android:detektDebug
 
       - name: Upload detekt report
         uses: github/codeql-action/upload-sarif@v2

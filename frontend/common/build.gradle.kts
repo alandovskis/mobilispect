@@ -15,7 +15,7 @@ plugins {
 kotlin {
     jvmToolchain(17)
 
-    android()
+    androidTarget {}
 
     listOf(
         iosX64(),
@@ -77,7 +77,7 @@ kotlin {
                 implementation(libs.ktor.okhttp)
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.junit)
                 implementation(libs.room.testing)
@@ -87,7 +87,7 @@ kotlin {
             }
         }
 
-        val androidAndroidTest by getting {
+        val androidInstrumentedTest by getting {
             dependencies {
                 implementation(libs.hilt.android.testing)
             }
@@ -119,7 +119,6 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = libs.versions.minSDK.get().toInt()
-        targetSdk = libs.versions.targetSDK.get().toInt()
 
         // TODO: Restore once build not failing
         /*ksp {

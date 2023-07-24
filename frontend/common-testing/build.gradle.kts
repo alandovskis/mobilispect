@@ -6,7 +6,7 @@ plugins {
 kotlin {
     jvmToolchain(17)
 
-    android {
+    androidTarget {
         compilations.all {
             kotlinOptions {
                 jvmTarget = "17"
@@ -34,7 +34,6 @@ android {
     compileSdk = libs.versions.compileSDK.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSDK.get().toInt()
-        targetSdk = libs.versions.targetSDK.get().toInt()
     }
 
     compileOptions {
