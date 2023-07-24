@@ -15,7 +15,7 @@ plugins {
 kotlin {
     jvmToolchain(17)
 
-    android()
+    androidTarget {}
 
     listOf(
         iosX64(),
