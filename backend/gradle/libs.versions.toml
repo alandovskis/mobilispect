@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.0"
-kotlinxCoroutines = "1.7.2"
+kotlinxCoroutines = "1.7.3"
 kotlinxSerializationCSV = "2.0.0"
 kotlinxSerialization = "1.5.1"
 resilience4j = "2.1.0"
