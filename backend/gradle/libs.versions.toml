@@ -6,9 +6,9 @@ kotlinxSerialization = "1.5.1"
 resilience4j = "2.1.0"
 springBoot = "3.1.2"
 springDependency = "1.1.2"
-springDoc = "2.1.0"
+springDoc = "2.2.0"
 springDocPlugin = "1.6.0"
-squareSortDependency = "0.3"
+squareSortDependency = "0.4"
 
 [libraries]
 

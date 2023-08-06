@@ -70,7 +70,7 @@ android {
         // Specify the base path for file paths in the formatted reports.
         // If not set, all file paths reported will be absolute file path.
         basePath = projectDir.parent
-        toolVersion = "1.23.0"
+        toolVersion = "1.23.1"
         config.setFrom(file("../config/detekt/detekt.yml"))
     }
 }
