@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: "Verify Gradle"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1.1.0
@@ -43,7 +43,7 @@ jobs:
     name: "Static Analysis"
     needs: gradle-verify
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -55,7 +55,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run detekt with reviewdog
-        uses: alaegin/Detekt-Action@v1.23.0
+        uses: alaegin/Detekt-Action@v1.23.1
         with:
           github_token: ${{ secrets.github_token }}
           detekt_config: backend/config/detekt/detekt.yml
@@ -75,7 +75,7 @@ jobs:
     name: "Build"
     needs: gradle-verify
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -94,7 +94,7 @@ jobs:
     name: "Test"
     needs: build
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
