@@ -22,6 +22,12 @@
         "org.jetbrains.kotlin.jvm"
       ],
       "groupName": "Kotlin (JVM)"
+    },
+    {
+      "matchPackageNames": [
+        "gradle"
+      ],
+      "groupName": "Gradle"
     }
   ],
   "ignoreDeps": [
