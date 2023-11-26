@@ -15,6 +15,7 @@ import io.github.resilience4j.retry.Retry
 import io.github.resilience4j.retry.RetryConfig
 import io.github.resilience4j.retry.RetryRegistry
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Service
 import java.time.Duration
 
@@ -22,6 +23,7 @@ import java.time.Duration
  * An instance of [TransitLandAPI] that is rate limited and has retries.
  */
 @Service
+@Primary
 class RateLimitingRetryingTransitLandAPIService(
     private val transitLandClient: TransitLandClient,
 ) : TransitLandAPI {
