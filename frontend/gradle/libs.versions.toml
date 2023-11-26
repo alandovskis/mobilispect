@@ -10,11 +10,13 @@ androidXTest = "1.5.2"
 appcompat = "1.6.1"
 coreKtx = "1.12.0"
 detekt = "1.23.3"
+gradle = "8.1.1"
 hilt = "2.48.1"
 hiltNavigationCompose = "1.1.0"
 javaxInject = "1"
 jetpackComposeBom = "2023.10.01"
 junit = "4.13.2"
+kotlin = "1.9.21"
 kotlinxCoroutines = "1.7.3"
 kotlinxDateTime = "0.4.1"
 kotlinxKover = "0.7.4"
@@ -79,12 +81,17 @@ core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "hilt" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
+hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+
 # Testing
 junit = { module = "junit:junit", version.ref = "junit" }
+
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 # Date / Time
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
