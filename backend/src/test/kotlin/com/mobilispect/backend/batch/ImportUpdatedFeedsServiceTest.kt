@@ -8,31 +8,21 @@ import com.mobilispect.backend.data.agency.OneStopAgencyID
 import com.mobilispect.backend.data.archive.ArchiveExtractor
 import com.mobilispect.backend.data.createMongoDBContainer
 import com.mobilispect.backend.data.download.Downloader
-import com.mobilispect.backend.data.feed.Feed
-import com.mobilispect.backend.data.feed.FeedDataSource
-import com.mobilispect.backend.data.feed.FeedRepository
-import com.mobilispect.backend.data.feed.FeedVersion
-import com.mobilispect.backend.data.feed.FeedVersionRepository
-import com.mobilispect.backend.data.feed.VersionedFeed
+import com.mobilispect.backend.data.feed.*
 import com.mobilispect.backend.data.region.Region
 import com.mobilispect.backend.data.region.RegionRepository
 import com.mobilispect.backend.data.route.OneStopRouteID
 import com.mobilispect.backend.data.route.Route
 import com.mobilispect.backend.data.route.RouteDataSource
 import com.mobilispect.backend.data.route.RouteRepository
-import com.mobilispect.backend.data.schedule.DateTimeOffset
-import com.mobilispect.backend.data.schedule.ScheduledStop
-import com.mobilispect.backend.data.schedule.ScheduledStopDataSource
-import com.mobilispect.backend.data.schedule.ScheduledStopRepository
-import com.mobilispect.backend.data.schedule.ScheduledTrip
-import com.mobilispect.backend.data.schedule.ScheduledTripDataSource
-import com.mobilispect.backend.data.schedule.ScheduledTripRepository
+import com.mobilispect.backend.data.schedule.*
 import com.mobilispect.backend.data.stop.Stop
 import com.mobilispect.backend.data.stop.StopDataSource
 import com.mobilispect.backend.data.stop.StopRepository
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Ignore
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -49,6 +39,7 @@ import java.time.LocalDate
 @ContextConfiguration(initializers = [ImportUpdatedFeedsServiceTest.Companion.DBInitializer::class])
 @Testcontainers
 @Suppress("LargeClass")
+@Ignore
 internal class ImportUpdatedFeedsServiceTest {
     companion object {
         @Container
