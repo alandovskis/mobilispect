@@ -28,7 +28,7 @@ internal class GTFSRouteDataSourceTest {
 
     @Test
     fun fileNotFound(@TempDir root: Path) {
-        val result = subject.routes(root.toString(), VERSION, FEED_ID).exceptionOrNull()!!
+        val result = subject.routes(root, VERSION, FEED_ID).exceptionOrNull()!!
 
         assertThat(result).isInstanceOf(IOException::class.java)
     }
@@ -37,7 +37,7 @@ internal class GTFSRouteDataSourceTest {
     fun corrupted(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:gtfs/routes/corrupt.txt", root = root, dst = "routes.txt")
 
-        val result = subject.routes(root.toString(), VERSION, FEED_ID).exceptionOrNull()
+        val result = subject.routes(root, VERSION, FEED_ID).exceptionOrNull()
 
         assertThat(result).isInstanceOf(SerializationException::class.java)
     }
@@ -50,7 +50,7 @@ internal class GTFSRouteDataSourceTest {
             dst = "routes.txt"
         )
 
-        val routes = subject.routes(root.toString(), VERSION, FEED_ID).getOrNull()!!
+        val routes = subject.routes(root, VERSION, FEED_ID).getOrNull()!!
 
         assertThat(routes).contains(
             Route(
@@ -77,7 +77,7 @@ internal class GTFSRouteDataSourceTest {
     fun importsSuccessfullyWithAgencyID(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:gtfs/routes/full.txt", root = root, dst = "routes.txt")
 
-        val routes = subject.routes(root.toString(), VERSION, FEED_ID).getOrNull()!!
+        val routes = subject.routes(root, VERSION, FEED_ID).getOrNull()!!
 
         assertThat(routes).contains(
             Route(

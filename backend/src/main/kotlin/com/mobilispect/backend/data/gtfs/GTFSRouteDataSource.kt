@@ -9,8 +9,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
-import java.io.File
 import java.io.IOException
+import java.nio.file.Path
 
 /**
  * A [RouteDataSource] that uses a GTFS feed as source.
@@ -21,9 +21,9 @@ class GTFSRouteDataSource(
     private val agencyIDDataSource: AgencyIDDataSource,
     private val routeIDDataSource: RouteIDDataSource
 ) : RouteDataSource {
-    override fun routes(root: String, version: String, feedID: String): Result<Collection<Route>> {
+    override fun routes(root: Path, version: String, feedID: String): Result<Collection<Route>> {
         return try {
-            val input = File(root, "routes.txt").readTextAndNormalize()
+            val input = root.resolve("routes.txt").toFile().readTextAndNormalize()
             val csv = Csv {
                 hasHeaderRecord = true
                 ignoreUnknownColumns = true

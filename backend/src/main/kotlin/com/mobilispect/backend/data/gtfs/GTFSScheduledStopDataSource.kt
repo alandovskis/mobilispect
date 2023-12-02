@@ -8,8 +8,8 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
-import java.io.File
 import java.io.IOException
+import java.nio.file.Path
 
 private const val HOURS_PER_DAY = 24
 private const val DATE_COMPONENT_LENGTH = 3
@@ -19,13 +19,13 @@ private const val DATE_COMPONENT_LENGTH = 3
  */
 @OptIn(ExperimentalSerializationApi::class)
 class GTFSScheduledStopDataSource : ScheduledStopDataSource {
-    override fun scheduledStops(extractedDir: String, version: String): Result<Collection<ScheduledStop>> {
+    override fun scheduledStops(extractedDir: Path, version: String): Result<Collection<ScheduledStop>> {
         return try {
             val csv = Csv {
                 hasHeaderRecord = true
                 ignoreUnknownColumns = true
             }
-            val stopTimesIn = File("$extractedDir/stop_times.txt").readTextAndNormalize()
+            val stopTimesIn = extractedDir.resolve("stop_times.txt").toFile().readTextAndNormalize()
             Result.success(csv.decodeFromString<Collection<GTFSStopTime>>(stopTimesIn)
                 .mapNotNull { stopTime ->
                     val departsAt = parseGTFSTime(stopTime.departure_time) ?: return@mapNotNull null

@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClientException
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.netty.http.client.HttpClient
 import reactor.util.retry.Retry
+import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 import java.time.Duration
 
@@ -26,7 +27,7 @@ internal class WebClientDownloader(webClientBuilder: WebClient.Builder) : Downlo
         )
         .build()
 
-    override fun download(url: String): Result<String> {
+    override fun download(url: String): Result<Path> {
         val dest = kotlin.io.path.createTempFile()
         return try {
             val dataBuffer = webClient.get()
@@ -46,7 +47,7 @@ internal class WebClientDownloader(webClientBuilder: WebClient.Builder) : Downlo
             DataBufferUtils.write(
                 dataBuffer, dest, StandardOpenOption.CREATE
             ).share().block()
-            return Result.success(dest.toString())
+            return Result.success(dest)
         } catch (e: WebClientException) {
             Result.failure(e)
         }

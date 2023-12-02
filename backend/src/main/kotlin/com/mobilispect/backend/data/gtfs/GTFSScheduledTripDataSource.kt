@@ -10,8 +10,8 @@ import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.File
 import java.io.IOException
+import java.nio.file.Path
 import java.time.DayOfWeek
 import java.time.LocalDate
 
@@ -23,7 +23,7 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteI
     ScheduledTripDataSource {
     private val logger: Logger = LoggerFactory.getLogger(GTFSScheduledTripDataSource::class.java)
 
-    override fun trips(extractedDir: String, version: String, feedID: String): Result<Collection<ScheduledTrip>> =
+    override fun trips(extractedDir: Path, version: String, feedID: String): Result<Collection<ScheduledTrip>> =
         routeIDDataSource.routeIDs(feedID)
             .map { routeIDs ->
                 return try {
@@ -35,7 +35,7 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteI
                     val calendarExceptions = findCalendarExceptions(extractedDir, csv)
                     val calendars = findCalendars(extractedDir, csv)
 
-                    val tripsIn = File("$extractedDir/trips.txt").readTextAndNormalize()
+                    val tripsIn = extractedDir.resolve("trips.txt").toFile().readTextAndNormalize()
                     Result.success(csv.decodeFromString<Collection<GTFSTrip>>(tripsIn).mapNotNull { trip ->
                         val added = calendarExceptions[trip.service_id]
                             ?.filter { it.exception_type == GTFSCalendarDate.ADDED }
@@ -96,9 +96,9 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteI
     }
 
     private fun findCalendars(
-        extractedDir: String, csv: Csv
+        extractedDir: Path, csv: Csv
     ): Map<String, GTFSCalendar> {
-        val calendarIn = File("$extractedDir/calendar.txt").readTextAndNormalize()
+        val calendarIn = extractedDir.resolve("calendar.txt").toFile().readTextAndNormalize()
         val calendars =
             csv.decodeFromString<Collection<GTFSCalendar>>(calendarIn).associateBy { calendar -> calendar.service_id }
         logger.debug("Imported calendars: {}", calendars)
@@ -106,9 +106,9 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteI
     }
 
     private fun findCalendarExceptions(
-        extractedDir: String, csv: Csv
+        extractedDir: Path, csv: Csv
     ): Map<String, List<GTFSCalendarDate>> {
-        val calendarDatesIn = File("$extractedDir/calendar_dates.txt").readTextAndNormalize()
+        val calendarDatesIn = extractedDir.resolve("calendar_dates.txt").toFile().readTextAndNormalize()
         val calendarDates = csv.decodeFromString<Collection<GTFSCalendarDate>>(calendarDatesIn)
             .groupBy { calendarDate -> calendarDate.service_id }
         logger.debug("Imported calendar dates: {}", calendarDates)

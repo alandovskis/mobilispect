@@ -27,7 +27,7 @@ internal class GTFSAgencyDataSourceTest {
         val agencyIDDataSource = TestAgencyIDDataSource(emptyMap())
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
 
-        val result = subject.agencies(root.toString(), VERSION, "Montréal").exceptionOrNull()!!
+        val result = subject.agencies(root, VERSION, "Montréal").exceptionOrNull()!!
 
         assertThat(result).isInstanceOf(IOException::class.java)
     }
@@ -38,7 +38,7 @@ internal class GTFSAgencyDataSourceTest {
         val agencyIDDataSource = TestAgencyIDDataSource(emptyMap())
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
 
-        val result = subject.agencies(root.toString(), VERSION, "Montréal").exceptionOrNull()
+        val result = subject.agencies(root, VERSION, "Montréal").exceptionOrNull()
 
         assertThat(result).isInstanceOf(SerializationException::class.java)
     }
@@ -53,7 +53,7 @@ internal class GTFSAgencyDataSourceTest {
         )
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
 
-        val agencies = subject.agencies(root.toString(), VERSION, "Montréal").getOrNull()!!
+        val agencies = subject.agencies(root, VERSION, "Montréal").getOrNull()!!
 
         assertThat(agencies).isEmpty()
     }
@@ -69,7 +69,7 @@ internal class GTFSAgencyDataSourceTest {
         )
         val subject = GTFSAgencyDataSource(agencyIDDataSource)
 
-        val agencies = subject.agencies(root.toString(), VERSION, "Montréal").getOrNull()!!
+        val agencies = subject.agencies(root, VERSION, "Montréal").getOrNull()!!
 
         assertThat(agencies).contains(
             Agency(id = OneStopAgencyID("o-f256-exo~citlapresquîle"), name = "exo-La Presqu'île", version = VERSION)
