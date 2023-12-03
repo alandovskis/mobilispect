@@ -27,11 +27,11 @@ internal class WebClientDownloader(webClientBuilder: WebClient.Builder) : Downlo
         )
         .build()
 
-    override fun download(url: String): Result<Path> {
+    override fun download(request: DownloadRequest): Result<Path> {
         val dest = kotlin.io.path.createTempFile()
         return try {
             val dataBuffer = webClient.get()
-                .uri(url)
+                .uri(request.url)
                 .retrieve()
                 .bodyToFlux(DataBuffer::class.java)
                 .retryWhen(

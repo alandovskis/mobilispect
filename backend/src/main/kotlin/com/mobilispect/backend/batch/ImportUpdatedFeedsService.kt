@@ -3,6 +3,7 @@ package com.mobilispect.backend.batch
 import com.mobilispect.backend.data.agency.AgencyDataSource
 import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.archive.ArchiveExtractor
+import com.mobilispect.backend.data.download.DownloadRequest
 import com.mobilispect.backend.data.download.Downloader
 import com.mobilispect.backend.data.feed.FeedDataSource
 import com.mobilispect.backend.data.feed.FeedRepository
@@ -138,7 +139,8 @@ class ImportUpdatedFeedsService(
             .onSuccess { feed -> logger.debug("Import completed: {}", feed) }
     }
 
-    private fun downloadFeed(cloudFeed: VersionedFeed): Result<Path> = downloader.download(cloudFeed.feed.url)
+    private fun downloadFeed(cloudFeed: VersionedFeed): Result<Path> =
+        downloader.download(DownloadRequest(url = cloudFeed.feed.url))
         .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
         .onFailure { exception -> logger.error("Error downloading feed from ${cloudFeed.feed.url}: $exception") }
 
