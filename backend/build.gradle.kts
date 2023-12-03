@@ -11,6 +11,7 @@ plugins {
     id("org.cyclonedx.bom") version "1.8.1"
     alias(libs.plugins.square.sortDependencies)
     alias(libs.plugins.springdoc.openapi)
+    alias(libs.plugins.protobuf)
 }
 
 group = "com.mobilispect"
@@ -30,6 +31,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.csv)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.resilience4j.spring)
+    implementation(libs.protobuf.kotlin)
+
     implementation(libs.springdoc.openapi.ui)
 
     val modulithBom = platform(libs.spring.modulith.bom)
