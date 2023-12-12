@@ -30,19 +30,23 @@ internal class WebClientDownloader(webClientBuilder: WebClient.Builder) : Downlo
     override fun download(request: DownloadRequest): Result<Path> {
         val dest = kotlin.io.path.createTempFile()
         return try {
-            val dataBuffer = webClient.get()
+            var builder = webClient.get()
                 .uri(request.url)
+            for (header in request.headers) {
+                builder = builder.header(header.key, header.value)
+            }
+            val dataBuffer = builder
                 .retrieve()
                 .bodyToFlux(DataBuffer::class.java)
                 .retryWhen(
                     Retry.backoff(RETRY_ATTEMPTS, Duration.ofSeconds(1))
                         .filter { error ->
-                        val responseError = error as? WebClientResponseException
-                        val serverError = responseError?.statusCode?.is5xxServerError ?: false
-                        val rateLimitedError =
-                            responseError?.statusCode?.isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS) ?: false
-                        return@filter serverError || rateLimitedError
-                    })
+                            val responseError = error as? WebClientResponseException
+                            val serverError = responseError?.statusCode?.is5xxServerError ?: false
+                            val rateLimitedError =
+                                responseError?.statusCode?.isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS) ?: false
+                            return@filter serverError || rateLimitedError
+                        })
 
             DataBufferUtils.write(
                 dataBuffer, dest, StandardOpenOption.CREATE
