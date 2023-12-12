@@ -3,12 +3,14 @@ package com.mobilispect.backend.util
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
-import org.springframework.core.io.ResourceLoader
+import okio.Buffer
+import okio.FileSystem
+import okio.Path.Companion.toPath
 
 /**
  * A [Dispatcher] that uses resources as source.
  */
-class ResourceDispatcher(private val resourceLoader: ResourceLoader) : Dispatcher() {
+class ResourceDispatcher : Dispatcher() {
     private val urls = mutableMapOf<String, MockResponse>()
     override fun dispatch(request: RecordedRequest): MockResponse {
         val path = request.path?.split("?")?.firstOrNull() ?: throw IllegalArgumentException()
@@ -18,12 +20,15 @@ class ResourceDispatcher(private val resourceLoader: ResourceLoader) : Dispatche
 
     fun returningResponseFor(url: String, responseCode: Int, resource: String?): Dispatcher {
         val body = if (resource != null) {
-            resourceLoader.getResource("classpath:$resource").file.readTextAndNormalize()
+            val buffer = Buffer()
+            buffer.writeAll(FileSystem.RESOURCES.source(resource.toPath()))
+            buffer
         } else {
-            ""
+            Buffer()
         }
 
-        val response = MockResponse().setResponseCode(responseCode).setBody(body)
+        val response = MockResponse().setResponseCode(responseCode)
+            .setBody(body)
             .setHeader("Content-Type", "application/json")
         urls[url] = response
         return this

@@ -19,7 +19,7 @@ class RateLimitingRetryingTransitLandAPIServiceTest {
     @Test
     fun feedIsRateLimited() {
         withMockServer(
-            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+            dispatcher = ResourceDispatcher().returningResponseFor(
                 url = FEEDS_URL, responseCode = 200, resource = "transit-land/feed/full.json"
             )
         ) { mockServer ->
@@ -38,7 +38,7 @@ class RateLimitingRetryingTransitLandAPIServiceTest {
     @Test
     fun agenciesIsRateLimited() {
         withMockServer(
-            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+            dispatcher = ResourceDispatcher().returningResponseFor(
                 url = AGENCIES_URL, responseCode = 200, resource = "transit-land/feeds-for/full.json"
             )
         ) { mockServer ->
@@ -57,7 +57,7 @@ class RateLimitingRetryingTransitLandAPIServiceTest {
     @Test
     fun routesIsRateLimited() {
         withMockServer(
-            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+            dispatcher = ResourceDispatcher().returningResponseFor(
                 url = ROUTES_URL, responseCode = 200, resource = "transit-land/routes/full.json"
             )
         ) { mockServer ->
@@ -76,7 +76,7 @@ class RateLimitingRetryingTransitLandAPIServiceTest {
     @Test
     fun stopsIsRateLimited() {
         withMockServer(
-            dispatcher = ResourceDispatcher(resourceLoader).returningResponseFor(
+            dispatcher = ResourceDispatcher().returningResponseFor(
                 url = STOPS_URL, responseCode = 200, resource = "transit-land/stops/full.json"
             )
         ) { mockServer ->
