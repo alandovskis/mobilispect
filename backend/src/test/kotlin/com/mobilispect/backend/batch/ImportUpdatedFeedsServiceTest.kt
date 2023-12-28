@@ -22,8 +22,8 @@ import com.mobilispect.backend.data.stop.StopRepository
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Ignore
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -39,7 +39,7 @@ import java.time.LocalDate
 @ContextConfiguration(initializers = [ImportUpdatedFeedsServiceTest.Companion.DBInitializer::class])
 @Testcontainers
 @Suppress("LargeClass")
-@Ignore
+@Disabled("broken")
 internal class ImportUpdatedFeedsServiceTest {
     companion object {
         @Container

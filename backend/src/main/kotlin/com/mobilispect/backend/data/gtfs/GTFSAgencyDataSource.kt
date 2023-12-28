@@ -9,8 +9,8 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
 import org.springframework.stereotype.Component
-import java.io.File
 import java.io.IOException
+import java.nio.file.Path
 
 /**
  * An [AgencyDataSource] that uses a GTFS feed as a source.
@@ -20,7 +20,7 @@ import java.io.IOException
 internal class GTFSAgencyDataSource(
     private val agencyIDDataSource: AgencyIDDataSource
 ) : AgencyDataSource {
-    override fun agencies(root: String, version: String, feedID: String): Result<Collection<Agency>> {
+    override fun agencies(root: Path, version: String, feedID: String): Result<Collection<Agency>> {
         val agencyIDRes = agencyIDDataSource.agencyIDs(feedID)
         if (agencyIDRes.isFailure) {
             return Result.failure(Exception("Missing agency IDs"))
@@ -28,7 +28,7 @@ internal class GTFSAgencyDataSource(
         val agencyIDs = agencyIDRes.getOrNull()!!
 
         return try {
-            val input = File(root, "agency.txt").readTextAndNormalize()
+            val input = root.resolve("agency.txt").toFile().readTextAndNormalize()
             val csv = Csv {
                 hasHeaderRecord = true
                 ignoreUnknownColumns = true

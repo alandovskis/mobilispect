@@ -3,11 +3,14 @@ kotlin = "1.9.21"
 kotlinxCoroutines = "1.7.3"
 kotlinxSerializationCSV = "2.0.0"
 kotlinxSerialization = "1.6.1"
+protobufCompiler = "0.9.4"
+protobuf = "3.25.1"
 resilience4j = "2.1.0"
 springBoot = "3.2.0"
 springDependency = "1.1.4"
 springDoc = "2.2.0"
 springDocPlugin = "1.8.0"
+springModulith = "0.5.1"
 squareSortDependency = "0.4"
 
 [libraries]
@@ -18,17 +21,25 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-serialization-csv = { module = "de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv", version.ref = "kotlinxSerializationCSV" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
+protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf" }
+
 # Fault Tolerance
 resilience4j-spring = { module = "io.github.resilience4j:resilience4j-spring-boot2", version.ref = "resilience4j" }
 
 # View OpenAPI
 springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springDoc" }
 
+spring-modulith-api = { module = "org.springframework.experimental:spring-modulith-api" }
+spring-modulith-bom = { module = "org.springframework.experimental:spring-modulith-bom", version.ref = "springModulith" }
+spring-modulith-test = { module = "org.springframework.experimental:spring-modulith-starter-test" }
+
 [plugins]
 
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+
+protobuf = { id = "com.google.protobuf", version.ref = "protobufCompiler" }
 
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 spring-dependency = { id = "io.spring.dependency-management", version.ref = "springDependency" }
@@ -37,4 +48,3 @@ spring-dependency = { id = "io.spring.dependency-management", version.ref = "spr
 springdoc-openapi = { id = "org.springdoc.openapi-gradle-plugin", version.ref = "springDocPlugin" }
 
 square-sortDependencies = { id = "com.squareup.sort-dependencies", version.ref = "squareSortDependency" }
-

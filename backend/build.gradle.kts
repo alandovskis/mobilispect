@@ -11,6 +11,7 @@ plugins {
     id("org.cyclonedx.bom") version "1.8.1"
     alias(libs.plugins.square.sortDependencies)
     alias(libs.plugins.springdoc.openapi)
+    alias(libs.plugins.protobuf)
 }
 
 group = "com.mobilispect"
@@ -30,12 +31,19 @@ dependencies {
     implementation(libs.kotlinx.serialization.csv)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.resilience4j.spring)
+    implementation(libs.protobuf.kotlin)
+
     implementation(libs.springdoc.openapi.ui)
+
+    val modulithBom = platform(libs.spring.modulith.bom)
+    implementation(modulithBom)
+    implementation(libs.spring.modulith.api)
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter:1.19.3")
     testImplementation("org.testcontainers:mongodb:1.19.3")
+    testImplementation(libs.spring.modulith.test)
 }
 
 tasks.withType<KotlinCompile> {

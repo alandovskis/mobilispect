@@ -28,7 +28,7 @@ internal class GTFSScheduledTripDataSourceTest {
     fun bothCalendarFilesNotFound(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips.txt", root = root, dst = "trips.txt")
 
-        val result = subject.trips(root.toString(), VERSION, FEED_ID).exceptionOrNull()
+        val result = subject.trips(root, VERSION, FEED_ID).exceptionOrNull()
 
         assertThat(result).isInstanceOf(IOException::class.java)
     }
@@ -43,7 +43,7 @@ internal class GTFSScheduledTripDataSourceTest {
         resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-calendar.txt", root = root, dst = "calendar.txt")
         resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips-corrupt.txt", root = root, dst = "trips.txt")
 
-        val result = subject.trips(root.toString(), VERSION, FEED_ID).exceptionOrNull()
+        val result = subject.trips(root, VERSION, FEED_ID).exceptionOrNull()
 
         assertThat(result).isInstanceOf(SerializationException::class.java)
     }
@@ -62,7 +62,7 @@ internal class GTFSScheduledTripDataSourceTest {
         )
         resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips.txt", root = root, dst = "trips.txt")
 
-        subject.trips(root.toString(), VERSION, FEED_ID).getOrNull()!!
+        subject.trips(root, VERSION, FEED_ID).getOrNull()!!
     }
 
     @Test
@@ -76,7 +76,7 @@ internal class GTFSScheduledTripDataSourceTest {
         resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-calendar.txt", root = root, dst = "calendar.txt")
         resourceLoader.copyResourceTo(src = "classpath:gtfs/citpi-trips.txt", root = root, dst = "trips.txt")
 
-        val trips = subject.trips(root.toString(), VERSION, FEED_ID).getOrNull()!!
+        val trips = subject.trips(root, VERSION, FEED_ID).getOrNull()!!
 
         assertThat(trips).contains(
             ScheduledTrip(

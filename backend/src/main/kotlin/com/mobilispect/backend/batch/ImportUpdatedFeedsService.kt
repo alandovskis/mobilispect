@@ -3,6 +3,7 @@ package com.mobilispect.backend.batch
 import com.mobilispect.backend.data.agency.AgencyDataSource
 import com.mobilispect.backend.data.agency.AgencyRepository
 import com.mobilispect.backend.data.archive.ArchiveExtractor
+import com.mobilispect.backend.data.download.DownloadRequest
 import com.mobilispect.backend.data.download.Downloader
 import com.mobilispect.backend.data.feed.FeedDataSource
 import com.mobilispect.backend.data.feed.FeedRepository
@@ -20,6 +21,7 @@ import com.mobilispect.backend.data.stop.StopRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import java.nio.file.Path
 import java.util.function.Supplier
 
 /**
@@ -137,39 +139,40 @@ class ImportUpdatedFeedsService(
             .onSuccess { feed -> logger.debug("Import completed: {}", feed) }
     }
 
-    private fun downloadFeed(cloudFeed: VersionedFeed): Result<String> = downloader.download(cloudFeed.feed.url)
+    private fun downloadFeed(cloudFeed: VersionedFeed): Result<Path> =
+        downloader.download(DownloadRequest(url = cloudFeed.feed.url))
         .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
         .onFailure { exception -> logger.error("Error downloading feed from ${cloudFeed.feed.url}: $exception") }
 
-    private fun extractFeed(archive: String): Result<String> = archiveExtractor.extract(archive)
+    private fun extractFeed(archive: Path): Result<Path> = archiveExtractor.extract(archive)
         .onSuccess { path -> logger.debug("Extracted archive to {}", path) }
         .onFailure { exception -> logger.error("Error extracting feed: $exception") }
 
-    private fun importAgencies(version: String, extractedDir: String, feedID: String): Result<List<Any>> =
+    private fun importAgencies(version: String, extractedDir: Path, feedID: String): Result<List<Any>> =
         agencyDataSource.agencies(root = extractedDir, version = version, feedID = feedID)
             .map { agencies -> agencies.map { agency -> agencyRepository.save(agency) } }
             .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
             .onFailure { e -> logger.error("Failed to import agencies: $e") }
 
-    private fun importRoutes(version: String, extractedDir: String, feedID: String): Result<List<Any>> =
+    private fun importRoutes(version: String, extractedDir: Path, feedID: String): Result<List<Any>> =
         routeDataSource.routes(root = extractedDir, version = version, feedID = feedID)
             .map { routes -> routes.map { route -> routeRepository.save(route) } }
             .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
             .onFailure { e -> logger.error("Failed to import routes: $e") }
 
-    private fun importStops(version: String, extractedDir: String, feedID: String) =
+    private fun importStops(version: String, extractedDir: Path, feedID: String) =
         stopDataSource.stops(extractedDir, version, feedID)
             .map { stops -> stops.map { stop -> stopRepository.save(stop) } }
             .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
             .onFailure { e -> logger.error("Failed to import stops: $e") }
 
-    private fun importTrips(version: String, extractedDir: String, feedID: String) =
+    private fun importTrips(version: String, extractedDir: Path, feedID: String) =
         scheduledTripDataSource.trips(extractedDir, version, feedID)
             .map { trips -> trips.map { trip -> scheduledTripRepository.save(trip) } }
             .onSuccess { trips -> logger.debug("Imported scheduled trips: {}", trips) }
             .onFailure { e -> logger.error("Failed to import scheduled trips: $e") }
 
-    private fun importStopTimes(version: String, extractedDir: String) =
+    private fun importStopTimes(version: String, extractedDir: Path) =
         scheduledStopDataSource.scheduledStops(extractedDir, version)
             .map { scheduledStops -> scheduledStops.map { stop -> scheduledStopRepository.save(stop) } }
             .onSuccess { logger.debug("Imported scheduled stops") }

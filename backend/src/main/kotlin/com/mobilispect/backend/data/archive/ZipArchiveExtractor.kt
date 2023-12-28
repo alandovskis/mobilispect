@@ -4,6 +4,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.file.Path
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import kotlin.io.path.createTempDirectory
@@ -14,13 +15,13 @@ private const val BUFFER_SIZE = 1024
  * An [ArchiveExtractor] that supports zip files.
  */
 internal class ZipArchiveExtractor : ArchiveExtractor {
-    override fun extract(archive: String): Result<String> {
+    override fun extract(archive: Path): Result<Path> {
         return try {
-            val destDir = createTempDirectory().toFile()
-            val archiveInputStream = ZipInputStream(FileInputStream(archive))
+            val destDir = createTempDirectory()
+            val archiveInputStream = ZipInputStream(FileInputStream(archive.toFile()))
             var zipEntry = archiveInputStream.nextEntry
             while (zipEntry != null) {
-                val newFile = newFile(destDir, zipEntry)
+                val newFile = newFile(destDir.toFile(), zipEntry)
                 // fix for Windows-created archives
                 val parent = newFile.parentFile
                 if (!parent.isDirectory && !parent.mkdirs()) {
@@ -36,7 +37,7 @@ internal class ZipArchiveExtractor : ArchiveExtractor {
                 out.close()
                 zipEntry = archiveInputStream.nextEntry
             }
-            Result.success(destDir.toString())
+            Result.success(destDir)
         } catch (e: IOException) {
             Result.failure(e)
         }

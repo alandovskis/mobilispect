@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.WebClientException
 import org.springframework.web.reactive.function.client.WebClientResponseException
 import reactor.netty.http.client.HttpClient
 import reactor.util.retry.Retry
+import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 import java.time.Duration
 
@@ -26,27 +27,31 @@ internal class WebClientDownloader(webClientBuilder: WebClient.Builder) : Downlo
         )
         .build()
 
-    override fun download(url: String): Result<String> {
+    override fun download(request: DownloadRequest): Result<Path> {
         val dest = kotlin.io.path.createTempFile()
         return try {
-            val dataBuffer = webClient.get()
-                .uri(url)
+            var builder = webClient.get()
+                .uri(request.url)
+            for (header in request.headers) {
+                builder = builder.header(header.key, header.value)
+            }
+            val dataBuffer = builder
                 .retrieve()
                 .bodyToFlux(DataBuffer::class.java)
                 .retryWhen(
                     Retry.backoff(RETRY_ATTEMPTS, Duration.ofSeconds(1))
                         .filter { error ->
-                        val responseError = error as? WebClientResponseException
-                        val serverError = responseError?.statusCode?.is5xxServerError ?: false
-                        val rateLimitedError =
-                            responseError?.statusCode?.isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS) ?: false
-                        return@filter serverError || rateLimitedError
-                    })
+                            val responseError = error as? WebClientResponseException
+                            val serverError = responseError?.statusCode?.is5xxServerError ?: false
+                            val rateLimitedError =
+                                responseError?.statusCode?.isSameCodeAs(HttpStatus.TOO_MANY_REQUESTS) ?: false
+                            return@filter serverError || rateLimitedError
+                        })
 
             DataBufferUtils.write(
                 dataBuffer, dest, StandardOpenOption.CREATE
             ).share().block()
-            return Result.success(dest.toString())
+            return Result.success(dest)
         } catch (e: WebClientException) {
             Result.failure(e)
         }

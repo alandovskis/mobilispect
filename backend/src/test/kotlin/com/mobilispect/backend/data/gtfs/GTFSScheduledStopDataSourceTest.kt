@@ -24,7 +24,7 @@ class GTFSScheduledStopDataSourceTest {
 
     @Test
     fun fileNotFound(@TempDir root: Path) {
-        val result = subject.scheduledStops(root.toString(), VERSION).exceptionOrNull()!!
+        val result = subject.scheduledStops(root, VERSION).exceptionOrNull()!!
 
         assertThat(result).isInstanceOf(IOException::class.java)
     }
@@ -37,7 +37,7 @@ class GTFSScheduledStopDataSourceTest {
             dst = "stop_times.txt"
         )
 
-        val result = subject.scheduledStops(root.toString(), VERSION).exceptionOrNull()
+        val result = subject.scheduledStops(root, VERSION).exceptionOrNull()
 
         assertThat(result).isInstanceOf(SerializationException::class.java)
     }
@@ -47,7 +47,7 @@ class GTFSScheduledStopDataSourceTest {
     fun importsSuccessfully(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-stop-times.txt", root = root, dst = "stop_times.txt")
 
-        val scheduledStops = subject.scheduledStops(root.toString(), VERSION).getOrNull()!!
+        val scheduledStops = subject.scheduledStops(root, VERSION).getOrNull()!!
 
         assertThat(scheduledStops).contains(
             ScheduledStop(
