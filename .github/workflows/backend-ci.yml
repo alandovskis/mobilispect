@@ -30,7 +30,7 @@ jobs:
           allow-checksums: false
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -55,7 +55,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run detekt with reviewdog
-        uses: alaegin/Detekt-Action@v1.23.3
+        uses: alaegin/Detekt-Action@v1.23.4
         with:
           github_token: ${{ secrets.github_token }}
           detekt_config: backend/config/detekt/detekt.yml
@@ -65,7 +65,7 @@ jobs:
 
       - name: Upload SBOM
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'sbom'
           path: 'backend/build/reports/bom.json'
@@ -78,7 +78,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -102,7 +102,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: 17
@@ -123,7 +123,7 @@ jobs:
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: 'test-results'
           path: 'backend/build/reports/tests'

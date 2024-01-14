@@ -2,16 +2,16 @@
 kotlin = "1.9.22"
 kotlinxCoroutines = "1.7.3"
 kotlinxSerializationCSV = "2.0.0"
-kotlinxSerialization = "1.6.1"
+kotlinxSerialization = "1.6.2"
 protobufCompiler = "0.9.4"
-protobuf = "3.25.1"
-resilience4j = "2.1.0"
-springBoot = "3.2.0"
+protobuf = "3.25.2"
+resilience4j = "2.2.0"
+springBoot = "3.2.1"
 springDependency = "1.1.4"
-springDoc = "2.2.0"
+springDoc = "2.3.0"
 springDocPlugin = "1.8.0"
-springModulith = "0.5.1"
-squareSortDependency = "0.4"
+springModulith = "0.6.0"
+squareSortDependency = "0.6"
 
 [libraries]
 
