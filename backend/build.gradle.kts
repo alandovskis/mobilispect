@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     id("io.gitlab.arturbosch.detekt") version "1.23.4"
     id("info.solidsoft.pitest") version "1.15.0"
-    id("org.cyclonedx.bom") version "1.8.1"
+    id("org.cyclonedx.bom") version "1.8.2"
     alias(libs.plugins.square.sortDependencies)
     alias(libs.plugins.springdoc.openapi)
     alias(libs.plugins.protobuf)
