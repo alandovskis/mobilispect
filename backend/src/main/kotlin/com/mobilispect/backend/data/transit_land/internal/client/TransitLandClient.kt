@@ -30,7 +30,7 @@ class TransitLandClient(builder: WebClient.Builder, baseURL: String = "https://t
     TransitLandAPI {
     private val logger = LoggerFactory.getLogger(TransitLandClient::class.java)
 
-    private val webClient: WebClient
+    private lateinit var webClient: WebClient
 
     init {
         val httpClient = HttpClient.create().option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_ms)

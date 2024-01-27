@@ -28,9 +28,9 @@ class RateLimitingRetryingTransitLandAPIService(
     private val transitLandClient: TransitLandClient,
 ) : TransitLandAPI {
     private val logger = LoggerFactory.getLogger(TransitLandAPI::class.java)
-    private val perMinuteRateLimiter: RateLimiter
-    private val perMonthRateLimiter: RateLimiter
-    private val retry: Retry
+    private lateinit var perMinuteRateLimiter: RateLimiter
+    private lateinit var perMonthRateLimiter: RateLimiter
+    private lateinit var retry: Retry
 
     init {
         val perMinuteRateLimitConfig = RateLimiterConfig.custom()
