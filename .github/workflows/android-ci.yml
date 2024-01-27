@@ -50,7 +50,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       - name: Run detekt
         run: ./gradlew --warning-mode all android:detektDebug
@@ -89,7 +89,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       - name: Build Android APKs
         run: ./gradlew android:assembleDebug android:assembleDebugUnitTest
@@ -111,7 +111,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       - name: Run Android local tests
         run: ./gradlew android:testDebugUnitTest
@@ -143,7 +143,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       - name: Run instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
