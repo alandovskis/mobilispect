@@ -129,10 +129,9 @@ jobs:
           path: 'backend/build/reports/tests'
 
       - name: Run mutation tests
-        uses: alandovskis/gradle-pitest-comment-action@e372e00fccf3117a423e8add38160b919f0b87e0
+        uses: isamadrid90/gradle-pitest-comment-action@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           reports-retention: 1
           reports-path: "backend/build/reports/pitest"
-          reports-name: "mutation-results"
           working-directory: backend
