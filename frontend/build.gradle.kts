@@ -1,26 +1,7 @@
 plugins {
-    alias(libs.plugins.kover)
-}
-
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath(libs.kotlin.gradle.plugin)
-        classpath(libs.gradle)
-        classpath(libs.hilt.android.gradle.plugin)
-    }
-}
-
-group = "com.mobilispect"
-version = "1.0"
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
+    //trick: for the same plugin versions in all sub-modules
+    alias(libs.plugins.androidApplication).apply(false)
+    alias(libs.plugins.androidLibrary).apply(false)
+    alias(libs.plugins.kotlinAndroid).apply(false)
+    alias(libs.plugins.kotlinMultiplatform).apply(false)
 }

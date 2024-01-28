@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
+    //kotlin("kapt")
+    //id("dagger.hilt.android.plugin")
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
 }
@@ -88,11 +88,11 @@ dependencies {
     implementation(libs.hilt.android)
     androidTestImplementation(libs.androidx.test.runner)
     testImplementation(libs.junit)
-    kapt(libs.hilt.compiler)
+    //kapt(libs.hilt.compiler)
     testImplementation(libs.hilt.android.testing)
-    kaptTest(libs.hilt.compiler)
+    //kaptTest(libs.hilt.compiler)
     androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.compiler)
+    //kaptAndroidTest(libs.hilt.compiler)
     //endregion
 
     //region UI

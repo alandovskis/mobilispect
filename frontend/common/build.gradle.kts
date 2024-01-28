@@ -1,14 +1,7 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 plugins {
-    kotlin("multiplatform")
-    kotlin("kapt")
-    id("com.android.library")
-    // TODO: Restore once build not failing.
-    //kotlin("plugin.serialization") version "1.9.0"
-    id("dagger.hilt.android.plugin")
-    // TODO: Restore once build not failing.
-//    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kover)
 }
 
@@ -58,21 +51,6 @@ kotlin {
                 implementation(libs.room.ktx)
                 api(libs.appcompat)
                 api(libs.core.ktx)
-                // TODO: Restore once build not failing.
-                /*configurations.getByName("ksp").dependencies.add(
-                    org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
-                        "androidx.room",
-                        "room-compiler",
-                        "2.5.2"
-                    )
-                )*/
-                configurations.getByName("kapt").dependencies.add(
-                    org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDependency(
-                        "com.google.dagger",
-                        "hilt-compiler",
-                        "2.50"
-                    )
-                )
                 implementation(libs.okhttp.profiler)
                 implementation(libs.ktor.okhttp)
             }
@@ -120,10 +98,9 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSDK.get().toInt()
 
-        // TODO: Restore once build not failing
-        /*ksp {
+        ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
-        }*/
+        }
     }
 
     compileOptions {
@@ -143,4 +120,9 @@ android {
         // Generate BuildConfig
         buildConfig = true
     }
+}
+
+dependencies {
+    add("kspAndroid", libs.room.compiler)
+    add("kspAndroid", libs.hilt.compiler)
 }
