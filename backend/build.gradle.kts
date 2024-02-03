@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.kotlin.serialization)
-    id("io.gitlab.arturbosch.detekt") version "1.23.4"
+    id("io.gitlab.arturbosch.detekt") version "1.23.5"
     id("info.solidsoft.pitest") version "1.15.0"
     id("org.cyclonedx.bom") version "1.8.2"
     alias(libs.plugins.square.sortDependencies)
@@ -70,6 +70,6 @@ detekt {
     // Specify the base path for file paths in the formatted reports.
     // If not set, all file paths reported will be absolute file path.
     basePath = projectDir.parent
-    toolVersion = "1.23.4"
+    toolVersion = "1.23.5"
     config = files("config/detekt/detekt.yml")
 }
