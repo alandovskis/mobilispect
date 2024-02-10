@@ -1,4 +1,4 @@
-package com.mobilispect.backend.data.download
+package com.mobilispect.backend.schedule.download
 
 import com.mobilispect.backend.util.ResourceDispatcher
 import com.mobilispect.backend.util.withMockServer

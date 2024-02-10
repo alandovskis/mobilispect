@@ -1,6 +1,6 @@
-package com.mobilispect.backend.data.transit_land.internal.service
+package com.mobilispect.backend.schedule.transit_land.internal.service
 
-import com.mobilispect.backend.data.transit_land.internal.client.*
+import com.mobilispect.backend.schedule.transit_land.internal.client.*
 import com.mobilispect.backend.util.ResourceDispatcher
 import com.mobilispect.backend.util.withMockServer
 import io.github.resilience4j.ratelimiter.RequestNotPermitted

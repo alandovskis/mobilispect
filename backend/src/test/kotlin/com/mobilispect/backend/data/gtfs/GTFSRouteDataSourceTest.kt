@@ -1,10 +1,10 @@
-package com.mobilispect.backend.data.gtfs
+package com.mobilispect.backend.schedule.gtfs
 
-import com.mobilispect.backend.data.agency.AgencyIDDataSource
-import com.mobilispect.backend.data.agency.FeedLocalAgencyID
-import com.mobilispect.backend.data.agency.OneStopAgencyID
-import com.mobilispect.backend.data.route.OneStopRouteID
-import com.mobilispect.backend.data.route.Route
+import com.mobilispect.backend.schedule.agency.AgencyIDDataSource
+import com.mobilispect.backend.schedule.agency.FeedLocalAgencyID
+import com.mobilispect.backend.schedule.agency.OneStopAgencyID
+import com.mobilispect.backend.schedule.route.OneStopRouteID
+import com.mobilispect.backend.schedule.route.Route
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat

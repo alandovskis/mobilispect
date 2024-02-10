@@ -1,4 +1,4 @@
-package com.mobilispect.backend.data.archive
+package com.mobilispect.backend.schedule.archive
 
 import com.mobilispect.backend.util.copyResourceTo
 import org.assertj.core.api.Assertions.assertThat

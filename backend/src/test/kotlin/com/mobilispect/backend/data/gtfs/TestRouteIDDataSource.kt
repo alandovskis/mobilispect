@@ -1,8 +1,8 @@
-package com.mobilispect.backend.data.gtfs
+package com.mobilispect.backend.schedule.gtfs
 
-import com.mobilispect.backend.data.route.FeedLocalRouteID
-import com.mobilispect.backend.data.route.OneStopRouteID
-import com.mobilispect.backend.data.route.RouteIDDataSource
+import com.mobilispect.backend.schedule.route.FeedLocalRouteID
+import com.mobilispect.backend.schedule.route.OneStopRouteID
+import com.mobilispect.backend.schedule.route.RouteIDDataSource
 
 /**
  * A [RouteIDDataSource] suitable for testing.

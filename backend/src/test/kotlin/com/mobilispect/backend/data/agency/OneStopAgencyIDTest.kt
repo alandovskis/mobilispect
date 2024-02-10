@@ -1,4 +1,4 @@
-package com.mobilispect.backend.data.agency
+package com.mobilispect.backend.schedule.agency
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

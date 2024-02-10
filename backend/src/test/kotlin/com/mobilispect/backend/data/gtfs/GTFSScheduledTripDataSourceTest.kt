@@ -1,7 +1,7 @@
-package com.mobilispect.backend.data.gtfs
+package com.mobilispect.backend.schedule.gtfs
 
-import com.mobilispect.backend.data.route.OneStopRouteID
-import com.mobilispect.backend.data.schedule.ScheduledTrip
+import com.mobilispect.backend.schedule.route.OneStopRouteID
+import com.mobilispect.backend.schedule.schedule.ScheduledTrip
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat

@@ -1,6 +1,6 @@
-package com.mobilispect.backend.data.transit_land
+package com.mobilispect.backend.schedule.transit_land
 
-import com.mobilispect.backend.data.transit_land.api.TransitLandCredentialsRepository
+import com.mobilispect.backend.schedule.transit_land.api.TransitLandCredentialsRepository
 
 class FakeTransitLandCredentialsRepository : TransitLandCredentialsRepository {
     override fun get(): String = "API_KEY"

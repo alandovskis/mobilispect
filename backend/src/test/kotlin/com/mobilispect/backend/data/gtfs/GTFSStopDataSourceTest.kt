@@ -1,7 +1,7 @@
-package com.mobilispect.backend.data.gtfs
+package com.mobilispect.backend.schedule.gtfs
 
-import com.mobilispect.backend.data.stop.Stop
-import com.mobilispect.backend.data.stop.StopIDDataSource
+import com.mobilispect.backend.schedule.stop.Stop
+import com.mobilispect.backend.schedule.stop.StopIDDataSource
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat
