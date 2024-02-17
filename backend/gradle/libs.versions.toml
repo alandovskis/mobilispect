@@ -1,10 +1,10 @@
 [versions]
 kotlin = "1.9.22"
-kotlinxCoroutines = "1.7.3"
+kotlinxCoroutines = "1.8.0"
 kotlinxSerializationCSV = "2.0.0"
-kotlinxSerialization = "1.6.2"
+kotlinxSerialization = "1.6.3"
 protobufCompiler = "0.9.4"
-protobuf = "3.25.2"
+protobuf = "3.25.3"
 resilience4j = "2.2.0"
 springBoot = "3.2.2"
 springDependency = "1.1.4"
