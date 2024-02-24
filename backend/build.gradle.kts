@@ -41,8 +41,8 @@ dependencies {
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testcontainers:junit-jupiter:1.19.5")
-    testImplementation("org.testcontainers:mongodb:1.19.5")
+    testImplementation("org.testcontainers:junit-jupiter:1.19.6")
+    testImplementation("org.testcontainers:mongodb:1.19.6")
     testImplementation(libs.spring.modulith.test)
 }
 
