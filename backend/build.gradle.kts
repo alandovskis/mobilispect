@@ -35,6 +35,11 @@ dependencies {
 
     implementation(libs.springdoc.openapi.ui)
 
+    implementation(libs.spring.boot.actuator)
+    implementation(libs.spring.boot.batch)
+
+    runtimeOnly("com.h2database:h2")
+
     val modulithBom = platform(libs.spring.modulith.bom)
     implementation(modulithBom)
     implementation(libs.spring.modulith.api)
@@ -44,6 +49,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter:1.19.6")
     testImplementation("org.testcontainers:mongodb:1.19.6")
     testImplementation(libs.spring.modulith.test)
+    testImplementation(libs.spring.batch.test)
 }
 
 tasks.withType<KotlinCompile> {
