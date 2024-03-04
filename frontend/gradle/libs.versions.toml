@@ -10,7 +10,7 @@ androidXTest = "1.5.2"
 appcompat = "1.6.1"
 coreKtx = "1.12.0"
 detekt = "1.23.5"
-gradle = "8.2.2"
+gradle = "8.3.0"
 hilt = "2.51"
 hiltNavigationCompose = "1.2.0"
 javaxInject = "1"
@@ -30,7 +30,7 @@ navigation = "2.7.7"
 okhttpProfiler = "1.0.8"
 retrofit = "2.9.0"
 room = "2.6.1"
-truth = "1.4.1"
+truth = "1.4.2"
 
 [libraries]
 
