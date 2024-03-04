@@ -35,15 +35,22 @@ dependencies {
 
     implementation(libs.springdoc.openapi.ui)
 
+    implementation(libs.spring.boot.actuator)
+    implementation(libs.spring.boot.batch)
+
+    runtimeOnly("com.h2database:h2")
+
     val modulithBom = platform(libs.spring.modulith.bom)
     implementation(modulithBom)
     implementation(libs.spring.modulith.api)
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.apache.commons:commons-compress:1.26.0")
     testImplementation("org.testcontainers:junit-jupiter:1.19.6")
     testImplementation("org.testcontainers:mongodb:1.19.6")
     testImplementation(libs.spring.modulith.test)
+    testImplementation(libs.spring.batch.test)
 }
 
 tasks.withType<KotlinCompile> {
@@ -71,5 +78,5 @@ detekt {
     // If not set, all file paths reported will be absolute file path.
     basePath = projectDir.parent
     toolVersion = "1.23.5"
-    config = files("config/detekt/detekt.yml")
+    config.setFrom(file("config/detekt/detekt.yml"))
 }
