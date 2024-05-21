@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.kotlin.serialization)
-    id("io.gitlab.arturbosch.detekt") version "1.23.5"
+    id("io.gitlab.arturbosch.detekt") version "1.23.6"
     id("info.solidsoft.pitest") version "1.15.0"
     id("org.cyclonedx.bom") version "1.8.2"
     alias(libs.plugins.square.sortDependencies)
@@ -46,9 +46,9 @@ dependencies {
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.apache.commons:commons-compress:1.26.0")
-    testImplementation("org.testcontainers:junit-jupiter:1.19.6")
-    testImplementation("org.testcontainers:mongodb:1.19.6")
+    testImplementation("org.apache.commons:commons-compress:1.26.1")
+    testImplementation("org.testcontainers:junit-jupiter:1.19.8")
+    testImplementation("org.testcontainers:mongodb:1.19.8")
     testImplementation(libs.spring.modulith.test)
     testImplementation(libs.spring.batch.test)
 }
@@ -77,6 +77,6 @@ detekt {
     // Specify the base path for file paths in the formatted reports.
     // If not set, all file paths reported will be absolute file path.
     basePath = projectDir.parent
-    toolVersion = "1.23.5"
+    toolVersion = "1.23.6"
     config.setFrom(file("config/detekt/detekt.yml"))
 }
