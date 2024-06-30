@@ -1,5 +1,6 @@
 [versions]
 compileSDK = "34"
+detektVersion = "0.0.26"
 minSDK = "26"
 targetSDK = "33"
 
@@ -64,6 +65,7 @@ compose-material-icons-core = { module = "androidx.compose.material:material-ico
 compose-material-icons-extened = { module = "androidx.compose.material:material-icons-extended" }
 
 # Integration with ViewModels
+detekt = { module = "com.twitter.compose.rules:detekt", version.ref = "detektVersion" }
 lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
