@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -46,10 +49,6 @@ android {
             excludes += "META-INF/AL2.0"
             excludes += "META-INF/LGPL2.1"
         }
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs = freeCompilerArgs + "-opt-in=kotlin.RequiresOptIn"
     }
     buildFeatures {
         compose = true
@@ -125,7 +124,7 @@ dependencies {
     implementation(libs.ktor.okhttp)
     implementation(libs.ktor.testing)
 
-    detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
+    detektPlugins(libs.detekt)
 
     implementation(libs.mavericks.compose)
     implementation(libs.mavericks.core)
