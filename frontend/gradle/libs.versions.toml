@@ -161,6 +161,8 @@ retrofit = [
 androidApplication = { id = "com.android.application", version.ref = "gradle" }
 androidLibrary = { id = "com.android.library", version.ref = "gradle" }
 
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
 # A static code analyzer for Kotlin
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
