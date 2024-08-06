@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     id("io.gitlab.arturbosch.detekt") version "1.23.6"
     id("info.solidsoft.pitest") version "1.15.0"
-    id("org.cyclonedx.bom") version "1.8.2"
+    id("org.cyclonedx.bom") version "1.9.0"
     alias(libs.plugins.square.sortDependencies)
     alias(libs.plugins.springdoc.openapi)
     alias(libs.plugins.protobuf)
@@ -47,8 +47,8 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.apache.commons:commons-compress:1.26.2")
-    testImplementation("org.testcontainers:junit-jupiter:1.19.8")
-    testImplementation("org.testcontainers:mongodb:1.19.8")
+    testImplementation("org.testcontainers:junit-jupiter:1.20.1")
+    testImplementation("org.testcontainers:mongodb:1.20.1")
     testImplementation(libs.spring.modulith.test)
     testImplementation(libs.spring.batch.test)
 }
