@@ -17,7 +17,7 @@ defaults:
 
 jobs:
   gradle-verify:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: "Verify Gradle"
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew checkSortDependencies
 
   analysis:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: "Static Analysis"
     needs: gradle-verify
     steps:
@@ -55,7 +55,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Run detekt with reviewdog
-        uses: alaegin/Detekt-Action@v1.23.6
+        uses: alaegin/Detekt-Action@v1.23.7
         with:
           github_token: ${{ secrets.github_token }}
           detekt_config: backend/config/detekt/detekt.yml
@@ -71,7 +71,7 @@ jobs:
           path: 'backend/build/reports/bom.json'
 
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: "Build"
     needs: gradle-verify
     steps:
@@ -95,7 +95,7 @@ jobs:
         run: ./gradlew assemble
 
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: "Test"
     needs: build
     steps:

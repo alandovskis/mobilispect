@@ -1,17 +1,17 @@
 [versions]
-kotlin = "2.0.10"
-kotlinxCoroutines = "1.8.1"
-kotlinxSerializationCSV = "2.0.0"
-kotlinxSerialization = "1.7.1"
+kotlin = "2.1.10"
+kotlinxCoroutines = "1.10.1"
+kotlinxSerializationCSV = "2.1.0"
+kotlinxSerialization = "1.8.0"
 protobufCompiler = "0.9.4"
-protobuf = "4.27.3"
-resilience4j = "2.2.0"
-springBoot = "3.3.2"
-springDependency = "1.1.6"
-springDoc = "2.6.0"
+protobuf = "4.29.3"
+resilience4j = "2.3.0"
+springBoot = "3.4.2"
+springDependency = "1.1.7"
+springDoc = "2.8.4"
 springDocPlugin = "1.9.0"
 springModulith = "0.6.0"
-squareSortDependency = "0.7"
+squareSortDependency = "0.14"
 
 [libraries]
 
