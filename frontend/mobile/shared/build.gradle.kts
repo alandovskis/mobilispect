@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -10,9 +12,19 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_1_8)
+                    jvmTarget.set(JvmTarget.JVM_21)
                 }
             }
+        }
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
+        dependencies {
+            api(libs.appcompat)
+            implementation(libs.hilt.android)
+            testImplementation(libs.kotlinx.coroutines.test)
+            testImplementation(libs.mockWebServer)
+            ksp(libs.room.compiler)
         }
     }
     
@@ -29,10 +41,24 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            //put your multiplatform dependencies here
+            api(libs.javax.inject)
+            api(libs.retrofit.core)
+            implementation(libs.dagger.core)
+            implementation(libs.kotlinx.serialization)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.contentNegotiation)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.resources)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.room.runtime)
+            implementation(libs.sqlite.bundled)
+            implementation(libs.sqlite.driver)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.room.testing)
+            implementation(libs.truth)
         }
     }
 }
@@ -44,7 +70,7 @@ android {
         minSdk = 29
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
