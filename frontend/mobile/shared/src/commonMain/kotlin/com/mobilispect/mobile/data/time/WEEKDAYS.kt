@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.time
+package com.mobilispect.mobile.data.time
 
 import java.time.DayOfWeek
 

@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.transit_land
+package com.mobilispect.mobile.data.transit_land
 
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.Gson

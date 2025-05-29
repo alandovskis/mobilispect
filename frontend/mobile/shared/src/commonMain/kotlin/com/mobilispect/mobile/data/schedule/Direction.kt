@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.schedule
+package com.mobilispect.mobile.data.schedule
 
 enum class Direction {
     Inbound,

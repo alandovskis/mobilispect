@@ -1,4 +1,4 @@
-package com.mobilispect.common.testing
+package com.mobilispect.mobile.testing
 
 const val AGENCIES_SUCCESSFUL_FIXTURE = """
                         {

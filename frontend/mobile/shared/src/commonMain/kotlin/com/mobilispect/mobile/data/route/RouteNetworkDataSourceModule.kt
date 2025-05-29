@@ -1,7 +1,6 @@
-package com.mobilispect.common.data.route.com.mobilispect.common.data.route
+package com.mobilispect.mobile.data.route
 
 import com.mobilispect.common.data.route.RouteNetworkDataSource
-import com.mobilispect.common.data.route.TransitLandRouteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

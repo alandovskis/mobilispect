@@ -1,4 +1,7 @@
-package com.mobilispect.common.data.transit_land
+package com.mobilispect.mobile.data.transit_land
+
+import com.mobilispect.mobile.data.transit_land.TransitLandConfig
+import com.mobilispect.mobile.data.transit_land.TransitLandConfigRepository
 
 class FakeTransitLandConfigRepository : TransitLandConfigRepository {
     private var config: TransitLandConfig? = null

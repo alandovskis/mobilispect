@@ -1,6 +1,7 @@
-package com.mobilispect.common.data
+package com.mobilispect.mobile.data
 
 import android.content.Context
+import com.mobilispect.common.data.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.mobilispect.common.testing
+package com.mobilispect.mobile.testing
 
 const val ROUTES_SUCCESSFUL_FIXTURE = """
     {

@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.transit_land
+package com.mobilispect.mobile.data.transit_land
 
 /**
  * A route returned by the transit.land API.

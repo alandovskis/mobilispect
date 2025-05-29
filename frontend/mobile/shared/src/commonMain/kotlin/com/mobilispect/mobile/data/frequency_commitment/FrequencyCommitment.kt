@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.frequency_commitment
+package com.mobilispect.mobile.data.frequency_commitment
 
 data class FrequencyCommitment(
     val spans: Collection<FrequencyCommitmentItem> = listOf(),

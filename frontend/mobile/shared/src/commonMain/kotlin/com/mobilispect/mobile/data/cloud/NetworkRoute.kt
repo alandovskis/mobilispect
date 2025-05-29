@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.cloud
+package com.mobilispect.mobile.data.cloud
 
 @kotlinx.serialization.Serializable
 data class NetworkRoute(

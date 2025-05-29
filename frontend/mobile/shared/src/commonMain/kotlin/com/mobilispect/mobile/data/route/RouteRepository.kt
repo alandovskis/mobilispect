@@ -1,5 +1,6 @@
-package com.mobilispect.common.data.route
+package com.mobilispect.mobile.data.route
 
+import com.mobilispect.mobile.data.route.Route
 import kotlinx.coroutines.flow.Flow
 
 interface RouteRepository {

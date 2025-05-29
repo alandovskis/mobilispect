@@ -1,9 +1,9 @@
-package com.mobilispect.common.data.route
+package com.mobilispect.mobile.data.route
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.mobilispect.common.data.cloud.NetworkRoute
+import com.mobilispect.mobile.data.cloud.NetworkRoute
 
 @Entity(tableName = "routes")
 data class Route(

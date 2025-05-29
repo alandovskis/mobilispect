@@ -1,5 +1,7 @@
-package com.mobilispect.common.data.route
+package com.mobilispect.mobile.data
 
+import com.mobilispect.mobile.data.route.Route
+import com.mobilispect.mobile.data.route.RouteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow

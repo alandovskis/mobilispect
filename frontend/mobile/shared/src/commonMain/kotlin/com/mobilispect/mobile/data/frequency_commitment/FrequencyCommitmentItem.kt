@@ -1,6 +1,6 @@
-package com.mobilispect.common.data.frequency_commitment
+package com.mobilispect.mobile.data.frequency_commitment
 
-import com.mobilispect.common.data.schedule.Direction
+import com.mobilispect.mobile.data.schedule.Direction
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime

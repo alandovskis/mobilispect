@@ -1,4 +1,4 @@
-package com.mobilispect.common.domain.time
+package com.mobilispect.mobile.domain.time
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

@@ -1,11 +1,14 @@
-package com.mobilispect.common.data.transit_land
+package com.mobilispect.mobile.data.transit_land
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+
+@Serializable
 data class TransitLandRoute(
-    @SerializedName("route_long_name")
+    @SerialName("route_long_name")
     val longName: String,
 
-    @SerializedName("route_short_name")
+    @SerialName("route_short_name")
     val shortName: String,
 )

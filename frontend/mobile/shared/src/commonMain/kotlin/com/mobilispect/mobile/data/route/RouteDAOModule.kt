@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.route
+package com.mobilispect.mobile.data.route
 
 import com.mobilispect.mobile.data.AppDatabase
 import dagger.Module

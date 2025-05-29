@@ -1,5 +1,7 @@
-package com.mobilispect.common.data.frequency_commitment
+package com.mobilispect.mobile.data.frequency_commitment
 
+import com.mobilispect.mobile.data.frequency_commitment.DefaultFrequencyCommitmentRepository
+import com.mobilispect.mobile.data.frequency_commitment.FrequencyCommitmentRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

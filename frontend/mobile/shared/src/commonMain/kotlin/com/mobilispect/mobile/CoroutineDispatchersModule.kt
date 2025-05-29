@@ -1,10 +1,11 @@
-package com.mobilispect.common
+package com.mobilispect.mobile
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 
 @Module
 @InstallIn(SingletonComponent::class)

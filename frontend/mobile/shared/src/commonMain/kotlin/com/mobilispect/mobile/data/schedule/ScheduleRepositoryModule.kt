@@ -1,5 +1,6 @@
-package com.mobilispect.common.data.schedule
+package com.mobilispect.mobile.data.schedule
 
+import com.mobilispect.common.data.schedule.FakeScheduleRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

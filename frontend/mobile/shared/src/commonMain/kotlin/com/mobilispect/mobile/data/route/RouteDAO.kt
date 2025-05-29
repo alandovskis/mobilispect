@@ -1,9 +1,10 @@
-package com.mobilispect.common.data.route
+package com.mobilispect.mobile.data.route
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.mobilispect.mobile.data.route.Route
 import kotlinx.coroutines.flow.Flow
 
 

@@ -1,4 +1,4 @@
-package com.mobilispect.mobile.data
+package com.mobilispect.common.data
 
 import android.content.Context
 import androidx.room.ConstructedBy

@@ -1,9 +1,4 @@
-package com.mobilispect.common.domain.time
-
-import com.google.common.truth.Truth
-import org.junit.Test
-import java.time.LocalDateTime
-import java.util.*
+package com.mobilispect.mobile.domain.time
 
 internal class FormatTimeUseCaseTest {
     val subject = FormatTimeUseCase(locale = Locale.CANADA)

@@ -1,5 +1,8 @@
-package com.mobilispect.common.data.transit_land
+package com.mobilispect.mobile.data.transit_land
 
+import com.mobilispect.mobile.data.transit_land.TransitLandAPI
+import com.mobilispect.mobile.data.transit_land.TransitLandConfigRepository
+import com.mobilispect.mobile.data.transit_land.TransitLandRouteResponse
 import java.io.IOException
 import javax.inject.Inject
 

@@ -1,13 +1,27 @@
-package com.mobilispect.common.data.transit_land
+package com.mobilispect.mobile.data.transit_land
 
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.http.path
 
-interface TransitLandAPI {
-    @GET("/api/v2/rest/routes/{route}")
+class TransitLandAPI(private val client: HttpClient) {
+
+    private val baseUrl = "https://transit.land" // Define your base URL
+
     suspend fun fromRef(
-        @Path("route") routeRef: String,
-        @Header("apikey") apiKey: String
-    ): TransitLandRouteResponse
+        routeRef: String,
+        apiKey: String
+    ): TransitLandRouteResponse {
+        return client.get(baseUrl) {
+            url {
+                // Construct the path segments
+                path("api", "v2", "rest", "routes", routeRef)
+                // If there were query parameters, you'd add them like so:
+                // parameter("paramName", "paramValue")
+            }
+            header("apikey", apiKey)
+        }.body() // Automatically deserializes the JSON response to TransitLandRouteResponse
+    }
 }

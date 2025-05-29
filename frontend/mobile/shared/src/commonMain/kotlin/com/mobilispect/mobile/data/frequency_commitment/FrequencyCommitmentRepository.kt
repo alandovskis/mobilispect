@@ -1,7 +1,7 @@
-package com.mobilispect.common.data.frequency_commitment
+package com.mobilispect.mobile.data.frequency_commitment
 
-import com.mobilispect.common.data.agency.STM_ID
-import com.mobilispect.common.data.agency.TTC_ID
+import com.mobilispect.mobile.data.agency.STM_ID
+import com.mobilispect.mobile.data.agency.TTC_ID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject

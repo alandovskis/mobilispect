@@ -1,8 +1,8 @@
-package com.mobilispect.common.data.agency
+package com.mobilispect.mobile.data.agency
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.mobilispect.common.data.cloud.NetworkAgency
+import com.mobilispect.mobile.data.cloud.NetworkAgency
 
 @Entity(tableName = "agencies")
 data class Agency(

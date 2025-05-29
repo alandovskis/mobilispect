@@ -1,10 +1,10 @@
-package com.mobilispect.common.domain.frequency_violation
+package com.mobilispect.mobile.domain.frequency_violation
 
-import com.mobilispect.common.data.frequency_commitment.FrequencyCommitment
-import com.mobilispect.common.data.schedule.Direction
-import com.mobilispect.common.data.schedule.ScheduleRepository
-import com.mobilispect.common.data.schedule.ScheduledStop
-import com.mobilispect.common.data.stop.StopRef
+import com.mobilispect.mobile.data.frequency_commitment.FrequencyCommitment
+import com.mobilispect.mobile.data.schedule.Direction
+import com.mobilispect.mobile.data.schedule.ScheduleRepository
+import com.mobilispect.mobile.data.schedule.ScheduledStop
+import com.mobilispect.mobile.data.stop.StopRef
 import java.time.Duration
 import java.time.LocalDateTime
 import javax.inject.Inject

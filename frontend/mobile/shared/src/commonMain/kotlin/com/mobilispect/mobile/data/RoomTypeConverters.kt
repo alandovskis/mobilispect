@@ -1,7 +1,8 @@
-package com.mobilispect.common.data
+package com.mobilispect.mobile.data
 
 import androidx.room.TypeConverter
-import com.mobilispect.common.data.route.RouteRef
+import com.mobilispect.mobile.data.route.RouteRef
+import kotlin.jvm.JvmStatic
 
 class RoomTypeConverters {
     companion object {

@@ -1,6 +1,6 @@
-package com.mobilispect.common.data.schedule
+package com.mobilispect.mobile.data.schedule
 
-import com.mobilispect.common.data.stop.StopRef
+import com.mobilispect.mobile.data.stop.StopRef
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.LocalTime

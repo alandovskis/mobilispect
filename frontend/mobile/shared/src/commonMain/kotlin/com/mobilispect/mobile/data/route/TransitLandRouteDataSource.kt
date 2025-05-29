@@ -1,6 +1,7 @@
-package com.mobilispect.common.data.route
+package com.mobilispect.mobile.data.route
 
-import com.mobilispect.common.data.transit_land.TransitLandClient
+import com.mobilispect.common.data.route.RouteNetworkDataSource
+import com.mobilispect.mobile.data.transit_land.TransitLandClient
 import javax.inject.Inject
 
 /**

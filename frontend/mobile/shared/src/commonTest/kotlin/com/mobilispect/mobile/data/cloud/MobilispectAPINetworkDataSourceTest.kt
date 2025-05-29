@@ -1,7 +1,7 @@
-package com.mobilispect.common.data.cloud
+package com.mobilispect.mobile.data.cloud
 
-import com.mobilispect.common.testing.AGENCIES_SUCCESSFUL_FIXTURE
-import com.mobilispect.common.testing.ROUTES_SUCCESSFUL_FIXTURE
+import com.mobilispect.mobile.testing.AGENCIES_SUCCESSFUL_FIXTURE
+import com.mobilispect.mobile.testing.ROUTES_SUCCESSFUL_FIXTURE
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
 import io.ktor.utils.io.*

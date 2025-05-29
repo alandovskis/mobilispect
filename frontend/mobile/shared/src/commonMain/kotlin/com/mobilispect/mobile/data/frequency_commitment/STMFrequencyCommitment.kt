@@ -1,8 +1,8 @@
-package com.mobilispect.common.data.frequency_commitment
+package com.mobilispect.mobile.data.frequency_commitment
 
-import com.mobilispect.common.data.agency.STM_ID
-import com.mobilispect.common.data.schedule.Direction
-import com.mobilispect.common.data.time.WEEKDAYS
+import com.mobilispect.mobile.data.agency.STM_ID
+import com.mobilispect.mobile.data.schedule.Direction
+import com.mobilispect.mobile.data.time.WEEKDAYS
 import java.time.Duration
 import java.time.LocalTime
 

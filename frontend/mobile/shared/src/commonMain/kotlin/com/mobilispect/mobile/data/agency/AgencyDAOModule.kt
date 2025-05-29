@@ -1,4 +1,4 @@
-package com.mobilispect.common.data.agency
+package com.mobilispect.mobile.data.agency
 
 import com.mobilispect.mobile.data.AppDatabase
 import dagger.Module

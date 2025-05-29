@@ -1,6 +1,6 @@
-package com.mobilispect.common.data.frequency_commitment
+package com.mobilispect.mobile.data.frequency_commitment
 
-import com.mobilispect.common.data.agency.TTC_ID
+import com.mobilispect.mobile.data.agency.TTC_ID
 import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalTime

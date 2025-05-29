@@ -42,8 +42,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.javax.inject)
-            api(libs.retrofit.core)
-            implementation(libs.dagger.core)
+            implementation(libs.dagger)
             implementation(libs.kotlinx.serialization)
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.contentNegotiation)
