@@ -131,7 +131,7 @@ fabric.properties
 !/gradle/wrapper/gradle-wrapper.jar
 
 ### Kotlin ###
-/.metadata
+/.kotlin
 # Compiled class file
 *.class
 
