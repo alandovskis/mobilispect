@@ -2,31 +2,42 @@
     "FunctionNaming",
 )
 
-package com.mobilispect.android.ui.agencies
+package com.mobilispect.mobile.android.ui.agencies
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.mobilispect.android.R
-import com.mobilispect.android.ui.Card
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
-import com.mobilispect.android.ui.ScreenFrame
 import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
+import com.mobilispect.mobile.android.R
+import com.mobilispect.mobile.android.ui.Card
+import com.mobilispect.mobile.android.ui.ScreenFrame
+import com.mobilispect.mobile.ui.agencies.AgenciesFound
+import com.mobilispect.mobile.ui.agencies.AgenciesUIState
+import com.mobilispect.mobile.ui.agencies.AgenciesViewModel
+import com.mobilispect.mobile.ui.agencies.AgencyUIState
+import com.mobilispect.mobile.ui.agencies.Loading
+import com.mobilispect.mobile.ui.agencies.NoAgencyFound
+import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 
-@Composable
-fun AgenciesRoute(
-    viewModel: AgenciesViewModel = hiltViewModel(),
-    navigateToCommitment: (String) -> Unit
-) {
-    val uiState by viewModel.uiState.collectAsState(initial = Loading)
-    AgenciesScreen(uiState = uiState, navigateToCommitment = navigateToCommitment)
+@Serializable
+object AgenciesList
+
+fun NavGraphBuilder.agenciesGraph() {
+    composable<AgenciesList> {
+        val viewModel: AgenciesViewModel = koinViewModel()
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle(Loading)
+        AgenciesScreen(uiState = uiState, navigateToCommitment = { })
+    }
 }
 
 @Composable

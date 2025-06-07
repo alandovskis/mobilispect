@@ -1,4 +1,4 @@
-package com.mobilispect.mobile.data.route
+package com.mobilispect.mobile.route
 
 import com.mobilispect.common.data.route.RouteNetworkDataSource
 import com.mobilispect.mobile.data.transit_land.TransitLandClient

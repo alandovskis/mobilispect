@@ -1,10 +1,10 @@
-package com.mobilispect.mobile.data.agency
+package com.mobilispect.mobile.agency
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.mobilispect.mobile.data.agency.Agency
+import com.mobilispect.mobile.agency.Agency
 import kotlinx.coroutines.flow.Flow
 
 @Dao

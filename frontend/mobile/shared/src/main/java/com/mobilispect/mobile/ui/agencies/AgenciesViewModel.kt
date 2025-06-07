@@ -1,17 +1,23 @@
-package com.mobilispect.mobile.android.ui.agencies
+package com.mobilispect.mobile.ui.agencies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilispect.mobile.data.agency.AgencyRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mobilispect.mobile.agency.AgencyRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+class AgencyUIState(val id: String, val name: String)
+
+sealed interface AgenciesUIState
+data object Loading : AgenciesUIState
+data object NoAgencyFound : AgenciesUIState
+class AgenciesFound(val agencies: List<AgencyUIState>) : AgenciesUIState
+
+
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
 class AgenciesViewModel @Inject constructor(
     private val agencyRepository: AgencyRepository
 ) :

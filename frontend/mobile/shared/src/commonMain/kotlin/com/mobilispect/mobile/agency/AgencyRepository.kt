@@ -1,6 +1,5 @@
-package com.mobilispect.mobile.data.agency
+package com.mobilispect.mobile.agency
 
-import com.mobilispect.mobile.data.agency.Agency
 import kotlinx.coroutines.flow.Flow
 
 interface AgencyRepository {

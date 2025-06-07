@@ -1,4 +1,4 @@
-package com.mobilispect.mobile.data.agency
+package com.mobilispect.mobile.agency
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

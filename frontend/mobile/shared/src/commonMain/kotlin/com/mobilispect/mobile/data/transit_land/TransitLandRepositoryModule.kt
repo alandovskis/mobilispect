@@ -1,13 +1,9 @@
 package com.mobilispect.mobile.data.transit_land
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-interface TransitLandRepositoryModule {
-    @Binds
-    fun repository(repo: DefaultTransitLandConfigRepository): TransitLandConfigRepository
+val transitLandModule = module {
+    singleOf(::DefaultTransitLandConfigRepository) bind TransitLandConfigRepository::class
 }

@@ -1,21 +1,17 @@
-package com.mobilispect.common.data
+package com.mobilispect.mobile.data
 
-import android.content.Context
 import androidx.room.ConstructedBy
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.mobilispect.mobile.data.agency.Agency
-import com.mobilispect.mobile.data.agency.AgencyDAO
-import com.mobilispect.mobile.data.route.Route
-import com.mobilispect.mobile.data.route.RouteDAO
+import com.mobilispect.mobile.agency.Agency
+import com.mobilispect.mobile.agency.AgencyDAO
+import com.mobilispect.mobile.route.Route
+import com.mobilispect.mobile.route.RouteDAO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.internal.synchronized
-import kotlin.concurrent.Volatile
 
 @Database(
     version = 4,

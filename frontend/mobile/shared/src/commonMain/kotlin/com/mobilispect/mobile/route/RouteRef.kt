@@ -1,4 +1,4 @@
-package com.mobilispect.mobile.data.route
+package com.mobilispect.mobile.route
 
 /**
  * A reference to a route in OneStopID format
