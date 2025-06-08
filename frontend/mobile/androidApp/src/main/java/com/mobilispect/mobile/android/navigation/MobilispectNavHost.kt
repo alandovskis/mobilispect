@@ -5,29 +5,18 @@ package com.mobilispect.mobile.android.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.mobilispect.android.ui.agencies.AgenciesNavDestination
-import com.mobilispect.android.ui.agencies.agenciesGraph
-import com.mobilispect.android.ui.frequency_commitment.RoutesListNavDestination
-import com.mobilispect.android.ui.frequency_commitment.routesGraph
-import com.mobilispect.android.ui.frequency_violation.violationGraph
+import com.mobilispect.mobile.android.ui.agencies.AgenciesList
+import com.mobilispect.mobile.android.ui.agencies.agenciesGraph
 
 @Composable
 fun MobilispectNavHost(
     navController: NavHostController,
-    startDestination: String = AgenciesNavDestination.route
+    startDestination: AgenciesList = AgenciesList
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        agenciesGraph(
-            navigateToRoutes = { navController.navigate("${RoutesListNavDestination.route}/${it}") },
-            nestedGraphs = {
-                routesGraph(
-                    nestedGraphs = {
-                        violationGraph()
-                    }
-                )
-            })
+        agenciesGraph()
     }
 }

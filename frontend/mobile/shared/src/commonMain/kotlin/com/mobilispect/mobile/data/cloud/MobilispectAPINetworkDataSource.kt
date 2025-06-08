@@ -11,7 +11,9 @@ import io.ktor.client.plugins.resources.Resources
 import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.network.UnresolvedAddressException
 import io.ktor.utils.io.errors.IOException
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 /**
@@ -38,6 +40,8 @@ class MobilispectAPINetworkDataSource() : NetworkDataSource {
             Result.success(body._embedded.agencies)
         } catch (e: IOException) {
             Result.failure(NetworkError)
+        } catch (e: UnresolvedAddressException) {
+            Result.failure(NetworkError)
         }
     }
 
@@ -59,11 +63,11 @@ class Agencies(val sort: String? = null)
 @Resource("/routes/search/findAllByAgencyID")
 class Routes(val id: String)
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class Body<T>(val _embedded: T)
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class EmbeddedAgency(val agencies: Collection<NetworkAgency>)
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class EmbeddedRoute(val routes: Collection<NetworkRoute>)
