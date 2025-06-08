@@ -1,4 +1,4 @@
-package com.mobilispect.mobile.data.route
+package com.mobilispect.mobile.route
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
