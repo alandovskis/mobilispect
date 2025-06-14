@@ -4,4 +4,6 @@ metadata:
   name: managed-cert
 spec:
   domains:
+    - mobilispect.com
     - api.mobilispect.com
+    - www.mobilispect.com

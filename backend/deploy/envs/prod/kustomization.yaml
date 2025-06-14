@@ -4,11 +4,11 @@ kind: Kustomization
 resources:
 - ../../base
 - managed-cert.yaml
-- parallelstorecsi-mount.yaml
 
 patches:
 - path: version.yaml
 - path: replicas.yaml
 - path: settings.yaml
 - path: env.yaml
+- path: service.yaml
 - path: ingress.yaml

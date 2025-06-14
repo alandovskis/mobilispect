@@ -1,23 +1,25 @@
 package com.mobilispect.mobile.data.transit_land
 
-import com.mobilispect.mobile.data.transit_land.TransitLandAPI
-import com.mobilispect.mobile.data.transit_land.TransitLandConfigRepository
-import com.mobilispect.mobile.data.transit_land.TransitLandRouteResponse
-import java.io.IOException
-import javax.inject.Inject
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.http.path
 
-class TransitLandClient @Inject constructor(private val transitLandAPI: TransitLandAPI,
-                                            private val configRepository: TransitLandConfigRepository
-) {
+class TransitLandClient(private val client: HttpClient) {
+    private val baseUrl = "https://transit.land" // Define your base URL
+
     suspend fun fromRef(
         routeRef: String,
-    ): Result<TransitLandRouteResponse> {
-        val config = configRepository.config() ?: return Result.failure(Exception("Missing config"))
-        return try {
-            val value = transitLandAPI.fromRef(routeRef, config.apiKey)
-            Result.success(value)
-        } catch (e: IOException) {
-            Result.failure(e)
-        }
+        apiKey: String
+    ): TransitLandRouteResponse {
+        return client.get(baseUrl) {
+            url {
+                // Construct the path segments
+                path("api", "v2", "rest", "routes", routeRef)
+            }
+            header("apikey", apiKey)
+        }.body() // Automatically deserializes the JSON response to TransitLandRouteResponse
     }
 }
