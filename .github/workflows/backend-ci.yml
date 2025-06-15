@@ -2,7 +2,7 @@ name: Backend (CI)
 
 on:
   push:
-    branches: [ "mobile" ]
+    branches: [ "main" ]
     paths:
       - '.github/workflows/backend-*.yml'
       - 'backend/**'
