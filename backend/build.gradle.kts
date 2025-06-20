@@ -10,10 +10,11 @@ plugins {
 	id("org.cyclonedx.bom") version "1.10.0"
 	id("org.springframework.cloud.contract") version "4.2.1"
 	id("com.google.protobuf") version "0.9.4"
+	id("com.squareup.sort-dependencies") version "0.14"
 }
 
 group = "com.mobilispect"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.9-SNAPSHOT"
 
 java {
 	toolchain {
