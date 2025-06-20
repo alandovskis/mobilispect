@@ -31,6 +31,12 @@ extra["springGrpcVersion"] = "0.8.0"
 extra["springModulithVersion"] = "1.3.6"
 
 dependencies {
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("io.grpc:grpc-services")
+	implementation("io.micrometer:micrometer-tracing-bridge-brave")
+	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-batch")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
@@ -40,12 +46,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("io.grpc:grpc-services")
-	implementation("io.micrometer:micrometer-tracing-bridge-brave")
-	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	implementation("org.springframework.cloud:spring-cloud-bus")
 	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j")
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
@@ -55,17 +55,19 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
 	implementation("org.springframework.modulith:spring-modulith-events-api")
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
+
 	runtimeOnly("io.micrometer:micrometer-registry-influx")
 	runtimeOnly("org.springframework.modulith:spring-modulith-actuator")
 	runtimeOnly("org.springframework.modulith:spring-modulith-events-kafka")
 	runtimeOnly("org.springframework.modulith:spring-modulith-observability")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.boot:spring-boot-testcontainers")
+
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("io.rest-assured:spring-web-test-client")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 	testImplementation("org.springframework.batch:spring-batch-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 	testImplementation("org.springframework.grpc:spring-grpc-test")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
@@ -75,6 +77,7 @@ dependencies {
 	testImplementation("org.testcontainers:kafka")
 	testImplementation("org.testcontainers:mongodb")
 	testImplementation("org.testcontainers:vault")
+
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
