@@ -63,16 +63,6 @@ jobs:
           github_token: ${{ secrets.github_token }}
           detekt_config: backend/config/detekt/detekt.yml
 
-      - name: Generate SBOM
-        run: ./gradlew cyclonedxBom
-
-      - name: Upload SBOM
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: 'sbom'
-          path: 'backend/build/reports/bom.json'
-
   build:
     runs-on: ubuntu-22.04
     name: "Build"
