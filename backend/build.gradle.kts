@@ -1,82 +1,125 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.google.protobuf.gradle.id
+import org.springframework.cloud.contract.verifier.config.TestMode
 
 plugins {
-    alias(libs.plugins.spring.boot)
-    alias(libs.plugins.spring.dependency)
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.spring)
-    alias(libs.plugins.kotlin.serialization)
-    id("io.gitlab.arturbosch.detekt") version "1.23.6"
-    id("info.solidsoft.pitest") version "1.15.0"
-    id("org.cyclonedx.bom") version "1.8.2"
-    alias(libs.plugins.square.sortDependencies)
-    alias(libs.plugins.springdoc.openapi)
-    alias(libs.plugins.protobuf)
+	kotlin("jvm") version "1.9.25"
+	kotlin("plugin.spring") version "1.9.25"
+	id("org.springframework.boot") version "3.4.7"
+	id("io.spring.dependency-management") version "1.1.7"
+	id("org.graalvm.buildtools.native") version "0.10.6"
+	id("org.cyclonedx.bom") version "1.10.0"
+	id("org.springframework.cloud.contract") version "4.2.1"
+	id("com.google.protobuf") version "0.9.4"
 }
 
 group = "com.mobilispect"
-version = "0.0.9-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+version = "0.0.1-SNAPSHOT"
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
+
+extra["springCloudVersion"] = "2024.0.1"
+extra["springGrpcVersion"] = "0.8.0"
+extra["springModulithVersion"] = "1.3.6"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation(libs.kotlinx.serialization.csv)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.resilience4j.spring)
-    implementation(libs.protobuf.kotlin)
-
-    implementation(libs.springdoc.openapi.ui)
-
-    implementation(libs.spring.boot.actuator)
-    implementation(libs.spring.boot.batch)
-
-    runtimeOnly("com.h2database:h2")
-
-    val modulithBom = platform(libs.spring.modulith.bom)
-    implementation(modulithBom)
-    implementation(libs.spring.modulith.api)
-
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.apache.commons:commons-compress:1.26.2")
-    testImplementation("org.testcontainers:junit-jupiter:1.19.8")
-    testImplementation("org.testcontainers:mongodb:1.19.8")
-    testImplementation(libs.spring.modulith.test)
-    testImplementation(libs.spring.batch.test)
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter-batch")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+	implementation("org.springframework.boot:spring-boot-starter-data-rest")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas")
+	implementation("org.springframework.boot:spring-boot-starter-mustache")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("io.grpc:grpc-services")
+	implementation("io.micrometer:micrometer-tracing-bridge-brave")
+	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation("org.springframework.cloud:spring-cloud-bus")
+	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j")
+	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+	implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
+	implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka")
+	implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
+	implementation("org.springframework.kafka:spring-kafka")
+	implementation("org.springframework.modulith:spring-modulith-events-api")
+	implementation("org.springframework.modulith:spring-modulith-starter-core")
+	runtimeOnly("io.micrometer:micrometer-registry-influx")
+	runtimeOnly("org.springframework.modulith:spring-modulith-actuator")
+	runtimeOnly("org.springframework.modulith:spring-modulith-events-kafka")
+	runtimeOnly("org.springframework.modulith:spring-modulith-observability")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-testcontainers")
+	testImplementation("io.projectreactor:reactor-test")
+	testImplementation("io.rest-assured:spring-web-test-client")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
+	testImplementation("org.springframework.batch:spring-batch-test")
+	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
+	testImplementation("org.springframework.grpc:spring-grpc-test")
+	testImplementation("org.springframework.kafka:spring-kafka-test")
+	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:kafka")
+	testImplementation("org.testcontainers:mongodb")
+	testImplementation("org.testcontainers:vault")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
-    }
+dependencyManagement {
+	imports {
+		mavenBom("org.springframework.modulith:spring-modulith-bom:${property("springModulithVersion")}")
+		mavenBom("org.springframework.grpc:spring-grpc-dependencies:${property("springGrpcVersion")}")
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+	}
+}
+
+kotlin {
+	compilerOptions {
+		freeCompilerArgs.addAll("-Xjsr305=strict")
+	}
+}
+
+contracts {
+	testMode = TestMode.WEBTESTCLIENT
+}
+
+protobuf {
+	protoc {
+		artifact = "com.google.protobuf:protoc"
+	}
+	plugins {
+		id("grpc") {
+			artifact = "io.grpc:protoc-gen-grpc-java"
+		}
+	}
+	generateProtoTasks {
+		all().forEach {
+			it.plugins {
+				id("grpc") {
+					option("jakarta_omit")
+					option("@generated=omit")
+				}
+			}
+		}
+	}
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
 
-// Mutation Testing
-pitest {
-    setProperty("junit5PluginVersion", "1.0.0")
-    setProperty("threads", 2)
-    setProperty("outputFormats", listOf("HTML"))
-    setProperty("avoidCallsTo", listOf("kotlin.jvm.internal"))
-}
-
-// Linting
-detekt {
-    // Specify the base path for file paths in the formatted reports.
-    // If not set, all file paths reported will be absolute file path.
-    basePath = projectDir.parent
-    toolVersion = "1.23.6"
-    config.setFrom(file("config/detekt/detekt.yml"))
+tasks.contractTest {
+	useJUnitPlatform()
 }

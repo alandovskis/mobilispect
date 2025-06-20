@@ -1,7 +1,0 @@
-[package]
-name = "mobilispect-backend"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-transit_model = "0.56.1"
