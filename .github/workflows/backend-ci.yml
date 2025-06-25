@@ -120,12 +120,3 @@ jobs:
         with:
           name: 'test-results'
           path: 'backend/build/reports/tests'
-
-      # SEVERE : Coverage generator Minion exited abnormally due to UNKNOWN_ERROR
-      #- name: Run mutation tests
-      #  uses: isamadrid90/gradle-pitest-comment-action@v1
-      #  with:
-      #    repo-token: ${{ secrets.GITHUB_TOKEN }}
-      #    reports-retention: 1
-      #    reports-path: "backend/build/reports/pitest"
-      #    working-directory: backend

@@ -11,10 +11,11 @@ plugins {
 	id("org.springframework.cloud.contract") version "4.2.1"
 	id("com.google.protobuf") version "0.9.4"
 	id("com.squareup.sort-dependencies") version "0.14"
+	id("io.gitlab.arturbosch.detekt") version "1.23.6"
 }
 
 group = "com.mobilispect"
-version = "0.0.9-SNAPSHOT"
+version = "0.0.10-SNAPSHOT"
 
 java {
 	toolchain {
@@ -55,6 +56,10 @@ dependencies {
 	implementation("org.springframework.kafka:spring-kafka")
 	implementation("org.springframework.modulith:spring-modulith-events-api")
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
+	implementation(libs.kotlinx.serialization.csv)
+	implementation(libs.kotlinx.serialization.json)
+	implementation(libs.protobuf.kotlin)
+	implementation(libs.springdoc.openapi.ui)
 
 	runtimeOnly("io.micrometer:micrometer-registry-influx")
 	runtimeOnly("org.springframework.modulith:spring-modulith-actuator")
@@ -126,4 +131,12 @@ tasks.withType<Test> {
 
 tasks.contractTest {
 	useJUnitPlatform()
+}
+
+// Linting
+detekt {
+	// Specify the base path for file paths in the formatted reports.
+	// If not set, all file paths reported will be absolute file path.
+	basePath = projectDir.parent
+	config.setFrom(file("config/detekt/detekt.yml"))
 }
