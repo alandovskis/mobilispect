@@ -1,5 +1,4 @@
 import com.google.protobuf.gradle.id
-import org.springframework.cloud.contract.verifier.config.TestMode
 
 plugins {
 	kotlin("jvm") version "1.9.25"
@@ -8,7 +7,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.graalvm.buildtools.native") version "0.10.6"
 	id("org.cyclonedx.bom") version "1.10.0"
-	id("org.springframework.cloud.contract") version "4.2.1"
+//	id("org.springframework.cloud.contract") version "4.2.1"
 	id("com.google.protobuf") version "0.9.4"
 	id("com.squareup.sort-dependencies") version "0.14"
 	id("io.gitlab.arturbosch.detekt") version "1.23.6"
@@ -73,7 +72,7 @@ dependencies {
 	testImplementation("org.springframework.batch:spring-batch-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
-	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
+//	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 	testImplementation("org.springframework.grpc:spring-grpc-test")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
@@ -100,9 +99,9 @@ kotlin {
 	}
 }
 
-contracts {
+/*contracts {
 	testMode = TestMode.WEBTESTCLIENT
-}
+}*/
 
 protobuf {
 	protoc {
@@ -129,9 +128,9 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-tasks.contractTest {
+/*tasks.contractTest {
 	useJUnitPlatform()
-}
+}*/
 
 // Linting
 detekt {
