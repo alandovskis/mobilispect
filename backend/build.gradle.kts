@@ -51,9 +51,9 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j")
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
 	implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
-	implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka")
+	//implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka")
 	implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
-	implementation("org.springframework.kafka:spring-kafka")
+	//implementation("org.springframework.kafka:spring-kafka")
 	implementation("org.springframework.modulith:spring-modulith-events-api")
 	implementation("org.springframework.modulith:spring-modulith-starter-core")
 	implementation(libs.kotlinx.serialization.csv)
@@ -63,7 +63,7 @@ dependencies {
 
 	runtimeOnly("io.micrometer:micrometer-registry-influx")
 	runtimeOnly("org.springframework.modulith:spring-modulith-actuator")
-	runtimeOnly("org.springframework.modulith:spring-modulith-events-kafka")
+	//runtimeOnly("org.springframework.modulith:spring-modulith-events-kafka")
 	runtimeOnly("org.springframework.modulith:spring-modulith-observability")
 
 	testImplementation("io.projectreactor:reactor-test")
@@ -79,7 +79,7 @@ dependencies {
 	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.testcontainers:junit-jupiter")
-	testImplementation("org.testcontainers:kafka")
+	//testImplementation("org.testcontainers:kafka")
 	testImplementation("org.testcontainers:mongodb")
 	testImplementation("org.testcontainers:vault")
 
