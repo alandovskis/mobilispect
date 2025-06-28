@@ -25,7 +25,6 @@ private val AGENCY_B =
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
-@ContextConfiguration(initializers = [AgencyAPIIntegrationTest.Companion.DBInitializer::class])
 @Testcontainers
 class AgencyAPIIntegrationTest {
     companion object {
