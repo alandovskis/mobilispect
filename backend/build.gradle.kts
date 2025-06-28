@@ -65,6 +65,7 @@ dependencies {
 	//runtimeOnly("org.springframework.modulith:spring-modulith-events-kafka")
 	runtimeOnly("org.springframework.modulith:spring-modulith-observability")
 
+	testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("io.rest-assured:spring-web-test-client")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -72,7 +73,6 @@ dependencies {
 	testImplementation("org.springframework.batch:spring-batch-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
-//	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 	testImplementation("org.springframework.grpc:spring-grpc-test")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
 	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
@@ -81,6 +81,7 @@ dependencies {
 	//testImplementation("org.testcontainers:kafka")
 	testImplementation("org.testcontainers:mongodb")
 	testImplementation("org.testcontainers:vault")
+//	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
