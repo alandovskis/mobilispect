@@ -49,7 +49,6 @@ private val ROUTE_B1 = Route(
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
-@ContextConfiguration(initializers = [RouteAPIIntegrationTest.Companion.DBInitializer::class])
 @Testcontainers
 class RouteAPIIntegrationTest {
     companion object {

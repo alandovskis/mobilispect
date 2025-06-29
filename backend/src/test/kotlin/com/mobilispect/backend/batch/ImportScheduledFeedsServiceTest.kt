@@ -38,7 +38,6 @@ import java.time.LocalDate
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 )
-@ContextConfiguration(initializers = [ImportScheduledFeedsServiceTest.Companion.DBInitializer::class])
 @Testcontainers
 @Suppress("LargeClass")
 @Disabled("broken")
@@ -48,7 +47,6 @@ internal class ImportScheduledFeedsServiceTest {
         @JvmStatic
         val container = createMongoDBContainer()
 
-        class DBInitializer : MongoDBInitializer(container)
     }
 
     @Autowired
