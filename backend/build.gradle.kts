@@ -49,7 +49,7 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-bus")
 	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j")
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
-	implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
+//	implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 	//implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka")
 	implementation("org.springframework.grpc:spring-grpc-spring-boot-starter")
 	//implementation("org.springframework.kafka:spring-kafka")
