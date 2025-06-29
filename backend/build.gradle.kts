@@ -58,7 +58,7 @@ dependencies {
 	implementation(libs.kotlinx.serialization.csv)
 	implementation(libs.kotlinx.serialization.json)
 	implementation(libs.protobuf.kotlin)
-	implementation(libs.springdoc.openapi.ui)
+//	implementation(libs.springdoc.openapi.ui)
 
 	runtimeOnly("io.micrometer:micrometer-registry-influx")
 //	runtimeOnly("org.springframework.modulith:spring-modulith-actuator")
