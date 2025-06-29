@@ -46,7 +46,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-mustache")
 //	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	implementation("org.springframework.cloud:spring-cloud-bus")
+//	implementation("org.springframework.cloud:spring-cloud-bus")
 	implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j")
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
 //	implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
