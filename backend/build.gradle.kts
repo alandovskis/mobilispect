@@ -80,7 +80,7 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	//testImplementation("org.testcontainers:kafka")
 	testImplementation("org.testcontainers:mongodb")
-	testImplementation("org.testcontainers:vault")
+//	testImplementation("org.testcontainers:vault")
 //	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
