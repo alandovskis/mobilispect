@@ -60,7 +60,7 @@ dependencies {
 	implementation(libs.protobuf.kotlin)
 //	implementation(libs.springdoc.openapi.ui)
 
-	runtimeOnly("io.micrometer:micrometer-registry-influx")
+//	runtimeOnly("io.micrometer:micrometer-registry-influx")
 //	runtimeOnly("org.springframework.modulith:spring-modulith-actuator")
 	//runtimeOnly("org.springframework.modulith:spring-modulith-events-kafka")
 //	runtimeOnly("org.springframework.modulith:spring-modulith-observability")
