@@ -4,6 +4,7 @@ plugins {
     id("org.springframework.boot") version "3.5.3"
     id("io.spring.dependency-management") version "1.1.7"
     id("com.squareup.sort-dependencies") version "0.14"
+    id("io.gitlab.arturbosch.detekt") version "1.23.6"
 }
 
 group = "com.mobilispect"
@@ -39,4 +40,12 @@ kotlin {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+// Linting
+detekt {
+    // Specify the base path for file paths in the formatted reports.
+    // If not set, all file paths reported will be absolute file path.
+    basePath = projectDir.parent
+    config.setFrom(file("config/detekt/detekt.yml"))
 }
