@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "com.mobilispect"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.10-SNAPSHOT"
 
 java {
     toolchain {
