@@ -9,5 +9,5 @@ data class ScheduledTrip(
     val routeID: String,
     val dates: Collection<LocalDate>,
     val direction: String,
-    val version: String
+    val versions: Collection<String>
 )
