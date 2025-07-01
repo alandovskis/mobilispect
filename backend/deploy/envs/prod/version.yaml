@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
         - name: mobilispect-api
-          image: us-east4-docker.pkg.dev/refined-area-380401/mobilispect/mobilispect-api:0.0.8
+          image: northamerica-northeast1-docker.pkg.dev/mobilispect/mobilispect-api/mobilispect-api:0.0.10
