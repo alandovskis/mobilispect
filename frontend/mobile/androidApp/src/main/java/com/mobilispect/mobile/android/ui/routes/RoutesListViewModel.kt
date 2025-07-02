@@ -3,8 +3,7 @@ package com.mobilispect.mobile.android.ui.routes
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mobilispect.mobile.data.route.RouteRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.mobilispect.mobile.route.RouteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
@@ -13,8 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@HiltViewModel
-class RoutesListViewModel @Inject constructor(
+class RoutesListViewModel(
     savedStateHandle: SavedStateHandle,
     private val routeRepository: RouteRepository
 ) :

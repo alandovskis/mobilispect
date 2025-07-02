@@ -1,14 +1,9 @@
 package com.mobilispect.mobile.data.schedule
 
-import com.mobilispect.common.data.schedule.FakeScheduleRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
+import org.koin.dsl.bind
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal interface ScheduleRepositoryModule {
-    @Binds
-    fun repo(repo: FakeScheduleRepository): ScheduleRepository
+val scheduleModule = module {
+    singleOf(::FakeScheduleRepository) bind ScheduleRepository::class
 }

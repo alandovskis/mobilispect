@@ -1,5 +1,3 @@
-@file:Suppress("PackageNaming", "MagicNumber")
-
 package com.mobilispect.mobile.android.ui.frequency_violation
 
 import androidx.lifecycle.ViewModel
@@ -9,15 +7,10 @@ import com.mobilispect.mobile.data.stop.StopRef
 import com.mobilispect.mobile.domain.frequency_violation.FindFrequencyViolationsOnDayAtStopUseCase
 import com.mobilispect.mobile.domain.frequency_violation.FrequencyViolation
 import com.mobilispect.mobile.domain.time.FormatTimeUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
 import javax.inject.Inject
 
-@HiltViewModel
 class FrequencyViolationViewModel @Inject constructor(
     private val frequencyViolationUseCase: FindFrequencyViolationsOnDayAtStopUseCase,
     private val formatTimeUseCase: FormatTimeUseCase,
@@ -31,10 +24,9 @@ class FrequencyViolationViewModel @Inject constructor(
     val violations: Flow<FrequencyViolationUIState> = _violations
 
     fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: String) {
-        val start = LocalDateTime.of(
-            LocalDate.of(2022, 7, 7),
-            LocalTime.MIDNIGHT
-        )
+        val start = kotlinx.datetime.LocalDateTime(
+            kotlinx.datetime.LocalDate(2022, 7, 7),
+            kotlinx.datetime.LocalTime.fromSecondOfDay(0))
         val stopRef = StopRef(geohash = "abcd", name = "test")
         val inbound = frequencyViolationUseCase.invoke(
             start = start,
@@ -66,7 +58,7 @@ class FrequencyViolationViewModel @Inject constructor(
             FrequencyViolationInstanceUIState(
                 start = formatTimeUseCase.invoke(it.start),
                 end = formatTimeUseCase.invoke(it.end),
-                violatedBy_m = it.duration.toMinutes()
+                violatedBy_m = it.duration.inWholeMinutes
             )
         }
 }

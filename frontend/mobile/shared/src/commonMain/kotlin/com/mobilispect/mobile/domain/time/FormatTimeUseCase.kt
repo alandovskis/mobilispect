@@ -1,22 +1,14 @@
 package com.mobilispect.mobile.domain.time
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
-import javax.inject.Inject
+import kotlinx.datetime.format.*
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
-class FormatTimeUseCase @Inject constructor() {
-    private var locale: Locale
-
-    init {
-        locale = Locale.getDefault()
-    }
-
-    constructor(locale: Locale) : this() {
-        this.locale = locale
-    }
-
+class FormatTimeUseCase(private val timeZone: TimeZone) {
     operator fun invoke(dateTime: LocalDateTime): String =
-        DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale).format(dateTime)
+        dateTime.format(LocalDateTime.Formats.ISO)
+       // DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(locale).format(dateTime)
 }

@@ -7,6 +7,7 @@ import com.mobilispect.mobile.data.databaseModule
 import com.mobilispect.mobile.data.schedule.scheduleModule
 import com.mobilispect.mobile.data.transit_land.ktorHTTPClientModule
 import com.mobilispect.mobile.data.transit_land.transitLandModule
+import com.mobilispect.mobile.route.routeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androix.startup.KoinStartup
@@ -26,6 +27,7 @@ class MobilispectApp : Application(), KoinStartup {
                 databaseModule,
                 ktorHTTPClientModule,
                 networkModule,
+                routeModule,
                 scheduleModule,
                 transitLandModule
             )

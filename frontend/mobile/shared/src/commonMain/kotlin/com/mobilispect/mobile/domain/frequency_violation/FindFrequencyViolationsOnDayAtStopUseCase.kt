@@ -5,11 +5,13 @@ import com.mobilispect.mobile.data.schedule.Direction
 import com.mobilispect.mobile.data.schedule.ScheduleRepository
 import com.mobilispect.mobile.data.schedule.ScheduledStop
 import com.mobilispect.mobile.data.stop.StopRef
-import java.time.Duration
-import java.time.LocalDateTime
-import javax.inject.Inject
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
 
-class FindFrequencyViolationsOnDayAtStopUseCase @Inject constructor(private val scheduleRepo: ScheduleRepository) {
+class FindFrequencyViolationsOnDayAtStopUseCase(private val scheduleRepo: ScheduleRepository) {
     operator fun invoke(
         start: LocalDateTime,
         routeRef: String,
@@ -32,8 +34,8 @@ class FindFrequencyViolationsOnDayAtStopUseCase @Inject constructor(private val 
         check(directionTimes.size == 1)
         val directionTime = directionTimes.first()
 
-        val adjustedStart = LocalDateTime.of(start.toLocalDate(), directionTime.start)
-        val adjustedEnd = LocalDateTime.of(start.toLocalDate(), directionTime.end)
+        val adjustedStart = LocalDateTime(start.date, directionTime.start)
+        val adjustedEnd = LocalDateTime(start.date, directionTime.end)
 
         val sentinel = Duration.ZERO
         val departures = scheduleRepo.forDayAtStopOnRouteInDirection(
@@ -56,11 +58,8 @@ class FindFrequencyViolationsOnDayAtStopUseCase @Inject constructor(private val 
                     val intervalEnd = localDateTime(dateTimes[1])
 
                     if ((intervalStart != null) && (intervalEnd != null)) {
-                        val duration = Duration.between(
-                            intervalStart,
-                            intervalEnd
-                        )
-
+                        val duration = intervalEnd.toInstant(TimeZone.currentSystemDefault()) -
+                                intervalStart.toInstant(TimeZone.currentSystemDefault())
                         return@windowed FrequencyViolation(
                             start = intervalStart,
                             end = intervalEnd, duration = duration

@@ -1,9 +1,9 @@
 package com.mobilispect.mobile.data.frequency_commitment
 
 import com.mobilispect.mobile.data.schedule.Direction
-import java.time.DayOfWeek
-import java.time.Duration
-import java.time.LocalTime
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalTime
+import kotlin.time.Duration
 
 
 data class DirectionTime(

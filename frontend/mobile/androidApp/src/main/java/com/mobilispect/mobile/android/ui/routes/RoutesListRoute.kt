@@ -7,7 +7,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.mobile.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
@@ -15,11 +14,13 @@ import com.mobilispect.mobile.android.ui.ScreenFrame
 import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.mobile.android.R
+import com.mobilispect.mobile.ui.agencies.AgenciesViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun RoutesListRoute(
-    viewModel: RoutesListViewModel = hiltViewModel()
 ) {
+    val viewModel: RoutesListViewModel = koinViewModel()
     viewModel.sync()
     val uiState by viewModel.uiState.collectAsState()
     RouteListScreen(uiState)

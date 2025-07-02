@@ -19,8 +19,8 @@ import kotlinx.serialization.json.Json
 /**
  * A [NetworkDataSource] that access the Mobilispect API.
  */
-class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine = CIO.create()) : NetworkDataSource {
-    private val client: HttpClient = HttpClient(httpEngine) {
+class MobilispectAPINetworkDataSource() : NetworkDataSource {
+    private val client: HttpClient = HttpClient(CIO.create()) {
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true
@@ -28,8 +28,8 @@ class MobilispectAPINetworkDataSource(httpEngine: HttpClientEngine = CIO.create(
         }
         install(Resources)
         defaultRequest {
-            host = "api.mobilispect.com"
-            url { protocol = URLProtocol.HTTPS }
+            host = "34.152.5.170"
+            url { protocol = URLProtocol.HTTP }
         }
     }
 

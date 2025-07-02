@@ -45,6 +45,7 @@ kotlin {
         commonMain.dependencies {
             api(libs.javax.inject)
             implementation(libs.kotlinx.serialization)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.contentNegotiation)
             implementation(libs.ktor.client.core)

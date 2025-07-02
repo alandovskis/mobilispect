@@ -1,10 +1,10 @@
 package com.mobilispect.mobile.data.frequency_commitment
 
-import com.mobilispect.mobile.data.agency.STM_ID
+import com.mobilispect.mobile.agency.STM_ID
 import com.mobilispect.mobile.data.schedule.Direction
 import com.mobilispect.mobile.data.time.WEEKDAYS
-import java.time.Duration
-import java.time.LocalTime
+import kotlinx.datetime.LocalTime
+import kotlin.time.Duration.Companion.minutes
 
 // Source: https://www.stm.info/en/info/networks/bus/local/10-minutes-max
 private val bothDirections = FrequencyCommitmentItem(
@@ -15,10 +15,10 @@ private val bothDirections = FrequencyCommitmentItem(
         "r-f25em-141"
     ),
     directions = DirectionTime.both(
-        start = LocalTime.of(6, 0),
-        end = LocalTime.of(21, 0),
+        start = LocalTime(6, 0),
+        end = LocalTime(21, 0),
     ),
-    frequency = Duration.ofMinutes(10)
+    frequency = 10.0.minutes
 )
 
 private val tidalFlow = FrequencyCommitmentItem(
@@ -33,16 +33,16 @@ private val tidalFlow = FrequencyCommitmentItem(
     directions = listOf(
         DirectionTime(
             direction = Direction.Inbound,
-            start = LocalTime.of(6, 0),
-            end = LocalTime.of(14, 0),
+            start = LocalTime(6, 0),
+            end = LocalTime(14, 0),
         ),
         DirectionTime(
             direction = Direction.Outbound,
-            start = LocalTime.of(14, 0),
-            end = LocalTime.of(21, 0),
+            start = LocalTime(14, 0),
+            end = LocalTime(21, 0),
         ),
     ),
-    frequency = Duration.ofMinutes(10)
+    frequency = 10.0.minutes
 )
 
 val STM_FREQUENCY_COMMITMENT = FrequencyCommitment(
@@ -73,10 +73,10 @@ private val bothDirectionsPast = FrequencyCommitmentItem(
         "r-f25du-165"
     ),
     directions = DirectionTime.both(
-        start = LocalTime.of(6, 0),
-        end = LocalTime.of(21, 0),
+        start = LocalTime(6, 0),
+        end = LocalTime(21, 0),
     ),
-    frequency = Duration.ofMinutes(10)
+    frequency = 10.0.minutes
 )
 
 private val tidalFlowPast = FrequencyCommitmentItem(
@@ -106,16 +106,16 @@ private val tidalFlowPast = FrequencyCommitmentItem(
     directions = listOf(
         DirectionTime(
             direction = Direction.Inbound,
-            start = LocalTime.of(6, 0),
-            end = LocalTime.of(14, 0),
+            start = LocalTime(6, 0),
+            end = LocalTime(14, 0),
         ),
         DirectionTime(
             direction = Direction.Outbound,
-            start = LocalTime.of(14, 0),
-            end = LocalTime.of(21, 0),
+            start = LocalTime(14, 0),
+            end = LocalTime(21, 0),
         ),
     ),
-    frequency = Duration.ofMinutes(10)
+    frequency = 10.0.minutes
 )
 
 val STM_FREQUENCY_COMMITMENT_PRE_COVID = FrequencyCommitment(

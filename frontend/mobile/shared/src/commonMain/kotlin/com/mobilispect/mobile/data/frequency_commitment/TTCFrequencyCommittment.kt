@@ -1,9 +1,9 @@
 package com.mobilispect.mobile.data.frequency_commitment
 
-import com.mobilispect.mobile.data.agency.TTC_ID
-import java.time.DayOfWeek
-import java.time.Duration
-import java.time.LocalTime
+import com.mobilispect.mobile.agency.TTC_ID
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalTime
+import kotlin.time.Duration.Companion.minutes
 
 // Source: https://ttc-cdn.azureedge.net/-/media/Project/TTC/DevProto/Images/Home/Routes-and-Schedules/Landing-page-pdfs/TTC_SystemMap_2021-11.pdf?rev=58232b2f280d4314b6435c79199af773
 val item = FrequencyCommitmentItem(
@@ -15,10 +15,10 @@ val item = FrequencyCommitmentItem(
         DayOfWeek.FRIDAY,
         DayOfWeek.SATURDAY,
     ),
-    frequency = Duration.ofMinutes(10),
+    frequency = 10.0.minutes,
     directions = DirectionTime.both(
-        start = LocalTime.of(6, 0),
-        end = LocalTime.of(1, 0)
+        start = LocalTime(6, 0),
+        end = LocalTime(1, 0)
     ),
     routes = listOf(
         "r-dpz8-1",

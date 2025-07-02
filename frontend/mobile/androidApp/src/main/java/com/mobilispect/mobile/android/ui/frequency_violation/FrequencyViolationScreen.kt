@@ -9,18 +9,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.mobilispect.mobile.android.R
 import com.mobilispect.mobile.android.ui.Card
 import com.mobilispect.mobile.android.ui.ScreenFrame
 import com.mobilispect.mobile.data.schedule.Direction
 import com.mobilispect.mobile.domain.frequency_violation.NoDeparturesFound
+import com.mobilispect.mobile.ui.agencies.AgenciesViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FrequencyViolationRoute(
     routeRef: String?,
-    viewModel: FrequencyViolationViewModel = hiltViewModel()
 ) {
+    val viewModel: FrequencyViolationViewModel = koinViewModel()
     routeRef?.let {
         viewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(
             it

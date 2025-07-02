@@ -11,6 +11,7 @@ javax-inject = "1"
 koin = "4.1.0-RC1"
 kotlin = "2.1.20"
 kotlinxCoroutines = "1.7.3"
+kotlinxDateTime = "0.6.2"
 kotlinxSerialization = "1.7.3"
 kover = "0.7.6"
 ksp = "2.1.20-2.0.0"
@@ -44,6 +45,7 @@ koin-android-startup = { module = "io.insert-koin:koin-androidx-startup", versio
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

@@ -1,7 +1,7 @@
 package com.mobilispect.mobile.data.schedule
 
 import com.mobilispect.mobile.data.stop.StopRef
-import java.time.LocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 interface ScheduleRepository {
     fun forDayAtStopOnRouteInDirection(

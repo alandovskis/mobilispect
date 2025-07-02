@@ -2,7 +2,7 @@ package com.mobilispect.mobile.domain.frequency_violation
 
 import com.mobilispect.mobile.data.frequency_commitment.STM_FREQUENCY_COMMITMENT
 import com.mobilispect.mobile.data.schedule.Direction
-import com.mobilispect.common.data.schedule.FakeScheduleRepository
+import com.mobilispect.mobile.data.schedule.FakeScheduleRepository
 import com.mobilispect.mobile.data.stop.StopRef
 import kotlin.test.Test
 
