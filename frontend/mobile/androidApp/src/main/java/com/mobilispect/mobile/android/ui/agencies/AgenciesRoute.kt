@@ -32,11 +32,11 @@ import org.koin.compose.viewmodel.koinViewModel
 @Serializable
 object AgenciesList
 
-fun NavGraphBuilder.agenciesGraph() {
+fun NavGraphBuilder.agenciesGraph(navigateToRoutes: (String) -> Unit) {
     composable<AgenciesList> {
         val viewModel: AgenciesViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle(Loading)
-        AgenciesScreen(uiState = uiState, navigateToCommitment = { })
+        AgenciesScreen(uiState = uiState, navigateToRoutes = navigateToRoutes)
     }
 }
 
@@ -44,7 +44,7 @@ fun NavGraphBuilder.agenciesGraph() {
 fun AgenciesScreen(
     uiState: AgenciesUIState,
     modifier: Modifier = Modifier,
-    navigateToCommitment: (String) -> Unit
+    navigateToRoutes: (String) -> Unit
 ) {
     ScreenFrame(screenTitle = stringResource(id = R.string.agencies), modifier = modifier) {
         when (uiState) {
@@ -60,7 +60,7 @@ fun AgenciesScreen(
                         for (agency in uiState.agencies) {
                             item {
                                 OutlinedButton(
-                                    onClick = { navigateToCommitment(agency.id) },
+                                    onClick = { navigateToRoutes(agency.id) },
                                 ) {
                                     Text(
                                         text = agency.name,
@@ -83,6 +83,6 @@ fun PreviewAgenciesScreen() {
             agencies = listOf(
                 AgencyUIState(id = "o-abcd-a", name = "Agency A")
             )
-        ), navigateToCommitment = {})
+        ), navigateToRoutes = {})
     }
 }

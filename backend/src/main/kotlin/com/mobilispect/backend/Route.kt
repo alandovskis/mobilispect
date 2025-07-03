@@ -27,7 +27,7 @@ data class Route(
         require(localID.isNotBlank()) { "Local ID must not be blank" }
         require(shortName.isNotBlank()) { "Short name must not be blank" }
         require(longName.isNotBlank()) { "Long name must not be blank" }
-        require(agencyID.matches(AGENCY_ONESTOP_ID_REGEX)) { Agency}
+        require(agencyID.matches(AGENCY_ONESTOP_ID_REGEX)) { "Agency ID must be of the form o-geohash-id, Was $agencyID" }
         require(versions.isNotEmpty()) { "Versions must not be empty" }
     }
 }

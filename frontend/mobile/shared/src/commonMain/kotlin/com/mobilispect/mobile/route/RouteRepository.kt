@@ -1,6 +1,5 @@
 package com.mobilispect.mobile.route
 
-import com.mobilispect.mobile.route.Route
 import kotlinx.coroutines.flow.Flow
 
 interface RouteRepository {

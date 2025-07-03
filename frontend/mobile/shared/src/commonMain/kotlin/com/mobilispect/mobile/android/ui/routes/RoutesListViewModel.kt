@@ -1,7 +1,5 @@
 package com.mobilispect.mobile.android.ui.routes
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mobilispect.mobile.route.RouteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,14 +7,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RoutesListViewModel(
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: androidx.lifecycle.SavedStateHandle,
     private val routeRepository: RouteRepository
 ) :
-    ViewModel() {
+    androidx.lifecycle.ViewModel() {
     private val agencyID: String = savedStateHandle["agencyID"] ?: ""
 
     val uiState = routeUIState(agencyID)
@@ -47,7 +44,6 @@ class RoutesListViewModel(
 sealed interface RouteListUIState
 object Loading : RouteListUIState
 data class RoutesFound(val routes: Collection<RouteUIState>) : RouteListUIState
-
 data class RouteUIState(
     val id: String,
     val shortName: String,

@@ -7,18 +7,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class AgencyUIState(val id: String, val name: String)
-
 sealed interface AgenciesUIState
 data object Loading : AgenciesUIState
 data object NoAgencyFound : AgenciesUIState
 class AgenciesFound(val agencies: List<AgencyUIState>) : AgenciesUIState
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
-class AgenciesViewModel @Inject constructor(
+class AgenciesViewModel @javax.inject.Inject constructor(
     private val agencyRepository: AgencyRepository
 ) :
     ViewModel() {

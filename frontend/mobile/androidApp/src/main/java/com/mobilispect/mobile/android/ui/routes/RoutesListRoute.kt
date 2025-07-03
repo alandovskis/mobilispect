@@ -14,7 +14,6 @@ import com.mobilispect.mobile.android.ui.ScreenFrame
 import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.mobile.android.R
-import com.mobilispect.mobile.ui.agencies.AgenciesViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

@@ -2,7 +2,6 @@ package com.mobilispect.mobile.com.mobilispect.mobile.agency
 
 import com.mobilispect.mobile.agency.AgencyDAO
 import com.mobilispect.mobile.agency.AgencyRepository
-import com.mobilispect.mobile.agency.OfflineFirstAgencyRepository
 import com.mobilispect.mobile.data.AppDatabase
 import com.mobilispect.mobile.ui.agencies.AgenciesViewModel
 import org.koin.core.module.dsl.singleOf

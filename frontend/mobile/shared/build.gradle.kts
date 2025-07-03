@@ -23,10 +23,10 @@ kotlin {
         dependencies {
             api(libs.appcompat)
             implementation(libs.koin.android)
-            implementation(libs.koin.compose.viewmodel)
             testImplementation(libs.kotlinx.coroutines.test)
             testImplementation(libs.mockWebServer)
             ksp(libs.room.compiler)
+            implementation(libs.room.ktx)
         }
     }
     
@@ -44,6 +44,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.javax.inject)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.serialization)
             implementation(libs.kotlinx.datetime)
             implementation(libs.ktor.client.cio)
@@ -54,7 +56,6 @@ kotlin {
             implementation(libs.room.runtime)
             implementation(libs.sqlite.bundled)
             implementation(libs.sqlite.driver)
-            implementation(libs.koin.core)
 
         }
         commonTest.dependencies {

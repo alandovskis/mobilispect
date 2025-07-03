@@ -1,6 +1,10 @@
-package com.mobilispect.mobile.agency
+package com.mobilispect.mobile.com.mobilispect.mobile.agency
 
 import androidx.room.withTransaction
+import com.mobilispect.mobile.agency.Agency
+import com.mobilispect.mobile.agency.AgencyDAO
+import com.mobilispect.mobile.agency.AgencyRepository
+import com.mobilispect.mobile.agency.asEntity
 import com.mobilispect.mobile.data.AppDatabase
 import com.mobilispect.mobile.data.cloud.NetworkDataSource
 import kotlinx.coroutines.flow.Flow
