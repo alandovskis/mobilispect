@@ -94,7 +94,7 @@ resource "kubernetes_service_v1" "mobilispect-api-prod" {
       app = kubernetes_deployment_v1.mobilispect-api-prod.spec[0].selector[0].match_labels.app
     }
 
-    ip_family_policy = "RequireDualStack"
+    ip_family_policy = "SingleStack"
 
     port {
       port        = 80

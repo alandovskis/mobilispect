@@ -10,11 +10,10 @@ resource "google_compute_subnetwork" "mobilispect-subnet" {
   project = "mobilispect"
   name = "mobilispect-subnet"
 
-  ip_cidr_range = "10.0.0.0/16"
+  ip_cidr_range = "10.0.0.0/8"
   region        = "northamerica-northeast1"
 
-  stack_type       = "IPV4_IPV6"
-  ipv6_access_type = "EXTERNAL" # Change to "EXTERNAL" if creating an external loadbalancer
+  stack_type       = "IPV4_ONLY"
 
   network = google_compute_network.mobilispect-net.id
   secondary_ip_range {
@@ -24,7 +23,7 @@ resource "google_compute_subnetwork" "mobilispect-subnet" {
 
   secondary_ip_range {
     range_name    = "pod-ranges"
-    ip_cidr_range = "192.168.1.0/24"
+    ip_cidr_range = "172.16.0.0/16"
   }
 }
 
@@ -40,7 +39,7 @@ resource "google_container_cluster" "mobilispect-api-prod" {
   subnetwork = google_compute_subnetwork.mobilispect-subnet.id
 
   ip_allocation_policy {
-    stack_type                    = "IPV4_IPV6"
+    stack_type                    = "IPV4"
     services_secondary_range_name = google_compute_subnetwork.mobilispect-subnet.secondary_ip_range[0].range_name
     cluster_secondary_range_name  = google_compute_subnetwork.mobilispect-subnet.secondary_ip_range[1].range_name
   }
