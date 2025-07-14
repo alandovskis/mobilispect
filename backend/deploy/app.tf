@@ -55,11 +55,6 @@ resource "kubernetes_deployment_v1" "mobilispect-api-prod" {
             http_get {
               path = "/"
               port = "mobilispect-api"
-
-              http_header {
-                name  = "X-Custom-Header"
-                value = "Awesome"
-              }
             }
 
             initial_delay_seconds = 3
