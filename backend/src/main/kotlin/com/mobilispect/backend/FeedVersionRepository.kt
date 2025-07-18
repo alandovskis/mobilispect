@@ -13,7 +13,7 @@ interface FeedVersionRepository : Repository<FeedVersion, String> {
      */
     fun findAll(): List<FeedVersion>
 
-    fun getById(id: String): FeedVersion?
+    fun getByUid(uid: String): FeedVersion?
 
     @RestResource(exported = false)
     fun save(entity: FeedVersion): FeedVersion

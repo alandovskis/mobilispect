@@ -32,7 +32,7 @@ resource "kubernetes_deployment_v1" "mobilispect-api-prod" {
 
       spec {
         container {
-          image = "northamerica-northeast1-docker.pkg.dev/mobilispect/mobilispect-api/mobilispect-api:0.0.10"
+          image = "northamerica-northeast1-docker.pkg.dev/mobilispect/mobilispect-api/mobilispect-api:0.0.12"
           name  = "mobilispect-api-prod"
 
           port {
