@@ -27,7 +27,7 @@ class MobilispectAPINetworkDataSource() : NetworkDataSource {
         }
         install(Resources)
         defaultRequest {
-            host = "34.152.5.170"
+            host = "34.152.51.155"
             url { protocol = URLProtocol.HTTP }
         }
     }
@@ -60,7 +60,7 @@ class MobilispectAPINetworkDataSource() : NetworkDataSource {
 class Agencies(val sort: String? = null)
 
 @Resource("/routes/search/findAllByAgencyID")
-class Routes(val id: String)
+class Routes(val agencyID: String)
 
 @Serializable
 data class Body<T>(val _embedded: T)
