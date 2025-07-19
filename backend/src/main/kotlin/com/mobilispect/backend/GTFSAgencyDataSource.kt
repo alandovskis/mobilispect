@@ -33,6 +33,7 @@ internal class GTFSAgencyDataSource(
                 .mapNotNull { agency ->
                     val id = agencyIDs[agency.agency_id] ?: return@mapNotNull null
                     Agency(
+                        id = null,
                         uid = id,
                         localID = agency.agency_id,
                         name = agency.agency_name,

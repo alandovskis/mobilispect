@@ -44,6 +44,7 @@ class GTFSRouteDataSource(
                 val onestopAgencyID = agencyIDs[feedLocalAgencyID] ?: return@mapNotNull null
                 val routeID = routeIDs[route.route_id] ?: return@mapNotNull null
                 Route(
+                    id = null,
                     uid = routeID,
                     localID = route.route_id,
                     shortName = route.route_short_name,

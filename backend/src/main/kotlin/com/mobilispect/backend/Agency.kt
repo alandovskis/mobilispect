@@ -7,6 +7,11 @@ val AGENCY_ONESTOP_ID_REGEX = Regex("o(-[a-z0-9]+)?-[a-z0-9~çéâêîôûàèù
 @Document(value = "agencies")
 data class Agency(
     /**
+     * Database-generated primary key
+     */
+    val id: String?,
+
+    /**
      * ID that is unique globally (in OneStop ID format ex: o-geohash-name)
      */
     val uid: String,

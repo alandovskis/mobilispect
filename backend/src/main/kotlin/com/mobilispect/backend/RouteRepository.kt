@@ -26,5 +26,5 @@ interface RouteRepository : Repository<Route, String> {
      */
     fun deleteAll()
 
-    fun findAllByAgencyID(id: String): List<Route>
+    fun findAllByAgencyID(agencyID: String): List<Route>
 }
