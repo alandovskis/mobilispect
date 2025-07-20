@@ -12,6 +12,77 @@ private val bothDirections = FrequencyCommitmentItem(
     routes = listOf(
         "r-f25ej-18",
         "r-f25dv-24",
+        "r-f25du-51",
+        "r-f25ej-67",
+        "r-f25ds-105",
+        "r-f25e5-121",
+        "r-f25em-141",
+        "r-f25du-165",
+        "r-f25e-439"
+    ),
+    directions = DirectionTime.both(
+        start = LocalTime(6, 0),
+        end = LocalTime(20, 0),
+    ),
+    frequency = 12.0.minutes
+)
+
+private val tidalFlow = FrequencyCommitmentItem(
+    daysOfWeek = WEEKDAYS,
+    routes = listOf(
+        "r-f25em-32",
+        "r-f25e-33",
+        "r-f25em-44",
+        "r-f25e-45",
+        "r-f25e-48",
+        "r-f25e-49",
+        "r-f25e-55",
+        "r-f25df-64",
+        "r-f25e-69",
+        "r-f25dv-80",
+        "r-f25ds-90",
+        "r-f25ds-103",
+        "r-f25dk-106",
+        "r-f25dt-107",
+        "r-f25dm-112",
+        "r-f25em-136",
+        "r-f25du-161",
+        "r-f25dg-171",
+        "r-f25ex-187",
+        "r-f25ej-193",
+        "r-f25ej-197",
+        "r-f256-470",
+        "r-f25d-496"
+
+    ),
+    directions = listOf(
+        DirectionTime(
+            direction = Direction.Inbound,
+            start = LocalTime(6, 30),
+            end = LocalTime(9, 30),
+        ),
+        DirectionTime(
+            direction = Direction.Outbound,
+            start = LocalTime(15, 0),
+            end = LocalTime(18, 0),
+        ),
+    ),
+    frequency = 12.0.minutes
+)
+
+val STM_FREQUENCY_COMMITMENT = FrequencyCommitment(
+    spans = listOf(
+        bothDirections,
+        tidalFlow,
+    ),
+    agency = STM_ID
+)
+// Source: https://www.stm.info/en/info/networks/bus/local/10-minutes-max
+private val bothDirectionsPast1 = FrequencyCommitmentItem(
+    daysOfWeek = WEEKDAYS,
+    routes = listOf(
+        "r-f25ej-18",
+        "r-f25dv-24",
         "r-f25em-141"
     ),
     directions = DirectionTime.both(
@@ -21,7 +92,7 @@ private val bothDirections = FrequencyCommitmentItem(
     frequency = 10.0.minutes
 )
 
-private val tidalFlow = FrequencyCommitmentItem(
+private val tidalFlowPast1 = FrequencyCommitmentItem(
     daysOfWeek = WEEKDAYS,
     routes = listOf(
         "r-f25e-33",
@@ -45,10 +116,10 @@ private val tidalFlow = FrequencyCommitmentItem(
     frequency = 10.0.minutes
 )
 
-val STM_FREQUENCY_COMMITMENT = FrequencyCommitment(
+val STM_FREQUENCY_COMMITMENT_PAST_1 = FrequencyCommitment(
     spans = listOf(
-        bothDirections,
-        tidalFlow,
+        bothDirectionsPast1,
+        tidalFlowPast1,
     ),
     agency = STM_ID
 )

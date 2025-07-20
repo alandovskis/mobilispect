@@ -2,6 +2,7 @@ package com.mobilispect.mobile.android.ui.frequency_violation
 
 import androidx.lifecycle.ViewModel
 import com.mobilispect.mobile.data.frequency_commitment.STM_FREQUENCY_COMMITMENT
+import com.mobilispect.mobile.data.frequency_commitment.STM_FREQUENCY_COMMITMENT_PAST_1
 import com.mobilispect.mobile.data.schedule.Direction
 import com.mobilispect.mobile.data.stop.StopRef
 import com.mobilispect.mobile.domain.frequency_violation.FindFrequencyViolationsOnDayAtStopUseCase
@@ -9,7 +10,6 @@ import com.mobilispect.mobile.domain.frequency_violation.FrequencyViolation
 import com.mobilispect.mobile.domain.time.FormatTimeUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
 
 class FrequencyViolationViewModel(
     savedStateHandle: androidx.lifecycle.SavedStateHandle,
@@ -44,7 +44,7 @@ class FrequencyViolationViewModel(
             routeID = routeID,
             stopRef = stopRef,
             direction = Direction.Outbound,
-            commitment = STM_FREQUENCY_COMMITMENT
+            commitment = STM_FREQUENCY_COMMITMENT_PAST_1
         )
             .map(::violationUIState)
 
