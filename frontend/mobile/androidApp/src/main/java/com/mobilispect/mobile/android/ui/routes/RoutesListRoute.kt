@@ -7,6 +7,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.mobilispect.mobile.android.ui.Card
 import com.mobilispect.android.ui.LoadingCard
 import com.mobilispect.android.ui.OutlinedButton
@@ -14,19 +16,32 @@ import com.mobilispect.mobile.android.ui.ScreenFrame
 import com.mobilispect.android.ui.previews.ThemePreviews
 import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.mobile.android.R
+import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
-@Composable
-fun RoutesListRoute(
-) {
-    val viewModel: RoutesListViewModel = koinViewModel()
-    viewModel.sync()
-    val uiState by viewModel.uiState.collectAsState()
-    RouteListScreen(uiState)
+@Serializable
+class RoutesList(val agencyID: String)
+
+fun NavGraphBuilder.routesGraph(navigateToFrequencyViolations: (String) -> Unit) {
+    composable<RoutesList> {
+        RoutesListRoute(navigateToFrequencyViolations)
+    }
 }
 
 @Composable
-fun RouteListScreen(uiState: RouteListUIState, modifier: Modifier = Modifier) {
+fun RoutesListRoute(navigateToFrequencyViolations: (String) -> Unit) {
+    val viewModel: RoutesListViewModel = koinViewModel()
+    viewModel.sync()
+    val uiState by viewModel.uiState.collectAsState()
+    RouteListScreen(uiState, navigateToFrequencyViolations)
+}
+
+@Composable
+fun RouteListScreen(
+    uiState: RouteListUIState,
+    navigateToFrequencyViolations: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     ScreenFrame(screenTitle = stringResource(R.string.routes)) {
         Card(modifier = modifier) {
             when (uiState) {
@@ -35,7 +50,7 @@ fun RouteListScreen(uiState: RouteListUIState, modifier: Modifier = Modifier) {
                     LazyColumn {
                         for (route in uiState.routes)
                             item {
-                                OutlinedButton(onClick = { /*TODO*/ }) {
+                                OutlinedButton(onClick = { navigateToFrequencyViolations(route.id)}) {
                                     Text("${route.shortName}: ${route.longName}")
                                 }
                             }
@@ -60,7 +75,7 @@ fun PreviewRoutesListScreen() {
                         agencyID = "r-abcd-a"
                     )
                 )
-            )
+            ), navigateToFrequencyViolations = {}
         )
 
     }

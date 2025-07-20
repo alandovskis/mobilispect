@@ -9,21 +9,21 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlin.time.Duration
-import kotlin.time.DurationUnit
 
 class FindFrequencyViolationsOnDayAtStopUseCase(private val scheduleRepo: ScheduleRepository) {
     operator fun invoke(
         start: LocalDateTime,
-        routeRef: String,
+        routeID: String,
         stopRef: StopRef,
         direction: Direction,
         commitment: FrequencyCommitment
     ): Result<List<FrequencyViolation>> {
         val relevantCommitments =
-            commitment.spans.filter { span -> span.routes.contains(routeRef) }
+            commitment.spans.filter { span -> span.routes.contains(routeID) }
                 .filter { span -> span.daysOfWeek.contains(start.dayOfWeek) }
-        check(relevantCommitments.size == 1)
-        val relevantCommitment = relevantCommitments.first()
+        val relevantCommitment = relevantCommitments.firstOrNull() ?: return Result.success(
+            emptyList()
+        )
 
         val directionTimes =
             relevantCommitment.directions.filter { directionTime -> directionTime.direction == direction || directionTime.direction == null }
@@ -31,8 +31,7 @@ class FindFrequencyViolationsOnDayAtStopUseCase(private val scheduleRepo: Schedu
             start.dayOfWeek == start.toLocalDate().dayOfWeek
                     && !directionTime.start.isAfter(start.toLocalTime())
         }*/
-        check(directionTimes.size == 1)
-        val directionTime = directionTimes.first()
+        val directionTime = directionTimes.firstOrNull() ?: return Result.success(emptyList())
 
         val adjustedStart = LocalDateTime(start.date, directionTime.start)
         val adjustedEnd = LocalDateTime(start.date, directionTime.end)
@@ -41,7 +40,7 @@ class FindFrequencyViolationsOnDayAtStopUseCase(private val scheduleRepo: Schedu
         val departures = scheduleRepo.forDayAtStopOnRouteInDirection(
             adjustedStart,
             adjustedEnd,
-            routeRef,
+            routeID,
             stopRef,
             direction
         )

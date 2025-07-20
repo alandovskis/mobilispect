@@ -9,44 +9,49 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.mobilispect.mobile.android.R
 import com.mobilispect.mobile.android.ui.Card
 import com.mobilispect.mobile.android.ui.ScreenFrame
 import com.mobilispect.mobile.data.schedule.Direction
 import com.mobilispect.mobile.domain.frequency_violation.NoDeparturesFound
-import com.mobilispect.mobile.ui.agencies.AgenciesViewModel
+import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 
-@Composable
-fun FrequencyViolationRoute(
-    routeRef: String?,
-) {
-    val viewModel: FrequencyViolationViewModel = koinViewModel()
-    routeRef?.let {
-        viewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay(
-            it
-        )
-        val uiState by viewModel.violations.collectAsState(
-            initial = FrequencyViolationUIState(
-                inbound = Result.success(emptyList()),
-                outbound = Result.success(emptyList())
-            )
+@Serializable
+class FrequencyViolationList(val routeID: String)
 
-        )
-        FrequencyViolationScreen(it, uiState)
+fun NavGraphBuilder.frequencyViolationGraph() {
+    composable<FrequencyViolationList> {
+        FrequencyViolationRoute()
     }
 }
 
 @Composable
+fun FrequencyViolationRoute() {
+    val viewModel: FrequencyViolationViewModel = koinViewModel()
+    viewModel.findFrequencyViolationsAgainstScheduleForFirstStopAndDay()
+    val uiState by viewModel.violations.collectAsState(
+        initial = FrequencyViolationUIState(
+            inbound = Result.success(emptyList()),
+            outbound = Result.success(emptyList())
+        )
+
+    )
+    FrequencyViolationScreen(uiState)
+}
+
+@Composable
 fun FrequencyViolationScreen(
-    routeNumber: String,
     uiState: FrequencyViolationUIState,
     modifier: Modifier = Modifier
 ) {
     ScreenFrame(
         screenTitle = stringResource(
             id = R.string.frequency_violations,
-            routeNumber
+            "165"
         ),
         modifier = modifier,
     ) {

@@ -11,10 +11,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
-class FrequencyViolationViewModel @Inject constructor(
+class FrequencyViolationViewModel(
+    savedStateHandle: androidx.lifecycle.SavedStateHandle,
     private val frequencyViolationUseCase: FindFrequencyViolationsOnDayAtStopUseCase,
     private val formatTimeUseCase: FormatTimeUseCase,
 ) : ViewModel() {
+    private val routeID: String = savedStateHandle["routeID"] ?: ""
+
     private val _violations: MutableStateFlow<FrequencyViolationUIState> = MutableStateFlow(
         FrequencyViolationUIState(
             inbound = Result.success(emptyList()),
@@ -23,14 +26,14 @@ class FrequencyViolationViewModel @Inject constructor(
     )
     val violations: Flow<FrequencyViolationUIState> = _violations
 
-    fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay(routeRef: String) {
+    fun findFrequencyViolationsAgainstScheduleForFirstStopAndDay() {
         val start = kotlinx.datetime.LocalDateTime(
             kotlinx.datetime.LocalDate(2022, 7, 7),
             kotlinx.datetime.LocalTime.fromSecondOfDay(0))
         val stopRef = StopRef(geohash = "abcd", name = "test")
         val inbound = frequencyViolationUseCase.invoke(
             start = start,
-            routeRef = routeRef,
+            routeID = routeID,
             stopRef = stopRef,
             direction = Direction.Inbound,
             commitment = STM_FREQUENCY_COMMITMENT
@@ -38,7 +41,7 @@ class FrequencyViolationViewModel @Inject constructor(
             .map(::violationUIState)
         val outbound = frequencyViolationUseCase.invoke(
             start = start,
-            routeRef = routeRef,
+            routeID = routeID,
             stopRef = stopRef,
             direction = Direction.Outbound,
             commitment = STM_FREQUENCY_COMMITMENT

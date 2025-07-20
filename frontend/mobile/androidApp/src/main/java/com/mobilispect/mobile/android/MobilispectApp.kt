@@ -2,11 +2,13 @@ package com.mobilispect.mobile.android
 
 import android.app.Application
 import com.mobilispect.mobile.com.mobilispect.mobile.agency.agencyModule
+import com.mobilispect.mobile.com.mobilispect.mobile.frequencyViolationModule
 import com.mobilispect.mobile.data.cloud.networkModule
 import com.mobilispect.mobile.data.databaseModule
 import com.mobilispect.mobile.data.schedule.scheduleModule
 import com.mobilispect.mobile.data.transit_land.ktorHTTPClientModule
 import com.mobilispect.mobile.data.transit_land.transitLandModule
+import com.mobilispect.mobile.domain.time.timeModule
 import com.mobilispect.mobile.route.routeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,10 +27,12 @@ class MobilispectApp : Application(), KoinStartup {
             modules(
                 agencyModule,
                 databaseModule,
+                frequencyViolationModule,
                 ktorHTTPClientModule,
                 networkModule,
                 routeModule,
                 scheduleModule,
+                timeModule,
                 transitLandModule
             )
     }

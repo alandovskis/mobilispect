@@ -42,7 +42,7 @@ class RoutesListViewModel(
 }
 
 sealed interface RouteListUIState
-object Loading : RouteListUIState
+data object Loading : RouteListUIState
 data class RoutesFound(val routes: Collection<RouteUIState>) : RouteListUIState
 data class RouteUIState(
     val id: String,

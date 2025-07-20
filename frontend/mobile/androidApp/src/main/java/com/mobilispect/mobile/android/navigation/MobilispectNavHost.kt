@@ -7,9 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.mobilispect.mobile.android.ui.agencies.AgenciesList
 import com.mobilispect.mobile.android.ui.agencies.agenciesGraph
-import com.mobilispect.mobile.android.ui.frequency_commitment.RoutesList
-import com.mobilispect.mobile.android.ui.frequency_commitment.routesGraph
-import com.mobilispect.mobile.android.ui.routes.RoutesListRoute
+import com.mobilispect.mobile.android.ui.frequency_violation.FrequencyViolationList
+import com.mobilispect.mobile.android.ui.frequency_violation.frequencyViolationGraph
+import com.mobilispect.mobile.android.ui.routes.RoutesList
+import com.mobilispect.mobile.android.ui.routes.routesGraph
 
 @Composable
 fun MobilispectNavHost(
@@ -23,6 +24,9 @@ fun MobilispectNavHost(
         agenciesGraph(navigateToRoutes = {
             navController.navigate(RoutesList(it))
         })
-        routesGraph()
+        routesGraph(navigateToFrequencyViolations = {
+            navController.navigate(FrequencyViolationList(it))
+        })
+        frequencyViolationGraph()
     }
 }
