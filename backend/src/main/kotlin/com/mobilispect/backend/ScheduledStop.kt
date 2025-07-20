@@ -1,5 +1,6 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.schedule.schedule.DateTimeOffset
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.ZonedDateTime
 
@@ -14,8 +15,8 @@ data class ScheduledStop(
      * A globally unique stop ID (in OneStop ID format).
      */
     val stopID: String,
-    val departsAt: ZonedDateTime? = null,
-    val arrivesAt: ZonedDateTime? = null,
+    val departsAt: DateTimeOffset? = null,
+    val arrivesAt: DateTimeOffset? = null,
     val stopSequence: Int,
     val versions: Collection<String>,
 )

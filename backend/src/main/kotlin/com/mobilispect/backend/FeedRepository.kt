@@ -1,6 +1,5 @@
 package com.mobilispect.backend
 
-import com.mobilispect.backend.schedule.feed.Feed
 import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.repository.Repository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource

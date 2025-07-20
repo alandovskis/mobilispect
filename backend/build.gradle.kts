@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.squareup.sort-dependencies") version "0.14"
     id("io.gitlab.arturbosch.detekt") version "1.23.6"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "com.mobilispect"
@@ -29,6 +30,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.csv)
     implementation(libs.kotlinx.serialization.json)
 
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")

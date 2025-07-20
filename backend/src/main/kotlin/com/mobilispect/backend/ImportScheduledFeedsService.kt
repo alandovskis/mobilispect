@@ -1,22 +1,11 @@
-/*package com.mobilispect.backend.schedule
+package com.mobilispect.backend
 
-import com.mobilispect.backend.AgencyDataSource
-import com.mobilispect.backend.AgencyRepository
-import com.mobilispect.backend.FeedDataSource
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.DownloadRequest
 import com.mobilispect.backend.schedule.download.Downloader
-import com.mobilispect.backend.FeedRepository
-import com.mobilispect.backend.FeedVersionRepository
-import com.mobilispect.backend.RouteRepository
-import com.mobilispect.backend.ScheduledTripRepository
-import com.mobilispect.backend.StopRepository
 import com.mobilispect.backend.schedule.feed.VersionedFeed
-import com.mobilispect.backend.RegionRepository
 import com.mobilispect.backend.schedule.route.RouteDataSource
-import com.mobilispect.backend.ScheduledStopDataSource
 import com.mobilispect.backend.schedule.schedule.ScheduledStopRepository
-import com.mobilispect.backend.ScheduledTripDataSource
 import com.mobilispect.backend.schedule.stop.StopDataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -75,9 +64,9 @@ class ImportScheduledFeedsService(
 
         /*val updatedFeeds = feeds.mapNotNull { cloudFeedRes -> cloudFeedRes.getOrNull() }
             .filter { cloudFeed ->
-                val localVersions = feedVersionRepository.findAllById(listOf(cloudFeed.version._id))
-                    .map { version -> version._id }
-                return@filter !localVersions.contains(cloudFeed.version._id)
+                val localVersions = feedVersionRepository.findAllById(listOf(cloudFeed.version.uid))
+                    .map { version -> version.uid }
+                return@filter !localVersions.contains(cloudFeed.version.uid)
             }*/
 //        logger.debug("Found updated feeds: {}", updatedFeeds)
         return listOf()
@@ -91,42 +80,42 @@ class ImportScheduledFeedsService(
             .map { extractedDirRes ->
                 extractedDirRes.getOrNull()?.let { extractedDir ->
                     val agencyRes = importAgencies(
-                        version = cloudFeed.version._id,
+                        version = cloudFeed.version.uid,
                         extractedDir = extractedDir,
-                        feedID = cloudFeed.feed._id
+                        feedID = cloudFeed.feed.uid
                     )
                     if (agencyRes.isFailure) {
                         return agencyRes
                     }
 
                     val routeRes = importRoutes(
-                        version = cloudFeed.version._id,
+                        version = cloudFeed.version.uid,
                         extractedDir = extractedDir,
-                        feedID = cloudFeed.feed._id
+                        feedID = cloudFeed.feed.uid
                     )
                     if (routeRes.isFailure) {
                         return routeRes
                     }
 
                     val stopRes = importStops(
-                        version = cloudFeed.version._id,
+                        version = cloudFeed.version.uid,
                         extractedDir = extractedDir,
-                        feedID = cloudFeed.feed._id
+                        feedID = cloudFeed.feed.uid
                     )
                     if (stopRes.isFailure) {
                         return stopRes
                     }
 
                     val tripRes = importTrips(
-                        version = cloudFeed.version._id,
+                        version = cloudFeed.version.uid,
                         extractedDir = extractedDir,
-                        feedID = cloudFeed.feed._id
+                        feedID = cloudFeed.feed.uid
                     )
                     if (tripRes.isFailure) {
                         return tripRes
                     }
 
-                    val stopTimeRes = importStopTimes(cloudFeed.version._id, extractedDir)
+                    val stopTimeRes = importStopTimes(cloudFeed.version.uid, extractedDir)
                     if (stopTimeRes.isFailure) {
                         return stopTimeRes
                     }
@@ -178,4 +167,3 @@ class ImportScheduledFeedsService(
             .onSuccess { logger.debug("Imported scheduled stops") }
             .onFailure { e -> logger.error("Failed to import scheduled stops: $e") }
 }
-*/

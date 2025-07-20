@@ -1,12 +1,12 @@
 package com.mobilispect.backend
 
 import com.mobilispect.backend.schedule.api.*
-import com.mobilispect.backend.schedule.feed.Feed
 import com.mobilispect.backend.schedule.feed.VersionedFeed
 import com.mobilispect.backend.schedule.transit_land.api.*
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
+import kotlinx.serialization.ExperimentalSerializationApi
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -23,6 +23,7 @@ private const val CONNECT_TIMEOUT_ms = 5_000
 /**
  * A client to access the transitland API.
  */
+@OptIn(ExperimentalSerializationApi::class)
 @Component
 class TransitLandClient(builder: WebClient.Builder) :
     TransitLandAPI {
@@ -62,7 +63,7 @@ class TransitLandClient(builder: WebClient.Builder) :
                 val latestVersion = remote.feed_versions.firstOrNull() ?: return@mapNotNull null
                 VersionedFeed(
                     feed = Feed(
-                        _id = feedID, url = latestVersion.url
+                        uid = feedID, url = latestVersion.url
                     ),
                     version = FeedVersion(
                         uid = latestVersion.sha1,
@@ -96,8 +97,8 @@ class TransitLandClient(builder: WebClient.Builder) :
                     AgencyResultItem(
                         id = remote.onestopID,
                         name = remote.name,
-                        version = remote.feed.uid,
-                        feedID = remote.feed.uid,
+                        version = remote.feed.feedVersion.id,
+                        feedID = remote.feed.feed.id,
                         agencyID = remote.agencyID
                     )
                 } catch (e: IllegalArgumentException) {

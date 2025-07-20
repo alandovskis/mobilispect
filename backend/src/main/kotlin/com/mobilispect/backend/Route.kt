@@ -11,7 +11,7 @@ data class Route(
     /**
      * Database-generated primary key
      */
-    val id: String?,
+    val id: String? = null,
 
     /**
      * ID that is globally unique.

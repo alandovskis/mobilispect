@@ -1,5 +1,6 @@
 package com.mobilispect.backend.schedule.feed
 
+import com.mobilispect.backend.Feed
 import com.mobilispect.backend.FeedDataSource
 import com.mobilispect.backend.FeedVersion
 import java.time.LocalDate
@@ -11,7 +12,7 @@ class DefaultFeedDataSource : FeedDataSource {
             Result.success(
                 VersionedFeed(
                     feed = Feed(
-                        _id = "f-f256-exo~citlapresquîle",
+                        uid = "f-f256-exo~citlapresquîle",
                         url = "https://exo.quebec/xdata/citpi/google_transit.zip"
                     ),
                     version = FeedVersion(

@@ -1,5 +1,6 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.schedule.schedule.DateTimeOffset
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
@@ -48,20 +49,18 @@ class GTFSScheduledStopDataSource : ScheduledStopDataSource {
      * Parse a time in GTFS format (i.e., 25:00:00)
      */
     @Suppress("ReturnCount")
-    private fun parseGTFSTime(time: String): ZonedDateTime? {
-        return ZonedDateTime.parse(time)
-        /*val split = time.split(":")
+    private fun parseGTFSTime(time: String): DateTimeOffset? {
+        val split = time.split(":")
         return if (split.size >= DATE_COMPONENT_LENGTH) {
-            Instant.ofEpochMilli(1)
-            /*val hour = split[0].toIntOrNull() ?: return null
+            val hour = split[0].toIntOrNull() ?: return null
             DateTimeOffset(
                 days = hour / HOURS_PER_DAY,
                 hours = hour % HOURS_PER_DAY,
                 minutes = split[1].toIntOrNull() ?: return null,
                 seconds = split[2].toIntOrNull() ?: return null
-            )*/
+            )
         } else {
             null
-        }*/
+        }
     }
 }

@@ -10,7 +10,7 @@ import kotlinx.serialization.json.JsonNames
 
 @Serializable
 internal class TransitLandStop(
-    @JsonNames("feed_version") val feed: FeedVersion,
+    @JsonNames("feed_version") val feed: TransitLandVersionedFeed,
     val geometry: PointGeometry? = null,
     val id: Int? = null,
     val level: Int? = null,

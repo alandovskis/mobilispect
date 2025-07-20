@@ -2,6 +2,7 @@ package com.mobilispect.backend
 
 import kotlinx.serialization.Serializable
 
+
 @Serializable
 class GTFSRoute(
     val route_id: String,

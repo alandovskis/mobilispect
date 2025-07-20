@@ -1,6 +1,6 @@
-package com.mobilispect.backend.schedule.feed
+package com.mobilispect.backend
 
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document("feeds")
-data class Feed(val _id: String, val url: String)
+data class Feed(val uid: String, val url: String)

@@ -23,7 +23,7 @@ internal class TransitLandAgency(
     @JsonNames("agency_phone") val phone: String? = null,
     @JsonNames("agency_timezone") val timezone: String? = null,
     @JsonNames("agency_url") val url: String? = null,
-    @JsonNames("feed_version") val feed: FeedVersion,
+    @JsonNames("feed_version") val feed: TransitLandVersionedFeed,
     val geometry: PolygonGeometry? = null,
     val id: Int? = null,
 

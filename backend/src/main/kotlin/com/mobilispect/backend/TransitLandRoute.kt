@@ -4,6 +4,7 @@
 package com.mobilispect.backend.schedule.transit_land.internal.client
 
 import com.mobilispect.backend.FeedVersion
+import com.mobilispect.backend.TransitLandVersionedFeed
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
@@ -13,7 +14,7 @@ internal class TransitLandRoute(
     val agency: TransitLandRouteAgency,
     @JsonNames("continuous_drop_off") val continuousDropOff: Boolean? = null,
     @JsonNames("continuous_pickup") val continuousPickup: Boolean? = null,
-    @JsonNames("feed_version") val feed: FeedVersion,
+    @JsonNames("feed_version") val feed: TransitLandVersionedFeed,
     val id: Int?,
 
     @JsonNames("onestop_id") val onestopID: String,

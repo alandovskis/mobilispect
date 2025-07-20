@@ -9,7 +9,7 @@ data class Agency(
     /**
      * Database-generated primary key
      */
-    val id: String?,
+    val id: String? = null,
 
     /**
      * ID that is unique globally (in OneStop ID format ex: o-geohash-name)
