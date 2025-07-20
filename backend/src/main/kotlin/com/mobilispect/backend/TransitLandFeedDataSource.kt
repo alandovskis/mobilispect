@@ -2,7 +2,7 @@ package com.mobilispect.backend.schedule.transit_land
 
 import com.mobilispect.backend.FeedDataSource
 import com.mobilispect.backend.schedule.feed.VersionedFeed
-import com.mobilispect.backend.schedule.transit_land.api.TransitLandAPI
+import com.mobilispect.backend.TransitLandAPI
 import com.mobilispect.backend.schedule.transit_land.api.TransitLandCredentialsRepository
 import org.slf4j.LoggerFactory
 

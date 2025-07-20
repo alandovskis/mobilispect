@@ -1,5 +1,6 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
@@ -24,7 +25,7 @@ internal class GTFSAgencyDataSource(
         val agencyIDs = agencyIDRes.getOrNull()!!
 
         return try {
-            val input = root.resolve("agency.txt").toFile().readText(charset = Charsets.UTF_8)//.readTextAndNormalize()
+            val input = root.resolve("agency.txt").toFile().readTextAndNormalize()
             val csv = Csv {
                 hasHeaderRecord = true
                 ignoreUnknownColumns = true
@@ -33,7 +34,6 @@ internal class GTFSAgencyDataSource(
                 .mapNotNull { agency ->
                     val id = agencyIDs[agency.agency_id] ?: return@mapNotNull null
                     Agency(
-                        id = null,
                         uid = id,
                         localID = agency.agency_id,
                         name = agency.agency_name,

@@ -2,6 +2,7 @@
 
 package com.mobilispect.backend
 
+import com.mobilispect.backend.transit_land.agency.PolygonGeometry
 import kotlinx.serialization.Serializable
 
 @Serializable

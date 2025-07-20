@@ -2,7 +2,7 @@ package com.mobilispect.backend.schedule.feed
 
 import com.mobilispect.backend.FeedDataSource
 import com.mobilispect.backend.schedule.transit_land.TransitLandFeedDataSource
-import com.mobilispect.backend.schedule.transit_land.api.TransitLandAPI
+import com.mobilispect.backend.TransitLandAPI
 import com.mobilispect.backend.schedule.transit_land.api.TransitLandCredentialsRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

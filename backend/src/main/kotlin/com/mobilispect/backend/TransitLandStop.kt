@@ -17,6 +17,7 @@ internal class TransitLandStop(
     @JsonNames("location_type") val locationType: Int? = null,
     @JsonNames("onestop_id") val onestopID: String,
     val parent: ParentStop? = null,
+    val place: Place? = null,
     @JsonNames("platform_code") val platformCode: String? = null,
     @JsonNames("stop_code") val stopCode: String? = null,
     @JsonNames("stop_desc") val description: String? = null,
@@ -35,4 +36,19 @@ internal class ParentStop(
     val id: Int? = null,
     @JsonNames("stop_id") val stopID: String?,
     @JsonNames("stop_name") val name: String?
+)
+
+@Serializable
+class Place(
+    @JsonNames("adm0_iso")
+    val countryCode: String,
+
+    @JsonNames("adm0_name")
+    val countryName: String,
+
+    @JsonNames("adm1_iso")
+    val provinceCode: String,
+
+    @JsonNames("adm1_name")
+    val provinceName: String
 )

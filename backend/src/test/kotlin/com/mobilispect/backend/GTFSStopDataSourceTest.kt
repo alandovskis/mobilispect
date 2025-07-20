@@ -70,5 +70,5 @@ class TestStopIDDataSource : StopIDDataSource {
         stopIDMap["71999"] = "s-f256hrtws3-1eboulevard~11eavenue"
     }
 
-    override fun stops(feedID: String): Result<Map<String, String>> = Result.success(stopIDMap)
+    override fun stop(feedID: String, stopID: String) = Result.success(stopIDMap[stopID] ?: "")
 }

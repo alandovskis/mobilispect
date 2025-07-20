@@ -1,29 +1,8 @@
-package com.mobilispect.backend.batch
+package com.mobilispect.backend
 
-import com.mobilispect.backend.Agency
-import com.mobilispect.backend.AgencyDataSource
-import com.mobilispect.backend.AgencyRepository
-import com.mobilispect.backend.Feed
-import com.mobilispect.backend.FeedDataSource
-import com.mobilispect.backend.FeedRepository
-import com.mobilispect.backend.FeedVersion
-import com.mobilispect.backend.FeedVersionRepository
-import com.mobilispect.backend.ImportScheduledFeedsService
-import com.mobilispect.backend.Region
-import com.mobilispect.backend.RegionRepository
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.Downloader
 import com.mobilispect.backend.schedule.feed.*
-import com.mobilispect.backend.Route
-import com.mobilispect.backend.RouteRepository
-import com.mobilispect.backend.ScheduledStop
-import com.mobilispect.backend.ScheduledStopDataSource
-import com.mobilispect.backend.ScheduledTrip
-import com.mobilispect.backend.ScheduledTripDataSource
-import com.mobilispect.backend.ScheduledTripRepository
-import com.mobilispect.backend.Stop
-import com.mobilispect.backend.StopRepository
-import com.mobilispect.backend.createMongoDBContainer
 import com.mobilispect.backend.schedule.route.RouteDataSource
 import com.mobilispect.backend.schedule.schedule.*
 import com.mobilispect.backend.schedule.stop.StopDataSource
@@ -31,10 +10,10 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ContextConfiguration
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.io.IOException
@@ -45,13 +24,14 @@ import java.time.LocalDate
 )
 @Testcontainers
 @Suppress("LargeClass")
-@Disabled("broken")
+@ContextConfiguration(initializers = [ImportScheduledFeedsServiceTest.Companion.DBInitializer::class])
 internal class ImportScheduledFeedsServiceTest {
     companion object {
         @Container
         @JvmStatic
         val container = createMongoDBContainer()
 
+        class DBInitializer : MongoDBInitializer(container)
     }
 
     @Autowired
@@ -270,7 +250,6 @@ internal class ImportScheduledFeedsServiceTest {
         val agencies = agencyRepository.findAll()
         assertThat(agencies).contains(
             Agency(
-                id = null,
                 uid = "o-f256-exo~citlapresquîle",
                 localID = "CITPI",
                 name = "exo-La Presqu'île",

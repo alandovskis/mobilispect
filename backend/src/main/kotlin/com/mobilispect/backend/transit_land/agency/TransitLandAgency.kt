@@ -1,8 +1,9 @@
 @file:OptIn(ExperimentalSerializationApi::class)
 @file:Suppress("unused") // Deleting any of the unused fields will be break deserialization.
 
-package com.mobilispect.backend
+package com.mobilispect.backend.transit_land.agency
 
+import com.mobilispect.backend.TransitLandVersionedFeed
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames

@@ -2,11 +2,8 @@ package com.mobilispect.backend
 
 import com.mobilispect.backend.schedule.stop.StopDataSource
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
-import org.slf4j.LoggerFactory
-import java.io.IOException
 import java.nio.file.Path
 
 /**
@@ -14,28 +11,21 @@ import java.nio.file.Path
  */
 @OptIn(ExperimentalSerializationApi::class)
 internal class GTFSStopDataSource(private val stopIDDataSource: StopIDDataSource) : StopDataSource {
-    private val logger = LoggerFactory.getLogger(GTFSStopDataSource::class.java)
-    override fun stops(root: Path, version: String, feedID: String): Result<Collection<Stop>> =
-        stopIDDataSource.stops(feedID)
-            .map { stopIDMap ->
-                return try {
-                    val input = root.resolve("stops.txt").toFile().readText()
-                    logger.trace("Input: $input")
+    override fun stops(root: Path, version: String, feedID: String): Result<List<Stop>> {
+        val input = root.resolve("stops.txt").toFile().readText()
 
-                    val csv = Csv {
-                        hasHeaderRecord = true
-                        ignoreUnknownColumns = true
-                    }
-                    Result.success(csv.decodeFromString<Collection<GTFSStop>>(input).mapNotNull { stop ->
-                        val id = stopIDMap.get(stop.stop_id) ?: return@mapNotNull null
-                        Stop(
-                            uid = id, localID = stop.stop_id, name = stop.stop_name, versions = listOf(version)
-                        )
-                    })
-                } catch (e: IOException) {
-                    Result.failure(e)
-                } catch (e: SerializationException) {
-                    Result.failure(e)
-                }
-            }
+        val csv = Csv {
+            hasHeaderRecord = true
+            ignoreUnknownColumns = true
+        }
+
+        val gtfsStops = csv.decodeFromString<Collection<GTFSStop>>(input)
+        val stops: MutableList<Stop> = mutableListOf()
+        for (stop in gtfsStops) {
+            val uidRes = stopIDDataSource.stop(feedID, stop.stop_id)
+            val uid = uidRes.getOrNull() ?: continue
+            stops.add(Stop(uid = uid, localID = stop.stop_id, name = stop.stop_name, versions = listOf(version)))
+        }
+        return Result.success(stops)
+    }
 }

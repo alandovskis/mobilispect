@@ -1,8 +1,9 @@
-package com.mobilispect.backend.schedule.transit_land.api
+package com.mobilispect.backend
 
-import com.mobilispect.backend.AgencyResult
 import com.mobilispect.backend.schedule.api.PagingParameters
 import com.mobilispect.backend.schedule.feed.VersionedFeed
+import com.mobilispect.backend.schedule.transit_land.api.RouteResult
+import com.mobilispect.backend.schedule.transit_land.api.StopResultItem
 
 /**
  * A client to access the transitland API.
@@ -27,5 +28,5 @@ interface TransitLandAPI {
     /**
      * Retrieve all stops contained in the feed identified by [feedID].
      */
-    fun stops(apiKey: String, feedID: String, paging: PagingParameters = PagingParameters()): Result<StopResult>
+    fun stop(apiKey: String, feedID: String, stopID: String): Result<StopResultItem?>
 }

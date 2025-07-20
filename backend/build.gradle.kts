@@ -29,6 +29,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation(libs.kotlinx.serialization.csv)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.resilience4j.spring)
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

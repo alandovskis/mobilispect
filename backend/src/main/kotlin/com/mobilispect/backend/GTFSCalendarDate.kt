@@ -8,7 +8,7 @@ import java.time.LocalDate
 data class GTFSCalendarDate(
     val service_id: String,
     @Serializable(with = LocalDateSerializer::class) val date: LocalDate,
-    val exception_type: Int
+    val exception_type: Int?
 ) {
     companion object {
         const val ADDED: Int = 1

@@ -58,18 +58,12 @@ class ImportScheduledFeedsService(
     }
 
     private fun findUpdatedFeeds(): List<VersionedFeed> {
-        val feeds = regionRepository.findAll()
-            .flatMap { region -> feedDataSource.feeds(region.name) }
+        val regions = regionRepository.findAll()
+        val feeds = regions.flatMap { region -> feedDataSource.feeds(region.name) }
+            .filter { it.isSuccess }
+            .mapNotNull { it.getOrNull() }
         logger.debug("Found feeds: {}", feeds)
-
-        /*val updatedFeeds = feeds.mapNotNull { cloudFeedRes -> cloudFeedRes.getOrNull() }
-            .filter { cloudFeed ->
-                val localVersions = feedVersionRepository.findAllById(listOf(cloudFeed.version.uid))
-                    .map { version -> version.uid }
-                return@filter !localVersions.contains(cloudFeed.version.uid)
-            }*/
-//        logger.debug("Found updated feeds: {}", updatedFeeds)
-        return listOf()
+        return feeds
     }
 
     @Suppress("ReturnCount")
@@ -97,13 +91,13 @@ class ImportScheduledFeedsService(
                         return routeRes
                     }
 
-                    val stopRes = importStops(
+                    val stopsRes = importStops(
                         version = cloudFeed.version.uid,
                         extractedDir = extractedDir,
                         feedID = cloudFeed.feed.uid
                     )
-                    if (stopRes.isFailure) {
-                        return stopRes
+                    if (stopsRes.isFailure) {
+                        return stopsRes
                     }
 
                     val tripRes = importTrips(
@@ -130,8 +124,8 @@ class ImportScheduledFeedsService(
 
     private fun downloadFeed(cloudFeed: VersionedFeed): Result<Path> =
         downloader.download(DownloadRequest(url = cloudFeed.feed.url))
-        .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
-        .onFailure { exception -> logger.error("Error downloading feed from ${cloudFeed.feed.url}: $exception") }
+            .onSuccess { archive -> logger.debug("Downloaded feed from {} to {}", cloudFeed.feed.url, archive) }
+            .onFailure { exception -> logger.error("Error downloading feed from ${cloudFeed.feed.url}: $exception") }
 
     private fun extractFeed(archive: Path): Result<Path> = archiveExtractor.extract(archive)
         .onSuccess { path -> logger.debug("Extracted archive to {}", path) }
@@ -143,17 +137,23 @@ class ImportScheduledFeedsService(
             .onSuccess { agencies -> logger.debug("Imported agencies: {}", agencies) }
             .onFailure { e -> logger.error("Failed to import agencies: $e") }
 
-    private fun importRoutes(version: String, extractedDir: Path, feedID: String): Result<List<Any>> =
+    private fun importRoutes(version: String, extractedDir: Path, feedID: String): Result<List<Route>> =
         routeDataSource.routes(root = extractedDir, version = version, feedID = feedID)
             .map { routes -> routes.map { route -> routeRepository.save(route) } }
             .onSuccess { routes -> logger.debug("Imported routes: {}", routes) }
             .onFailure { e -> logger.error("Failed to import routes: $e") }
 
-    private fun importStops(version: String, extractedDir: Path, feedID: String) =
-        stopDataSource.stops(extractedDir, version, feedID)
-            .map { stops -> stops.map { stop -> stopRepository.save(stop) } }
-            .onSuccess { stops -> logger.debug("Imported stops: {}", stops) }
+    private fun importStops(version: String, extractedDir: Path, feedID: String): Result<List<Stop>> {
+        logger.debug("Started importing stops")
+        return stopDataSource.stops(extractedDir, version, feedID)
+            .map { stops ->
+                stops.map { stop -> return@map stopRepository.save(stop) }
+            }
+            .onSuccess { stops ->
+                logger.debug("Finished importing stops")
+            }
             .onFailure { e -> logger.error("Failed to import stops: $e") }
+    }
 
     private fun importTrips(version: String, extractedDir: Path, feedID: String) =
         scheduledTripDataSource.trips(extractedDir, version, feedID)

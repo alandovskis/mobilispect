@@ -3,6 +3,7 @@ package com.mobilispect.backend
 import com.mobilispect.backend.schedule.api.*
 import com.mobilispect.backend.schedule.feed.VersionedFeed
 import com.mobilispect.backend.schedule.transit_land.api.*
+import com.mobilispect.backend.transit_land.agency.TransitLandAgencyResponse
 import io.netty.channel.ChannelOption
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
@@ -29,7 +30,7 @@ class TransitLandClient(builder: WebClient.Builder) :
     TransitLandAPI {
     private val logger = LoggerFactory.getLogger(TransitLandClient::class.java)
 
-    private lateinit var webClient: WebClient
+    private var webClient: WebClient
 
     init {
         val httpClient = HttpClient.create().option(ChannelOption.CONNECT_TIMEOUT_MILLIS, CONNECT_TIMEOUT_ms)
@@ -96,9 +97,8 @@ class TransitLandClient(builder: WebClient.Builder) :
                 try {
                     AgencyResultItem(
                         id = remote.onestopID,
-                        name = remote.name,
-                        version = remote.feed.feedVersion.id,
-                        feedID = remote.feed.feed.id,
+                        version = remote.feed.feedVersion,
+                        feedID = remote.feed.feed.uid,
                         agencyID = remote.agencyID
                     )
                 } catch (e: IllegalArgumentException) {
@@ -124,23 +124,23 @@ class TransitLandClient(builder: WebClient.Builder) :
                     id = remote.onestopID, agencyID = remote.agency.agencyID, routeID = remote.routeID
                 )
             }
-            return@handleError Result.success(RouteResult(routes.orEmpty(), 0))
+            return@handleError Result.success(RouteResult(routes.orEmpty(), response?.meta?.after))
         }
     }
 
     /**
      * Retrieve all stops contained in the feed identified by [feedID].
      */
-    override fun stops(apiKey: String, feedID: String, paging: PagingParameters): Result<StopResult> {
+    override fun stop(apiKey: String, feedID: String, stopID: String): Result<StopResultItem?> {
         return handleError {
-            val uri = pagedURI("/stops.json?feed_onestop_ids=$feedID", paging)
+            val uri = "/stops.json?feed_onestop_id=$feedID&stop_id=$stopID"
             val response = get(uri, apiKey, TransitLandStopResponse::class.java)
             val stops = response?.stops?.map { remote ->
                 StopResultItem(
-                    id = remote.onestopID, stopID = remote.stopID
+                    uid = remote.onestopID, stopID = remote.stopID
                 )
             }
-            return@handleError Result.success(StopResult(stops.orEmpty(), 0))
+            return@handleError Result.success(stops.orEmpty().firstOrNull())
         }
     }
 

@@ -2,13 +2,15 @@ package com.mobilispect.backend
 
 import com.mobilispect.backend.schedule.route.RouteDataSource
 import com.mobilispect.backend.schedule.route.RouteIDDataSource
+import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.nio.file.Path
-import kotlin.text.get
 
 /**
  * A [RouteDataSource] that uses a GTFS feed as source.
@@ -19,9 +21,11 @@ class GTFSRouteDataSource(
     private val agencyIDDataSource: AgencyIDDataSource,
     private val routeIDDataSource: RouteIDDataSource
 ) : RouteDataSource {
+    private val logger: Logger = LoggerFactory.getLogger(ImportScheduledFeedsService::class.java)
+
     override fun routes(root: Path, version: String, feedID: String): Result<Collection<Route>> {
         return try {
-            val input = root.resolve("routes.txt").toFile().readText()
+            val input = root.resolve("routes.txt").toFile().readTextAndNormalize()
             val csv = Csv {
                 hasHeaderRecord = true
                 ignoreUnknownColumns = true
@@ -29,12 +33,14 @@ class GTFSRouteDataSource(
 
             val agencyIDRes = agencyIDDataSource.agencyIDs(feedID)
             if (agencyIDRes.isFailure) {
+                logger.error("Error loading agency IDs: {}", agencyIDRes.exceptionOrNull()?.message)
                 return Result.failure(agencyIDRes.exceptionOrNull()!!)
             }
             val agencyIDs = agencyIDRes.getOrNull()!!
 
             val routeIDRes = routeIDDataSource.routeIDs(feedID)
             if (routeIDRes.isFailure) {
+                logger.error("Error loading route IDs: {}", routeIDRes.exceptionOrNull()?.message)
                 return Result.failure(routeIDRes.exceptionOrNull()!!)
             }
             val routeIDs = routeIDRes.getOrNull()!!
