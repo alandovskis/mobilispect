@@ -9,11 +9,6 @@ val ROUTE_ONESTOP_ID_REGEX = Regex("r-[a-z0-9]+-[a-z0-9~çéâêîôûàèùëï
 @Document(value = "routes")
 data class Route(
     /**
-     * Database-generated primary key
-     */
-    val id: String? = null,
-
-    /**
      * ID that is globally unique.
      */
     val uid: String,

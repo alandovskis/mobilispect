@@ -1,4 +1,4 @@
-package com.mobilispect.mobile.android
+package com.mobilispect.mobile.android.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,6 +38,11 @@ fun MobilispectTheme(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp
+        ),
+        titleLarge = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
         )
     )
     val shapes = Shapes(

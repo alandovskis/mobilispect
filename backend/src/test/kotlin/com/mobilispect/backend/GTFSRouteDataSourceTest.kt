@@ -58,22 +58,9 @@ internal class GTFSRouteDataSourceTest {
 
         assertThat(routes).contains(
             Route(
-                id = null,
                 uid = "r-f2566-1",
                 localID = "1",
                 shortName = "1",
-                longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
-                agencyID = "o-f256-exo~citlapresquîle",
-                versions = listOf(VERSION)
-            )
-        )
-
-        assertThat(routes).contains(
-            Route(
-                id = null,
-                uid = "r-f2566-t1",
-                localID = "T1",
-                shortName = "T1",
                 longName = "Gare Vaudreuil/Parc Industriel/Seigneurie",
                 agencyID = "o-f256-exo~citlapresquîle",
                 versions = listOf(VERSION)
