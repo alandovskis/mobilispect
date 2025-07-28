@@ -32,6 +32,8 @@ internal class ImportScheduledFeedsServiceTest {
         val container = createMongoDBContainer()
 
         class DBInitializer : MongoDBInitializer(container)
+
+        val version = "d89aa5de884111e4b6a9365220ded9f746ef2dbf"
     }
 
     @Autowired
@@ -196,7 +198,6 @@ internal class ImportScheduledFeedsServiceTest {
                 )
         }
 
-        val version = "d89aa5de884111e4b6a9365220ded9f746ef2dbf"
         val subject = ImportScheduledFeedsService(
             feedDataSource = feedDataSource,
             feedRepository = feedRepository,
@@ -219,11 +220,11 @@ internal class ImportScheduledFeedsServiceTest {
         subject.get()
 
         importedAllFeeds()
-        importedAllAgencies(version)
-        importedAllRoutes(version)
-        importedAllStops(version)
-        importedAllTrips(version)
-        importedAllStopTimes(version)
+        importedAllAgencies()
+        importedAllRoutes()
+        importedAllStops()
+        importedAllTrips()
+        importedAllStopTimes()
     }
 
     private fun importedAllFeeds() {
@@ -246,7 +247,7 @@ internal class ImportScheduledFeedsServiceTest {
         )
     }
 
-    private fun importedAllAgencies(version: String) {
+    private fun importedAllAgencies() {
         val agencies = agencyRepository.findAll()
         assertThat(agencies).contains(
             Agency(
@@ -258,7 +259,7 @@ internal class ImportScheduledFeedsServiceTest {
         )
     }
 
-    private fun importedAllRoutes(version: String) {
+    private fun importedAllRoutes() {
         val routes = routeRepository.findAll()
         assertThat(routes).contains(
             Route(
@@ -272,28 +273,21 @@ internal class ImportScheduledFeedsServiceTest {
         )
     }
 
-    private fun importedAllStops(version: String) {
+    private fun importedAllStops() {
         val stops = stopRepository.findAll()
+
         assertThat(stops).contains(
             Stop(
-                uid = "s-f256hrvf2g-1eboulevard~11eavenue",
-                localID = "1eboulevard~11eavenuO",
-                name = "1e Boulevard / 11e Avenue",
-                versions = listOf(version)
-            )
-        )
-        assertThat(stops).contains(
-            Stop(
-                uid = "s-f256hrtws3-1eboulevard~11eavenue",
-                localID = "1eboulevard~11eavenuE",
-                name = "1e Boulevard / 11e Avenue",
+                uid = "s-f256742cpt-joseph~carrier~f~x~tessier",
+                localID = "72703",
+                name = "Joseph-Carrier / F.-X.-Tessier",
                 versions = listOf(version)
             )
         )
     }
 
     @Suppress("LongMethod")
-    private fun importedAllTrips(version: String) {
+    private fun importedAllTrips() {
         val trips = scheduledTripRepository.findAll()
 
         assertThat(trips).contains(
@@ -383,7 +377,7 @@ internal class ImportScheduledFeedsServiceTest {
     }
 
     @Suppress("LongMethod")
-    private fun importedAllStopTimes(version: String) {
+    private fun importedAllStopTimes() {
         val scheduledStops = scheduledStopRepository.findAll()
         assertThat(scheduledStops).contains(
             ScheduledStop(
