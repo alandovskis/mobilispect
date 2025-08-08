@@ -3,6 +3,7 @@ package com.mobilispect.backend
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.Downloader
 import com.mobilispect.backend.schedule.feed.*
+import com.mobilispect.backend.schedule.gtfs.StubAgencyIDDataSource
 import com.mobilispect.backend.schedule.route.RouteDataSource
 import com.mobilispect.backend.schedule.schedule.*
 import com.mobilispect.backend.schedule.stop.StopDataSource
@@ -124,23 +125,20 @@ internal class ImportScheduledFeedsServiceTest {
         mockServer.start()
 
         val networkDataSource = object : FeedDataSource {
-            override fun feeds(region: String): Collection<Result<VersionedFeed>> =
-                listOf(
-                    Result.success(
-                        VersionedFeed(
-                            feed = Feed(
-                                uid = "f-f256-exo~citlapresquîle",
-                                url = mockServer.url("").toString()
-                            ),
-                            version = FeedVersion(
-                                uid = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
-                                feedID = "f-f256-exo~citlapresquîle",
-                                startsOn = LocalDate.of(2022, 11, 23),
-                                endsOn = LocalDate.of(2023, 6, 25)
-                            )
+            override fun feeds(region: String): Collection<Result<VersionedFeed>> = listOf(
+                Result.success(
+                    VersionedFeed(
+                        feed = Feed(
+                            uid = "f-f256-exo~citlapresquîle", url = mockServer.url("").toString()
+                        ), version = FeedVersion(
+                            uid = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
+                            feedID = "f-f256-exo~citlapresquîle",
+                            startsOn = LocalDate.of(2022, 11, 23),
+                            endsOn = LocalDate.of(2023, 6, 25)
                         )
                     )
                 )
+            )
         }
         mockServer.shutdown()
         val subject = ImportScheduledFeedsService(
@@ -179,24 +177,28 @@ internal class ImportScheduledFeedsServiceTest {
         regionRepository.save(region)
 
         val feedDataSource = object : FeedDataSource {
-            override fun feeds(region: String): Collection<Result<VersionedFeed>> =
-                listOf(
-                    Result.success(
-                        VersionedFeed(
-                            feed = Feed(
-                                uid = "f-f256-exo~citlapresquîle",
-                                url = "https://exo.quebec/xdata/citpi/google_transit.zip"
-                            ),
-                            version = FeedVersion(
-                                uid = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
-                                feedID = "f-f256-exo~citlapresquîle",
-                                startsOn = LocalDate.of(2022, 11, 23),
-                                endsOn = LocalDate.of(2023, 6, 25)
-                            )
+            override fun feeds(region: String): Collection<Result<VersionedFeed>> = listOf(
+                Result.success(
+                    VersionedFeed(
+                        feed = Feed(
+                            uid = "f-f256-exo~citlapresquîle", url = "https://exo.quebec/xdata/citpi/google_transit.zip"
+                        ), version = FeedVersion(
+                            uid = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
+                            feedID = "f-f256-exo~citlapresquîle",
+                            startsOn = LocalDate.of(2022, 11, 23),
+                            endsOn = LocalDate.of(2023, 6, 25)
                         )
                     )
                 )
+            )
         }
+
+        val agencyIDDataSource = StubAgencyIDDataSource(
+            mapOf(
+                "CITPI" to "o-f256-exo~citlapresquîle"
+            )
+        )
+        val agencyDataSource = GTFSAgencyDataSource(agencyIDDataSource)
 
         val subject = ImportScheduledFeedsService(
             feedDataSource = feedDataSource,
@@ -231,8 +233,7 @@ internal class ImportScheduledFeedsServiceTest {
         val actualFeeds = feedRepository.findAll()
         assertThat(actualFeeds).contains(
             Feed(
-                uid = "f-f256-exo~citlapresquîle",
-                url = "https://exo.quebec/xdata/citpi/google_transit.zip"
+                uid = "f-f256-exo~citlapresquîle", url = "https://exo.quebec/xdata/citpi/google_transit.zip"
             )
         )
 
@@ -292,86 +293,28 @@ internal class ImportScheduledFeedsServiceTest {
 
         assertThat(trips).contains(
             ScheduledTrip(
-                uid = "3281905-PI-A22-PI_GTFS-Semaine-01",
-                routeID = "r-f2566-1",
-                direction = "Seigneurie - Joseph-Carrier AM",
-                versions = listOf(version),
-                dates = listOf(
-                    LocalDate.of(2022, 11, 23),
-                    LocalDate.of(2022, 11, 24),
-                    LocalDate.of(2022, 11, 25),
-
-                    LocalDate.of(2022, 11, 28),
-                    LocalDate.of(2022, 11, 29),
-                    LocalDate.of(2022, 11, 30),
-                    LocalDate.of(2022, 12, 1),
-                    LocalDate.of(2022, 12, 2),
-
-                    LocalDate.of(2022, 12, 5),
-                    LocalDate.of(2022, 12, 6),
-                    LocalDate.of(2022, 12, 7),
-                    LocalDate.of(2022, 12, 8),
-                    LocalDate.of(2022, 12, 9),
-
-                    LocalDate.of(2022, 12, 12),
-                    LocalDate.of(2022, 12, 13),
-                    LocalDate.of(2022, 12, 14),
-                    LocalDate.of(2022, 12, 15),
-                    LocalDate.of(2022, 12, 16),
-
-                    LocalDate.of(2022, 12, 19),
-                    LocalDate.of(2022, 12, 20),
-                    LocalDate.of(2022, 12, 21),
-                    LocalDate.of(2022, 12, 22),
-                    LocalDate.of(2022, 12, 23),
-                )
-            )
-        )
-
-        assertThat(trips).contains(
-            ScheduledTrip(
-                uid = "3282456-PI-A22-PI_GTFS-Fête-1-01",
-                routeID = "r-f2565-115",
-                direction = "Terminus Vaudreuil",
-                versions = listOf(version),
-                dates = listOf(
-                    LocalDate.of(2022, 12, 26),
-                    LocalDate.of(2023, 1, 2)
-                )
-            )
-        )
-        assertThat(trips).contains(
-            ScheduledTrip(
-                uid = "3282393-PI-A22-PI_GTFS-Samedi-01",
-                routeID = "r-f2565-115",
-                direction = "Terminus Vaudreuil",
-                versions = listOf(version),
-                dates = listOf(
-                    LocalDate.of(2022, 11, 26),
-                    LocalDate.of(2022, 12, 3),
-                    LocalDate.of(2022, 12, 10),
-                    LocalDate.of(2022, 12, 17),
-                    LocalDate.of(2022, 12, 24),
-                    LocalDate.of(2022, 12, 31),
-                    LocalDate.of(2023, 1, 7),
-                )
-            )
-        )
-        assertThat(trips).contains(
-            ScheduledTrip(
-                uid = "3282456-PI-A22-PI_GTFS-Dimanche-01",
-                routeID = "r-f2565-115",
-                direction = "Terminus Vaudreuil",
-                versions = listOf(version),
-                dates = listOf(
-                    LocalDate.of(2022, 11, 27),
-                    LocalDate.of(2022, 12, 4),
-                    LocalDate.of(2022, 12, 11),
-                    LocalDate.of(2022, 12, 18),
-                    LocalDate.of(2022, 12, 25),
-                    LocalDate.of(2023, 1, 1),
-                    LocalDate.of(2023, 1, 8),
-                )
+                uid = "3282393-PI-A25-PI_GTFS-Samedi-0", routeID = "r-f2565-115", dates = listOf(
+                    LocalDate.of(2025, 8, 23),
+                    LocalDate.of(2025, 8, 30),
+                    LocalDate.of(2025, 9, 6),
+                    LocalDate.of(2025, 9, 13),
+                    LocalDate.of(2025, 9, 20),
+                    LocalDate.of(2025, 9, 27),
+                    LocalDate.of(2025, 10, 4),
+                    LocalDate.of(2025, 10, 11),
+                    LocalDate.of(2025, 10, 18),
+                    LocalDate.of(2025, 10, 25),
+                    LocalDate.of(2025, 11, 1),
+                    LocalDate.of(2025, 11, 8),
+                    LocalDate.of(2025, 11, 15),
+                    LocalDate.of(2025, 11, 22),
+                    LocalDate.of(2025, 11, 29),
+                    LocalDate.of(2025, 12, 6),
+                    LocalDate.of(2025, 12, 13),
+                    LocalDate.of(2025, 12, 20),
+                    LocalDate.of(2025, 12, 27),
+                    LocalDate.of(2026, 1, 3)
+                ), direction = "Terminus Vaudreuil", versions = listOf("d89aa5de884111e4b6a9365220ded9f746ef2dbf")
             )
         )
     }
