@@ -1,9 +1,11 @@
 package com.mobilispect.backend.schedule.download
 
+import org.springframework.context.annotation.Primary
 import org.springframework.core.io.buffer.DataBuffer
 import org.springframework.core.io.buffer.DataBufferUtils
 import org.springframework.http.HttpStatus
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.WebClientException
 import org.springframework.web.reactive.function.client.WebClientResponseException
@@ -18,6 +20,8 @@ private const val RETRY_ATTEMPTS = 3L
 /**
  * A [Downloader] that uses Spring [WebClient].
  */
+@Component
+@Primary
 internal class WebClientDownloader(webClientBuilder: WebClient.Builder) : Downloader {
     private var webClient: WebClient = webClientBuilder
         .clientConnector(

@@ -23,10 +23,10 @@ internal class ZipArchiveExtractor : ArchiveExtractor {
             while (zipEntry != null) {
                 val newFile = newFile(destDir.toFile(), zipEntry)
                 // fix for Windows-created archives
-                val parent = newFile.parentFile
-                if (!parent.isDirectory && !parent.mkdirs()) {
+                //val parent = newFile.parentFile
+                /*if (!parent.isDirectory && !parent.mkdirs()) {
                     throw IOException("Failed to create directory $parent")
-                }
+                }*/
 
                 val out = FileOutputStream(newFile)
                 var len: Int

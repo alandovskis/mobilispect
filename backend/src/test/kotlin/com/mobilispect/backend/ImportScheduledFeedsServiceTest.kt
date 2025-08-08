@@ -82,6 +82,9 @@ internal class ImportScheduledFeedsServiceTest {
     @Autowired
     lateinit var scheduledStopDataSource: ScheduledStopDataSource
 
+    @Autowired
+    lateinit var resourceDownloader: ResourceDownloader
+
     @Test
     fun unableToRetrieveFeeds() {
         val networkDataSource = object : FeedDataSource {
@@ -145,7 +148,7 @@ internal class ImportScheduledFeedsServiceTest {
             feedDataSource = networkDataSource,
             feedRepository = feedRepository,
             feedVersionRepository = feedVersionRepository,
-            downloader = downloader,
+            downloader = resourceDownloader,
             archiveExtractor = archiveExtractor,
             regionRepository = regionRepository,
             agencyRepository = agencyRepository,
@@ -181,7 +184,7 @@ internal class ImportScheduledFeedsServiceTest {
                 Result.success(
                     VersionedFeed(
                         feed = Feed(
-                            uid = "f-f256-exo~citlapresquîle", url = "https://exo.quebec/xdata/citpi/google_transit.zip"
+                            uid = "f-f256-exo~citlapresquîle", url = "classpath:exopi-gtfs-d89aa5de884111e4b6a9365220ded9f746ef2dbf.zip"
                         ), version = FeedVersion(
                             uid = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
                             feedID = "f-f256-exo~citlapresquîle",
@@ -204,7 +207,7 @@ internal class ImportScheduledFeedsServiceTest {
             feedDataSource = feedDataSource,
             feedRepository = feedRepository,
             feedVersionRepository = feedVersionRepository,
-            downloader = downloader,
+            downloader = resourceDownloader,
             archiveExtractor = archiveExtractor,
             regionRepository = regionRepository,
             agencyRepository = agencyRepository,
@@ -725,4 +728,6 @@ internal class ImportScheduledFeedsServiceTest {
         feedVersionRepository.deleteAll()
         feedRepository.deleteAll()
     }
+
 }
+
