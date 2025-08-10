@@ -162,7 +162,7 @@ class ImportScheduledFeedsService(
             .map { routes -> routes.map { route -> routeRepository.save(route) } }
             .onSuccess { routes ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
-                logger.debug("Imported {} routes in {}", routes.size, elapsed)
+                logger.debug("Imported {} routes in {}: {}", routes.size, elapsed, routes)
             }
             .onFailure { e -> logger.error("Failed to import routes: $e") }
     }

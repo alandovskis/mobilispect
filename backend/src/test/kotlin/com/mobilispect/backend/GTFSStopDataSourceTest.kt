@@ -19,22 +19,27 @@ internal class GTFSStopDataSourceTest {
     @Autowired
     lateinit var resourceLoader: ResourceLoader
 
-    private val subject = GTFSStopDataSource(TestStopIDDataSource())
+    private val stopIDDataSource = StubStopIDDataSource(mapOf(
+            "71998" to "s-f256hrvf2g-1eboulevard~11eavenue",
+            "71999" to  "s-f256hrtws3-1eboulevard~11eavenue",
+        )
+    )
+    private val subject = GTFSStopDataSource(stopIDDataSource)
 
     @Test
     fun fileNotFound(@TempDir root: Path) {
-        val result = subject.stops(root, VERSION, FEED_ID).leftOrNull()
+        val result = subject.stops(root, VERSION, FEED_ID).leftOrNull()!!
 
-        assertThat(result).isInstanceOf(IOException::class.java)
+        assertThat(result.first()).isInstanceOf(IOException::class.java)
     }
 
     @Test
     fun corrupted(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-stops-corrupt.txt", root = root, dst = "stops.txt")
 
-        val result = subject.stops(root, VERSION, FEED_ID).leftOrNull()
+        val result = subject.stops(root, VERSION, FEED_ID).leftOrNull()!!
 
-        assertThat(result).isInstanceOf(SerializationException::class.java)
+        assertThat(result.first()).isInstanceOf(SerializationException::class.java)
     }
 
     @Test
@@ -62,13 +67,3 @@ internal class GTFSStopDataSourceTest {
     }
 }
 
-class TestStopIDDataSource : StopIDDataSource {
-    private val stopIDMap = mutableMapOf<String, String>()
-
-    init {
-        stopIDMap["71998"] = "s-f256hrvf2g-1eboulevard~11eavenue"
-        stopIDMap["71999"] = "s-f256hrtws3-1eboulevard~11eavenue"
-    }
-
-    override fun stop(feedID: String, stopID: String) = Result.success(stopIDMap[stopID] ?: "")
-}

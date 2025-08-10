@@ -203,6 +203,13 @@ internal class ImportScheduledFeedsServiceTest {
         )
         val agencyDataSource = GTFSAgencyDataSource(agencyIDDataSource)
 
+        val routeIDDataSource = StubRouteIDDataSource(mapOf(
+            "1" to "r-f2566-1",
+            "40" to "r-f256-40",
+            "115" to "r-f2565-115",
+        ))
+        val routeDataSource = GTFSRouteDataSource(agencyIDDataSource, routeIDDataSource)
+
         val subject = ImportScheduledFeedsService(
             feedDataSource = feedDataSource,
             feedRepository = feedRepository,
