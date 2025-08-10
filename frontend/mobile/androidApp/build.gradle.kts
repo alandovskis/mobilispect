@@ -45,5 +45,6 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.koin.android.startup)
     implementation(libs.koin.compose.viewmodel)
+    implementation(libs.kotlinx.datetime)
     debugImplementation(libs.compose.ui.tooling)
 }

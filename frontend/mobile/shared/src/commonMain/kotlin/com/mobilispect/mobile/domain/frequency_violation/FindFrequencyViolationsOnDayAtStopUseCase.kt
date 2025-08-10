@@ -9,7 +9,9 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class FindFrequencyViolationsOnDayAtStopUseCase(private val scheduleRepo: ScheduleRepository) {
     operator fun invoke(
         start: LocalDateTime,
