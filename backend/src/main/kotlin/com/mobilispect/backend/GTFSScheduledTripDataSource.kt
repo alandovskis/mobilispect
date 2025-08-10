@@ -38,7 +38,6 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteI
                     val calendarExceptions = findCalendarExceptions(extractedDir, csv)
                     val calendars = findCalendars(extractedDir, csv)
 
-                    logger.debug("Started importing trips")
                     val tripsIn = extractedDir.resolve("trips.txt").toFile().readTextAndNormalize()
                     Result.success(csv.decodeFromString<Collection<GTFSTrip>>(tripsIn).mapNotNull { trip ->
                         val added = calendarExceptions[trip.service_id]

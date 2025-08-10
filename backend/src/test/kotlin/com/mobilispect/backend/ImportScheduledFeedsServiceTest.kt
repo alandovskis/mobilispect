@@ -236,7 +236,7 @@ internal class ImportScheduledFeedsServiceTest {
         val actualFeeds = feedRepository.findAll()
         assertThat(actualFeeds).contains(
             Feed(
-                uid = "f-f256-exo~citlapresquîle", url = "https://exo.quebec/xdata/citpi/google_transit.zip"
+                uid = "f-f256-exo~citlapresquîle", url = "classpath:exopi-gtfs-d89aa5de884111e4b6a9365220ded9f746ef2dbf.zip"
             )
         )
 
@@ -261,6 +261,7 @@ internal class ImportScheduledFeedsServiceTest {
                 versions = listOf(version)
             )
         )
+        assertThat(agencies).hasSize(1)
     }
 
     private fun importedAllRoutes() {
@@ -275,6 +276,8 @@ internal class ImportScheduledFeedsServiceTest {
                 versions = listOf(version)
             ),
         )
+
+        assertThat(routes).hasSize(3)
     }
 
     private fun importedAllStops() {
@@ -288,6 +291,7 @@ internal class ImportScheduledFeedsServiceTest {
                 versions = listOf(version)
             )
         )
+        assertThat(stops).hasSize(979)
     }
 
     @Suppress("LongMethod")
@@ -320,6 +324,7 @@ internal class ImportScheduledFeedsServiceTest {
                 ), direction = "Terminus Vaudreuil", versions = listOf("d89aa5de884111e4b6a9365220ded9f746ef2dbf")
             )
         )
+        assertThat(trips).hasSize(465)
     }
 
     @Suppress("LongMethod")
@@ -715,6 +720,7 @@ internal class ImportScheduledFeedsServiceTest {
                 versions = listOf(version)
             )
         )
+        assertThat(scheduledStops).hasSize(9262)
     }
 
     @AfterEach
