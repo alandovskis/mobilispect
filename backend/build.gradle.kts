@@ -27,6 +27,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation(libs.arrow.core)
+    implementation(libs.arrow.fx.coroutines)
     implementation(libs.kotlinx.serialization.csv)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.resilience4j.spring)

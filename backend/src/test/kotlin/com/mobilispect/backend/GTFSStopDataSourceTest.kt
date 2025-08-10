@@ -23,7 +23,7 @@ internal class GTFSStopDataSourceTest {
 
     @Test
     fun fileNotFound(@TempDir root: Path) {
-        val result = subject.stops(root, VERSION, FEED_ID).exceptionOrNull()!!
+        val result = subject.stops(root, VERSION, FEED_ID).leftOrNull()
 
         assertThat(result).isInstanceOf(IOException::class.java)
     }
@@ -32,7 +32,7 @@ internal class GTFSStopDataSourceTest {
     fun corrupted(@TempDir root: Path) {
         resourceLoader.copyResourceTo(src = "classpath:citpi-stops-corrupt.txt", root = root, dst = "stops.txt")
 
-        val result = subject.stops(root, VERSION, FEED_ID).exceptionOrNull()
+        val result = subject.stops(root, VERSION, FEED_ID).leftOrNull()
 
         assertThat(result).isInstanceOf(SerializationException::class.java)
     }

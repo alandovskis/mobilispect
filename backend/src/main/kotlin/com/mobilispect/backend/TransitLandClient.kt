@@ -131,16 +131,20 @@ class TransitLandClient(builder: WebClient.Builder) :
     /**
      * Retrieve all stops contained in the feed identified by [feedID].
      */
-    override fun stop(apiKey: String, feedID: String, stopID: String): Result<StopResultItem?> {
+    override fun stop(apiKey: String, feedID: String, stopID: String): Result<StopResultItem> {
         return handleError {
             val uri = "/stops.json?feed_onestop_id=$feedID&stop_id=$stopID"
             val response = get(uri, apiKey, TransitLandStopResponse::class.java)
-            val stops = response?.stops?.map { remote ->
+            val result = response?.stops?.map { remote ->
                 StopResultItem(
                     uid = remote.onestopID, stopID = remote.stopID
                 )
+            } ?: emptyList()
+
+            if (result.isEmpty()) {
+                return@handleError Result.failure(Exception("No stops found for $stopID"))
             }
-            return@handleError Result.success(stops.orEmpty().firstOrNull())
+            return@handleError Result.success(result.firstOrNull()!!)
         }
     }
 

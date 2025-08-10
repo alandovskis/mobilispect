@@ -28,5 +28,5 @@ interface TransitLandAPI {
     /**
      * Retrieve all stops contained in the feed identified by [feedID].
      */
-    fun stop(apiKey: String, feedID: String, stopID: String): Result<StopResultItem?>
+    fun stop(apiKey: String, feedID: String, stopID: String): Result<StopResultItem>
 }

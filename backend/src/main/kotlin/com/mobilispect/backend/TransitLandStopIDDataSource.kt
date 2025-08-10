@@ -9,12 +9,12 @@ class TransitLandStopIDDataSource(
     private val transitLandAPI: TransitLandAPI,
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : StopIDDataSource {
-    override fun stop(feedID: String, stopID: String): Result<String?> {
+    override fun stop(feedID: String, stopID: String): Result<String> {
         val apiKey = transitLandCredentialsRepository.get() ?: return Result.failure(Exception("Missing API key"))
         return transitLandAPI.stop(
             apiKey = apiKey, feedID = feedID, stopID = stopID
         ).map {
-                it?.uid
+                it.uid
             }
     }
 }

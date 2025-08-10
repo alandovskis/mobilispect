@@ -1,8 +1,9 @@
 package com.mobilispect.backend.schedule.stop
 
+import arrow.core.Ior
 import com.mobilispect.backend.Stop
 import java.nio.file.Path
 
 interface StopDataSource {
-    fun stops(root: Path, version: String, feedID: String): Result<List<Stop>>
+    fun stops(root: Path, version: String, feedID: String): Ior<Collection<Throwable>, Collection<Stop>>
 }

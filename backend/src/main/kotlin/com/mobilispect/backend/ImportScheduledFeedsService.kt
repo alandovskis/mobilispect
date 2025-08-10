@@ -1,5 +1,6 @@
 package com.mobilispect.backend
 
+import arrow.core.Ior
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.DownloadRequest
 import com.mobilispect.backend.schedule.download.Downloader
@@ -96,14 +97,11 @@ class ImportScheduledFeedsService(
                         return routeRes
                     }
 
-                    val stopsRes = importStops(
+                    importStops(
                         version = cloudFeed.version.uid,
                         extractedDir = extractedDir,
                         feedID = cloudFeed.feed.uid
                     )
-                    if (stopsRes.isFailure) {
-                        return stopsRes
-                    }
 
                     val tripRes = importTrips(
                         version = cloudFeed.version.uid,
@@ -169,17 +167,38 @@ class ImportScheduledFeedsService(
             .onFailure { e -> logger.error("Failed to import routes: $e") }
     }
 
-    private fun importStops(version: String, extractedDir: Path, feedID: String): Result<Collection<Stop>> {
+    private fun importStops(
+        version: String,
+        extractedDir: Path,
+        feedID: String
+    ): Ior<Collection<Throwable>, Collection<Stop>> {
         val start = clock.instant()
-        return stopDataSource.stops(extractedDir, version, feedID)
+        stopDataSource.stops(extractedDir, version, feedID)
             .map { stops ->
                 stops.map { stop -> return@map stopRepository.save(stop) }
             }
-            .onSuccess { stops ->
-                val elapsed = java.time.Duration.between(start, clock.instant())
-                logger.debug("Imported {} stops in {}", stops.size, elapsed)
-            }
-            .onFailure { e -> logger.error("Failed to import stops: $e") }
+            .fold(
+                { errors ->
+                    logger.error("Failed to import stops: {}", errors)
+                    return Ior.Left(errors)
+                },
+                { stops ->
+                    val elapsed = java.time.Duration.between(start, clock.instant())
+                    logger.debug("Imported {} stops in {}", stops.size, elapsed)
+                    return Ior.Right(stops)
+                },
+                { errors, stops ->
+                    val elapsed = java.time.Duration.between(start, clock.instant())
+                    logger.error(
+                        "Partially imported {}/{} stops in {}: {}",
+                        stops.size,
+                        stops.size + errors.size,
+                        elapsed,
+                        errors
+                    )
+                    return Ior.Both(errors, stops)
+                })
+
     }
 
     private fun importTrips(version: String, extractedDir: Path, feedID: String): Result<Collection<ScheduledTrip>> {
@@ -188,7 +207,8 @@ class ImportScheduledFeedsService(
             .map { trips -> trips.map { trip -> scheduledTripRepository.save(trip) } }
             .onSuccess { trips ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
-                logger.debug("Imported {} trips in {}", trips.size, elapsed) }
+                logger.debug("Imported {} trips in {}", trips.size, elapsed)
+            }
             .onFailure { e -> logger.error("Failed to import scheduled trips: $e") }
     }
 
@@ -198,7 +218,8 @@ class ImportScheduledFeedsService(
             .map { scheduledStops -> scheduledStops.map { stop -> scheduledStopRepository.save(stop) } }
             .onSuccess { stops ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
-                logger.debug("Imported {} stop times in {}", stops.size, elapsed) }
+                logger.debug("Imported {} stop times in {}", stops.size, elapsed)
+            }
             .onFailure { e -> logger.error("Failed to import stop times: $e") }
     }
 }

@@ -291,7 +291,7 @@ internal class ImportScheduledFeedsServiceTest {
                 versions = listOf(version)
             )
         )
-        assertThat(stops).hasSize(979)
+        assertThat(stops).hasSize(866)
     }
 
     @Suppress("LongMethod")
