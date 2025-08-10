@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobilispect.android.ui.previews.ThemePreviews
-import com.mobilispect.android.ui.theme.MobilispectTheme
+import com.mobilispect.mobile.android.ui.theme.MobilispectTheme
 
 @Composable
 @Suppress("LongParameterList")

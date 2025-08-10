@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobilispect.android.ui.previews.FontScalePreviews
 import com.mobilispect.android.ui.previews.ThemePreviews
-import com.mobilispect.android.ui.theme.MobilispectTheme
+import com.mobilispect.mobile.android.ui.theme.MobilispectTheme
 
 @Composable
 fun Card(
@@ -22,21 +22,22 @@ fun Card(
 ) {
     androidx.compose.material3.OutlinedCard(
         colors = CardDefaults.outlinedCardColors(
-            containerColor = MaterialTheme.colorScheme.secondary,
-            disabledContainerColor = MaterialTheme.colorScheme.secondary,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer.copy(0.5f)
         ),
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
     )
     {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = modifier.padding(8.dp)) {
             if (title != null) {
-                Text(text = title, style = MaterialTheme.typography.titleMedium)
+                Text(text = title.uppercase(), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
             }
 
             if (subtitle != null) {
-                Text(text = subtitle, style = MaterialTheme.typography.titleSmall)
+                Text(text = subtitle, style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.onSecondaryContainer)
             }
 
             content()

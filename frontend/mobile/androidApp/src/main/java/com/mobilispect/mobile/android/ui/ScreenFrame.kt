@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.mobilispect.android.ui.previews.FontScalePreviews
 import com.mobilispect.android.ui.previews.ThemePreviews
-import com.mobilispect.android.ui.theme.MobilispectTheme
+import com.mobilispect.mobile.android.ui.theme.MobilispectTheme
 
 @Composable
 fun ScreenFrame(
@@ -33,7 +33,6 @@ fun ScreenFrame(
 @Composable
 fun PreviewScreenFrame() {
     MobilispectTheme {
-        ScreenFrame(screenTitle = "Title") {
-        }
+        ScreenFrame(screenTitle = "Title") { }
     }
 }

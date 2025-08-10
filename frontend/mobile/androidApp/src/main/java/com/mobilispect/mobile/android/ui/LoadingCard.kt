@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.mobilispect.android.ui.previews.ThemePreviews
-import com.mobilispect.android.ui.theme.MobilispectTheme
+import com.mobilispect.mobile.android.ui.theme.MobilispectTheme
 
 @Composable
 fun LoadingCard(modifier: Modifier = Modifier) {

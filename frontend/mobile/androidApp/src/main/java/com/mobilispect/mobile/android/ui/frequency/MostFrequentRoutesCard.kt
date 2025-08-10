@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.mobilispect.android.ui.frequency.MostFrequentRoutesUIState
 import com.mobilispect.mobile.android.ui.RankedCard
 import com.mobilispect.android.ui.previews.ThemePreviews
-import com.mobilispect.android.ui.theme.MobilispectTheme
 import com.mobilispect.mobile.android.R
+import com.mobilispect.mobile.android.ui.theme.MobilispectTheme
 
 /**
  * The most frequent routes by 7-day median frequency.

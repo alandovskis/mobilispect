@@ -9,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.mobilispect.mobile.android.R
@@ -50,7 +49,7 @@ fun FrequencyViolationScreen(
 ) {
     ScreenFrame(
         screenTitle = stringResource(
-            id = R.string.frequency_violations,
+            id = R.string.frequency_violations_placeholder,
             "165"
         ),
         modifier = modifier,
