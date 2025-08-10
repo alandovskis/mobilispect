@@ -55,8 +55,8 @@ class ImportScheduledFeedsService(
         val results = updatedFeeds.map { updatedFeed -> importFeed(updatedFeed) }
 
         if (results.all { result -> result.isSuccess }) {
-            return true
             logger.info("Completed with updates")
+            return true
         } else {
             logger.error("Completed with errors")
             return false

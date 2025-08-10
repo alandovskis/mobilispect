@@ -21,7 +21,12 @@ internal class GTFSScheduledTripDataSourceTest {
     @Autowired
     lateinit var resourceLoader: ResourceLoader
 
-    private val subject = GTFSScheduledTripDataSource(TestRouteIDDataSource())
+    private val routeIDDataSource = StubRouteIDDataSource(mapOf(
+        "1" to "r-f2566-1",
+        "T1" to "r-f2566-t1",
+        "115" to "r-f2565-115"
+    ))
+    private val subject = GTFSScheduledTripDataSource(routeIDDataSource)
 
     @Test
     fun bothCalendarFilesNotFound(@TempDir root: Path) {
@@ -126,39 +131,5 @@ internal class GTFSScheduledTripDataSourceTest {
                 )
             )
         )
-        /*assertThat(trips).contains(
-            ScheduledTrip(
-                _id = "3282393-PI-A22-PI_GTFS-Samedi-01",
-                routeID = OneStopRouteID("r-f2565-115"),
-                direction = "Terminus Vaudreuil",
-                version = VERSION,
-                dates = listOf(
-                    LocalDate.of(2022, 11, 26),
-                    LocalDate.of(2022, 12, 3),
-                    LocalDate.of(2022, 12, 10),
-                    LocalDate.of(2022, 12, 17),
-                    LocalDate.of(2022, 12, 24),
-                    LocalDate.of(2022, 12, 31),
-                    LocalDate.of(2023, 1, 7),
-                )
-            )
-        )*/
-        /*assertThat(trips).contains(
-            ScheduledTrip(
-                _id = "3282456-PI-A22-PI_GTFS-Dimanche-01",
-                routeID = OneStopRouteID("r-f2565-115"),
-                direction = "Terminus Vaudreuil",
-                version = VERSION,
-                dates = listOf(
-                    LocalDate.of(2022, 11, 27),
-                    LocalDate.of(2022, 12, 4),
-                    LocalDate.of(2022, 12, 11),
-                    LocalDate.of(2022, 12, 18),
-                    LocalDate.of(2022, 12, 25),
-                    LocalDate.of(2023, 1, 1),
-                    LocalDate.of(2023, 1, 8),
-                )
-            )
-        )*/
     }
 }

@@ -1,5 +1,6 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.schedule.gtfs.StubAgencyIDDataSource
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ResourceLoader
 import java.io.IOException
 import java.nio.file.Path
+import kotlin.collections.set
 
 private const val VERSION = "v1"
 private const val FEED_ID = "feed_id"
@@ -19,7 +21,15 @@ internal class GTFSRouteDataSourceTest {
     @Autowired
     lateinit var resourceLoader: ResourceLoader
 
-    private val subject = GTFSRouteDataSource(TestAgencyIDDataSource(), TestRouteIDDataSource())
+    private val agencyIDDataSource = StubAgencyIDDataSource(
+        mapOf("CITPI" to "o-f256-exo~citlapresquîle")
+    )
+    private val routeIDDataSource = StubRouteIDDataSource(mapOf(
+        "1" to "r-f2566-1",
+        "T1" to "r-f2566-t1",
+        "115" to "r-f2565-115"
+    ))
+    private val subject = GTFSRouteDataSource(agencyIDDataSource, routeIDDataSource)
 
     @Test
     fun fileNotFound(@TempDir root: Path) {
@@ -66,10 +76,5 @@ internal class GTFSRouteDataSourceTest {
                 versions = listOf(VERSION)
             )
         )
-    }
-
-    class TestAgencyIDDataSource : AgencyIDDataSource {
-        override fun agencyIDs(feedID: String): Result<Map<String, String>> =
-            Result.success(mapOf("CITPI" to "o-f256-exo~citlapresquîle"))
     }
 }
