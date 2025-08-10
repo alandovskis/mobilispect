@@ -110,7 +110,7 @@ internal class ImportScheduledFeedsServiceTest {
             scheduledStopDataSource = scheduledStopDataSource,
         )
 
-        subject.get()
+        subject()
 
         assertThat(feedRepository.findAll()).isEmpty()
         assertThat(feedVersionRepository.findAll()).isEmpty()
@@ -163,7 +163,7 @@ internal class ImportScheduledFeedsServiceTest {
             scheduledStopDataSource = scheduledStopDataSource,
         )
 
-        subject.get()
+        subject()
 
         assertThat(feedRepository.findAll()).isEmpty()
         assertThat(feedVersionRepository.findAll()).isEmpty()
@@ -222,7 +222,7 @@ internal class ImportScheduledFeedsServiceTest {
             scheduledStopDataSource = scheduledStopDataSource,
         )
 
-        subject.get()
+        subject()
 
         importedAllFeeds()
         importedAllAgencies()

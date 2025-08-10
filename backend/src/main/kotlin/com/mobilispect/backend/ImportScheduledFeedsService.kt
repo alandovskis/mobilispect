@@ -40,26 +40,26 @@ class ImportScheduledFeedsService(
     private val scheduledTripDataSource: ScheduledTripDataSource,
     private val scheduledStopDataSource: ScheduledStopDataSource,
     private val clock: Clock = Clock.systemDefaultZone()
-) : Supplier<Any> {
+) {
     private val logger: Logger = LoggerFactory.getLogger(ImportScheduledFeedsService::class.java)
 
-    override fun get(): Any {
+    operator fun invoke(): Boolean {
         logger.info("Started")
         val updatedFeeds = findUpdatedFeeds()
         if (updatedFeeds.isEmpty()) {
             logger.info("Completed without updates")
-            return Any()
+            return true
         }
 
         val results = updatedFeeds.map { updatedFeed -> importFeed(updatedFeed) }
 
         if (results.all { result -> result.isSuccess }) {
+            return true
             logger.info("Completed with updates")
         } else {
             logger.error("Completed with errors")
+            return false
         }
-
-        return Any()
     }
 
     private fun findUpdatedFeeds(): List<VersionedFeed> {
