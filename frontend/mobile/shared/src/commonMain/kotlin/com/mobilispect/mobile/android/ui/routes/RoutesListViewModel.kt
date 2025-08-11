@@ -35,7 +35,8 @@ class RoutesListViewModel(
                     id = route.id,
                     shortName = route.shortName,
                     longName = route.longName,
-                    agencyID = route.agencyID
+                    agencyID = route.agencyID,
+                    hasFrequencyCommittment = true
                 )
             })
         }
@@ -48,5 +49,6 @@ data class RouteUIState(
     val id: String,
     val shortName: String,
     val longName: String,
-    val agencyID: String
+    val agencyID: String,
+    val hasFrequencyCommittment: Boolean
 )
