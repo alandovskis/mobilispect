@@ -1,6 +1,7 @@
 package com.mobilispect.backend
 
 import arrow.core.Ior
+import arrow.fx.coroutines.parMap
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.DownloadRequest
 import com.mobilispect.backend.schedule.download.Downloader
@@ -8,15 +9,14 @@ import com.mobilispect.backend.schedule.feed.VersionedFeed
 import com.mobilispect.backend.schedule.route.RouteDataSource
 import com.mobilispect.backend.schedule.schedule.ScheduledStopRepository
 import com.mobilispect.backend.schedule.stop.StopDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.nio.file.Path
 import java.time.Clock
 import java.time.Instant
-import java.util.function.Supplier
-import kotlin.time.Duration
-import kotlin.time.toKotlinDuration
 
 /**
  * Import all scheduled listed in [feedDataSource].
@@ -44,22 +44,24 @@ class ImportScheduledFeedsService(
 ) {
     private val logger: Logger = LoggerFactory.getLogger(ImportScheduledFeedsService::class.java)
 
-    operator fun invoke(): Boolean {
-        logger.info("Started")
-        val updatedFeeds = findUpdatedFeeds()
-        if (updatedFeeds.isEmpty()) {
-            logger.info("Completed without updates")
-            return true
-        }
+    suspend operator fun invoke(): Boolean {
+        return withContext(Dispatchers.IO) {
+            logger.info("Started")
+            val updatedFeeds = findUpdatedFeeds()
+            if (updatedFeeds.isEmpty()) {
+                logger.info("Completed without updates")
+                return@withContext true
+            }
 
-        val results = updatedFeeds.map { updatedFeed -> importFeed(updatedFeed) }
+            val results = updatedFeeds.parMap { updatedFeed -> importFeed(updatedFeed) }
 
-        if (results.all { result -> result.isSuccess }) {
-            logger.info("Completed with updates")
-            return true
-        } else {
-            logger.error("Completed with errors")
-            return false
+            if (results.all { result -> result.isSuccess }) {
+                logger.info("Completed with updates")
+                return@withContext true
+            } else {
+                logger.error("Completed with errors")
+                return@withContext false
+            }
         }
     }
 
@@ -148,7 +150,11 @@ class ImportScheduledFeedsService(
     private fun importAgencies(version: String, extractedDir: Path, feedID: String): Result<Collection<Agency>> {
         val start = clock.instant()
         return agencyDataSource.agencies(root = extractedDir, version = version, feedID = feedID)
-            .map { agencies -> agencies.map { agency -> agencyRepository.save(agency) } }
+            .map { agencies ->
+                agencies.map { agency ->
+                    agencyRepository.save(agency)
+                }
+            }
             .onSuccess { agencies ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
                 logger.debug("Imported {} agencies in {}", agencies.size, elapsed)

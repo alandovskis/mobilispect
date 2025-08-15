@@ -29,9 +29,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation(libs.arrow.core)
     implementation(libs.arrow.fx.coroutines)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.reactor)
     implementation(libs.kotlinx.serialization.csv)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.resilience4j.spring)
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
