@@ -13,7 +13,8 @@ class TransitLandAgencyIDDataSource(
         val apiKey = transitLandCredentialsRepository.get() ?: return Result.failure(Exception("Missing API key"))
         return transitLandAPI.agencies(apiKey = apiKey, feedID = feedID)
             .map { agencies ->
-                agencies.agencies.associate { item -> item.agencyID to item.id }
+                agencies.agencies.filter { it.agencyID != null }
+                    .associate { item -> item.agencyID!! to item.id }
             }
     }
 }

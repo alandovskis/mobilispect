@@ -28,7 +28,7 @@ class URLS(
     val realtime_vehicle_positions: String? = null,
     val static_current: String? = null,
     val static_historic: Collection<String>? = null,
-    val static_planned: String? = null
+    val static_planned: Collection<String>? = null
 )
 
 @Serializable

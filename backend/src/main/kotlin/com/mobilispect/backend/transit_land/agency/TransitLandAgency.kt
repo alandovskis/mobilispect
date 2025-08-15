@@ -3,13 +3,14 @@
 
 package com.mobilispect.backend.transit_land.agency
 
+import com.mobilispect.backend.Meta
 import com.mobilispect.backend.TransitLandVersionedFeed
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
 @Serializable
-internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAgency>)
+internal class TransitLandAgencyResponse(val agencies: Collection<TransitLandAgency>, val meta: Meta? = null)
 
 @Suppress("LongParameterList")
 @Serializable
@@ -17,7 +18,7 @@ internal class TransitLandAgency(
     @JsonNames("agency_email") val email: String? = null,
     @JsonNames("agency_fare_url") val fareURL: String? = null,
 
-    @JsonNames("agency_id") val agencyID: String,
+    @JsonNames("agency_id") val agencyID: String?,
 
     @JsonNames("agency_lang") val language: String? = null,
     @JsonNames("agency_name") val name: String,

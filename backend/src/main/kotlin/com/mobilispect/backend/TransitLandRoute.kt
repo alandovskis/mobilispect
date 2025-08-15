@@ -22,7 +22,7 @@ internal class TransitLandRoute(
     @JsonNames("route_id") val routeID: String,
 
     @JsonNames("route_long_name") val longName: String,
-    @JsonNames("route_short_name") val shortName: String,
+    @JsonNames("route_short_name") val shortName: String?,
     @JsonNames("route_sort_order") val sortOrder: Int? = null,
     @JsonNames("route_text_color") val textColour: String? = null,
     @JsonNames("route_type") val type: Int,

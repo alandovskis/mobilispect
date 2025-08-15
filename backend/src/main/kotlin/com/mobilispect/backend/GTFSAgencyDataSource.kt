@@ -17,7 +17,9 @@ import java.nio.file.Path
 internal class GTFSAgencyDataSource(
     private val agencyIDDataSource: AgencyIDDataSource
 ) : AgencyDataSource {
+    private val logger = org.slf4j.LoggerFactory.getLogger(GTFSAgencyDataSource::class.java)
     override fun agencies(root: Path, version: String, feedID: String): Result<Collection<Agency>> {
+        logger.debug("Looking up agency IDs for feedID=$feedID")
         val agencyIDRes = agencyIDDataSource.agencyIDs(feedID)
         if (agencyIDRes.isFailure) {
             return Result.failure(Exception("Missing agency IDs"))

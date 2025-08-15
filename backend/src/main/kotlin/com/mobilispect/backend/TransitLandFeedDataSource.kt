@@ -24,7 +24,8 @@ class TransitLandFeedDataSource(
             .onFailure { e -> logger.error("Unable to get feed IDs: $e") }
             .map { feedIDs ->
                 feedIDs.map { feedID ->
-                    transitLandClient.feed(
+                    logger.debug("Retrieving feed for ID {}", feedID)
+                    return@map transitLandClient.feed(
                         apiKey = apiKey,
                         feedID = feedID
                     )

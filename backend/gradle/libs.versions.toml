@@ -3,7 +3,7 @@ arrow = "2.1.0"
 kotlin = "2.0.0"
 kotlinxCoroutines = "1.8.1"
 kotlinxSerializationCSV = "2.0.0"
-kotlinxSerialization = "1.7.1"
+kotlinxSerialization = "1.9.0"
 protobufCompiler = "0.9.4"
 protobuf = "4.27.2"
 resilience4j = "2.2.0"
@@ -20,6 +20,8 @@ arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 
 # Concurrency
 arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines"}
+kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinxCoroutines" }
 
 # Serialization
 kotlinx-serialization-csv = { module = "de.brudaswen.kotlinx.serialization:kotlinx-serialization-csv", version.ref = "kotlinxSerializationCSV" }
