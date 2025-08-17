@@ -2,6 +2,7 @@ package com.mobilispect.backend
 
 import com.mobilispect.backend.schedule.route.RouteDataSource
 import com.mobilispect.backend.schedule.route.RouteIDDataSource
+import com.mobilispect.backend.util.measureTime
 import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -19,7 +20,7 @@ import java.nio.file.Path
 @Suppress("ReturnCount")
 class GTFSRouteDataSource(
     private val agencyIDDataSource: AgencyIDDataSource,
-    private val routeIDDataSource: RouteIDDataSource
+    private val routeIDDataSource: RouteIDDataSource,
 ) : RouteDataSource {
     private val logger: Logger = LoggerFactory.getLogger(ImportScheduledFeedsService::class.java)
 
@@ -45,7 +46,12 @@ class GTFSRouteDataSource(
             }
             val routeIDs = routeIDRes.getOrNull()!!
 
-            Result.success(csv.decodeFromString<Collection<GTFSRoute>>(input).mapNotNull { route ->
+            val (decodingTime, gtfsRoutes) = measureTime {
+                return@measureTime csv.decodeFromString<Collection<GTFSRoute>>(input)
+            }
+            logger.debug("Decoded {} routes in {}", gtfsRoutes.size, decodingTime)
+
+            Result.success(gtfsRoutes.mapNotNull { route ->
                 val feedLocalAgencyID = route.agency_id
                 val onestopAgencyID = agencyIDs[feedLocalAgencyID] ?: return@mapNotNull null
                 val routeID = routeIDs[route.route_id] ?: return@mapNotNull null

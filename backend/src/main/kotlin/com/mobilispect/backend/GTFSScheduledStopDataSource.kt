@@ -5,6 +5,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.csv.Csv
 import kotlinx.serialization.decodeFromString
+import org.slf4j.LoggerFactory
 import java.io.IOException
 import java.nio.file.Path
 import java.time.Instant
@@ -18,6 +19,8 @@ private const val DATE_COMPONENT_LENGTH = 3
  */
 @OptIn(ExperimentalSerializationApi::class)
 class GTFSScheduledStopDataSource : ScheduledStopDataSource {
+    private val logger = LoggerFactory.getLogger(GTFSScheduledStopDataSource::class.java)
+
     override fun scheduledStops(extractedDir: Path, version: String): Result<Collection<ScheduledStop>> {
         return try {
             val csv = Csv {
@@ -25,19 +28,23 @@ class GTFSScheduledStopDataSource : ScheduledStopDataSource {
                 ignoreUnknownColumns = true
             }
             val stopTimesIn = extractedDir.resolve("stop_times.txt").toFile().readText()
-            Result.success(csv.decodeFromString<Collection<GTFSStopTime>>(stopTimesIn)
-                .mapNotNull { stopTime ->
-                    val departsAt = parseGTFSTime(stopTime.departure_time) ?: return@mapNotNull null
-                    val arrivesAt = parseGTFSTime(stopTime.arrival_time) ?: return@mapNotNull null
-                    ScheduledStop(
-                        tripID = stopTime.trip_id,
-                        stopID = stopTime.stop_id,
-                        departsAt = departsAt,
-                        arrivesAt = arrivesAt,
-                        stopSequence = stopTime.stop_sequence,
-                        versions = listOf(version)
-                    )
-                })
+            val (decodingTime, stopTimes) = com.mobilispect.backend.util.measureTime {
+                return@measureTime csv.decodeFromString<Collection<GTFSStopTime>>(stopTimesIn)
+            }
+            logger.debug("Decoded {} stop times in {}", stopTimes.size, decodingTime)
+
+            Result.success(stopTimes. mapNotNull { stopTime ->
+                val departsAt = parseGTFSTime(stopTime.departure_time) ?: return@mapNotNull null
+                val arrivesAt = parseGTFSTime(stopTime.arrival_time) ?: return@mapNotNull null
+                ScheduledStop(
+                    tripID = stopTime.trip_id,
+                    stopID = stopTime.stop_id,
+                    departsAt = departsAt,
+                    arrivesAt = arrivesAt,
+                    stopSequence = stopTime.stop_sequence,
+                    versions = listOf(version)
+                )
+            })
         } catch (e: IOException) {
             Result.failure(e)
         } catch (e: SerializationException) {

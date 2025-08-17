@@ -1,5 +1,6 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.util.measureTime
 import com.mobilispect.backend.util.readTextAndNormalize
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
@@ -32,16 +33,20 @@ internal class GTFSAgencyDataSource(
                 hasHeaderRecord = true
                 ignoreUnknownColumns = true
             }
-            val agencies = csv.decodeFromString<Collection<GTFSAgency>>(input)
-                .mapNotNull { agency ->
-                    val id = agencyIDs[agency.agency_id] ?: return@mapNotNull null
-                    Agency(
-                        uid = id,
-                        localID = agency.agency_id,
-                        name = agency.agency_name,
-                        versions = listOf(version)
-                    )
-                }
+            val (decodingTime, agencies) = measureTime {
+                return@measureTime csv.decodeFromString<Collection<GTFSAgency>>(input)
+                    .mapNotNull { agency ->
+                        val id = agencyIDs[agency.agency_id] ?: return@mapNotNull null
+                        Agency(
+                            uid = id,
+                            localID = agency.agency_id,
+                            name = agency.agency_name,
+                            versions = listOf(version)
+                        )
+                    }
+            }
+            logger.debug("Decoded {} agencies in {}", agencies.size, decodingTime)
+
             Result.success(agencies)
         } catch (e: IOException) {
             Result.failure(e)

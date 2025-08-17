@@ -39,7 +39,12 @@ internal class GTFSScheduledTripDataSource(private val routeIDDataSource: RouteI
                     val calendars = findCalendars(extractedDir, csv)
 
                     val tripsIn = extractedDir.resolve("trips.txt").toFile().readTextAndNormalize()
-                    Result.success(csv.decodeFromString<Collection<GTFSTrip>>(tripsIn).mapNotNull { trip ->
+                    val (decodingTime, trips) = com.mobilispect.backend.util.measureTime {
+                        return@measureTime csv.decodeFromString<Collection<GTFSTrip>>(tripsIn)
+                    }
+                    logger.debug("Decoded {} trips in {}", trips.size, decodingTime)
+
+                    Result.success(trips.mapNotNull { trip ->
                         val added = calendarExceptions[trip.service_id]
                             ?.filter { it.exception_type == GTFSCalendarDate.ADDED }
                             ?.map { it.date } ?: emptyList()
