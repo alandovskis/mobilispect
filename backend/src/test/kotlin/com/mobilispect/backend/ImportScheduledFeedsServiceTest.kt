@@ -7,6 +7,7 @@ import com.mobilispect.backend.schedule.gtfs.StubAgencyIDDataSource
 import com.mobilispect.backend.schedule.route.RouteDataSource
 import com.mobilispect.backend.schedule.schedule.*
 import com.mobilispect.backend.schedule.stop.StopDataSource
+import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.assertj.core.api.Assertions.assertThat
@@ -86,7 +87,7 @@ internal class ImportScheduledFeedsServiceTest {
     lateinit var resourceDownloader: ResourceDownloader
 
     @Test
-    fun unableToRetrieveFeeds() {
+    fun unableToRetrieveFeeds() = runTest {
         val networkDataSource = object : FeedDataSource {
             override fun feeds(region: String): Collection<Result<VersionedFeed>> =
                 listOf(Result.failure(IOException("Couldn't connect")))
@@ -122,7 +123,7 @@ internal class ImportScheduledFeedsServiceTest {
     }
 
     @Test
-    fun unableToDownloadFeed() {
+    fun unableToDownloadFeed() = runTest {
         val mockServer = MockWebServer()
         mockServer.enqueue(MockResponse())
         mockServer.start()
@@ -175,7 +176,7 @@ internal class ImportScheduledFeedsServiceTest {
     }
 
     @Test
-    fun addsFeedAndVersionIfNone() {
+    fun addsFeedAndVersionIfNone() = runTest {
         val region = Region(uid = "reg-f25-mtl", name = "Montréal")
         regionRepository.save(region)
 
