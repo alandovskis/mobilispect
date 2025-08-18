@@ -1,17 +1,18 @@
 package com.mobilispect.backend
 
 import org.springframework.dao.OptimisticLockingFailureException
-import org.springframework.data.repository.Repository
+import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
+import org.springframework.data.rest.core.annotation.RestResource
 
 @RepositoryRestResource
-interface FeedRepository : Repository<Feed, String> {
+interface FeedRepository : CrudRepository<Feed, String> {
     /**
      * Returns all instances of the type.
      *
      * @return all entities
      */
-    fun findAll(): List<Feed>
+    override fun findAll(): List<Feed>
 
     /**
      * Saves a given entity. Use the returned instance for further operations as the save operation might have changed
@@ -33,5 +34,6 @@ interface FeedRepository : Repository<Feed, String> {
      * attribute with a different value from that found in the persistence store. Also thrown if at least one
      * entity is assumed to be present but does not exist in the database.
      */
-    fun deleteAll()
+    @RestResource(exported = false)
+    override fun deleteAll()
 }

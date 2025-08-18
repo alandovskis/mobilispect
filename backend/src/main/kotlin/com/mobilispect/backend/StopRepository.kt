@@ -1,18 +1,18 @@
 package com.mobilispect.backend
 
 import org.springframework.dao.OptimisticLockingFailureException
-import org.springframework.data.repository.Repository
+import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 import org.springframework.data.rest.core.annotation.RestResource
 
 @RepositoryRestResource
-interface StopRepository : Repository<Stop, String> {
+interface StopRepository : CrudRepository<Stop, String> {
     /**
      * Returns all instances of the type.
      *
      * @return all entities
      */
-    fun findAll(): List<Stop>
+    override fun findAll(): List<Stop>
 
     /**
      * Saves a given entity. Use the returned instance for further operations as the save operation might have changed
@@ -36,5 +36,5 @@ interface StopRepository : Repository<Stop, String> {
      * entity is assumed to be present but does not exist in the database.
      */
     @RestResource(exported = false)
-    fun deleteAll()
+    override fun deleteAll()
 }

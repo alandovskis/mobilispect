@@ -1,5 +1,7 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.schedule.ScheduledStopRepository
+import com.mobilispect.backend.schedule.ScheduledTripRepository
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.Downloader
 import com.mobilispect.backend.schedule.feed.*

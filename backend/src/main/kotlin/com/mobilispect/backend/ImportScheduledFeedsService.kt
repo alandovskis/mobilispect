@@ -1,18 +1,20 @@
 package com.mobilispect.backend
 
 import arrow.core.Ior
-import arrow.fx.coroutines.parMap
+import com.mobilispect.backend.schedule.ScheduledStopRepository
+import com.mobilispect.backend.schedule.ScheduledTripRepository
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.DownloadRequest
 import com.mobilispect.backend.schedule.download.Downloader
 import com.mobilispect.backend.schedule.feed.VersionedFeed
 import com.mobilispect.backend.schedule.route.RouteDataSource
-import com.mobilispect.backend.schedule.schedule.ScheduledStopRepository
 import com.mobilispect.backend.schedule.stop.StopDataSource
+import io.github.resilience4j.retry.annotation.Retry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Service
 import java.nio.file.Path
 import java.time.Clock
@@ -47,13 +49,14 @@ class ImportScheduledFeedsService(
     suspend operator fun invoke(): Boolean {
         return withContext(Dispatchers.IO) {
             logger.info("Started")
-            val updatedFeeds = findUpdatedFeeds()
+            var updatedFeeds = findUpdatedFeeds()
             if (updatedFeeds.isEmpty()) {
                 logger.info("Completed without updates")
                 return@withContext true
             }
+            updatedFeeds = updatedFeeds.filter { it.feed.uid == "f-f25d-socitdetransportdemontral" }
 
-            val results = updatedFeeds.parMap { updatedFeed -> importFeed(updatedFeed) }
+            val results = updatedFeeds.map { updatedFeed -> importFeed(updatedFeed) }
 
             if (results.all { result -> result.isSuccess }) {
                 logger.info("Completed with updates")
@@ -119,9 +122,8 @@ class ImportScheduledFeedsService(
                         return stopTimeRes
                     }
 
-                    feedRepository.save(cloudFeed.feed)
-                    feedVersionRepository.save(cloudFeed.version)
-                    cloudFeed
+                    save(cloudFeed.feed, feedRepository)
+                    save(cloudFeed.version, feedVersionRepository)
                 }
             }
             .onSuccess { feed -> logger.debug("Import completed: {}", feed) }
@@ -150,11 +152,7 @@ class ImportScheduledFeedsService(
     private fun importAgencies(version: String, extractedDir: Path, feedID: String): Result<Collection<Agency>> {
         val start = clock.instant()
         return agencyDataSource.agencies(root = extractedDir, version = version, feedID = feedID)
-            .map { agencies ->
-                agencies.map { agency ->
-                    agencyRepository.save(agency)
-                }
-            }
+            .map { agencies -> agencies.map { save(it, agencyRepository) } }
             .onSuccess { agencies ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
                 logger.debug("Imported {} agencies in {}", agencies.size, elapsed)
@@ -165,7 +163,7 @@ class ImportScheduledFeedsService(
     private fun importRoutes(version: String, extractedDir: Path, feedID: String): Result<Collection<Route>> {
         val start = clock.instant()
         return routeDataSource.routes(root = extractedDir, version = version, feedID = feedID)
-            .map { routes -> routes.map { route -> routeRepository.save(route) } }
+            .map { routes -> routes.map { save(it, routeRepository) } }
             .onSuccess { routes ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
                 logger.debug("Imported {} routes in {}: {}", routes.size, elapsed, routes)
@@ -180,9 +178,7 @@ class ImportScheduledFeedsService(
     ): Ior<Collection<Throwable>, Collection<Stop>> {
         val start = clock.instant()
         stopDataSource.stops(extractedDir, version, feedID)
-            .map { stops ->
-                stops.map { stop -> return@map stopRepository.save(stop) }
-            }
+            .map { stops -> stops.map { save(it, stopRepository) } }
             .fold(
                 { errors ->
                     logger.error("Failed to import stops: {}", errors)
@@ -210,7 +206,7 @@ class ImportScheduledFeedsService(
     private fun importTrips(version: String, extractedDir: Path, feedID: String): Result<Collection<ScheduledTrip>> {
         val start = clock.instant()
         return scheduledTripDataSource.trips(extractedDir, version, feedID)
-            .map { trips -> trips.map { trip -> scheduledTripRepository.save(trip) } }
+            .map { trips -> trips.map { save(it, scheduledTripRepository) } }
             .onSuccess { trips ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
                 logger.debug("Imported {} trips in {}", trips.size, elapsed)
@@ -221,11 +217,16 @@ class ImportScheduledFeedsService(
     private fun importStopTimes(version: String, extractedDir: Path): Result<Collection<ScheduledStop>> {
         val start = clock.instant()
         return scheduledStopDataSource.scheduledStops(extractedDir, version)
-            .map { scheduledStops -> scheduledStops.map { stop -> scheduledStopRepository.save(stop) } }
+            .map { scheduledStops -> scheduledStops.map { save(it, scheduledStopRepository) } }
             .onSuccess { stops ->
                 val elapsed = java.time.Duration.between(start, clock.instant())
                 logger.debug("Imported {} stop times in {}", stops.size, elapsed)
             }
             .onFailure { e -> logger.error("Failed to import stop times: $e") }
+    }
+
+    @Retry(name = "save")
+    private fun <T : Any> save(element: T, repository: CrudRepository<T, String>): T {
+        return repository.save(element)
     }
 }
