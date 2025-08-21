@@ -1,8 +1,7 @@
 package com.mobilispect.backend.schedule.transit_land
 
 import com.mobilispect.backend.FeedDataSource
-import com.mobilispect.backend.schedule.feed.VersionedFeed
-import com.mobilispect.backend.TransitLandAPI
+import com.mobilispect.backend.schedule.ScheduledFeed
 import com.mobilispect.backend.schedule.transit_land.api.TransitLandCredentialsRepository
 import org.slf4j.LoggerFactory
 
@@ -14,7 +13,7 @@ class TransitLandFeedDataSource(
     private val transitLandCredentialsRepository: TransitLandCredentialsRepository
 ) : FeedDataSource {
     private val logger = LoggerFactory.getLogger(TransitLandFeedDataSource::class.java)
-    override fun feeds(region: String): Collection<Result<VersionedFeed>> {
+    override fun feeds(region: String): Collection<Result<ScheduledFeed>> {
         val apiKey =
             transitLandCredentialsRepository.get()
                 ?: return listOf(Result.failure(IllegalStateException("Missing API key")))

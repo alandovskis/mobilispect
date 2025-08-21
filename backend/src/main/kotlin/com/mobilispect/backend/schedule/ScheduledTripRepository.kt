@@ -1,6 +1,5 @@
 package com.mobilispect.backend.schedule
 
-import com.mobilispect.backend.ScheduledTrip
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.rest.core.annotation.RestResource
 

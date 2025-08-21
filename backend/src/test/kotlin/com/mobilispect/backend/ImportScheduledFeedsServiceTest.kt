@@ -1,14 +1,25 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.infastructure.Stop
+import com.mobilispect.backend.infastructure.StopRepository
+import com.mobilispect.backend.schedule.ImportScheduledFeedsService
+import com.mobilispect.backend.schedule.Route
+import com.mobilispect.backend.schedule.RouteRepository
 import com.mobilispect.backend.schedule.ScheduledStopRepository
 import com.mobilispect.backend.schedule.ScheduledTripRepository
+import com.mobilispect.backend.schedule.ScheduledFeed
+import com.mobilispect.backend.schedule.ScheduledStop
+import com.mobilispect.backend.schedule.ScheduledStopDataSource
+import com.mobilispect.backend.schedule.ScheduledTrip
+import com.mobilispect.backend.schedule.ScheduledTripDataSource
 import com.mobilispect.backend.schedule.archive.ArchiveExtractor
 import com.mobilispect.backend.schedule.download.Downloader
-import com.mobilispect.backend.schedule.feed.*
+import com.mobilispect.backend.schedule.gtfs.GTFSRouteDataSource
 import com.mobilispect.backend.schedule.gtfs.StubAgencyIDDataSource
 import com.mobilispect.backend.schedule.route.RouteDataSource
 import com.mobilispect.backend.schedule.schedule.*
 import com.mobilispect.backend.schedule.stop.StopDataSource
+import com.mobilispect.backend.util.DateTimeOffset
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -91,7 +102,7 @@ internal class ImportScheduledFeedsServiceTest {
     @Test
     fun unableToRetrieveFeeds() = runTest {
         val networkDataSource = object : FeedDataSource {
-            override fun feeds(region: String): Collection<Result<VersionedFeed>> =
+            override fun feeds(region: String): Collection<Result<ScheduledFeed>> =
                 listOf(Result.failure(IOException("Couldn't connect")))
         }
         val subject = ImportScheduledFeedsService(
@@ -131,9 +142,9 @@ internal class ImportScheduledFeedsServiceTest {
         mockServer.start()
 
         val networkDataSource = object : FeedDataSource {
-            override fun feeds(region: String): Collection<Result<VersionedFeed>> = listOf(
+            override fun feeds(region: String): Collection<Result<ScheduledFeed>> = listOf(
                 Result.success(
-                    VersionedFeed(
+                    ScheduledFeed(
                         feed = Feed(
                             uid = "f-f256-exo~citlapresquîle", url = mockServer.url("").toString()
                         ), version = FeedVersion(
@@ -183,11 +194,12 @@ internal class ImportScheduledFeedsServiceTest {
         regionRepository.save(region)
 
         val feedDataSource = object : FeedDataSource {
-            override fun feeds(region: String): Collection<Result<VersionedFeed>> = listOf(
+            override fun feeds(region: String): Collection<Result<ScheduledFeed>> = listOf(
                 Result.success(
-                    VersionedFeed(
+                    ScheduledFeed(
                         feed = Feed(
-                            uid = "f-f256-exo~citlapresquîle", url = "classpath:exopi-gtfs-d89aa5de884111e4b6a9365220ded9f746ef2dbf.zip"
+                            uid = "f-f256-exo~citlapresquîle",
+                            url = "classpath:exopi-gtfs-d89aa5de884111e4b6a9365220ded9f746ef2dbf.zip"
                         ), version = FeedVersion(
                             uid = "d89aa5de884111e4b6a9365220ded9f746ef2dbf",
                             feedID = "f-f256-exo~citlapresquîle",

@@ -3,8 +3,8 @@ package com.mobilispect.backend.api
 import com.mobilispect.backend.MongoDBInitializer
 import com.mobilispect.backend.Agency
 import com.mobilispect.backend.createMongoDBContainer
-import com.mobilispect.backend.Route
-import com.mobilispect.backend.RouteRepository
+import com.mobilispect.backend.schedule.Route
+import com.mobilispect.backend.schedule.RouteRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test

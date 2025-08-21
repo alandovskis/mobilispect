@@ -1,6 +1,8 @@
 package com.mobilispect.backend
 
-import com.mobilispect.backend.schedule.schedule.DateTimeOffset
+import com.mobilispect.backend.schedule.ScheduledStop
+import com.mobilispect.backend.schedule.gtfs.GTFSScheduledStopDataSource
+import com.mobilispect.backend.util.DateTimeOffset
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
 import org.assertj.core.api.Assertions.assertThat

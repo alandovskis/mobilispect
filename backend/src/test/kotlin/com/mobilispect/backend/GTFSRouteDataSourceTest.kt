@@ -1,5 +1,7 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.schedule.Route
+import com.mobilispect.backend.schedule.gtfs.GTFSRouteDataSource
 import com.mobilispect.backend.schedule.gtfs.StubAgencyIDDataSource
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException
@@ -11,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ResourceLoader
 import java.io.IOException
 import java.nio.file.Path
-import kotlin.collections.set
 
 private const val VERSION = "v1"
 private const val FEED_ID = "feed_id"

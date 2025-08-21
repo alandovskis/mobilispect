@@ -1,5 +1,6 @@
 package com.mobilispect.backend
 
+import com.mobilispect.backend.schedule.ScheduledTrip
 import com.mobilispect.backend.schedule.gtfs.GTFSScheduledTripDataSource
 import com.mobilispect.backend.util.copyResourceTo
 import kotlinx.serialization.SerializationException

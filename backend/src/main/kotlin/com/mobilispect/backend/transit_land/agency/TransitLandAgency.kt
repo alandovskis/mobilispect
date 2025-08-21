@@ -3,7 +3,7 @@
 
 package com.mobilispect.backend.transit_land.agency
 
-import com.mobilispect.backend.Meta
+import com.mobilispect.backend.transit_land.Meta
 import com.mobilispect.backend.TransitLandVersionedFeed
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
